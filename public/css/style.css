@@ -1,0 +1,124 @@
+/* Full-width white background for navbar edges */
+.navbar-bg {
+    width: 100%;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.navbar-bg, .nav-link {
+    color: #999999 !important; /* Darker text for navbar links */
+}
+
+.navbar-bg, .nav-link:hover {
+    color: #101823 !important; /* Darker text for navbar links */
+}
+
+.navbar-bg, .link-secondary {
+    color: #101823 !important; /* Dark text for navbar */
+}
+
+.navbar-bg, .dropdown-item {
+    color: #999999 !important; /* Darker text for navbar links */
+}
+
+.navbar-bg, .dropdown-item:hover {
+    color: #101823 !important; /* Darker text for navbar links */
+}
+
+
+
+body {
+    background-color: #101823;
+    color: #bfcbe2; /* Default text color */
+}
+
+/* TEXT COLOR TEMPLATE: Replace the hex codes with your preferred colors */
+h1 {
+    padding-top: 3rem;
+}
+
+p {
+    color: #bfcbe2; /* Paragraphs */
+}
+
+a {
+    color: #3498db; /* Links */
+}
+
+a:hover {
+    color: #217dbb; /* Link hover */
+}
+
+button, .btn {
+    color: #ffffff; /* Button text */
+    background-color: #257BF4; /* Button background */
+    border-color: #257BF4; /* Button border */
+}
+
+button:hover, .btn:hover {
+    background-color: #1c5db8;
+    border-color: #1c5db8;
+    color: #fff;
+}
+
+small {
+    color: #bfcbe2; /* Small text */
+}
+
+.card-text {
+    color: #bfcbe2 !important; /* Card text */
+}
+
+input::placeholder {
+    color: #bfcbe2; /* Input placeholder */
+    opacity: 1;
+}
+
+span {
+    color: #fed7aa; /* Span text (e.g. stats) */
+}
+
+/* You can add more selectors as needed */
+.navbar, header, .bg-dark {
+    background-color: #fafafa !important;
+}
+
+.bg-body-tertiary, .album {
+    background-color: #101823 !important;
+}
+
+.card {
+    background-color: #151F2E;
+    border: 2px solid #2A3E5C;
+    color: #fff;
+}
+
+footer {
+    background-color: #0a1627 !important;
+}
+
+
+footer a {
+    color: #999999 !important;
+}
+footer h5, footer h5.text-white, footer h5.fw-semibold {
+    color: #101823 !important;
+}
+footer h6, footer h6.text-white, footer h6.fw-semibold {
+    color: #101823 !important;
+}
+footer p, footer small, footer .text-secondary, footer .about-description, footer span {
+    color: #101823 !important;
+}
+footer .text-warning {
+    color: #257BF4 !important;
+}
+
+/* Optional: Make text more readable on dark backgrounds */
+.text-body-emphasis, .text-white, h1, h2, h5, h6 {
+    color: #F2F2F2 !important;
+}
+.text-body-secondary, .text-secondary, p, a, small {
+    color: #bfcbe2 !important;
+}

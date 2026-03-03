@@ -1,106 +1,37 @@
-<!-- Navigation Bar -->
-<nav class="navbar" x-data="{ dropdownOpen: false, mobileOpen: false, mobileDropdownOpen: false }">
-    <!-- Alpine.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <div class="container mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-            <!-- Logo & Brand -->
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-orange-500 rounded flex items-center justify-center">
-                    <span class="text-white font-bold text-lg">1</span>
-                </div>
-                <span class="text-white font-bold hidden sm:inline">Jakarta CSIRT</span>
+<div class="navbar-bg">
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+            <div class="d-flex align-items-center mb-2 mb-md-0">
+                <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+                    <img src="{{ asset('jakarta-csirt-logo.png') }}" alt="CSIRT Logo" class="img-fluid" style="max-height: 2.5rem;">
+                </a>
+                <form class="ms-3 mb-0" role="search">
+                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                </form>
             </div>
-
-            <!-- Search Bar (Desktop) -->
-            <div class="hidden md:flex flex-1 mx-8 max-w-md">
-                <div class="relative w-full">
-                    <input 
-                        type="text" 
-                        placeholder="Cari..." 
-                        class="w-full bg-slate-800 text-white placeholder-slate-400 py-2 px-4 rounded border border-slate-700 focus:outline-none focus:border-orange-500 transition"
-                    >
-                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </button>
-                </div>
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{{ route('home') }}" class="nav-link px-2 link-secondary">Home</a></li>
+                <li><a href="{{ url('profile') }}" class="nav-link px-2">Profile</a></li>
+                <li><a href="{{ route('events.index') }}" class="nav-link px-2">Event</a></li>
+                <li>
+                    <a href="#" class="nav-link px-2 d-block dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Publikasi</a>
+                    <ul class="dropdown-menu text-small">
+                        <li><a class="dropdown-item" href="{{ route('warnings.index') }}">Peringatan Keamanan</a></li>
+                        <li><a class="dropdown-item" href="{{ route('infographics.index') }}">Infografis Keamanan Informasi</a></li>
+                        <li><a class="dropdown-item" href="{{ route('laws.index') }}">Peraturan Kebijakan</a></li>
+                        <li><a class="dropdown-item" href="{{ route('news.index') }}">Berita Siber (Cyber Blitz)</a></li>
+                        <li><a class="dropdown-item" href="{{ url('statistics') }}">Statistik (Honeypot)</a></li>
+                        <li><a class="dropdown-item" href="{{ route('guides.index') }}">Panduan Teknis</a></li>
+                        <li><a class="dropdown-item" href="{{ url('rfc2350') }}">RFC2350</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url('publickey') }}">Public Key email csirt@jakarta.go.id</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ route('contact.create') }}" class="nav-link px-2">Hubungi Kami</a></li>
+            </ul>
+            <div class="col-md-3 text-end">
+                <a href="{{ route('incidents.create') }}" class="btn btn-primary fw-medium">Lapor Insiden Siber</a>
             </div>
-
-            <!-- Desktop Navigation Menu -->
-            <div class="hidden lg:flex items-center gap-8">
-                <a href="{{ route('home') }}" class="text-slate-300 hover:text-white transition">Home</a>
-                <a href="#" class="text-slate-300 hover:text-white transition">Profil</a>
-                <a href="{{ route('events.index') }}" class="text-slate-300 hover:text-white transition">Event</a>
-                
-                <!-- Publications Dropdown -->
-                <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" @keydown.escape="open = false" class="text-slate-300 hover:text-white transition flex items-center gap-1 focus:outline-none">
-                        Publikasi
-                        <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                        </svg>
-                    </button>
-                    <div x-show="open" @click.away="open = false" class="absolute top-full left-0 mt-1 bg-slate-800 border border-slate-700 rounded-lg shadow-lg min-w-max z-50" style="display: none;" x-transition>
-                        <a href="{{ route('warnings.index') }}" class="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-700 transition">Warning Posts</a>
-                        <a href="{{ route('infographics.index') }}" class="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-700 transition">Infografis</a>
-                        <a href="{{ route('laws.index') }}" class="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-700 transition">Hukum & Regulasi</a>
-                        <a href="{{ route('news.index') }}" class="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-700 transition">Berita</a>
-                        <a href="{{ route('guides.index') }}" class="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-700 transition">Panduan</a>
-                    </div>
-                </div>
-
-                <a href="{{ route('contact.create') }}" class="text-slate-300 hover:text-white transition">Kontak HQ</a>
-            </div>
-
-            <!-- Report Incident Button -->
-            <a href="{{ route('incidents.create') }}" class="btn-report ml-4">
-                Lapor Insiden Siber
-            </a>
-
-            <!-- Mobile Menu Button -->
-            <button class="lg:hidden text-white" @click="mobileOpen = !mobileOpen">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div x-show="mobileOpen" class="lg:hidden mt-4 pb-4 border-t border-slate-700 pt-4" x-transition>
-            <div class="mb-4">
-                <input 
-                    type="text" 
-                    placeholder="Cari..." 
-                    class="w-full bg-slate-800 text-white placeholder-slate-400 py-2 px-4 rounded border border-slate-700 focus:outline-none focus:border-orange-500 transition"
-                >
-            </div>
-            <div class="space-y-3">
-                <a href="{{ route('home') }}" class="block text-slate-300 hover:text-white transition">Home</a>
-                <a href="#" class="block text-slate-300 hover:text-white transition">Profil</a>
-                <a href="{{ route('events.index') }}" class="block text-slate-300 hover:text-white transition">Event</a>
-                <div class="ml-4">
-                    <button @click="mobileDropdownOpen = !mobileDropdownOpen" class="w-full text-left text-slate-400 text-sm font-semibold flex items-center gap-2 focus:outline-none">
-                        Publikasi
-                        <svg class="w-4 h-4 transition-transform" :class="mobileDropdownOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                        </svg>
-                    </button>
-                    <div x-show="mobileDropdownOpen" class="pl-4 mt-2 space-y-2" x-transition>
-                        <a href="{{ route('warnings.index') }}" class="block text-slate-400 hover:text-white transition">Warning Posts</a>
-                        <a href="{{ route('infographics.index') }}" class="block text-slate-400 hover:text-white transition">Infografis</a>
-                        <a href="{{ route('laws.index') }}" class="block text-slate-400 hover:text-white transition">Hukum & Regulasi</a>
-                        <a href="{{ route('news.index') }}" class="block text-slate-400 hover:text-white transition">Berita</a>
-                        <a href="{{ route('guides.index') }}" class="block text-slate-400 hover:text-white transition">Panduan</a>
-                    </div>
-                </div>
-                <a href="{{ route('contact.create') }}" class="block text-slate-300 hover:text-white transition">Kontak HQ</a>
-            </div>
-        </div>
+        </header>
     </div>
-</nav>
-
-<script>
-</script>
-</script>
+</div>
