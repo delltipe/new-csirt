@@ -8,20 +8,31 @@ return new class extends Migration {
     {
         Schema::create('lapor_insiden', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('fullName');
-            $table->text('email');
-            $table->integer('phoneNumber');
-            $table->date('foundDate');
-            $table->text('domain');
+            // Data Pelapor
+            $table->string('fullName');
+            $table->string('email');
+            $table->string('phoneNumber'); // CHANGED to string
+            
+            // Data Website & Insiden
+            $table->date('foundDate')->nullable();
+            $table->string('domain');
             $table->text('url');
             $table->text('laporDesc');
-            $table->text('riskType');
-            $table->text('riskLevel');
-            $table->float('cvssScore');
-            $table->text('videoUrl');
+            
+            // Risk & Scoring
+            $table->string('riskType')->nullable();
+            $table->string('riskLevel')->nullable();
+            $table->float('cvssScore')->nullable();
+            
+            // Evidences
+            $table->text('videoUrl')->nullable();
             $table->text('reference')->nullable();
-            $table->text('recommendation');
-            $table->text('proofPic');
+            $table->text('recommendation')->nullable();
+            $table->string('proofPic'); // Storing the file path
+            
+            // CSIRT Internal Status
+            $table->string('status')->default('Menunggu Validasi'); // ADDED for tracking
+            $table->timestamps(); // ADDED: Critical for knowing WHEN the report was submitted
         });
     }
 
