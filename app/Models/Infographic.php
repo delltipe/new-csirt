@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Infographic extends Model
 {
+    protected $table = 'infografis_keamanan';
+    
     protected $fillable = [
         'title',
         'description',

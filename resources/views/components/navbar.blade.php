@@ -11,7 +11,12 @@
             </div>
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{{ route('home') }}" class="nav-link px-2 link-secondary">Home</a></li>
-                <li><a href="{{ url('profile') }}" class="nav-link px-2">Profile</a></li>
+                <li>
+                    <a href="{{ route('profile') }}" 
+                    class="nav-link px-2 {{ request()->routeIs('profile') ? 'link-secondary fw-bold' : '' }}">
+                    Profile
+                    </a>
+                </li>
                 <li><a href="{{ route('events.index') }}" class="nav-link px-2">Event</a></li>
                 <li>
                     <a href="#" class="nav-link px-2 d-block dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Publikasi</a>
@@ -30,7 +35,7 @@
                 <li><a href="{{ route('contact.create') }}" class="nav-link px-2">Hubungi Kami</a></li>
             </ul>
             <div class="col-md-3 text-end">
-                <a href="{{ route('incidents.create') }}" class="btn btn-primary fw-medium">Lapor Insiden Siber</a>
+                <a href="{{ route('incidents.create.step1') }}" class="btn btn-primary fw-medium">Lapor Insiden Siber</a>
             </div>
         </header>
     </div>

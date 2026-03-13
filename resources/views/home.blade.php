@@ -10,7 +10,7 @@
             <h1 class="fw-bold">Lindungi Data Indonesia</h1>
             <p class="lead text-body-secondary">Jakarta CSIRT siap membantu melindungi infrastruktur kritis dan data digital Anda dari ancaman siber 24/7.</p>
             <p>
-                <a href="{{ route('incidents.create') }}" class="btn btn-primary my-2 fw-bold">Lapor Insiden Sekarang</a>
+                <a href="{{ route('incidents.create.step1') }}" class="btn btn-primary my-2 fw-bold">Lapor Insiden Sekarang</a>
                 <a href="{{ url('contact') }}" class="btn btn-secondary my-2 fw-medium">Hubungi Kami</a>
             </p>
         </div>
@@ -28,61 +28,42 @@
 <div class="album py-1 bg-body-tertiary">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <!-- Card 1 -->
+            
+            @forelse($recentNews as $article)
             <div class="col">
                 <div class="card shadow-sm h-100">
-                    <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#55595c"></rect>
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                    </svg>
+                    @if($article->image_url)
+                        <img src="{{ $article->thumbnail }}" class="card-img-top object-fit-cover" height="225" alt="{{ $article->title }}">
+                    @else
+                        <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="100%" height="100%" fill="#55595c"></rect>
+                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">No Image</text>
+                        </svg>
+                    @endif
+                    
                     <div class="card-body d-flex flex-column">
-                        <p class="card-text fw-bold">"Doxware" varian baru ransomware</p>
-                        <p class="card-text">Tentu, ini adalah artikel yang komprehensif, mendalam, dan didukung oleh referensi kredibel mengenai Doxware. Artikel ini dirancang untuk memberikan pemahaman yang jelas tentang evolusi ancaman sibe...</p>
+                        <p class="card-text fw-bold">{{ $article->title }}</p>
+                        <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
+                        
                         <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <a href="{{ url('news/show/1') }}" class="btn btn-sm btn-outline-secondary fw-medium">Lihat Selengkapnya</a>
-                            <small class="text-body-secondary">9 mins</small>
+                            <a href="{{ route('news.show', $article->id) }}" class="btn btn-sm btn-outline-secondary fw-medium">Lihat Selengkapnya</a>
+                            
+                            <small class="text-body-secondary">
+                                {{ $article->date->diffForHumans() }}
+                            </small>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Card 2 -->
-            <div class="col">
-                <div class="card shadow-sm h-100">
-                    <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#55595c"></rect>
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                    </svg>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text fw-bold">chrome bisa merubah password otomatis</p>
-                        <p class="card-text">Gak Perlu Repot Lagi! Chrome Kini Bisa Mengubah Password Anda Secara OtomatisPernahkah Anda mendapatkan notifikasi menakutkan bahwa "Password Anda telah bocor dalam pelanggaran data"? Biasanya, reaksi...</p>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <a href="{{ url('news/show/2') }}" class="btn btn-sm btn-outline-secondary fw-medium">Lihat Selengkapnya</a>
-                            <small class="text-body-secondary">9 mins</small>
-                        </div>
-                    </div>
-                </div>
+            @empty
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">Belum ada berita terkini.</p>
             </div>
-            <!-- Card 3 -->
-            <div class="col">
-                <div class="card shadow-sm h-100">
-                    <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#55595c"></rect>
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                    </svg>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text fw-bold">Waspada Penipuan Berkedok Video Demo Palsu yang Mengincar Data Anda</p>
-                        <p class="card-text">Penipuan dengan modus video demo palsu kembali merebak dan menjadi ancaman nyata, khususnya bagi pengguna ponsel Android. Modus kejahatan siber ini memanfaatkan isu demonstrasi besar-besaran di kota-k...</p>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <a href="{{ url('news/show/3') }}" class="btn btn-sm btn-outline-secondary fw-medium">Lihat Selengkapnya</a>
-                            <small class="text-body-secondary">9 mins</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforelse
+
         </div>
+    </div>
+</div>
     </div>
 </div>
 
@@ -172,7 +153,7 @@
         <p class="fs-6 mb-5 mx-auto" style="color: #fed7aa; max-width: 35rem;">
             Tim Jakarta CSIRT siap membantu Anda 24/7. Laporkan insiden keamanan siber Anda sekarang dan dapatkan respons cepat dari para ahli kami.
         </p>
-        <a href="{{ route('incidents.create') }}" class="btn btn-light fs-6 fw-bold px-5 py-3" style="color: #ea580c;">Lapor Insiden Sekarang</a>
+        <a href="{{ route('incidents.create.step1') }}" class="btn btn-light fs-6 fw-bold px-5 py-3" style="color: #ea580c;">Lapor Insiden Sekarang</a>
     </div>
 </section>
 

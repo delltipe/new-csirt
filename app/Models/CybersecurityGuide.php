@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CybersecurityGuide extends Model
 {
+    protected $table = 'panduan_teknis';
+
     protected $fillable = [
         'title',
         'content',

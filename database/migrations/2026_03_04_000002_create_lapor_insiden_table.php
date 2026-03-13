@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->text('videoUrl')->nullable();
             $table->text('reference')->nullable();
             $table->text('recommendation')->nullable();
-            $table->string('proofPic'); // Storing the file path
+            $table->string('proofPic')->nullable(); // Storing the file path
             
             // CSIRT Internal Status
             $table->string('status')->default('Menunggu Validasi'); // ADDED for tracking

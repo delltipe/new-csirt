@@ -6,17 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class CybersecurityNews extends Model
 {
+    protected $table = 'berita_siber';
+    
+    // Disable timestamps because they aren't in your migration
+    public $timestamps = false; 
+
     protected $fillable = [
         'title',
-        'content',
-        'excerpt',
-        'image_url',
-        'source_url',
-        'author',
-        'published_at',
+        'description', // Matches migration
+        'thumbnail',   // Matches migration
+        'source',      // Matches migration
+        'date',        // Matches migration
     ];
 
     protected $casts = [
-        'published_at' => 'datetime',
+        'date' => 'datetime',
     ];
 }

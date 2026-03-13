@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class LawRulePost extends Model
 {
+    protected $table = 'peraturan_kebijakan';
+    
     protected $fillable = [
         'title',
         'content',

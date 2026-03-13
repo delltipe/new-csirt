@@ -12,9 +12,11 @@ use App\Http\Controllers\ContactController;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::view('/profile', 'profile')->name('profile');
+
 // Public Info Routes
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
-Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
+Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
@@ -32,9 +34,18 @@ Route::get('/guides', [GuideController::class, 'index'])->name('guides.index');
 Route::get('/guides/{guide}', [GuideController::class, 'show'])->name('guides.show');
 
 // Form Routes
-Route::get('/report-incident', [IncidentReportController::class, 'create'])->name('incidents.create');
-Route::post('/report-incident', [IncidentReportController::class, 'store'])->name('incidents.store');
-Route::get('/thank-you/incident', [IncidentReportController::class, 'thankYou'])->name('incidents.thank-you');
+Route::prefix('report-incident')->group(function () {
+    Route::get('/step-1', [IncidentReportController::class, 'createStep1'])->name('incidents.create.step1');
+    Route::post('/step-1', [IncidentReportController::class, 'postStep1'])->name('incidents.create.step1.post');
+
+    Route::get('/step-2', [IncidentReportController::class, 'createStep2'])->name('incidents.create.step2');
+    Route::post('/step-2', [IncidentReportController::class, 'postStep2'])->name('incidents.create.step2.post');
+
+    Route::get('/step-3', [IncidentReportController::class, 'createStep3'])->name('incidents.create.step3');
+    Route::post('/store', [IncidentReportController::class, 'store'])->name('incidents.store');
+    
+    Route::get('/thank-you', [IncidentReportController::class, 'thankYou'])->name('incidents.thank-you');
+});
 
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');

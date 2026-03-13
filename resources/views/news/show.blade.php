@@ -1,83 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Page Header -->
-<section class="bg-gradient-to-r from-slate-900 to-slate-800 py-12">
-    <div class="container mx-auto px-4">
-        <a href="{{ route('news.index') }}" class="text-orange-500 hover:text-orange-400 transition mb-4 inline-flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-            Kembali
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <a href="{{ route('news.index') }}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-arrow-left"></i> Kembali ke Berita
         </a>
-        <h1 class="text-4xl font-bold text-white mb-4">{{ $news->title }}</h1>
-        <div class="flex flex-wrap gap-4 text-slate-300">
-            @if($news->author)
-                <span>Oleh: <strong>{{ $news->author }}</strong></span>
-            @endif
-            <span>{{ $news->published_at?->format('d M Y') ?? 'N/A' }}</span>
-            @if($news->source_url)
-                <a href="{{ $news->source_url }}" target="_blank" class="text-orange-500 hover:text-orange-400">Lihat Sumber</a>
-            @endif
-        </div>
-    </div>
-</section>
+    </nav>
 
-<section class="py-12">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Main Content -->
-            <div class="lg:col-span-2">
-                @if($news->image_url)
-                    <img src="{{ $news->image_url }}" alt="{{ $news->title }}" class="w-full rounded-lg mb-8 h-96 object-cover">
-                @endif
-                
-                <div class="prose prose-invert max-w-none">
-                    <p class="text-lg text-slate-300 leading-relaxed">{{ $news->content }}</p>
-                </div>
-
-                @if($news->excerpt)
-                    <div class="mt-8 p-6 bg-slate-800 rounded-lg border-l-4 border-orange-500">
-                        <p class="text-slate-300"><strong>Ringkasan:</strong> {{ $news->excerpt }}</p>
-                    </div>
+    <div class="row g-5">
+        <div class="col-lg-8">
+            <h1 class="display-4 fw-bold mb-3">{{ $news->title }}</h1>
+            
+            <div class="d-flex gap-3 text-muted mb-4">
+                <span><i class="bi bi-calendar-event"></i> {{ $news->date->format('d M Y') }}</span>
+                @if($news->source)
+                    <a href="{{ $news->source }}" target="_blank" class="text-decoration-none">Lihat Sumber</a>
                 @endif
             </div>
 
-            <!-- Sidebar -->
-            <aside>
-                <!-- Related News -->
-                <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
-                    <h3 class="text-lg font-bold text-white mb-4">Berita Terkait</h3>
-                    <div class="space-y-4">
-                        @php
-                            $relatedNews = \App\Models\CybersecurityNews::where('id', '!=', $news->id)
-                                ->orderBy('published_at', 'desc')
-                                ->limit(3)
-                                ->get();
-                        @endphp
-                        @forelse($relatedNews as $related)
-                            <div class="pb-4 border-b border-slate-700 last:border-b-0 last:pb-0">
-                                <a href="{{ route('news.show', $related) }}" class="text-white hover:text-orange-500 transition font-semibold text-sm">
-                                    {{ $related->title }}
-                                </a>
-                                <p class="text-xs text-slate-500 mt-1">{{ $related->published_at?->format('d M Y') }}</p>
-                            </div>
-                        @empty
-                            <p class="text-slate-400 text-sm">Tidak ada berita terkait</p>
-                        @endforelse
-                    </div>
-                </div>
+            @if($news->thumbnail)
+                <img src="{{ $news->thumbnail }}" alt="{{ $news->title }}" class="img-fluid rounded-4 mb-4 shadow-sm" style="width: 100%; max-height: 400px; object-fit: cover;">
+            @endif
+            
+            <div class="news-content fs-5 leading-relaxed">
+                {!! nl2br(e($news->description)) !!}
+            </div>
+        </div>
 
-                <!-- Info Box -->
-                <div class="mt-6 bg-slate-800 rounded-lg p-6 border border-slate-700">
-                    <h3 class="text-lg font-bold text-white mb-4">Lapor Insiden</h3>
-                    <p class="text-slate-300 text-sm mb-4">Jika Anda mengalami insiden keamanan siber, segera laporkan ke Jakarta CSIRT.</p>
-                    <a href="{{ route('incidents.create') }}" class="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded transition">
+        <div class="col-lg-4">
+            <div class="p-4 bg-light rounded-4 border">
+                <h4 class="fw-bold mb-3">Berita Terkait</h4>
+                <ul class="list-unstyled">
+                    @php
+                        $relatedNews = \App\Models\CybersecurityNews::where('id', '!=', $news->id)->limit(3)->get();
+                    @endphp
+                    @foreach($relatedNews as $related)
+                        <li class="mb-3 pb-3 border-bottom">
+                            <a href="{{ route('news.show', $related->id) }}" class="text-decoration-none fw-bold text-dark d-block">
+                                {{ $related->title }}
+                            </a>
+                            <small class="text-muted">{{ $related->date->format('d M Y') }}</small>
+                        </li>
+                    @endforeach
+                </ul>
+                
+                <hr>
+                
+                <div class="mt-4 rounded-4 p-4 text-center" style="background: #101823; border: none;">
+                    <h5 class="fw-bold text-white mb-3">Memiliki Insiden Siber?</h5>
+                    <p class="small mb-4" style="color: #fed7aa;">Tim Jakarta CSIRT siap membantu Anda 24/7.</p>
+                    <a href="{{ route('incidents.create.step1') }}" class="btn btn-light w-100 fw-bold py-2" style="color: #ea580c;">
                         Lapor Sekarang
                     </a>
                 </div>
-            </aside>
+            </div>
         </div>
     </div>
-</section>
+</div>
 @endsection

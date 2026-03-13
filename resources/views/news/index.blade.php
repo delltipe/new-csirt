@@ -1,48 +1,54 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Page Header -->
-<section class="bg-gradient-to-r from-slate-900 to-slate-800 py-12">
-    <div class="container mx-auto px-4">
-        <h1 class="text-4xl font-bold text-white mb-2">Berita Keamanan Siber</h1>
-        <p class="text-lg text-slate-300">Artikel terbaru tentang keamanan siber dan ancaman digital</p>
+<section class="py-5 text-center container">
+    <div class="row py-lg-4">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <h1 class="fw-bold display-5">Berita Keamanan Siber</h1>
+            <p class="lead text-body-secondary">Informasi dan edukasi terbaru untuk menjaga keamanan digital Anda di lingkungan Pemprov DKI Jakarta.</p>
+        </div>
     </div>
 </section>
 
-<section class="py-16">
-    <div class="container mx-auto px-4">
-        <!-- News Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
             @forelse($news as $article)
-                <div class="card accent-border">
-                    <div class="bg-slate-700 h-40 flex items-center justify-center">
-                        @if($article->image_url)
-                            <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+                <div class="col">
+                    <div class="card border-0 shadow-sm h-100">
+                        @if($article->thumbnail)
+                            <img src="{{ $article->thumbnail }}" class="card-img-top" alt="{{ $article->title }}" style="height: 225px; object-fit: cover;">
                         @else
-                            <span class="text-slate-400">Gambar Berita</span>
+                            <div class="bg-secondary d-flex align-items-center justify-content-center text-white" style="height: 225px;">
+                                <i class="bi bi-image" style="font-size: 2rem;"></i>
+                            </div>
                         @endif
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-lg font-bold text-white mb-2 line-clamp-2">{{ $article->title }}</h3>
-                        <p class="text-slate-400 text-sm mb-4 line-clamp-3">{{ $article->excerpt ?? Str::limit($article->content, 100) }}</p>
-                        @if($article->author)
-                            <p class="text-xs text-slate-500 mb-2">Oleh: {{ $article->author }}</p>
-                        @endif
-                        <p class="text-xs text-slate-500 mb-4">{{ $article->published_at?->format('d M Y') ?? 'N/A' }}</p>
-                        <a href="{{ route('news.show', $article) }}" class="text-orange-500 hover:text-orange-400 transition font-semibold text-sm">Baca Selengkapnya →</a>
+
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text fw-bold mb-2">{{ $article->title }}</p>
+                            <p class="card-text text-secondary small mb-3">
+                                {{ Str::limit($article->description, 110) }}
+                            </p>
+                            
+                            <div class="mt-auto d-flex justify-content-between align-items-center">
+                                <a href="{{ route('news.show', $article->id) }}" class="btn btn-sm btn-outline-secondary fw-medium">Lihat Selengkapnya</a>
+                                <small class="text-body-secondary">
+                                    {{ $article->date ? $article->date->diffForHumans() : '' }}
+                                </small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             @empty
-                <div class="col-span-3 text-center py-12">
-                    <p class="text-slate-400 text-lg">Belum ada berita</p>
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted fs-5">Belum ada berita yang tersedia saat ini.</p>
                 </div>
             @endforelse
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-12">
-            {{ $news->links() }}
+        <div class="d-flex justify-content-center mt-5">
+            {!! $news->links('pagination::bootstrap-5') !!}
         </div>
     </div>
-</section>
+</div>
 @endsection
