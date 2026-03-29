@@ -1,57 +1,43 @@
-
 @extends('layouts.app')
 
 @section('content')
 
-<!-- BANNER -->
-<section class="py-5 text-center container">
-    <div class="row py-lg-5">
-        <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="fw-bold">Lindungi Data Indonesia</h1>
-            <p class="lead text-body-secondary">Jakarta CSIRT siap membantu melindungi infrastruktur kritis dan data digital Anda dari ancaman siber 24/7.</p>
-            <p>
-                <a href="{{ route('incidents.create.step1') }}" class="btn btn-primary my-2 fw-bold">Lapor Insiden Sekarang</a>
-                <a href="{{ url('contact') }}" class="btn btn-secondary my-2 fw-medium">Hubungi Kami</a>
-            </p>
+<section class="position-relative overflow-hidden p-3 p-md-5 text-white" style="background: linear-gradient(rgba(16, 24, 35, 0.8), rgba(16, 24, 35, 0.8)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; border-bottom: 8px solid #dc2626;">
+    <div class="container py-5">
+        <div class="col-md-7 p-lg-5 my-5">
+            <h1 class="display-3 fw-bolder text-uppercase lh-1 mb-3">Lindungi Data <span class="text-danger">Indonesia.</span></h1>
+            <p class="lead fw-normal mb-4">JakartaProv-CSIRT menjaga infrastruktur digital dan data kritis Provinsi DKI Jakarta dari ancaman siber 24 jam sehari, 7 hari seminggu.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <a href="{{ route('incidents.create.step1') }}" class="btn btn-nyc btn-lg px-5 py-3">Lapor Insiden Sekarang</a>
+                <a href="{{ url('profile') }}" class="btn btn-outline-light btn-lg px-5 py-3 rounded-0 border-2 fw-bold">Tentang Kami</a>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- NEWS TITLE -->
-<div class="container">
-    <div class="col-lg-8 text-center text-lg-start">
-        <h1 class="display-5 fw-bold lh-1 text-body-emphasis mb-3">Berita Terkini</h1>
-        <p class="fs-5">Informasi terkini seputar keamanan siber di lingkungan Pemprov DKI Jakarta</p>
-    </div>
-</div>
-<!-- NEWS SELECTION -->
-<div class="album py-1 bg-body-tertiary">
+<div class="bg-white py-5">
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            
+        <div class="d-flex justify-content-between align-items-end mb-4 border-bottom border-4 border-dark pb-2">
+            <div>
+                <h2 class="fw-black text-uppercase m-0" style="letter-spacing: -1px;">Berita Terkini</h2>
+                <p class="text-secondary mb-0">Informasi terbaru dari JakartaProv-CSIRT</p>
+            </div>
+            <a href="{{ route('news.index') }}" class="fw-bold text-dark text-decoration-none text-uppercase small">Lihat Semua Berita <i class="bi bi-arrow-right"></i></a>
+        </div>
+
+        <div class="row g-4">
             @forelse($recentNews as $article)
-            <div class="col">
-                <div class="card shadow-sm h-100">
-                    @if($article->image_url)
-                        <img src="{{ $article->thumbnail }}" class="card-img-top object-fit-cover" height="225" alt="{{ $article->title }}">
-                    @else
-                        <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="100%" height="100%" fill="#55595c"></rect>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">No Image</text>
-                        </svg>
-                    @endif
-                    
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text fw-bold">{{ $article->title }}</p>
-                        <p class="card-text">{{ Str::limit($article->description, 100) }}</p>
-                        
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <a href="{{ route('news.show', $article->id) }}" class="btn btn-sm btn-outline-secondary fw-medium">Lihat Selengkapnya</a>
-                            
-                            <small class="text-body-secondary">
-                                {{ $article->date->diffForHumans() }}
-                            </small>
-                        </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0">
+                    <div class="position-relative overflow-hidden" style="height: 250px;">
+                        <img src="{{ $article->thumbnail ?? 'https://via.placeholder.com/800x400' }}" class="img-fluid object-fit-cover w-100 h-100 transition-transform" alt="{{ $article->title }}">
+                    </div>
+                    <div class="card-body px-0 py-3">
+                        <small class="text-danger fw-bold text-uppercase">{{ $article->date->format('M d, Y') }}</small>
+                        <h4 class="fw-bold mt-1">
+                            <a href="{{ route('news.show', $article->id) }}" class="text-dark text-decoration-none hover-red">{{ $article->title }}</a>
+                        </h4>
+                        <p class="text-secondary small">{{ Str::limit($article->description, 120) }}</p>
                     </div>
                 </div>
             </div>
@@ -60,100 +46,42 @@
                 <p class="text-muted">Belum ada berita terkini.</p>
             </div>
             @endforelse
-
         </div>
     </div>
 </div>
-    </div>
-</div>
 
-<!-- SERVICES TITLE -->
-<div class="container">
-    <div class="col-lg-8 text-center text-lg-start">
-        <h1 class="display-5 fw-bold lh-1 text-body-emphasis mb-3">Publikasi Lainnya</h1>
-        <p class="fs-5">Publikasi/informasi seputar keamanan siber di lingkungan Pemprov DKI Jakarta</p>
-    </div>
-</div>
-<!-- SERVICES SELECTION -->
-<div class="album py-1 bg-body-tertiary">
+<div class="py-5" style="background-color: #f1f5f9;">
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-            <!-- Card 1 -->
-            <div class="col">
-                <div class="card shadow-sm h-100">
-                    <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#55595c"></rect>
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                    </svg>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text fw-bold fs-5 text-center">Peringatan Keamanan</p>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <a href="{{ url('warnings') }}" class="btn btn-sm btn-outline-secondary fw-medium w-100">View</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card 2 -->
-            <div class="col">
-                <div class="card shadow-sm h-100">
-                    <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#55595c"></rect>
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                    </svg>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text fw-bold fs-5 text-center">Infografis Keamanan Informasi</p>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <a href="{{ url('infographics') }}" class="btn btn-sm btn-outline-secondary fw-medium w-100">View</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card 3 -->
-            <div class="col">
-                <div class="card shadow-sm h-100">
-                    <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#55595c"></rect>
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                    </svg>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text fw-bold fs-5 text-center">Peraturan dan Kebijakan</p>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <a href="{{ url('laws') }}" class="btn btn-sm btn-outline-secondary fw-medium w-100">View</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Card 4 -->
-            <div class="col">
-                <div class="card shadow-sm h-100">
-                    <svg aria-label="Placeholder: Thumbnail" class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%" xmlns="http://www.w3.org/2000/svg">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#55595c"></rect>
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                    </svg>
-                    <div class="card-body d-flex flex-column">
-                        <p class="card-text fw-bold fs-5 text-center">Panduan</p>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <a href="{{ url('guides') }}" class="btn btn-sm btn-outline-secondary fw-medium w-100">View</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <h2 class="text-center fw-black text-uppercase mb-5">Publikasi & Layanan</h2>
+        
+        <div class="row g-0 border border-2 border-dark">
+            <a href="{{ url('warnings') }}" class="col-md-3 p-4 text-center border-end border-bottom border-dark text-decoration-none bg-white hover-navy transition">
+                <i class="bi bi-shield-exclamation fs-1 text-danger mb-3 d-block"></i>
+                <h5 class="fw-bold text-dark">Peringatan Keamanan</h5>
+            </a>
+            <a href="{{ url('infographics') }}" class="col-md-3 p-4 text-center border-end border-bottom border-dark text-decoration-none bg-white hover-navy transition">
+                <i class="bi bi-file-earmark-bar-graph fs-1 text-primary mb-3 d-block"></i>
+                <h5 class="fw-bold text-dark">Infografis Keamanan</h5>
+            </a>
+            <a href="{{ url('laws') }}" class="col-md-3 p-4 text-center border-end border-bottom border-dark text-decoration-none bg-white hover-navy transition">
+                <i class="bi bi-journal-bookmark fs-1 text-dark mb-3 d-block"></i>
+                <h5 class="fw-bold text-dark">Peraturan & Kebijakan</h5>
+            </a>
+            <a href="{{ url('guides') }}" class="col-md-3 p-4 text-center border-bottom border-dark text-decoration-none bg-white hover-navy transition">
+                <i class="bi bi-book fs-1 text-success mb-3 d-block"></i>
+                <h5 class="fw-bold text-dark">Panduan Teknis</h5>
+            </a>
         </div>
     </div>
 </div>
 
-<!-- LAST CTA -->
-<section class="py-5 py-md-6" style="background:#101823;">
-    <div class="container text-center">
-        <h2 class="display-5 fw-bold text-white mb-4">Memiliki Insiden Keamanan Siber?</h2>
-        <p class="fs-6 mb-5 mx-auto" style="color: #fed7aa; max-width: 35rem;">
-            Tim Jakarta CSIRT siap membantu Anda 24/7. Laporkan insiden keamanan siber Anda sekarang dan dapatkan respons cepat dari para ahli kami.
+<section class="py-6" style="background:#101823; border-top: 10px solid #dc2626;">
+    <div class="container text-center py-5">
+        <h2 class="display-4 fw-black text-white mb-3 text-uppercase">Butuh Respon Cepat?</h2>
+        <p class="fs-5 mb-5 mx-auto text-light opacity-75" style="max-width: 40rem;">
+            Tim Jakarta CSIRT tersedia 24/7 untuk menangani insiden keamanan siber di lingkungan Pemerintah Provinsi DKI Jakarta.
         </p>
-        <a href="{{ route('incidents.create.step1') }}" class="btn btn-light fs-6 fw-bold px-5 py-3" style="color: #ea580c;">Lapor Insiden Sekarang</a>
+        <a href="{{ route('incidents.create.step1') }}" class="btn btn-light btn-lg fs-5 fw-black px-5 py-3 rounded-0 shadow-lg">LAPOR INSIDEN SEKARANG</a>
     </div>
 </section>
 
