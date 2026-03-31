@@ -33,20 +33,29 @@ Route::get('/laws/{post}', [LawRulePostController::class, 'show'])->name('laws.s
 Route::get('/guides', [GuideController::class, 'index'])->name('guides.index');
 Route::get('/guides/{guide}', [GuideController::class, 'show'])->name('guides.show');
 
-// Form Routes
+// ---------------------------------------------------------------
+// Incident Report Routes
+// ---------------------------------------------------------------
 Route::prefix('report-incident')->group(function () {
-    Route::get('/step-1', [IncidentReportController::class, 'createStep1'])->name('incidents.create.step1');
+
+    // NEW: Single-page JS wizard — this is what the navbar button points to
+    Route::get('/', [IncidentReportController::class, 'create'])->name('incidents.create.step1');
+    Route::post('/store', [IncidentReportController::class, 'store'])->name('incidents.store');
+    Route::get('/thank-you', [IncidentReportController::class, 'thankYou'])->name('incidents.thank-you');
+
+    // KEPT: Old separate-step routes — still work as fallback
+    Route::get('/step-1', [IncidentReportController::class, 'createStep1'])->name('incidents.create.step1.old');
     Route::post('/step-1', [IncidentReportController::class, 'postStep1'])->name('incidents.create.step1.post');
 
     Route::get('/step-2', [IncidentReportController::class, 'createStep2'])->name('incidents.create.step2');
     Route::post('/step-2', [IncidentReportController::class, 'postStep2'])->name('incidents.create.step2.post');
 
     Route::get('/step-3', [IncidentReportController::class, 'createStep3'])->name('incidents.create.step3');
-    Route::post('/store', [IncidentReportController::class, 'store'])->name('incidents.store');
-    
-    Route::get('/thank-you', [IncidentReportController::class, 'thankYou'])->name('incidents.thank-you');
 });
 
+// ---------------------------------------------------------------
+// Contact Routes
+// ---------------------------------------------------------------
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/thank-you/contact', [ContactController::class, 'thankYou'])->name('contact.thank-you');
