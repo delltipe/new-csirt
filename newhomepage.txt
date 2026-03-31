@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JakartaProv-CSIRT — Tim Tanggap Insiden Siber DKI Jakarta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+/* =========================================================
+   DESIGN TOKENS
+   Palette: 4 values only.
+   --ink     near-black for text & chrome
+   --navy    the brand blue (dark, commanding)
+   --mist    light gray surface
+   --white   pure white
+   Red reserved for alert content only.
+   ========================================================= */
+:root {
+  --ink:      #0A0F1A;
+  --navy:     #003580;   /* darker, commanding DKI blue */
+  --navy-mid: #004099;   /* hover / active states */
+  --navy-dim: #002060;   /* pressed / dark sections */
+  --navy-tint:#E8EFF8;   /* very faint blue for hover surfaces */
+
+  --mist:     #F4F5F7;
+  --border:   #D8DCE3;
+  --mid:      #6B7280;
+  --white:    #FFFFFF;
+
+  --alert:    #B91C1C;   /* ALERT CONTENT ONLY */
+  --alert-bg: #FEF2F2;
+
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  --nav-top-h: 38px;
+  --nav-h:     68px;
+  --ease:      0.16s ease;
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+ul { list-style: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+
+
+/* =========================================================
+   NAV — GOVERNMENT STRIP
+   ========================================================= */
+.nav-strip {
+  background: var(--ink);
+  height: var(--nav-top-h);
+  display: flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #8A9AB5;
+}
+.nav-strip .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-strip__badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #8A9AB5;
+}
+.nav-strip__badge i { font-size: 12px; color: var(--navy-mid); }
+.nav-strip__links { display: flex; gap: 22px; }
+.nav-strip__links a {
+  color: #5A6A80;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  transition: color var(--ease);
+}
+.nav-strip__links a:hover { color: #8A9AB5; }
+
+
+/* =========================================================
+   NAV — MAIN BAR
+   ========================================================= */
+.nav-main {
+  background: var(--white);
+  border-bottom: 4px solid var(--navy);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 0 var(--border);
+}
+.nav-main .container {
+  display: flex;
+  align-items: center;
+  height: var(--nav-h);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
+  margin-right: 44px;
+}
+.nav-logo img { height: 40px; width: auto; }
+/* Fallback wordmark shown if image fails */
+.nav-logo__fallback {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--navy);
+  text-transform: uppercase;
+  display: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  flex: 1;
+}
+.nav-links > li {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.nav-links > li > a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  border-bottom: 4px solid transparent;
+  margin-bottom: -4px;
+  transition: color var(--ease), border-color var(--ease);
+}
+.nav-links > li > a i { font-size: 10px; opacity: 0.5; }
+.nav-links > li > a:hover,
+.nav-links > li > a.active {
+  color: var(--navy);
+  border-bottom-color: var(--navy);
+}
+
+/* Dropdown */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--navy);
+  min-width: 230px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 0.14s ease, transform 0.14s ease;
+  z-index: 200;
+}
+.nav-links > li:hover .dropdown-menu,
+.nav-links > li:focus-within .dropdown-menu {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+.dropdown-menu a {
+  display: block;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  border-left: 3px solid transparent;
+  transition: background var(--ease), border-color var(--ease), color var(--ease);
+}
+.dropdown-menu a:hover {
+  background: var(--navy-tint);
+  border-left-color: var(--navy);
+  color: var(--navy);
+}
+.dropdown-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+/* Nav right side */
+.nav-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+.nav-search { display: flex; height: 36px; border: 1px solid var(--border); }
+.nav-search input {
+  border: none; outline: none;
+  padding: 0 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink);
+  width: 150px;
+  background: var(--mist);
+}
+.nav-search input::placeholder { color: var(--mid); }
+.nav-search button {
+  background: var(--ink);
+  color: var(--white);
+  width: 36px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  transition: background var(--ease);
+}
+.nav-search button:hover { background: var(--navy); }
+
+.btn-report {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0 20px;
+  height: 40px;
+  white-space: nowrap;
+  transition: background var(--ease);
+}
+.btn-report:hover { background: var(--navy-dim); color: var(--white); }
+.btn-report i { font-size: 13px; }
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(100deg, rgba(0,32,96,0.94) 0%, rgba(0,53,128,0.85) 55%, rgba(0,53,128,0.55) 100%),
+    url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+}
+
+/* Subtle vertical rule pattern — structural, not decorative */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255,255,255,0.025) 0px,
+    rgba(255,255,255,0.025) 1px,
+    transparent 1px,
+    transparent 80px
+  );
+  pointer-events: none;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
+  padding-top: 80px;
+  padding-bottom: 120px; /* room for stats bar */
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 18px;
+}
+.hero-eyebrow i { font-size: 11px; color: rgba(255,255,255,0.4); }
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: rgba(255,255,255,0.35);
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 7vw, 82px);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 24px;
+  max-width: 640px;
+}
+.hero h1 span {
+  display: block;
+  color: rgba(255,255,255,0.38);
+  font-weight: 500;
+  font-size: 0.55em;
+  letter-spacing: 0.14em;
+  margin-bottom: 8px;
+}
+
+.hero-lead {
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 36px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  color: var(--navy-dim);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  transition: background var(--ease), color var(--ease);
+}
+.btn-hero-primary:hover { background: var(--navy-tint); color: var(--navy-dim); }
+
+.btn-hero-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.25);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px 28px;
+  transition: border-color var(--ease), color var(--ease);
+}
+.btn-hero-ghost:hover { border-color: rgba(255,255,255,0.6); color: var(--white); }
+
+/* Stats bar at bottom of hero */
+.hero-stats {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(0,20,60,0.82);
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.hero-stats .container {
+  display: flex;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.stat-item {
+  flex: 1;
+  padding: 20px 16px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+
+/* =========================================================
+   ALERT STRIP — red used here only
+   ========================================================= */
+.alert-strip {
+  background: var(--alert-bg);
+  border-top: 2px solid var(--alert);
+  border-bottom: 2px solid var(--alert);
+}
+.alert-strip .container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.alert-icon {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: var(--alert);
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+}
+.alert-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--alert);
+  margin-bottom: 2px;
+}
+.alert-text { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+.alert-cta {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--alert);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 9px 16px;
+  transition: background var(--ease);
+}
+.alert-cta:hover { background: #991b1b; color: var(--white); }
+
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 14px;
+  margin-bottom: 32px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1;
+}
+.section-subtitle {
+  font-size: 13.5px;
+  color: var(--mid);
+  margin-top: 5px;
+}
+.section-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--navy);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color var(--ease);
+}
+.section-link:hover { border-bottom-color: var(--navy); }
+.section-link i { font-size: 11px; }
+
+
+/* =========================================================
+   NEWS SECTION
+   ========================================================= */
+.news-section { padding: 72px 0; background: var(--white); }
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border);
+}
+.news-card {
+  border-right: 1px solid var(--border);
+  transition: background var(--ease);
+}
+.news-card:last-child { border-right: none; }
+.news-card:hover { background: var(--mist); }
+.news-card__img-wrap { overflow: hidden; }
+.news-card__img {
+  width: 100%; height: 198px; object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+  filter: grayscale(20%);
+}
+.news-card:hover .news-card__img { transform: scale(1.03); filter: grayscale(0%); }
+.news-card__body { padding: 22px 20px; }
+.news-card__date {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.news-card__date::before {
+  content: '';
+  display: block;
+  width: 14px;
+  height: 2px;
+  background: var(--navy);
+  flex-shrink: 0;
+}
+.news-card__title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 10px;
+  transition: color var(--ease);
+}
+.news-card:hover .news-card__title { color: var(--navy); }
+.news-card__excerpt {
+  font-size: 13.5px;
+  color: var(--mid);
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.news-card__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+
+/* =========================================================
+   SERVICES SECTION
+   ========================================================= */
+.services-section { padding: 72px 0; background: var(--mist); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--border);
+  gap: 1px;
+  border: 1px solid var(--border);
+}
+.service-card {
+  background: var(--white);
+  padding: 30px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: background var(--ease);
+}
+.service-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--navy);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+.service-card:hover { background: var(--navy-tint); }
+.service-card:hover::after { transform: scaleX(1); }
+.service-icon {
+  font-size: 28px;
+  color: var(--border); /* very subtle default */
+  margin-bottom: 18px;
+  transition: color var(--ease);
+}
+.service-card:hover .service-icon { color: var(--navy); }
+.service-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.service-desc {
+  font-size: 13px;
+  color: var(--mid);
+  line-height: 1.65;
+  flex: 1;
+  margin-bottom: 18px;
+}
+.service-link {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.service-link i { font-size: 10px; }
+
+
+/* =========================================================
+   CTA SECTION
+   ========================================================= */
+.cta-section {
+  background: var(--navy-dim);
+  padding: 88px 0;
+  position: relative;
+  overflow: hidden;
+}
+/* Large faint watermark character — structural texture */
+.cta-section::before {
+  content: '24/7';
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 260px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.03);
+  letter-spacing: -8px;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.cta-section .container {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  position: relative;
+}
+.cta-content { flex: 1; }
+.cta-eyebrow {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cta-eyebrow::before {
+  content: '';
+  display: block;
+  width: 20px; height: 1px;
+  background: rgba(255,255,255,0.25);
+}
+.cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.5vw, 58px);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.97;
+  margin-bottom: 20px;
+}
+.cta-desc {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.75;
+  max-width: 420px;
+}
+.cta-actions { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+
+.btn-cta-main {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--white);
+  color: var(--navy-dim);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 17px 36px;
+  white-space: nowrap;
+  transition: background var(--ease);
+}
+.btn-cta-main:hover { background: #dde7f5; color: var(--navy-dim); }
+
+.btn-cta-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.15);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 15px 36px;
+  transition: border-color var(--ease), color var(--ease);
+}
+.btn-cta-ghost:hover { border-color: rgba(255,255,255,0.4); color: var(--white); }
+
+.cta-note {
+  text-align: center;
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.site-footer { background: var(--ink); padding: 64px 0 0; }
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 52px;
+  padding-bottom: 52px;
+}
+.footer-logo {
+  height: 38px; width: auto;
+  margin-bottom: 18px;
+  filter: brightness(0) invert(1) opacity(0.7);
+}
+.footer-desc {
+  font-size: 13px;
+  color: #5A6A80;
+  line-height: 1.8;
+  margin-bottom: 22px;
+}
+.footer-social { display: flex; gap: 8px; }
+.footer-social a {
+  width: 34px; height: 34px;
+  border: 1px solid #1E2D42;
+  color: #4A5A70;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  transition: border-color var(--ease), color var(--ease), background var(--ease);
+}
+.footer-social a:hover { border-color: var(--navy-mid); color: var(--white); background: var(--navy); }
+
+.footer-heading {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 18px;
+}
+.footer-links { display: flex; flex-direction: column; gap: 9px; }
+.footer-links a {
+  font-size: 13px;
+  color: #5A6A80;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color var(--ease);
+}
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+.footer-links a i { font-size: 9px; }
+
+.footer-contact-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 13px;
+  font-size: 13px;
+  color: #5A6A80;
+  line-height: 1.55;
+}
+.footer-contact-item i { font-size: 13px; color: #2A4A70; margin-top: 2px; flex-shrink: 0; }
+
+.footer-bottom {
+  border-top: 1px solid #131D2B;
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.footer-copy { font-size: 12px; color: #3A4A5E; }
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a {
+  font-size: 12px;
+  color: #3A4A5E;
+  transition: color var(--ease);
+}
+.footer-legal a:hover { color: #8A9AB5; }
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+  .news-grid { grid-template-columns: 1fr; }
+  .news-card { border-right: none; border-bottom: 1px solid var(--border); }
+  .news-card:last-child { border-bottom: none; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+  .cta-section .container { flex-direction: column; gap: 36px; }
+  .cta-section::before { display: none; }
+}
+@media (max-width: 640px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .nav-search { display: none; }
+  .hero h1 { font-size: 52px; }
+  .alert-strip .container { flex-wrap: wrap; }
+  .alert-cta { width: 100%; justify-content: center; }
+  .hero-stats .container { flex-wrap: wrap; }
+  .stat-item { flex: 1 1 45%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<header>
+  <div class="nav-strip">
+    <div class="container">
+      <div class="nav-strip__badge">
+        <i class="bi bi-shield-fill-check"></i>
+        Situs Resmi Pemerintah Provinsi DKI Jakarta
+      </div>
+      <div class="nav-strip__links">
+        <a href="#">Bahasa Indonesia</a>
+        <a href="#">Enkripsi</a>
+        <a href="#">Aksesibilitas</a>
+      </div>
+    </div>
+  </div>
+
+  <nav class="nav-main" aria-label="Navigasi utama">
+    <div class="container">
+      <a href="/" class="nav-logo" aria-label="Beranda Jakarta CSIRT">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/BSSN_logo_%282021%29.svg/240px-BSSN_logo_%282021%29.svg.png"
+             alt="Jakarta CSIRT"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="nav-logo__fallback">CSIRT</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="/" class="active">Beranda</a></li>
+        <li><a href="/profile">Profil</a></li>
+        <li>
+          <a href="#">Publikasi <i class="bi bi-chevron-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="/warnings">Peringatan Keamanan</a></li>
+            <li><a href="/news">Berita Siber</a></li>
+            <li><a href="/infographics">Infografis Keamanan</a></li>
+            <li><a href="/laws">Peraturan & Kebijakan</a></li>
+            <li><a href="/guides">Panduan Teknis</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a href="/statistics">Statistik Honeypot</a></li>
+            <li><a href="/rfc2350">RFC 2350</a></li>
+          </ul>
+        </li>
+        <li><a href="/events">Event</a></li>
+        <li><a href="/contact">Hubungi Kami</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <form class="nav-search" role="search">
+          <input type="search" placeholder="Cari..." aria-label="Cari konten">
+          <button type="submit" aria-label="Cari"><i class="bi bi-search"></i></button>
+        </form>
+        <a href="/incidents/create" class="btn-report">
+          Lapor Insiden <i class="bi bi-megaphone-fill"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" aria-label="Beranda Jakarta CSIRT">
+  <div class="container">
+    <div>
+      <div class="hero-eyebrow">
+        <i class="bi bi-shield-lock"></i>
+        Tim Tanggap Insiden Siber Resmi DKI Jakarta
+      </div>
+      <h1>
+        <span>Pemerintah Provinsi DKI Jakarta</span>
+        Lindungi<br>Digital<br>Jakarta.
+      </h1>
+      <p class="hero-lead">
+        JakartaProv-CSIRT menjaga infrastruktur digital dan data kritis Provinsi DKI Jakarta dari ancaman siber — 24 jam, 7 hari seminggu.
+      </p>
+      <div class="hero-actions">
+        <a href="/incidents/create" class="btn-hero-primary">
+          <i class="bi bi-megaphone-fill"></i>
+          Lapor Insiden Sekarang
+        </a>
+        <a href="/profile" class="btn-hero-ghost">
+          Tentang Kami <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="container">
+      <div class="stat-item">
+        <div class="stat-number">157</div>
+        <div class="stat-label">Insiden Ditangani</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Respons Siap</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">89K+</div>
+        <div class="stat-label">Pengunjung</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">&lt;2J</div>
+        <div class="stat-label">Rata-rata Respons</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ALERT ===================== -->
+<div class="alert-strip" role="alert" aria-live="polite">
+  <div class="container">
+    <div class="alert-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+    <div>
+      <div class="alert-label">Peringatan Aktif</div>
+      <div class="alert-text">Kerentanan kritis pada Apache HTTP Server (CVE-2024-38476) — segera perbarui ke versi 2.4.62 atau lebih tinggi.</div>
+    </div>
+    <a href="/warnings" class="alert-cta">Lihat Detail <i class="bi bi-arrow-right"></i></a>
+  </div>
+</div>
+
+<!-- ===================== NEWS ===================== -->
+<section class="news-section" aria-labelledby="news-heading">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" id="news-heading">Berita Terkini</h2>
+        <p class="section-subtitle">Informasi terbaru dari JakartaProv-CSIRT</p>
+      </div>
+      <a href="/news" class="section-link">Lihat Semua <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    <div class="news-grid">
+      <article class="news-card">
+        <div class="news-card__img-wrap">
+          <img class="news-card__img" src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&q=80" alt="Keamanan siber">
+        </div>
+        <div class="news-card__body">
+          <div class="news-card__date">28 Mar 2026</div>
+          <h3 class="news-card__title"><a href="/news/1">Panduan Keamanan Ransomware untuk Instansi Pemerintah DKI Jakarta</a></h3>
+          <p class="news-card__excerpt">JakartaProv-CSIRT menerbitkan panduan komprehensif tentang pencegahan dan penanganan serangan ransomware yang menargetkan sistem layanan publik.</p>
+          <span class="news-card__more">Baca Selengkapnya <i class="bi bi-arrow-right"></i></span>
+        </div>
+      </article>
+      <article class="news-card">
+        <div class="news-card__img-wrap">
+          <img class="news-card__img" src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80" alt="Pelatihan keamanan">
+        </div>
+        <div class="news-card__body">
+          <div class="news-card__date">24 Mar 2026</div>
+          <h3 class="news-card__title"><a href="/news/2">Workshop Ethical Hacking bagi ASN Pemprov DKI Jakarta 2026</a></h3>
+          <p class="news-card__excerpt">Program pelatihan intensif dua hari untuk meningkatkan kesadaran dan kapabilitas keamanan siber aparatur sipil negara di lingkungan Pemprov DKI.</p>
+          <span class="news-card__more">Baca Selengkapnya <i class="bi bi-arrow-right"></i></span>
+        </div>
+      </article>
+      <article class="news-card">
+        <div class="news-card__img-wrap">
+          <img class="news-card__img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="Jaringan komputer">
+        </div>
+        <div class="news-card__body">
+          <div class="news-card__date">19 Mar 2026</div>
+          <h3 class="news-card__title"><a href="/news/3">Laporan Triwulan: Tren Ancaman Siber di Jakarta Q1 2026</a></h3>
+          <p class="news-card__excerpt">Analisis mendalam pola serangan siber yang terdeteksi pada kuartal pertama 2026, termasuk phishing, DDoS, dan intrusi jaringan pemerintah.</p>
+          <span class="news-card__more">Baca Selengkapnya <i class="bi bi-arrow-right"></i></span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="services-section" aria-labelledby="services-heading">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" id="services-heading">Publikasi &amp; Layanan</h2>
+        <p class="section-subtitle">Sumber daya keamanan siber untuk Pemprov DKI Jakarta</p>
+      </div>
+    </div>
+    <div class="services-grid">
+      <a href="/warnings" class="service-card">
+        <i class="bi bi-shield-exclamation service-icon"></i>
+        <div class="service-title">Peringatan Keamanan</div>
+        <p class="service-desc">Notifikasi kerentanan dan ancaman siber terbaru yang memerlukan tindakan segera.</p>
+        <span class="service-link">Lihat Peringatan <i class="bi bi-arrow-right"></i></span>
+      </a>
+      <a href="/infographics" class="service-card">
+        <i class="bi bi-bar-chart-line service-icon"></i>
+        <div class="service-title">Infografis Keamanan</div>
+        <p class="service-desc">Visualisasi data ancaman, statistik insiden, dan panduan keamanan informasi.</p>
+        <span class="service-link">Lihat Infografis <i class="bi bi-arrow-right"></i></span>
+      </a>
+      <a href="/laws" class="service-card">
+        <i class="bi bi-journal-bookmark service-icon"></i>
+        <div class="service-title">Peraturan &amp; Kebijakan</div>
+        <p class="service-desc">Regulasi, kebijakan, dan standar keamanan siber yang berlaku di DKI Jakarta.</p>
+        <span class="service-link">Lihat Peraturan <i class="bi bi-arrow-right"></i></span>
+      </a>
+      <a href="/guides" class="service-card">
+        <i class="bi bi-book service-icon"></i>
+        <div class="service-title">Panduan Teknis</div>
+        <p class="service-desc">Dokumen teknis, SOP, dan panduan implementasi keamanan untuk instansi pemerintah.</p>
+        <span class="service-link">Lihat Panduan <i class="bi bi-arrow-right"></i></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="cta-section" aria-labelledby="cta-heading">
+  <div class="container">
+    <div class="cta-content">
+      <div class="cta-eyebrow">Respons Cepat 24/7</div>
+      <h2 class="cta-title" id="cta-heading">Temukan<br>Insiden Siber<br>di Sistem Anda?</h2>
+      <p class="cta-desc">Tim JakartaProv-CSIRT siap merespons dan membantu penanganan insiden keamanan siber di lingkungan Pemprov DKI Jakarta kapan saja.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="/incidents/create" class="btn-cta-main">
+        <i class="bi bi-megaphone-fill"></i>
+        Lapor Insiden Sekarang
+      </a>
+      <a href="/contact" class="btn-cta-ghost">
+        <i class="bi bi-telephone"></i> Hubungi Tim Kami
+      </a>
+      <div class="cta-note"><i class="bi bi-clock"></i>&nbsp; Rata-rata respons &lt; 2 jam</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img class="footer-logo"
+             src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/BSSN_logo_%282021%29.svg/240px-BSSN_logo_%282021%29.svg.png"
+             alt="Jakarta CSIRT"
+             onerror="this.style.display='none'">
+        <p class="footer-desc">Tim Tanggap Insiden Siber Pemerintah Provinsi DKI Jakarta. Menjaga keamanan infrastruktur digital dan data kritis Jakarta dari ancaman siber.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter/X"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          <a href="#" aria-label="Email"><i class="bi bi-envelope"></i></a>
+        </div>
+      </div>
+      <div>
+        <h3 class="footer-heading">Menu Cepat</h3>
+        <ul class="footer-links">
+          <li><a href="/"><i class="bi bi-chevron-right"></i>Beranda</a></li>
+          <li><a href="/profile"><i class="bi bi-chevron-right"></i>Profil</a></li>
+          <li><a href="/events"><i class="bi bi-chevron-right"></i>Event</a></li>
+          <li><a href="/contact"><i class="bi bi-chevron-right"></i>Hubungi Kami</a></li>
+          <li><a href="/rfc2350"><i class="bi bi-chevron-right"></i>RFC 2350</a></li>
+          <li><a href="/publickey"><i class="bi bi-chevron-right"></i>Public Key</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-heading">Publikasi</h3>
+        <ul class="footer-links">
+          <li><a href="/warnings"><i class="bi bi-chevron-right"></i>Peringatan Keamanan</a></li>
+          <li><a href="/news"><i class="bi bi-chevron-right"></i>Berita Siber</a></li>
+          <li><a href="/infographics"><i class="bi bi-chevron-right"></i>Infografis</a></li>
+          <li><a href="/laws"><i class="bi bi-chevron-right"></i>Peraturan</a></li>
+          <li><a href="/guides"><i class="bi bi-chevron-right"></i>Panduan Teknis</a></li>
+          <li><a href="/statistics"><i class="bi bi-chevron-right"></i>Statistik</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-heading">Hubungi Kami</h3>
+        <div class="footer-contact-item">
+          <i class="bi bi-geo-alt-fill"></i>
+          <span>Bidang Siber, Sandi dan Aplikasi Diskominfotik DKI — Balaikota Blok H Lt. 13, Jl. Merdeka Selatan 8–9, Jakarta Pusat 10110</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="bi bi-telephone-fill"></i>
+          <span>(+62) 813-8887-0152</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="bi bi-envelope-fill"></i>
+          <span>csirt@jakarta.go.id</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="bi bi-clock-fill"></i>
+          <span>Respons tersedia 24 jam / 7 hari</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 JakartaProv-CSIRT — Pemerintah Provinsi DKI Jakarta. Seluruh hak dilindungi.</p>
+      <nav class="footer-legal">
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat Penggunaan</a>
+        <a href="#">Status Website</a>
+        <a href="#">Aksesibilitas</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
