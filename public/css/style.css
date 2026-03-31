@@ -1,226 +1,689 @@
-/* Full-width white background for navbar edges */
-.navbar-bg {
-    width: 100%;
-    background: #fff;
-    position: relative;
-    z-index: 1;
+/* =============================================================
+   JAKARTA CSIRT — Global Stylesheet
+   Design: NYC.gov-inspired, DKI Jakarta blue palette
+   Fonts: Barlow Condensed (display) + Inter (body)
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   GOOGLE FONTS IMPORT
+   Include this in your main layout <head> instead if preferred:
+   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+   ------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+
+
+/* -------------------------------------------------------------
+   DESIGN TOKENS
+   Palette: 4 core values + alert red (warning content only)
+   ------------------------------------------------------------- */
+:root {
+    --ink:        #0A0F1A;   /* Near-black: text, chrome, nav strip */
+    --navy:       #003580;   /* Primary DKI blue: buttons, borders, links */
+    --navy-mid:   #004099;   /* Hover / active states */
+    --navy-dim:   #002060;   /* Dark sections: CTA, pressed states */
+    --navy-tint:  #E8EFF8;   /* Faint blue: hover surfaces */
+
+    --mist:       #F4F5F7;   /* Light gray: section backgrounds */
+    --border:     #D8DCE3;   /* Border color */
+    --mid:        #6B7280;   /* Muted text */
+    --white:      #FFFFFF;
+
+    --alert:      #B91C1C;   /* WARNING / ALERT CONTENT ONLY — not a brand color */
+    --alert-bg:   #FEF2F2;
+
+    --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --font-body:    'Inter', system-ui, sans-serif;
+
+    --ease: 0.16s ease;
 }
 
-.navbar-bg, .nav-link {
-    color: #999999 !important; /* Darker text for navbar links */
+
+/* -------------------------------------------------------------
+   RESET & BASE
+   ------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-.navbar-bg, .nav-link:hover {
-    color: #101823 !important; /* Darker text for navbar links */
+html {
+    scroll-behavior: smooth;
 }
-
-.navbar-bg, .link-secondary {
-    color: #101823 !important; /* Dark text for navbar */
-}
-
-.navbar-bg, .dropdown-item {
-    color: #999999 !important; /* Darker text for navbar links */
-}
-
-.navbar-bg, .dropdown-item:hover {
-    color: #101823 !important; /* Darker text for navbar links */
-}
-
-
 
 body {
-    background-color: #101823;
-    color: #bfcbe2; /* Default text color */
-}
-
-/* TEXT COLOR TEMPLATE: Replace the hex codes with your preferred colors */
-h1 {
-    padding-top: 3rem;
-}
-
-p {
-    color: #bfcbe2; /* Paragraphs */
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
 }
 
 a {
-    color: #3498db; /* Links */
-}
-
-a:hover {
-    color: #217dbb; /* Link hover */
-}
-
-button, .btn {
-    color: #ffffff; /* Button text */
-    background-color: #257BF4; /* Button background */
-    border-color: #257BF4; /* Button border */
-}
-
-button:hover, .btn:hover {
-    background-color: #1c5db8;
-    border-color: #1c5db8;
-    color: #fff;
-}
-
-small {
-    color: #bfcbe2; /* Small text */
-}
-
-.card-text {
-    color: #bfcbe2 !important; /* Card text */
-}
-
-input::placeholder {
-    color: #bfcbe2; /* Input placeholder */
-    opacity: 1;
-}
-
-span {
-    color: #fed7aa; /* Span text (e.g. stats) */
-}
-
-/* You can add more selectors as needed */
-.navbar, header, .bg-dark {
-    background-color: #fafafa !important;
-}
-
-.bg-body-tertiary, .album {
-    background-color: #101823 !important;
-}
-
-.card {
-    background-color: #151F2E;
-    border: 2px solid #2A3E5C;
-    color: #fff;
-}
-
-footer {
-    background-color: #0a1627 !important;
-}
-
-
-footer a {
-    color: #999999 !important;
-}
-footer h5, footer h5.text-white, footer h5.fw-semibold {
-    color: #101823 !important;
-}
-footer h6, footer h6.text-white, footer h6.fw-semibold {
-    color: #101823 !important;
-}
-footer p, footer small, footer .text-secondary, footer .about-description, footer span {
-    color: #101823 !important;
-}
-footer .text-warning {
-    color: #257BF4 !important;
-}
-
-/* Optional: Make text more readable on dark backgrounds */
-.text-body-emphasis, .text-white, h1, h2, h5, h6 {
-    color: #F2F2F2 !important;
-}
-.text-body-secondary, .text-secondary, p, a, small {
-    color: #bfcbe2 !important;
-}
-
-/* NYC.gov Inspired Theme */
-:root {
-    --nyc-navy: #101823;
-    --nyc-red: #dc2626;
-    --nyc-light: #f8fafc;
-    --nyc-border: #e2e8f0;
-}
-
-/* The Top Official Bar */
-.navbar-top {
-    background-color: var(--nyc-navy);
-    font-size: 0.75rem;
-    padding: 6px 0;
-    color: #cbd5e1;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.navbar-top a {
-    color: #cbd5e1;
+    color: inherit;
     text-decoration: none;
-    font-weight: 600;
 }
 
-/* The Main Navbar */
-.navbar-main {
-    background-color: #ffffff;
-    border-bottom: 4px solid var(--nyc-navy); /* Bold NYC-style bottom border */
-    padding: 0.75rem 0;
+img {
+    display: block;
+    max-width: 100%;
 }
 
-.nav-link {
-    font-weight: 700 !important; /* Bold like NYC.gov */
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--nyc-navy) !important;
-    padding: 0.5rem 1rem !important;
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.nav-link:hover, .nav-link.active {
-    background-color: var(--nyc-light);
-    color: var(--nyc-red) !important;
-}
-
-/* Bold Search Input */
-.nyc-search {
-    border: 2px solid var(--nyc-navy);
-    border-radius: 0; /* Sharp corners for a bold look */
-    font-weight: 600;
-}
-
-/* Square Bold Button */
-.btn-nyc {
-    background-color: var(--nyc-red);
-    color: white;
-    border-radius: 0;
-    font-weight: 800;
-    text-transform: uppercase;
-    padding: 0.6rem 1.2rem;
+button {
+    font-family: inherit;
+    cursor: pointer;
     border: none;
-    transition: 0.2s;
+    background: none;
 }
 
-.btn-nyc:hover {
-    background-color: #b91c1c;
-    color: white;
-    transform: translateY(-2px);
+
+/* -------------------------------------------------------------
+   LAYOUT UTILITY
+   ------------------------------------------------------------- */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 28px;
 }
 
-/* Dropdown Boldness */
-.dropdown-menu {
-    border: 2px solid var(--nyc-navy);
-    border-radius: 0;
-    box-shadow: 10px 10px 0px rgba(16, 24, 35, 0.1);
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
 }
 
-/* Bold Headings like NYC.gov */
-.fw-black { font-weight: 900 !important; }
 
-/* Transitions for the Service Grid */
-.hover-navy:hover {
-    background-color: #101823 !important;
-}
-.hover-navy:hover h5, .hover-navy:hover i {
-    color: #ffffff !important;
+/* -------------------------------------------------------------
+   TYPOGRAPHY UTILITIES
+   ------------------------------------------------------------- */
+.font-display {
+    font-family: var(--font-display);
 }
 
-/* Link hover effect */
-.hover-red:hover {
-    color: #dc2626 !important;
-    text-decoration: underline !important;
+.text-navy { color: var(--navy); }
+.text-mid  { color: var(--mid); }
+.text-ink  { color: var(--ink); }
+
+
+/* -------------------------------------------------------------
+   SECTION HEADER — shared across all content sections
+   ------------------------------------------------------------- */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 14px;
+    margin-bottom: 32px;
 }
 
-/* Image zoom effect for news */
-.transition-transform {
-    transition: transform 0.3s ease;
-}
-.card:hover .transition-transform {
-    transform: scale(1.05);
+.section-title {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+    line-height: 1;
 }
 
-.py-6 { padding-top: 5rem; padding-bottom: 5rem; }
+.section-subtitle {
+    font-size: 13.5px;
+    color: var(--mid);
+    margin-top: 5px;
+    font-weight: 400;
+}
+
+.section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--navy);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color var(--ease);
+}
+
+.section-link:hover {
+    border-bottom-color: var(--navy);
+}
+
+.section-link i {
+    font-size: 11px;
+}
+
+
+/* -------------------------------------------------------------
+   BUTTONS — shared button styles
+   ------------------------------------------------------------- */
+
+/* Primary: white bg, dark navy text — used on dark backgrounds */
+.btn-primary-solid {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    color: var(--navy-dim);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border: none;
+    cursor: pointer;
+    transition: background var(--ease), color var(--ease);
+}
+.btn-primary-solid:hover {
+    background: var(--navy-tint);
+    color: var(--navy-dim);
+}
+
+/* Ghost: transparent, white border — used on dark backgrounds */
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: border-color var(--ease), color var(--ease);
+}
+.btn-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    color: var(--white);
+}
+
+/* Navy filled — used on light backgrounds */
+.btn-navy {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0 20px;
+    height: 40px;
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+    transition: background var(--ease);
+}
+.btn-navy:hover {
+    background: var(--navy-dim);
+    color: var(--white);
+}
+
+
+/* -------------------------------------------------------------
+   ALERT STRIP — RED USED HERE ONLY (warning content)
+   ------------------------------------------------------------- */
+.alert-strip {
+    background: var(--alert-bg);
+    border-top: 2px solid var(--alert);
+    border-bottom: 2px solid var(--alert);
+}
+
+.alert-strip .container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.alert-strip__icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    background: var(--alert);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+}
+
+.alert-strip__label {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--alert);
+    margin-bottom: 2px;
+}
+
+.alert-strip__text {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+.alert-strip__cta {
+    margin-left: auto;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--alert);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    transition: background var(--ease);
+}
+
+.alert-strip__cta:hover {
+    background: #991b1b;
+    color: var(--white);
+}
+
+
+/* -------------------------------------------------------------
+   NEWS CARDS
+   ------------------------------------------------------------- */
+.news-section {
+    padding: 72px 0;
+    background: var(--white);
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--border);
+}
+
+.news-card {
+    border-right: 1px solid var(--border);
+    transition: background var(--ease);
+}
+
+.news-card:last-child {
+    border-right: none;
+}
+
+.news-card:hover {
+    background: var(--mist);
+}
+
+.news-card__img-wrap {
+    overflow: hidden;
+}
+
+.news-card__img {
+    width: 100%;
+    height: 198px;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(20%);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.news-card:hover .news-card__img {
+    transform: scale(1.03);
+    filter: grayscale(0%);
+}
+
+.news-card__body {
+    padding: 22px 20px;
+}
+
+.news-card__date {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.news-card__date::before {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 2px;
+    background: var(--navy);
+    flex-shrink: 0;
+}
+
+.news-card__title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 10px;
+    transition: color var(--ease);
+}
+
+.news-card:hover .news-card__title {
+    color: var(--navy);
+}
+
+.news-card__excerpt {
+    font-size: 13.5px;
+    color: var(--mid);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-card__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 14px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--navy);
+}
+
+
+/* -------------------------------------------------------------
+   SERVICES / PUBLICATION CARDS
+   ------------------------------------------------------------- */
+.services-section {
+    padding: 72px 0;
+    background: var(--mist);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: var(--border);
+    gap: 1px;
+    border: 1px solid var(--border);
+}
+
+.service-card {
+    background: var(--white);
+    padding: 30px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: background var(--ease);
+    text-decoration: none;
+    color: inherit;
+}
+
+.service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--navy);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+}
+
+.service-card:hover {
+    background: var(--navy-tint);
+}
+
+.service-card:hover::after {
+    transform: scaleX(1);
+}
+
+.service-card__icon {
+    font-size: 28px;
+    color: var(--border);
+    margin-bottom: 18px;
+    transition: color var(--ease);
+}
+
+.service-card:hover .service-card__icon {
+    color: var(--navy);
+}
+
+.service-card__title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.service-card__desc {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.65;
+    flex: 1;
+    margin-bottom: 18px;
+}
+
+.service-card__link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--navy);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.service-card__link i {
+    font-size: 10px;
+}
+
+
+/* -------------------------------------------------------------
+   CTA SECTION
+   ------------------------------------------------------------- */
+.cta-section {
+    background: var(--navy-dim);
+    padding: 88px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Large faint watermark — adds depth without color */
+.cta-section::before {
+    content: '24/7';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-display);
+    font-size: 260px;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03);
+    letter-spacing: -8px;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+}
+
+.cta-section .container {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    position: relative;
+}
+
+.cta-section__content {
+    flex: 1;
+}
+
+.cta-section__eyebrow {
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.38);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cta-section__eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.cta-section__title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4.5vw, 58px);
+    font-weight: 900;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 0.97;
+    margin-bottom: 20px;
+}
+
+.cta-section__desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.75;
+    max-width: 420px;
+}
+
+.cta-section__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.cta-section__note {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.04em;
+}
+
+/* CTA-specific button overrides */
+.btn-cta-main {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--white);
+    color: var(--navy-dim);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 17px 36px;
+    white-space: nowrap;
+    transition: background var(--ease);
+    text-decoration: none;
+}
+.btn-cta-main:hover {
+    background: #dde7f5;
+    color: var(--navy-dim);
+}
+
+.btn-cta-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 15px 36px;
+    text-decoration: none;
+    transition: border-color var(--ease), color var(--ease);
+}
+.btn-cta-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: var(--white);
+}
+
+
+/* -------------------------------------------------------------
+   RESPONSIVE BREAKPOINTS
+   ------------------------------------------------------------- */
+@media (max-width: 960px) {
+    .news-grid {
+        grid-template-columns: 1fr;
+    }
+    .news-card {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+    .news-card:last-child {
+        border-bottom: none;
+    }
+    .services-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .cta-section .container {
+        flex-direction: column;
+        gap: 36px;
+    }
+    .cta-section::before {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    .alert-strip .container {
+        flex-wrap: wrap;
+    }
+    .alert-strip__cta {
+        width: 100%;
+        justify-content: center;
+    }
+}
