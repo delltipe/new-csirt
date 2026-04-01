@@ -1,18 +1,3 @@
-{{--
-    home.blade.php
-    Controller: HomeController@index
-    Required variable: $recentNews
-
-    FIX FOR NEWS NOT SHOWING — make sure HomeController uses CybersecurityNews:
-    --------------------------------------------------------------------------
-    use App\Models\CybersecurityNews;
-
-    public function index() {
-        $recentNews = CybersecurityNews::latest('date')->take(3)->get();
-        return view('home', compact('recentNews'));
-    }
-    --------------------------------------------------------------------------
---}}
 @extends('layouts.app')
 
 @section('content')
@@ -255,8 +240,6 @@
 
 {{-- ================================================================
      BERITA TERKINI
-     $recentNews comes from CybersecurityNews::latest('date')->take(3)->get()
-     The model has $casts = ['date' => 'datetime'] so ->date->format() works.
      ================================================================ --}}
 <section class="news-section" aria-labelledby="news-heading">
     <div class="container">
