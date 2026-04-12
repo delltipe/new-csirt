@@ -9,6 +9,7 @@ use App\Http\Controllers\LawRulePostController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\IncidentReportController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -73,3 +74,21 @@ Route::get('/register', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+// Admin login routes
+Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+// Admin dashboard (protected)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    // More admin routes for CRUD will go here
+
+    // News CRUD
+    Route::get('/admin/news', [AdminController::class, 'newsList'])->name('admin.news.list');
+    Route::post('/admin/news', [AdminController::class, 'newsStore'])->name('admin.news.store');
+    Route::get('/admin/news/{id}/edit', [AdminController::class, 'newsEdit'])->name('admin.news.edit');
+    Route::post('/admin/news/{id}/update', [AdminController::class, 'newsUpdate'])->name('admin.news.update');
+    Route::post('/admin/news/{id}/delete', [AdminController::class, 'newsDelete'])->name('admin.news.delete');
+});
