@@ -8,17 +8,18 @@ class LawRulePost extends Model
 {
     protected $table = 'peraturan_kebijakan';
     
+    public $timestamps = false;
+    
     protected $fillable = [
         'title',
-        'content',
-        'summary',
-        'law_number',
-        'regulation_type',
-        'effective_date',
-        'document_url',
+        'description',
+        'link',
+        'date',
+        'time',
+        'downloadAmount',
     ];
 
     protected $casts = [
-        'effective_date' => 'date',
+        'date' => 'date',
     ];
 }

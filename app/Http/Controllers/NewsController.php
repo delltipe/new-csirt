@@ -7,7 +7,7 @@ class NewsController extends Controller
 {
     public function index() {
         // Paginate 6 items per page
-        $news = CybersecurityNews::orderBy('published_at', 'desc')->paginate(6);
+        $news = CybersecurityNews::orderBy('date', 'desc')->paginate(6);
         return view('news.index', compact('news'));
     }
 

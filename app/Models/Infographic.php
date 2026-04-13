@@ -8,11 +8,10 @@ class Infographic extends Model
 {
     protected $table = 'infografis_keamanan';
     
+    public $timestamps = false;
+    
     protected $fillable = [
         'title',
-        'description',
-        'image_url',
-        'category',
-        'tags',
+        'thumbnail',
     ];
 }

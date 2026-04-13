@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class CybersecurityGuide extends Model
 {
     protected $table = 'panduan_teknis';
+    
+    public $timestamps = false;
 
     protected $fillable = [
         'title',
-        'content',
-        'category',
-        'difficulty_level',
+        'author',
+        'link',
     ];
 }

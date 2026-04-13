@@ -91,4 +91,39 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/news/{id}/edit', [AdminController::class, 'newsEdit'])->name('admin.news.edit');
     Route::post('/admin/news/{id}/update', [AdminController::class, 'newsUpdate'])->name('admin.news.update');
     Route::post('/admin/news/{id}/delete', [AdminController::class, 'newsDelete'])->name('admin.news.delete');
+
+    // Events CRUD
+    Route::get('/admin/events', [AdminController::class, 'eventsList'])->name('admin.events.list');
+    Route::post('/admin/events', [AdminController::class, 'eventStore'])->name('admin.event.store');
+    Route::get('/admin/events/{id}/edit', [AdminController::class, 'eventEdit'])->name('admin.event.edit');
+    Route::post('/admin/events/{id}/update', [AdminController::class, 'eventUpdate'])->name('admin.event.update');
+    Route::post('/admin/events/{id}/delete', [AdminController::class, 'eventDelete'])->name('admin.event.delete');
+
+    // Warnings CRUD
+    Route::get('/admin/warnings', [AdminController::class, 'warningsList'])->name('admin.warnings.list');
+    Route::post('/admin/warnings', [AdminController::class, 'warningStore'])->name('admin.warning.store');
+    Route::get('/admin/warnings/{id}/edit', [AdminController::class, 'warningEdit'])->name('admin.warning.edit');
+    Route::post('/admin/warnings/{id}/update', [AdminController::class, 'warningUpdate'])->name('admin.warning.update');
+    Route::post('/admin/warnings/{id}/delete', [AdminController::class, 'warningDelete'])->name('admin.warning.delete');
+
+    // Laws CRUD
+    Route::get('/admin/laws', [AdminController::class, 'lawsList'])->name('admin.laws.list');
+    Route::post('/admin/laws', [AdminController::class, 'lawStore'])->name('admin.law.store');
+    Route::get('/admin/laws/{id}/edit', [AdminController::class, 'lawEdit'])->name('admin.law.edit');
+    Route::post('/admin/laws/{id}/update', [AdminController::class, 'lawUpdate'])->name('admin.law.update');
+    Route::post('/admin/laws/{id}/delete', [AdminController::class, 'lawDelete'])->name('admin.law.delete');
+
+    // Guides CRUD
+    Route::get('/admin/guides', [AdminController::class, 'guidesList'])->name('admin.guides.list');
+    Route::post('/admin/guides', [AdminController::class, 'guideStore'])->name('admin.guide.store');
+    Route::get('/admin/guides/{id}/edit', [AdminController::class, 'guideEdit'])->name('admin.guide.edit');
+    Route::post('/admin/guides/{id}/update', [AdminController::class, 'guideUpdate'])->name('admin.guide.update');
+    Route::post('/admin/guides/{id}/delete', [AdminController::class, 'guideDelete'])->name('admin.guide.delete');
+
+    // Infographics CRUD
+    Route::get('/admin/infographics', [AdminController::class, 'infographicsList'])->name('admin.infographics.list');
+    Route::post('/admin/infographics', [AdminController::class, 'infographicStore'])->name('admin.infographic.store');
+    Route::get('/admin/infographics/{id}/edit', [AdminController::class, 'infographicEdit'])->name('admin.infographic.edit');
+    Route::post('/admin/infographics/{id}/update', [AdminController::class, 'infographicUpdate'])->name('admin.infographic.update');
+    Route::post('/admin/infographics/{id}/delete', [AdminController::class, 'infographicDelete'])->name('admin.infographic.delete');
 });

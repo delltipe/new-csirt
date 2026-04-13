@@ -58,8 +58,8 @@
               <input type="text" class="form-control" id="news-source" name="source">
             </div>
             <div class="mb-3">
-              <label for="news-date" class="form-label">Date</label>
-              <input type="date" class="form-control" id="news-date" name="date" required>
+              <label for="news-date" class="form-label">Date & Time</label>
+              <input type="datetime-local" class="form-control" id="news-date" name="date" required>
             </div>
         </div>
         <div class="modal-footer">
