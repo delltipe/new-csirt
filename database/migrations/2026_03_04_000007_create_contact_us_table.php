@@ -8,9 +8,15 @@ return new class extends Migration {
     {
         Schema::create('contact_us', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('fullName');
-            $table->text('email');
-            $table->text('subject');
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('organization')->nullable();
+            $table->string('subject');
+            $table->text('message');
+            $table->string('inquiry_type')->default('general');
+            $table->string('status')->default('pending');
+            $table->timestamps();
         });
     }
 

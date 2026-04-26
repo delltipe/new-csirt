@@ -330,7 +330,7 @@ class AdminController extends Controller
         if (!auth()->user() || !auth()->user()->is_admin) {
             return redirect()->route('admin.login');
         }
-        $guides = \App\Models\Guide::all();
+        $guides = \App\Models\CybersecurityGuide::all();
         return view('admin.partials.guides', compact('guides'));
     }
 
@@ -347,7 +347,7 @@ class AdminController extends Controller
         if ($request->hasFile('file')) {
             $data['file_path'] = $request->file('file')->store('guides', 'public');
         }
-        \App\Models\Guide::create($data);
+        \App\Models\CybersecurityGuide::create($data);
         return redirect()->route('admin.dashboard')->with('success', 'Guide added!');
     }
 
@@ -355,7 +355,7 @@ class AdminController extends Controller
         if (!auth()->user() || !auth()->user()->is_admin) {
             return redirect()->route('admin.login');
         }
-        $guide = \App\Models\Guide::findOrFail($id);
+        $guide = \App\Models\CybersecurityGuide::findOrFail($id);
         return view('admin.guide_edit', compact('guide'));
     }
 
@@ -363,7 +363,7 @@ class AdminController extends Controller
         if (!auth()->user() || !auth()->user()->is_admin) {
             return redirect()->route('admin.login');
         }
-        $guide = \App\Models\Guide::findOrFail($id);
+        $guide = \App\Models\CybersecurityGuide::findOrFail($id);
         $data = $request->validate([
             'title' => 'required|string',
             'author' => 'required|string',
@@ -384,7 +384,7 @@ class AdminController extends Controller
         if (!auth()->user() || !auth()->user()->is_admin) {
             return redirect()->route('admin.login');
         }
-        $guide = \App\Models\Guide::findOrFail($id);
+        $guide = \App\Models\CybersecurityGuide::findOrFail($id);
         if ($guide->file_path) {
             \Storage::disk('public')->delete($guide->file_path);
         }
