@@ -9,6 +9,7 @@
         <tr>
           <th>Title</th>
           <th>Author</th>
+          <th>File</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -17,6 +18,13 @@
         <tr>
           <td>{{ $item->title }}</td>
           <td>{{ $item->author }}</td>
+          <td>
+            @if($item->file_path)
+              <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank">Download</a>
+            @else
+              -
+            @endif
+          </td>
           <td>
             <a href="{{ route('admin.guide.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
             <form action="{{ route('admin.guide.delete', $item->id) }}" method="POST" style="display:inline-block;">
@@ -34,7 +42,7 @@
 <div class="modal fade" id="addGuideModal" tabindex="-1" aria-labelledby="addGuideModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form method="POST" action="{{ route('admin.guide.store') }}">
+      <form method="POST" action="{{ route('admin.guide.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="modal-header">
           <h5 class="modal-title" id="addGuideModalLabel">Add Guide</h5>
@@ -52,6 +60,10 @@
             <div class="mb-3">
               <label for="guide-link" class="form-label">Link/URL</label>
               <input type="text" class="form-control" id="guide-link" name="link" required>
+            </div>
+            <div class="mb-3">
+              <label for="guide-file" class="form-label">Upload File (PDF)</label>
+              <input type="file" class="form-control" id="guide-file" name="file" accept="application/pdf">
             </div>
         </div>
         <div class="modal-footer">

@@ -17,7 +17,7 @@
                 </div>
             @endif
             
-            <form method="POST" action="{{ route('admin.warning.update', $warning->id) }}">
+            <form method="POST" action="{{ route('admin.warning.update', $warning->id) }}" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="mb-3">
@@ -66,6 +66,20 @@
                     @enderror
                 </div>
 
+                <div class="mb-3">
+                    <label for="file" class="form-label">Upload Image (JPG/PNG)</label>
+                    <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file" accept="image/*">
+                    @if($warning->file_path)
+                        <div class="mt-2">
+                            <a href="{{ asset('storage/' . $warning->file_path) }}" target="_blank">
+                                <img src="{{ asset('storage/' . $warning->file_path) }}" alt="Current File" style="max-width:100px;max-height:100px;">
+                            </a>
+                        </div>
+                    @endif
+                    @error('file')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
                 <div>
                     <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary">Update Warning</button>

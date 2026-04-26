@@ -17,6 +17,7 @@ class WarningPost extends Model
         'thumbnail',
         'source',
         'date',
+        'file_path', // For uploaded image file
     ];
 
     protected $casts = [

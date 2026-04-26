@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->text('thumbnail');
             $table->text('source');
             $table->dateTime('date');
+            $table->string('file_path')->nullable(); // For uploaded image file
         });
     }
 

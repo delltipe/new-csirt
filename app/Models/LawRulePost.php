@@ -17,6 +17,7 @@ class LawRulePost extends Model
         'date',
         'time',
         'downloadAmount',
+        'file_path', // For uploaded document
     ];
 
     protected $casts = [

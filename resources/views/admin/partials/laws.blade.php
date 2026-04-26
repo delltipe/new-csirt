@@ -10,6 +10,7 @@
           <th>Title</th>
           <th>Date</th>
           <th>Downloads</th>
+          <th>File</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -19,6 +20,13 @@
           <td>{{ $item->title }}</td>
           <td>{{ $item->date ? $item->date->format('Y-m-d') : '' }}</td>
           <td>{{ $item->downloadAmount ?? 0 }}</td>
+          <td>
+            @if($item->file_path)
+              <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank">Download</a>
+            @else
+              -
+            @endif
+          </td>
           <td>
             <a href="{{ route('admin.law.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
             <form action="{{ route('admin.law.delete', $item->id) }}" method="POST" style="display:inline-block;">
@@ -36,7 +44,7 @@
 <div class="modal fade" id="addLawModal" tabindex="-1" aria-labelledby="addLawModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form method="POST" action="{{ route('admin.law.store') }}">
+      <form method="POST" action="{{ route('admin.law.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="modal-header">
           <h5 class="modal-title" id="addLawModalLabel">Add Law/Regulation</h5>
@@ -54,6 +62,10 @@
             <div class="mb-3">
               <label for="law-link" class="form-label">Document URL</label>
               <input type="text" class="form-control" id="law-link" name="link">
+            </div>
+            <div class="mb-3">
+              <label for="law-file" class="form-label">Upload File (PDF)</label>
+              <input type="file" class="form-control" id="law-file" name="file" accept="application/pdf">
             </div>
             <div class="row">
               <div class="col-md-6">

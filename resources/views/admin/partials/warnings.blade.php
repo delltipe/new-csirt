@@ -9,6 +9,7 @@
         <tr>
           <th>Title</th>
           <th>Date</th>
+          <th>File</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -17,6 +18,15 @@
         <tr>
           <td>{{ $item->title }}</td>
           <td>{{ $item->date ? $item->date->format('Y-m-d H:i') : '' }}</td>
+          <td>
+            @if($item->file_path)
+              <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank">
+                <img src="{{ asset('storage/' . $item->file_path) }}" alt="File" style="max-width:60px;max-height:60px;">
+              </a>
+            @else
+              -
+            @endif
+          </td>
           <td>
             <a href="{{ route('admin.warning.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
             <form action="{{ route('admin.warning.delete', $item->id) }}" method="POST" style="display:inline-block;">
@@ -34,7 +44,7 @@
 <div class="modal fade" id="addWarningModal" tabindex="-1" aria-labelledby="addWarningModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form method="POST" action="{{ route('admin.warning.store') }}">
+      <form method="POST" action="{{ route('admin.warning.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="modal-header">
           <h5 class="modal-title" id="addWarningModalLabel">Add Warning</h5>
@@ -60,6 +70,10 @@
             <div class="mb-3">
               <label for="warning-date" class="form-label">Date & Time</label>
               <input type="datetime-local" class="form-control" id="warning-date" name="date" required>
+            </div>
+            <div class="mb-3">
+              <label for="warning-file" class="form-label">Upload Image (JPG/PNG)</label>
+              <input type="file" class="form-control" id="warning-file" name="file" accept="image/*">
             </div>
         </div>
         <div class="modal-footer">
