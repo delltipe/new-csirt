@@ -1,74 +1,140 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="py-5 text-center" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white;">
-    <div class="container py-4">
-        <div class="bg-white d-inline-block p-4 rounded-4 shadow-lg mb-4">
-            <img src="{{ asset('images/jakarta-csirt-logo.png') }}" alt="Jakarta Prov CSIRT" style="height: 120px; width: auto;">
-        </div>
-        <h1 class="display-4 fw-bold mb-0">Tentang Kami</h1>
-        <p class="lead opacity-75 mt-2">Profil Resmi JakartaProv-CSIRT</p>
-    </div>
-</section>
 
-<section class="py-5 bg-body-tertiary">
+<style>
+    /* Tipografi & Header */
+    .lapor-header {
+        background: var(--ink, #0A0F1A);
+        padding: 56px 0 48px;
+        position: relative;
+        overflow: hidden;
+    }
+    .lapor-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
+            transparent 1px, transparent 80px
+        );
+    }
+    .lapor-header__title {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        color: #ffffff;
+        margin: 0;
+    }
+    .lapor-header__eyebrow {
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 8px;
+    }
+
+    /* Layout Konten NYC Style */
+    .profile-card {
+        background: #ffffff;
+        border-radius: 0; /* Kaku/Kotak sesuai NYC.gov */
+        border: 1px solid #e2e8f0;
+        border-left: 8px solid var(--navy, #003580); /* Aksen Biru Navy Utama */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .profile-logo-container {
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Tombol & CTA (Red Removed) */
+    .btn-barlow {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-radius: 0;
+        padding: 12px 32px;
+        transition: all 0.2s;
+    }
+    .btn-navy-bold {
+        background-color: var(--navy, #003580);
+        color: white;
+        border: none;
+    }
+    .btn-navy-bold:hover {
+        background-color: var(--navy-mid, #004099);
+        color: white;
+    }
+
+    .cta-footer {
+        background: var(--navy-dim, #002060);
+        padding: 64px 0;
+        border-top: 8px solid var(--navy, #003580); /* Red accent removed */
+    }
+
+    .section-title {
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--ink);
+        letter-spacing: 0.02em;
+    }
+</style>
+
+<header class="lapor-header">
+    <div class="container">
+        <div class="lapor-header__eyebrow">Profil Resmi</div>
+        <h1 class="lapor-header__title display-3">Tentang Kami</h1>
+    </div>
+</header>
+
+<section class="py-5 bg-light" style="font-family: 'Inter', sans-serif;">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-9">
-                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+            <div class="col-lg-10"> {{-- Wide description space --}}
+                <div class="profile-card p-4 p-md-5">
                     
-                    <div class="mb-5">
-                        <p class="fs-5 lh-lg text-secondary">
-                            Tim Tanggap Insiden Siber (Computer Security Incident Response Team) Pemerintah Provinsi DKI Jakarta yang selanjutnya disebut dengan <span class="fw-bold text-dark">JakartaProv-CSIRT</span> merupakan CSIRT Pemprov DKI Jakarta.
-                        </p>
-                        <p class="fs-5 lh-lg text-secondary">
-                            Tim JakartaProv-CSIRT ditetapkan oleh Sekretaris Daerah Provinsi DKI Jakarta dalam Keputusan Penjabat Sekretaris Daerah DKI Jakarta Nomor: <span class="badge bg-secondary-subtle text-secondary-emphasis">41 Tahun 2020</span> Tentang Computer Security Incident Response Team.
-                        </p>
+                    <div class="profile-logo-container">
+                        <img src="{{ asset('jakarta-csirt-logo.png') }}" alt="Logo JakartaProv-CSIRT" style="max-height: 80px;">
                     </div>
 
-                    <div class="p-4 bg-light rounded-4 mb-5 border-start border-4 border-primary">
-                        <h4 class="fw-bold mb-3">Struktur Pengelola</h4>
-                        <p class="mb-0 text-secondary">
-                            Kepala Dinas Komunikasi Informatika dan Statistik Provinsi DKI Jakarta ditunjuk sebagai <strong>Ketua CSIRT Propinsi DKI Jakarta</strong> dan ditugaskan untuk melaksanakan memimpin, mengkoordinasikan, memfasilitasi pengembangan kemampuan SDM, pengalokasian sumber daya, memantau, serta melaporkan pelaksanaan terkait JakartaProv-CSIRT.
+                    {{-- Deskripsi 1:1 Original --}}
+                    <div class="mb-5">
+                        <p class="fs-5 lh-lg text-dark mb-4">
+                            Tim Tanggap Insiden Siber (Computer Security Incident Response Team) Pemerintah Provinsi DKI Jakarta yang selanjutnya disebut dengan <span class="fw-bold">JakartaProv-CSIRT</span> merupakan CSIRT Pemprov DKI Jakarta.
+                        </p>
+                        
+                        <p class="fs-5 lh-lg text-secondary mb-4">
+                            Tim JakartaProv-CSIRT ditetapkan oleh Sekretaris Daerah Provinsi DKI Jakarta dalam Keputusan Penjabat Sekretaris Daerah Provinsi DKI Jakarta Nomor 41 Tahun 2020 tentang Computer Security Incident Response Team Pemerintah Provinsi DKI Jakarta.
+                        </p>
+
+                        <p class="fs-5 lh-lg text-secondary">
+                            Ketua JakartaProv-CSIRT adalah Kepala Dinas Komunikasi, Informatika dan Statistik Provinsi DKI Jakarta. Anggota Tim JakartaProv-CSIRT adalah staf fungsional dan/atau pengelola teknologi informasi di lingkungan Dinas Komunikasi, Informatika dan Statistik Provinsi DKI Jakarta.
                         </p>
                     </div>
 
                     <div class="row g-4 mb-5">
-                        <div class="col-md-12">
-                            <h4 class="fw-bold mb-4 text-primary"><i class="bi bi-target"></i> Tujuan Pembentukan</h4>
+                        <div class="col-md-6">
+                            <h5 class="section-title mb-3">Layanan Reaktif</h5>
+                            <p class="text-secondary small">Layanan yang terkait dengan kebutuhan melakukan respon terhadap insiden siber termasuk penangkalan, penindakan dan pemulihan siber.</p>
                         </div>
                         <div class="col-md-6">
-                            <div class="h-100 p-4 border rounded-4 bg-white shadow-sm">
-                                <div class="icon-box mb-3 text-primary fs-3"><i class="bi bi-shield-check"></i></div>
-                                <p class="small text-secondary mb-0">Membangun mengkoordinasikan, mengkolaborasikan dan mengoperasionalkan sistem mitigasi, manajemen krisis, penanggulangan dan pemulihan terhadap insiden keamanan siber.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="h-100 p-4 border rounded-4 bg-white shadow-sm">
-                                <div class="icon-box mb-3 text-primary fs-3"><i class="bi bi-people"></i></div>
-                                <p class="small text-secondary mb-0">Membangun kapasitas sumber daya penanggulangan dan pemulihan insiden keamanan siber pada sektor Pemerintah Daerah Provinsi DKI Jakarta.</p>
-                            </div>
+                            <h5 class="section-title mb-3">Layanan Proaktif</h5>
+                            <p class="text-secondary small">Layanan yang mendeteksi dan mencegah serangan siber sebelum ada dampak nyata.</p>
                         </div>
                     </div>
 
-                    <div class="mb-5">
-                        <h4 class="fw-bold mb-4"><i class="bi bi-gear-wide-connected"></i> Layanan Kami</h4>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item px-0 py-3 bg-transparent">
-                                <h6 class="fw-bold"><i class="bi bi-lightning-charge text-warning me-2"></i> Layanan Reaktif</h6>
-                                <span class="text-secondary">Layanan terkait dengan kebutuhan melakukan respon terhadap insiden siber termasuk penangkalan, penindakan dan pemulihan siber.</span>
-                            </li>
-                            <li class="list-group-item px-0 py-3 bg-transparent">
-                                <h6 class="fw-bold"><i class="bi bi-eye text-info me-2"></i> Layanan Proaktif</h6>
-                                <span class="text-secondary">Layanan yang mendeteksi dan mencegah serangan siber sebelum ada dampak nyata.</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="text-center pt-4 border-top">
-                        <p class="text-muted small">
-                            <i class="bi bi-rocket-takeoff"></i> JakartaProv-CSIRT secara resmi di-launching pada <strong>23 Desember 2020</strong>. <br>
-                            Konstituen meliputi seluruh Perangkat Daerah (OPD) di lingkungan Pemerintah Daerah Provinsi DKI Jakarta.
+                    <div class="pt-4 border-top">
+                        <p class="text-muted small mb-0">
+                            <i class="bi bi-info-square-fill me-2 text-primary"></i>
+                            JakartaProv-CSIRT secara resmi di-launching pada <strong>23 Desember 2020</strong>. Konstituen JakartaProv-CSIRT meliputi seluruh Perangkat Daerah (OPD) di lingkungan Pemerintah Daerah Provinsi DKI Jakarta.
                         </p>
                     </div>
 
@@ -78,10 +144,18 @@
     </div>
 </section>
 
-<section class="py-5" style="background: #101823;">
-    <div class="container text-center">
-        <h3 class="text-white fw-bold mb-4">Butuh Bantuan Teknis?</h3>
-        <a href="{{ route('contact') }}" class="btn btn-outline-light px-4 py-2 fw-bold">Hubungi Kami</a>
+<section class="cta-footer text-center">
+    <div class="container">
+        <h2 class="text-white mb-4 display-4" style="font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase;">Butuh Bantuan Teknis?</h2>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="{{ route('incidents.create.step1') }}" class="btn btn-navy-bold btn-barlow fs-5">
+                Lapor Insiden
+            </a>
+            <a href="{{ route('contact.create') }}" class="btn btn-outline-light btn-barlow fs-5">
+                Hubungi Kami
+            </a>
+        </div>
     </div>
 </section>
+
 @endsection

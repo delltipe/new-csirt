@@ -1,73 +1,327 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Page Header -->
-<section class="bg-gradient-to-r from-slate-900 to-slate-800 py-12">
-    <div class="container mx-auto px-4">
-        <a href="{{ route('laws.index') }}" class="text-orange-500 hover:text-orange-400 transition mb-4 inline-flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-            Kembali
-        </a>
-        <h1 class="text-4xl font-bold text-white mb-4">{{ $post->title }}</h1>
-    </div>
-</section>
 
-<section class="py-12">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Main Content -->
-            <div class="lg:col-span-2">
-                <div class="bg-slate-800 rounded-lg border border-slate-700 p-8 mb-8">
-                    <h2 class="text-2xl font-bold text-white mb-6">Konten Regulasi</h2>
-                    <p class="text-slate-300 leading-relaxed text-lg whitespace-pre-line">{{ $post->content }}</p>
+<style>
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.law-detail-header {
+    background: var(--ink);
+    padding: 52px 0 44px;
+    position: relative;
+    overflow: hidden;
+}
+
+.law-detail-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
+        transparent 1px, transparent 80px
+    );
+    pointer-events: none;
+}
+
+.law-detail-header .container {
+    position: relative;
+    z-index: 1;
+}
+
+.law-detail-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+}
+
+.law-detail-breadcrumb a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: color var(--ease);
+}
+
+.law-detail-breadcrumb a:hover {
+    color: var(--white);
+}
+
+.law-detail-breadcrumb i {
+    font-size: 10px;
+}
+
+.law-detail-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+
+.law-detail-type-badge {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--navy);
+    color: var(--white);
+    padding: 8px 16px;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.law-detail-body {
+    padding: 56px 0 80px;
+    background: var(--mist);
+}
+
+.law-detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.law-detail-content {
+    background: var(--white);
+    border: 2px solid var(--border);
+    padding: 40px;
+}
+
+.law-detail-content__title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+}
+
+.law-detail-content__text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ink);
+    white-space: pre-line;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.law-detail-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 20px;
+}
+
+.law-detail-card {
+    background: var(--white);
+    border: 2px solid var(--border);
+    padding: 28px;
+}
+
+.law-detail-card__title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+}
+
+.law-detail-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.law-detail-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.law-detail-meta-item__label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mid);
+}
+
+.law-detail-meta-item__value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.law-detail-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 16px;
+    border: none;
+    text-decoration: none;
+    transition: background var(--ease);
+    margin-top: 24px;
+}
+
+.law-detail-download:hover {
+    background: var(--navy-dim);
+    color: var(--white);
+}
+
+.law-detail-download i {
+    font-size: 14px;
+}
+
+.law-detail-summary {
+    background: var(--white);
+    border: 2px solid var(--border);
+    padding: 28px;
+}
+
+.law-detail-summary__text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--mid);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+    .law-detail-layout {
+        grid-template-columns: 1fr;
+    }
+    .law-detail-sidebar {
+        position: static;
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .law-detail-content {
+        padding: 28px 20px;
+    }
+    .law-detail-card {
+        padding: 20px;
+    }
+}
+</style>
+
+{{-- PAGE HEADER --}}
+<div class="law-detail-header">
+    <div class="container">
+        <div class="law-detail-breadcrumb">
+            <a href="{{ route('laws.index') }}">
+                <i class="bi bi-arrow-left"></i>
+                Peraturan Kebijakan
+            </a>
+        </div>
+        <h1>{{ $post->title }}</h1>
+        <span class="law-detail-type-badge">
+            {{ str_replace('_', ' ', ucwords($post->regulation_type ?? 'Regulasi')) }}
+        </span>
+    </div>
+</div>
+
+{{-- LAW DETAIL BODY --}}
+<div class="law-detail-body">
+    <div class="container">
+        <div class="law-detail-layout">
+            
+            {{-- MAIN CONTENT --}}
+            <div class="law-detail-content">
+                <h2 class="law-detail-content__title">Konten Regulasi</h2>
+                <div class="law-detail-content__text">
+                    {{ $post->description }}
                 </div>
             </div>
 
-            <!-- Sidebar -->
-            <aside>
-                <!-- Law Details -->
-                <div class="bg-slate-800 rounded-lg p-6 border border-slate-700 accent-border">
-                    <h3 class="text-lg font-bold text-white mb-6">Detail Regulasi</h3>
+            {{-- SIDEBAR --}}
+            <aside class="law-detail-sidebar">
+                
+                {{-- DETAILS CARD --}}
+                <div class="law-detail-card">
+                    <h3 class="law-detail-card__title">Detail Regulasi</h3>
                     
-                    <div class="space-y-4">
-                        @if($post->law_number)
-                            <div>
-                                <p class="text-slate-500 text-sm">Nomor Hukum</p>
-                                <p class="text-white font-semibold">{{ $post->law_number }}</p>
-                            </div>
-                        @endif
-
-                        <div>
-                            <p class="text-slate-500 text-sm">Tipe Regulasi</p>
-                            <p class="text-white font-semibold">{{ ucwords(str_replace('_', ' ', $post->regulation_type)) }}</p>
+                    <div class="law-detail-meta">
+                        <div class="law-detail-meta-item">
+                            <span class="law-detail-meta-item__label">Tipe Regulasi</span>
+                            <span class="law-detail-meta-item__value">
+                                {{ str_replace('_', ' ', ucwords($post->regulation_type ?? 'Regulasi')) }}
+                            </span>
                         </div>
 
-                        @if($post->effective_date)
-                            <div>
-                                <p class="text-slate-500 text-sm">Tanggal Berlaku</p>
-                                <p class="text-white font-semibold">{{ $post->effective_date->format('d M Y') }}</p>
-                            </div>
+                        @if($post->date)
+                        <div class="law-detail-meta-item">
+                            <span class="law-detail-meta-item__label">Tanggal</span>
+                            <span class="law-detail-meta-item__value">
+                                {{ $post->date->format('d M Y') }}
+                            </span>
+                        </div>
                         @endif
+
+                        @if($post->time)
+                        <div class="law-detail-meta-item">
+                            <span class="law-detail-meta-item__label">Waktu</span>
+                            <span class="law-detail-meta-item__value">
+                                {{ $post->time }}
+                            </span>
+                        </div>
+                        @endif
+
+                        <div class="law-detail-meta-item">
+                            <span class="law-detail-meta-item__label">Total Unduhan</span>
+                            <span class="law-detail-meta-item__value">
+                                {{ number_format($post->downloadAmount ?? 0) }} kali
+                            </span>
+                        </div>
                     </div>
 
-                    @if($post->document_url)
-                        <a href="{{ $post->document_url }}" target="_blank" class="block w-full mt-6 text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 rounded transition">
-                            Lihat Dokumen
+                    @if($post->file_path || $post->link)
+                        <a href="{{ $post->file_path ? asset('storage/' . $post->file_path) : $post->link }}" 
+                           target="_blank" 
+                           class="law-detail-download">
+                            <i class="bi bi-download"></i>
+                            Unduh Dokumen
                         </a>
                     @endif
                 </div>
 
-                <!-- Summary -->
-                @if($post->summary)
-                    <div class="mt-6 bg-slate-800 rounded-lg p-6 border border-slate-700">
-                        <h3 class="text-lg font-bold text-white mb-4">Ringkasan</h3>
-                        <p class="text-slate-300 text-sm leading-relaxed">{{ $post->summary }}</p>
-                    </div>
-                @endif
             </aside>
+
         </div>
     </div>
-</section>
+</div>
+
 @endsection

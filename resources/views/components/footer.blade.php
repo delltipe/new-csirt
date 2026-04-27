@@ -196,9 +196,9 @@
             <div>
                 <h3 class="footer-heading">Menu Cepat</h3>
                 <ul class="footer-links">
-                    <li><a href="{{ url('/') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Beranda</a></li>
-                    <li><a href="{{ url('profile') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Profil</a></li>
-                    <li><a href="{{ url('events') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Event</a></li>
+                    <li><a href="{{ route('home') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Beranda</a></li>
+                    <li><a href="{{ route('profile') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Profil</a></li>
+                    <li><a href="{{ route('events.index') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Event</a></li>
                     <li><a href="{{ route('contact.create') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Hubungi Kami</a></li>
                     <li><a href="{{ url('rfc2350') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>RFC 2350</a></li>
                     <li><a href="{{ url('publickey') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Public Key</a></li>

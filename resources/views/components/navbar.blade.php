@@ -288,8 +288,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('profile') }}"
-                   class="{{ request()->routeIs('profile') ? 'active' : '' }}">
+                <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'active' : '' }}">
                     Profil
                 </a>
             </li>
