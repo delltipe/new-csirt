@@ -1,46 +1,199 @@
+{{--
+    infographics/show.blade.php
+    Controller: InfographicController@show
+    Variable:   $infographic  (single Infographic model — fields: id, title, thumbnail)
+
+    NOTE: The primary UX is the lightbox on the index page.
+    This page exists because the route /infographics/{infographic} is registered
+    and some users may navigate here directly (e.g. from a shared URL).
+    It shows the image large with the title and a back link.
+--}}
 @extends('layouts.app')
 
 @section('content')
-<!-- Page Header -->
-<section class="bg-gradient-to-r from-slate-900 to-slate-800 py-12">
-    <div class="container mx-auto px-4">
-        <a href="{{ route('infographics.index') }}" class="text-orange-500 hover:text-orange-400 transition mb-4 inline-flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-            Kembali
+
+<style>
+/* ============================================================
+   SHOW PAGE HEADER
+   ============================================================ */
+.infographic-show-header {
+    background: var(--ink);
+    padding: 36px 0 32px;
+    position: relative;
+    overflow: hidden;
+}
+.infographic-show-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
+        transparent 1px, transparent 80px
+    );
+    pointer-events: none;
+}
+.infographic-show-header .container { position: relative; z-index: 1; }
+
+.infographic-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    margin-bottom: 18px;
+    transition: color var(--ease);
+}
+.infographic-back:hover { color: rgba(255,255,255,0.8); }
+.infographic-back i { font-size: 11px; }
+
+.infographic-show-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1.05;
+    max-width: 760px;
+}
+
+/* ============================================================
+   BODY
+   ============================================================ */
+.infographic-show-body {
+    padding: 48px 0 80px;
+    background: var(--mist);
+}
+
+.infographic-show-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--navy);
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+/* Full image — tall, not cropped */
+.infographic-show-img {
+    width: 100%;
+    display: block;
+    max-height: 80vh;
+    object-fit: contain;
+    background: var(--ink); /* dark bg so white-bg infographics still look sharp */
+}
+
+.infographic-show-footer {
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+}
+
+.infographic-show-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+}
+
+.infographic-show-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 11px 20px;
+    text-decoration: none;
+    transition: background var(--ease);
+}
+.btn-download:hover { background: var(--navy-dim); color: var(--white); }
+
+.btn-back-gallery {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    color: var(--navy);
+    border: 1px solid var(--navy);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background var(--ease), color var(--ease);
+}
+.btn-back-gallery:hover { background: var(--navy-tint); }
+
+@media (max-width: 640px) {
+    .infographic-show-footer { flex-direction: column; align-items: flex-start; }
+    .infographic-show-actions { width: 100%; }
+    .btn-download, .btn-back-gallery { flex: 1; justify-content: center; }
+}
+</style>
+
+
+{{-- HEADER --}}
+<div class="infographic-show-header">
+    <div class="container">
+        <a href="{{ route('infographics.index') }}" class="infographic-back">
+            <i class="bi bi-arrow-left"></i> Semua Infografis
         </a>
-        <h1 class="text-4xl font-bold text-white mb-4">{{ $infographic->title }}</h1>
-        <p class="text-lg text-orange-500">Kategori: {{ ucwords($infographic->category) }}</p>
+        <h1>{{ $infographic->title }}</h1>
     </div>
-</section>
+</div>
 
-<section class="py-12">
-    <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto">
-            @if($infographic->image_url)
-                <img src="{{ $infographic->image_url }}" alt="{{ $infographic->title }}" class="w-full rounded-lg mb-8 max-h-96 lg:max-h-full object-contain">
-            @endif
 
-            @if($infographic->description)
-                <div class="bg-slate-800 rounded-lg border border-slate-700 p-8">
-                    <h2 class="text-2xl font-bold text-white mb-4">Deskripsi</h2>
-                    <p class="text-slate-300 leading-relaxed text-lg">{{ $infographic->description }}</p>
-                </div>
-            @endif
+{{-- BODY --}}
+<div class="infographic-show-body">
+    <div class="container">
+        <div class="infographic-show-card">
 
-            <!-- Download/Share Section -->
-            <div class="mt-8 flex gap-4">
-                @if($infographic->image_url)
-                    <a href="{{ $infographic->image_url }}" download class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded transition">
-                        Download Infografis
+            {{-- Full-size image --}}
+            <img class="infographic-show-img"
+                 src="{{ $infographic->thumbnail }}"
+                 alt="{{ $infographic->title }}"
+                 onerror="this.style.minHeight='200px';this.style.background='var(--mist)'">
+
+            {{-- Footer: title + actions --}}
+            <div class="infographic-show-footer">
+                <div class="infographic-show-title">{{ $infographic->title }}</div>
+                <div class="infographic-show-actions">
+                    <a href="{{ $infographic->thumbnail }}"
+                       download
+                       class="btn-download"
+                       target="_blank"
+                       rel="noopener">
+                        <i class="bi bi-download"></i> Unduh
                     </a>
-                @endif
-                <a href="https://twitter.com/share?url={{ route('infographics.show', $infographic) }}&text={{ urlencode($infographic->title) }}" target="_blank" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded transition">
-                    Bagikan
-                </a>
+                    <a href="{{ route('infographics.index') }}" class="btn-back-gallery">
+                        <i class="bi bi-grid"></i> Kembali ke Galeri
+                    </a>
+                </div>
             </div>
+
         </div>
     </div>
-</section>
+</div>
+
 @endsection
