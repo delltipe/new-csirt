@@ -196,11 +196,7 @@ class AdminController extends Controller
             'thumbnail' => 'nullable|string',
             'source' => 'nullable|string',
             'date' => 'required|date',
-            'file' => 'nullable|file|image|max:2048',
         ]);
-        if ($request->hasFile('file')) {
-            $data['file_path'] = $request->file('file')->store('warnings', 'public');
-        }
         \App\Models\WarningPost::create($data);
         return redirect()->route('admin.dashboard')->with('success', 'Warning added!');
     }
@@ -224,14 +220,7 @@ class AdminController extends Controller
             'thumbnail' => 'nullable|string',
             'source' => 'nullable|string',
             'date' => 'required|date',
-            'file' => 'nullable|file|image|max:2048',
         ]);
-        if ($request->hasFile('file')) {
-            if ($warning->file_path) {
-                \Storage::disk('public')->delete($warning->file_path);
-            }
-            $data['file_path'] = $request->file('file')->store('warnings', 'public');
-        }
         $warning->update($data);
         return redirect()->route('admin.dashboard')->with('success', 'Warning updated!');
     }
@@ -241,9 +230,6 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
         $warning = \App\Models\WarningPost::findOrFail($id);
-        if ($warning->file_path) {
-            \Storage::disk('public')->delete($warning->file_path);
-        }
         $warning->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Warning deleted!');
     }
@@ -270,11 +256,7 @@ class AdminController extends Controller
             'date' => 'required|date',
             'time' => 'nullable|date_format:H:i',
             'downloadAmount' => 'nullable|integer',
-            'file' => 'nullable|file|mimes:pdf|max:4096',
         ]);
-        if ($request->hasFile('file')) {
-            $data['file_path'] = $request->file('file')->store('laws', 'public');
-        }
         \App\Models\LawRulePost::create($data);
         return redirect()->route('admin.dashboard')->with('success', 'Law added!');
     }
@@ -299,14 +281,7 @@ class AdminController extends Controller
             'date' => 'required|date',
             'time' => 'nullable|date_format:H:i',
             'downloadAmount' => 'nullable|integer',
-            'file' => 'nullable|file|mimes:pdf|max:4096',
         ]);
-        if ($request->hasFile('file')) {
-            if ($law->file_path) {
-                \Storage::disk('public')->delete($law->file_path);
-            }
-            $data['file_path'] = $request->file('file')->store('laws', 'public');
-        }
         $law->update($data);
         return redirect()->route('admin.dashboard')->with('success', 'Law updated!');
     }
@@ -316,9 +291,6 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
         $law = \App\Models\LawRulePost::findOrFail($id);
-        if ($law->file_path) {
-            \Storage::disk('public')->delete($law->file_path);
-        }
         $law->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Law deleted!');
     }
@@ -342,11 +314,7 @@ class AdminController extends Controller
             'title' => 'required|string',
             'author' => 'required|string',
             'link' => 'required|string',
-            'file' => 'nullable|file|mimes:pdf|max:4096',
         ]);
-        if ($request->hasFile('file')) {
-            $data['file_path'] = $request->file('file')->store('guides', 'public');
-        }
         \App\Models\CybersecurityGuide::create($data);
         return redirect()->route('admin.dashboard')->with('success', 'Guide added!');
     }
@@ -368,14 +336,7 @@ class AdminController extends Controller
             'title' => 'required|string',
             'author' => 'required|string',
             'link' => 'required|string',
-            'file' => 'nullable|file|mimes:pdf|max:4096',
         ]);
-        if ($request->hasFile('file')) {
-            if ($guide->file_path) {
-                \Storage::disk('public')->delete($guide->file_path);
-            }
-            $data['file_path'] = $request->file('file')->store('guides', 'public');
-        }
         $guide->update($data);
         return redirect()->route('admin.dashboard')->with('success', 'Guide updated!');
     }
@@ -385,9 +346,6 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
         $guide = \App\Models\CybersecurityGuide::findOrFail($id);
-        if ($guide->file_path) {
-            \Storage::disk('public')->delete($guide->file_path);
-        }
         $guide->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Guide deleted!');
     }

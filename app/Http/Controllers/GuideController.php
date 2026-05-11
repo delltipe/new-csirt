@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class GuideController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $guides = CybersecurityGuide::paginate(12);
+        $query = CybersecurityGuide::query();
+
+        // Search by author
+        if ($request->filled('author')) {
+            $query->where('author', 'like', '%' . $request->author . '%');
+        }
+
+        $guides = $query->paginate(12);
         return view('guides.index', compact('guides'));
     }
 

@@ -14,7 +14,6 @@ use App\Http\Controllers\AdminController;
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::view('/profile', 'profile')->name('profile');
-Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 
 // Public Info Routes
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');

@@ -17,7 +17,7 @@
                 </div>
             @endif
             
-            <form method="POST" action="{{ route('admin.law.update', $law->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.law.update', $law->id) }}">
                 @csrf
                 
                 <div class="mb-3">
@@ -43,18 +43,6 @@
                     <input type="text" class="form-control @error('link') is-invalid @enderror" 
                            id="link" name="link" value="{{ old('link', $law->link) }}">
                     @error('link')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="file" class="form-label">Upload File (PDF)</label>
-                    <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file" accept="application/pdf">
-                    @if($law->file_path)
-                        <div class="mt-2">
-                            <a href="{{ asset('storage/' . $law->file_path) }}" target="_blank">Current File</a>
-                        </div>
-                    @endif
-                    @error('file')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>

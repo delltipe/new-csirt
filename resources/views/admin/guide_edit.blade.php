@@ -17,7 +17,7 @@
                 </div>
             @endif
             
-            <form method="POST" action="{{ route('admin.guide.update', $guide->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.guide.update', $guide->id) }}">
                 @csrf
                 
                 <div class="mb-3">
@@ -47,18 +47,6 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label for="file" class="form-label">Upload File (PDF)</label>
-                    <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file" accept="application/pdf">
-                    @if($guide->file_path)
-                        <div class="mt-2">
-                            <a href="{{ asset('storage/' . $guide->file_path) }}" target="_blank">Current File</a>
-                        </div>
-                    @endif
-                    @error('file')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
                 <div>
                     <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary">Update Guide</button>
