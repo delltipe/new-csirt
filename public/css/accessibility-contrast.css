@@ -1,0 +1,319 @@
+/* ============================================================
+   ACCESSIBILITY CONTRAST MODES
+   Applied dynamically by accessibility.js
+   ============================================================ */
+
+/* HIGH CONTRAST MODE */
+html.accessibility-contrast-high {
+  --ink: #000000;
+  --navy: #000080;
+  --navy-mid: #000080;
+  --navy-dim: #000040;
+  --navy-tint: #FFFFFF;
+  --mist: #F0F0F0;
+  --border: #000000;
+  --mid: #000000;
+  --white: #FFFFFF;
+  --alert: #FF0000;
+  --alert-bg: #FFFF00;
+}
+
+html.accessibility-contrast-high body {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+html.accessibility-contrast-high a {
+  color: #000080;
+  text-decoration: underline;
+}
+
+html.accessibility-contrast-high button,
+html.accessibility-contrast-high .btn-navy {
+  background: #000080;
+  color: #FFFFFF;
+  border: 2px solid #000000;
+}
+
+html.accessibility-contrast-high button:hover,
+html.accessibility-contrast-high .btn-navy:hover {
+  background: #000040;
+  border: 2px solid #000000;
+}
+
+html.accessibility-contrast-high input,
+html.accessibility-contrast-high textarea,
+html.accessibility-contrast-high select {
+  background: #FFFFFF;
+  color: #000000;
+  border: 2px solid #000000;
+}
+
+html.accessibility-contrast-high .nav-main {
+  background: #FFFFFF;
+  border-bottom: 4px solid #000000;
+}
+
+html.accessibility-contrast-high .nav-links > li > a {
+  color: #000000;
+  border-bottom: 4px solid transparent;
+}
+
+html.accessibility-contrast-high .nav-links > li > a:hover,
+html.accessibility-contrast-high .nav-links > li > a.active {
+  color: #000080;
+  border-bottom-color: #000080;
+}
+
+html.accessibility-contrast-high .accessibility-panel {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  box-shadow: 0 0 0 3px #000000;
+}
+
+html.accessibility-contrast-high .accessibility-header {
+  background: #F0F0F0;
+  border-bottom: 2px solid #000000;
+}
+
+html.accessibility-contrast-high .accessibility-divider {
+  background: #000000;
+  height: 2px;
+}
+
+html.accessibility-contrast-high .control-btn {
+  border: 2px solid #000000;
+  background: #FFFFFF;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .control-btn-toggle {
+  background: #F0F0F0;
+}
+
+html.accessibility-contrast-high .control-btn-toggle[aria-pressed="true"] {
+  background: #000080;
+  color: #FFFFFF;
+  border: 2px solid #000000;
+}
+
+/* DARK CONTRAST MODE */
+html.accessibility-contrast-dark {
+  --ink: #FFFFFF;
+  --navy: #4DA6FF;
+  --navy-mid: #66B3FF;
+  --navy-dim: #3385FF;
+  --navy-tint: #1a1a2e;
+  --mist: #0F0F0F;
+  --border: #333333;
+  --mid: #CCCCCC;
+  --white: #1a1a1a;
+  --alert: #FF6B6B;
+  --alert-bg: #330000;
+}
+
+html.accessibility-contrast-dark {
+  background-color: #0a0a0a;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark body {
+  background-color: #0a0a0a;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark a {
+  color: #4DA6FF;
+}
+
+html.accessibility-contrast-dark a:hover {
+  color: #66B3FF;
+}
+
+html.accessibility-contrast-dark button,
+html.accessibility-contrast-dark .btn-navy {
+  background: #4DA6FF;
+  color: #000000;
+  border: 1px solid #66B3FF;
+}
+
+html.accessibility-contrast-dark button:hover,
+html.accessibility-contrast-dark .btn-navy:hover {
+  background: #66B3FF;
+  border: 1px solid #4DA6FF;
+}
+
+html.accessibility-contrast-dark input,
+html.accessibility-contrast-dark textarea,
+html.accessibility-contrast-dark select {
+  background: #1a1a1a;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+}
+
+html.accessibility-contrast-dark .nav-main {
+  background: #1a1a1a;
+  border-bottom: 4px solid #4DA6FF;
+}
+
+html.accessibility-contrast-dark .nav-strip {
+  background: #0a0a0a;
+  color: #CCCCCC;
+}
+
+html.accessibility-contrast-dark .nav-links > li > a {
+  color: #FFFFFF;
+  border-bottom: 4px solid transparent;
+}
+
+html.accessibility-contrast-dark .nav-links > li > a:hover,
+html.accessibility-contrast-dark .nav-links > li > a.active {
+  color: #4DA6FF;
+  border-bottom-color: #4DA6FF;
+}
+
+html.accessibility-contrast-dark .nav-dropdown {
+  background: #1a1a1a;
+  border: 1px solid #333333;
+  border-top: 3px solid #4DA6FF;
+}
+
+html.accessibility-contrast-dark .nav-dropdown a {
+  color: #FFFFFF;
+  border-left: 3px solid transparent;
+}
+
+html.accessibility-contrast-dark .nav-dropdown a:hover {
+  background: #2a2a3e;
+  border-left-color: #4DA6FF;
+  color: #4DA6FF;
+}
+
+html.accessibility-contrast-dark .accessibility-panel {
+  background: #1a1a1a;
+  border: 1px solid #333333;
+  box-shadow: 0 8px 32px rgba(77, 166, 255, 0.15);
+}
+
+html.accessibility-contrast-dark .accessibility-header {
+  background: #0F0F0F;
+  border-bottom: 1px solid #333333;
+}
+
+html.accessibility-contrast-dark .accessibility-title {
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .accessibility-close-btn {
+  color: #CCCCCC;
+}
+
+html.accessibility-contrast-dark .accessibility-close-btn:hover {
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .accessibility-divider {
+  background: #333333;
+}
+
+html.accessibility-contrast-dark .control-label {
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .control-btn {
+  border: 1px solid #333333;
+  background: #0F0F0F;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .control-btn:hover {
+  background: #2a2a3e;
+  border-color: #4DA6FF;
+}
+
+html.accessibility-contrast-dark .control-btn-toggle {
+  background: #0F0F0F;
+}
+
+html.accessibility-contrast-dark .control-btn-toggle[aria-pressed="true"] {
+  background: #4DA6FF;
+  color: #000000;
+  border-color: #4DA6FF;
+}
+
+html.accessibility-contrast-dark .control-btn-reset {
+  background: #4DA6FF;
+  color: #000000;
+  border-color: #4DA6FF;
+}
+
+html.accessibility-contrast-dark .control-btn-reset:hover {
+  background: #66B3FF;
+}
+
+html.accessibility-contrast-dark .font-size-display,
+html.accessibility-contrast-dark .line-height-display,
+html.accessibility-contrast-dark .letter-spacing-display {
+  color: #CCCCCC;
+}
+
+html.accessibility-contrast-dark .accessibility-footer {
+  background: #0F0F0F;
+  border-top: 1px solid #333333;
+  color: #999999;
+}
+
+/* Additional elements for dark mode */
+html.accessibility-contrast-dark .container {
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark h1,
+html.accessibility-contrast-dark h2,
+html.accessibility-contrast-dark h3,
+html.accessibility-contrast-dark h4,
+html.accessibility-contrast-dark h5,
+html.accessibility-contrast-dark h6 {
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .card {
+  background: #1a1a1a;
+  border-color: #333333;
+}
+
+html.accessibility-contrast-dark .card-body {
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark table {
+  color: #FFFFFF;
+  border-color: #333333;
+}
+
+html.accessibility-contrast-dark thead,
+html.accessibility-contrast-dark th {
+  background: #0F0F0F;
+  color: #FFFFFF;
+  border-color: #333333;
+}
+
+html.accessibility-contrast-dark tbody td {
+  border-color: #333333;
+}
+
+html.accessibility-contrast-dark .bg-light {
+  background: #0F0F0F !important;
+}
+
+html.accessibility-contrast-dark .text-muted {
+  color: #999999 !important;
+}
+
+html.accessibility-contrast-dark form {
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark label {
+  color: #FFFFFF;
+}
