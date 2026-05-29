@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function index(): View
     {
-        $recentNews = CybersecurityNews::orderBy('published_at', 'desc')
+        $recentNews = CybersecurityNews::orderBy('date', 'desc')
             ->limit(3)
             ->get();
 
