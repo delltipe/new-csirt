@@ -30,6 +30,8 @@
 
     --alert:      #B91C1C;   /* WARNING / ALERT CONTENT ONLY — not a brand color */
     --alert-bg:   #FEF2F2;
+    --alert-light: #EF4444;  /* Lighter alert: badges, hover accents */
+    --alert-dark:  #991B1B;  /* Darker alert: error text */
 
     --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
     --font-body:    'Inter', system-ui, sans-serif;

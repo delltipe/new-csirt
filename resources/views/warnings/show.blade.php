@@ -70,7 +70,7 @@
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    background: #dc2626;
+    background: var(--alert);
     color: var(--white);
     padding: 8px 16px;
 }
@@ -143,7 +143,7 @@
 
 .warning-detail-meta-item i {
     font-size: 14px;
-    color: #dc2626;
+    color: var(--alert);
 }
 
 .warning-detail-source {
@@ -156,13 +156,13 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #dc2626;
+    color: var(--alert);
     text-decoration: none;
     transition: color var(--ease);
 }
 
 .warning-detail-source:hover {
-    color: #ef4444;
+    color: var(--alert-light);
 }
 
 /* ============================================================
@@ -216,7 +216,7 @@
 }
 
 .warning-detail-card__item-title:hover {
-    color: #dc2626;
+    color: var(--alert);
 }
 
 .warning-detail-card__item-date {
@@ -225,7 +225,7 @@
 }
 
 .warning-detail-cta {
-    background: #dc2626;
+    background: var(--alert);
     color: var(--white);
     font-family: var(--font-display);
     font-size: 13px;
@@ -242,7 +242,7 @@
 }
 
 .warning-detail-cta:hover {
-    background: #ef4444;
+    background: var(--alert-light);
     color: var(--white);
 }
 

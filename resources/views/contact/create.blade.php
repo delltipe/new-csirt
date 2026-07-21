@@ -25,7 +25,7 @@
 }
 .lapor-header .container { position: relative; z-index: 1; }
 .lapor-header__eyebrow {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 10.5px;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -43,17 +43,17 @@
     background: rgba(255,255,255,0.2);
 }
 .lapor-header h1 {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-display);
     font-size: clamp(32px, 5vw, 52px);
     font-weight: 900;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    color: #ffffff;
+    color: var(--white);
     line-height: 1;
     margin-bottom: 10px;
 }
 .lapor-header__sub {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 15px;
     font-weight: 300;
     color: rgba(255,255,255,0.5);
@@ -69,7 +69,7 @@
 }
 
 .form-card {
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--border, #D8DCE3);
     border-top: 4px solid var(--navy, #003580);
     padding: 36px 32px;
@@ -77,7 +77,7 @@
 }
 
 .form-step__title {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-display);
     font-size: 26px;
     font-weight: 900;
     letter-spacing: 0.02em;
@@ -94,7 +94,7 @@
 
 .lapor-label {
     display: block;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 12.5px;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -102,7 +102,7 @@
     color: var(--ink, #0A0F1A);
     margin-bottom: 6px;
 }
-.lapor-label .req { color: #B91C1C; margin-left: 2px; }
+.lapor-label .req { color: var(--alert); margin-left: 2px; }
 
 .lapor-input,
 .lapor-select,
@@ -110,9 +110,9 @@
     width: 100%;
     height: 44px;
     border: 1px solid var(--border, #D8DCE3);
-    background: #ffffff;
+    background: var(--white);
     color: var(--ink, #0A0F1A);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 14px;
     font-weight: 400;
     padding: 0 14px;
@@ -141,13 +141,13 @@
 .lapor-input.is-invalid,
 .lapor-select.is-invalid,
 .lapor-textarea.is-invalid {
-    border-color: #B91C1C;
+    border-color: var(--alert);
     box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1);
 }
 
 .field-error {
     font-size: 12px;
-    color: #B91C1C;
+    color: var(--alert);
     margin-top: 4px;
     display: flex;
     align-items: center;
@@ -177,8 +177,8 @@
     align-items: center;
     gap: 8px;
     background: var(--navy, #003580);
-    color: #ffffff;
-    font-family: 'Barlow Condensed', sans-serif;
+    color: var(--white);
+    font-family: var(--font-display);
     font-size: 16px;
     font-weight: 900;
     letter-spacing: 0.05em;
@@ -188,15 +188,15 @@
     cursor: pointer;
     transition: background 0.2s ease;
 }
-.btn-submit:hover { background: #002060; color: #ffffff; }
+.btn-submit:hover { background: var(--navy-dim); color: var(--white); }
 
 .btn-ghost {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     background: transparent;
-    color: #6B7280;
-    font-family: 'Inter', sans-serif;
+    color: var(--mid);
+    font-family: var(--font-body);
     font-size: 14px;
     font-weight: 600;
     padding: 15px 20px;
@@ -211,7 +211,7 @@
    SIDEBAR (Contact Details)
    ============================================================ */
 .sidebar-card {
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--border, #D8DCE3);
     border-top: 3px solid var(--navy, #003580);
     padding: 32px 24px;
@@ -240,7 +240,7 @@
     color: var(--navy, #003580);
 }
 .contact-text h4 {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-display);
     font-size: 18px;
     font-weight: 800;
     text-transform: uppercase;
@@ -249,9 +249,9 @@
     margin-bottom: 4px;
 }
 .contact-text p {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 14px;
-    color: #6B7280;
+    color: var(--mid);
     margin: 0;
     line-height: 1.5;
 }
@@ -378,12 +378,12 @@
                     </div>
 
                     <div class="contact-item">
-                        <div class="contact-icon" style="border-color: #B91C1C; background: #FEF2F2;">
-                            <i class="bi bi-shield-fill-exclamation" style="color: #B91C1C;"></i>
+                        <div class="contact-icon" style="border-color: var(--alert); background: var(--alert-bg);">
+                            <i class="bi bi-shield-fill-exclamation" style="color: var(--alert);"></i>
                         </div>
                         <div class="contact-text">
-                            <h4 style="color: #B91C1C;">Hotline Insiden 24/7</h4>
-                            <p class="fw-bold" style="color: #000;">1110</p>
+                            <h4 style="color: var(--alert);">Hotline Insiden 24/7</h4>
+                            <p class="fw-bold" style="color: var(--ink);">1110</p>
                         </div>
                     </div>
 

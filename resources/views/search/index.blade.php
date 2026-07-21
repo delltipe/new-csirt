@@ -20,7 +20,7 @@
 }
 .search-header .container { position: relative; z-index: 1; }
 .search-header__title {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-display);
     font-size: 38px;
     font-weight: 900;
     text-transform: uppercase;
@@ -43,7 +43,7 @@
     border: none;
     border-radius: 0;
     padding: 12px 28px;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-display);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -57,7 +57,7 @@
     padding: 40px 0;
 }
 .search-section__title {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-display);
     font-size: 22px;
     font-weight: 800;
     text-transform: uppercase;
@@ -75,7 +75,7 @@
     border-bottom: none;
 }
 .search-result-item__title {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: var(--font-display);
     font-size: 18px;
     font-weight: 700;
     margin: 0 0 4px;

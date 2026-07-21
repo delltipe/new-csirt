@@ -16,6 +16,8 @@ html.accessibility-contrast-high {
   --white: #FFFFFF;
   --alert: #FF0000;
   --alert-bg: #FFFF00;
+  --alert-light: #FF4444;
+  --alert-dark: #CC0000;
 }
 
 html.accessibility-contrast-high body {
@@ -110,6 +112,8 @@ html.accessibility-contrast-dark {
   --white: #1a1a1a;
   --alert: #FF6B6B;
   --alert-bg: #330000;
+  --alert-light: #FF9999;
+  --alert-dark: #FF4444;
 }
 
 html.accessibility-contrast-dark {

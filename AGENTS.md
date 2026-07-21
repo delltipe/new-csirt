@@ -16,8 +16,9 @@ No linting, formatting, or typecheck commands are configured. Laravel Pint is av
 ## Stack
 
 - **Laravel 12** / PHP 8.2+ / SQLite (default)
-- **Tailwind CSS 4** (via Vite) AND **Bootstrap 5.3** (via CDN in layout) — both are in use
-- **Vite 7** for asset bundling
+- **Bootstrap 5.3** (via CDN in layout) for grid, forms, tables
+- **Custom design system** (`public/css/style.css`) with CSS custom properties — see `DESIGN_SYSTEM.md`
+- **Vite 7** for asset bundling (currently not actively used — layout loads CSS from CDN/public)
 - No CI/CD pipeline (no `.github/workflows`)
 - No Pest — uses PHPUnit 11
 
@@ -66,6 +67,16 @@ POST routes for incident reports and contact form have `throttle:60,1` middlewar
 - Static CSS/JS in `public/css/style.css` and `public/js/accessibility.js` (not Vite-compiled)
 - Tailwind is imported in `resources/css/app.css` but the main layout does not load the Vite-compiled CSS — it loads Bootstrap + `style.css` from CDN/public
 - Blade components are in `resources/views/components/` (navbar, footer, etc.)
+
+### Design System
+
+- Full documentation in `DESIGN_SYSTEM.md`
+- All colors/fonts defined as CSS custom properties in `public/css/style.css` `:root`
+- **Always use `var(--token)`** — never hardcode hex values, font names, or spacing
+- `public/css/accessibility-contrast.css` overrides all tokens for high-contrast and dark mode
+- Every Blade page must `@extends('layouts.app')` and use the dark header pattern
+- Content pages use custom card system (`.news-grid`, `.news-card`) — not Bootstrap `.card`
+- Admin pages may use Bootstrap `.table` and `.form-control` classes
 
 ### Tests
 

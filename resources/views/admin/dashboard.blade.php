@@ -183,7 +183,7 @@
 }
 
 .btn-delete:hover {
-    background: #991b1b;
+    background: var(--alert-dark);
 }
 
 .btn-logout {

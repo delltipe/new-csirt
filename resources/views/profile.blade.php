@@ -21,15 +21,15 @@
         );
     }
     .lapor-header__title {
-        font-family: 'Barlow Condensed', sans-serif;
+        font-family: var(--font-display);
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: -0.02em;
-        color: #ffffff;
+        color: var(--white);
         margin: 0;
     }
     .lapor-header__eyebrow {
-        font-family: 'Inter', sans-serif;
+        font-family: var(--font-body);
         font-size: 11px;
         font-weight: 700;
         letter-spacing: 0.1em;
@@ -40,9 +40,9 @@
 
     /* Layout Konten NYC Style */
     .profile-card {
-        background: #ffffff;
+        background: var(--white);
         border-radius: 0; /* Kaku/Kotak sesuai NYC.gov */
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--border);
         border-left: 8px solid var(--navy, #003580); /* Aksen Biru Navy Utama */
         box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
@@ -50,12 +50,12 @@
     .profile-logo-container {
         margin-bottom: 32px;
         padding-bottom: 24px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--border);
     }
 
     /* Tombol & CTA (Red Removed) */
     .btn-barlow {
-        font-family: 'Barlow Condensed', sans-serif;
+        font-family: var(--font-display);
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -80,7 +80,7 @@
     }
 
     .section-title {
-        font-family: 'Barlow Condensed', sans-serif;
+        font-family: var(--font-display);
         font-weight: 800;
         text-transform: uppercase;
         color: var(--ink);
@@ -95,7 +95,7 @@
     </div>
 </header>
 
-<section class="py-5 bg-light" style="font-family: 'Inter', sans-serif;">
+<section class="py-5 bg-light" style="font-family: var(--font-body);">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10"> {{-- Wide description space --}}
@@ -146,7 +146,7 @@
 
 <section class="cta-footer text-center">
     <div class="container">
-        <h2 class="text-white mb-4 display-4" style="font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase;">Butuh Bantuan Teknis?</h2>
+        <h2 class="text-white mb-4 display-4" style="font-family: var(--font-display); font-weight: 900; text-transform: uppercase;">Butuh Bantuan Teknis?</h2>
         <div class="d-flex flex-wrap justify-content-center gap-3">
             <a href="{{ route('incidents.create.step1') }}" class="btn btn-navy-bold btn-barlow fs-5">
                 Lapor Insiden

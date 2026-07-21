@@ -44,7 +44,7 @@
 .alert-error {
     background: var(--alert-bg);
     border-left: 4px solid var(--alert);
-    color: #991b1b;
+    color: var(--alert-dark);
     padding: 14px 16px;
     margin-bottom: 24px;
     font-size: 14px;
