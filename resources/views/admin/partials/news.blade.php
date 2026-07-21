@@ -28,6 +28,9 @@
         @endforeach
       </tbody>
     </table>
+    @if($news->hasPages())
+        <div class="mt-3">{{ $news->links() }}</div>
+    @endif
 </div>
 
 <!-- Add News Modal -->

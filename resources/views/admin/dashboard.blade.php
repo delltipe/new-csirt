@@ -307,6 +307,41 @@ function switchTab(tabName) {
     
     // Activate clicked tab
     event.target.classList.add('active');
+
+    // Update URL hash so pagination preserves the active tab
+    history.replaceState(null, '', '#' + tabName);
 }
+
+// On page load, restore tab from URL hash
+document.addEventListener('DOMContentLoaded', function() {
+    var hash = window.location.hash.replace('#', '');
+    var validTabs = ['news', 'events', 'infographics', 'warnings', 'laws', 'guides'];
+    if (hash && validTabs.includes(hash)) {
+        // Activate the tab button
+        var tabs = document.querySelectorAll('.admin-tab');
+        tabs.forEach(function(tab) {
+            tab.classList.remove('active');
+            if (tab.getAttribute('onclick').indexOf(hash) !== -1) {
+                tab.classList.add('active');
+            }
+        });
+        // Activate the pane
+        var panes = document.querySelectorAll('.tab-pane');
+        panes.forEach(function(pane) { pane.classList.remove('active'); });
+        var target = document.getElementById(hash + '-tab');
+        if (target) target.classList.add('active');
+    }
+
+    // Append active tab hash to all pagination links so the tab is preserved
+    var currentHash = window.location.hash;
+    if (currentHash) {
+        document.querySelectorAll('.pagination a').forEach(function(link) {
+            var href = link.getAttribute('href');
+            if (href && href.indexOf('#') === -1) {
+                link.setAttribute('href', href + currentHash);
+            }
+        });
+    }
+});
 </script>
 @endsection

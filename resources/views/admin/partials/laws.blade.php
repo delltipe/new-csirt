@@ -30,6 +30,9 @@
         @endforeach
       </tbody>
     </table>
+    @if($laws->hasPages())
+        <div class="mt-3">{{ $laws->links() }}</div>
+    @endif
 </div>
 
 <!-- Add Law Modal -->

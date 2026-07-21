@@ -28,6 +28,9 @@
         @endforeach
       </tbody>
     </table>
+    @if($guides->hasPages())
+        <div class="mt-3">{{ $guides->links() }}</div>
+    @endif
 </div>
 
 <!-- Add Guide Modal -->

@@ -30,6 +30,9 @@
         @endforeach
       </tbody>
     </table>
+    @if($events->hasPages())
+        <div class="mt-3">{{ $events->links() }}</div>
+    @endif
 </div>
 
 <!-- Add Event Modal -->

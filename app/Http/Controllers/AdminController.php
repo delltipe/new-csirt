@@ -34,12 +34,12 @@ class AdminController extends Controller
     // Show admin dashboard
     public function dashboard()
     {
-        $news = \App\Models\CybersecurityNews::orderBy('date', 'desc')->get();
-        $events = \App\Models\Event::orderBy('event_date', 'desc')->get();
-        $infographics = \App\Models\Infographic::orderByDesc('id')->get();
-        $warnings = \App\Models\WarningPost::orderBy('date', 'desc')->get();
-        $laws = \App\Models\LawRulePost::orderBy('date', 'desc')->get();
-        $guides = \App\Models\CybersecurityGuide::orderByDesc('id')->get();
+        $news = \App\Models\CybersecurityNews::orderBy('date', 'desc')->paginate(15);
+        $events = \App\Models\Event::orderBy('event_date', 'desc')->paginate(15);
+        $infographics = \App\Models\Infographic::orderByDesc('id')->paginate(15);
+        $warnings = \App\Models\WarningPost::orderBy('date', 'desc')->paginate(15);
+        $laws = \App\Models\LawRulePost::orderBy('date', 'desc')->paginate(15);
+        $guides = \App\Models\CybersecurityGuide::orderByDesc('id')->paginate(15);
         return view('admin.dashboard', compact('news', 'events', 'infographics', 'warnings', 'laws', 'guides'));
     }
 

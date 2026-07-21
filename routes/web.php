@@ -34,6 +34,9 @@ Route::get('/laws/{post}', [LawRulePostController::class, 'show'])->name('laws.s
 Route::get('/guides', [GuideController::class, 'index'])->name('guides.index');
 Route::get('/guides/{guide}', [GuideController::class, 'show'])->name('guides.show');
 
+// Search
+Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
+
 // ---------------------------------------------------------------
 // Incident Report Routes
 // ---------------------------------------------------------------

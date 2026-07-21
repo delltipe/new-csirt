@@ -28,6 +28,9 @@
         @endforeach
       </tbody>
     </table>
+    @if($infographics->hasPages())
+        <div class="mt-3">{{ $infographics->links() }}</div>
+    @endif
 </div>
 
 <!-- Add Infographic Modal -->

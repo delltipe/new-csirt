@@ -28,6 +28,9 @@
         @endforeach
       </tbody>
     </table>
+    @if($warnings->hasPages())
+        <div class="mt-3">{{ $warnings->links() }}</div>
+    @endif
 </div>
 
 <!-- Add Warning Modal -->
