@@ -45,27 +45,32 @@ class IncidentReportController extends Controller
             $proofPath = $request->file('proofPic')->store('proof_pics', 'public');
         }
 
-        // 3. Insert directly into the database using the $validated array
-        // We don't need array_merge($step1and2) anymore!
-        DB::table('lapor_insiden')->insert([
-            'fullName'       => $validated['fullName'],
-            'email'          => $validated['email'],
-            'phoneNumber'    => $validated['phoneNumber'],
-            'foundDate'      => $validated['foundDate'] ?? null,
-            'domain'         => $validated['domain'],
-            'url'            => $validated['url'],
-            'laporDesc'      => $validated['laporDesc'],
-            'riskType'       => $validated['riskType'] ?? null,
-            'riskLevel'      => $validated['riskLevel'] ?? null,
-            'cvssScore'      => $validated['cvssScore'] ?? null,
-            'videoUrl'       => $validated['videoUrl'] ?? null,
-            'reference'      => $validated['reference'] ?? null,
-            'recommendation' => $validated['recommendation'] ?? null,
-            'proofPic'       => $proofPath,
-            'status'         => 'Menunggu Validasi',
-            'created_at'     => now(),
-            'updated_at'     => now(),
-        ]);
+        // 3. Insert directly into the database
+        try {
+            DB::table('lapor_insiden')->insert([
+                'fullName'       => $validated['fullName'],
+                'email'          => $validated['email'],
+                'phoneNumber'    => $validated['phoneNumber'],
+                'foundDate'      => $validated['foundDate'] ?? null,
+                'domain'         => $validated['domain'],
+                'url'            => $validated['url'],
+                'laporDesc'      => $validated['laporDesc'],
+                'riskType'       => $validated['riskType'] ?? null,
+                'riskLevel'      => $validated['riskLevel'] ?? null,
+                'cvssScore'      => $validated['cvssScore'] ?? null,
+                'videoUrl'       => $validated['videoUrl'] ?? null,
+                'reference'      => $validated['reference'] ?? null,
+                'recommendation' => $validated['recommendation'] ?? null,
+                'proofPic'       => $proofPath,
+                'status'         => 'Menunggu Validasi',
+                'created_at'     => now(),
+                'updated_at'     => now(),
+            ]);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors([
+                'laporDesc' => 'Gagal menyimpan laporan. Silakan coba lagi atau hubungi CSIRT langsung.',
+            ]);
+        }
 
         // 4. Clean up
         return redirect()->route('incidents.thank-you')->with('success', 'Laporan berhasil dikirim!');

@@ -64,7 +64,11 @@ class AdminController extends Controller
             'source' => 'nullable|string',
             'date' => 'required|date',
         ]);
-        \App\Models\CybersecurityNews::create($data);
+        try {
+            \App\Models\CybersecurityNews::create($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal menyimpan berita. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'News added!');
     }
 
@@ -82,13 +86,21 @@ class AdminController extends Controller
             'source' => 'nullable|string',
             'date' => 'required|date',
         ]);
-        $newsItem->update($data);
+        try {
+            $newsItem->update($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal memperbarui berita. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'News updated!');
     }
 
     public function newsDelete($id) {
         $newsItem = \App\Models\CybersecurityNews::findOrFail($id);
-        $newsItem->delete();
+        try {
+            $newsItem->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['title' => 'Gagal menghapus berita. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'News deleted!');
     }
 
@@ -111,7 +123,11 @@ class AdminController extends Controller
             'registration_url' => 'nullable|string',
             'capacity' => 'nullable|integer',
         ]);
-        \App\Models\Event::create($data);
+        try {
+            \App\Models\Event::create($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal menyimpan event. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Event added!');
     }
 
@@ -132,13 +148,21 @@ class AdminController extends Controller
             'registration_url' => 'nullable|string',
             'capacity' => 'nullable|integer',
         ]);
-        $event->update($data);
+        try {
+            $event->update($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal memperbarui event. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Event updated!');
     }
 
     public function eventDelete($id) {
         $event = \App\Models\Event::findOrFail($id);
-        $event->delete();
+        try {
+            $event->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['title' => 'Gagal menghapus event. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Event deleted!');
     }
 
@@ -158,7 +182,11 @@ class AdminController extends Controller
             'source' => 'nullable|string',
             'date' => 'required|date',
         ]);
-        \App\Models\WarningPost::create($data);
+        try {
+            \App\Models\WarningPost::create($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal menyimpan peringatan. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Warning added!');
     }
 
@@ -176,13 +204,21 @@ class AdminController extends Controller
             'source' => 'nullable|string',
             'date' => 'required|date',
         ]);
-        $warning->update($data);
+        try {
+            $warning->update($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal memperbarui peringatan. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Warning updated!');
     }
 
     public function warningDelete($id) {
         $warning = \App\Models\WarningPost::findOrFail($id);
-        $warning->delete();
+        try {
+            $warning->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['title' => 'Gagal menghapus peringatan. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Warning deleted!');
     }
 
@@ -203,7 +239,11 @@ class AdminController extends Controller
             'time' => 'nullable|date_format:H:i',
             'downloadAmount' => 'nullable|integer',
         ]);
-        \App\Models\LawRulePost::create($data);
+        try {
+            \App\Models\LawRulePost::create($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal menyimpan peraturan. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Law added!');
     }
 
@@ -222,13 +262,21 @@ class AdminController extends Controller
             'time' => 'nullable|date_format:H:i',
             'downloadAmount' => 'nullable|integer',
         ]);
-        $law->update($data);
+        try {
+            $law->update($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal memperbarui peraturan. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Law updated!');
     }
 
     public function lawDelete($id) {
         $law = \App\Models\LawRulePost::findOrFail($id);
-        $law->delete();
+        try {
+            $law->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['title' => 'Gagal menghapus peraturan. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Law deleted!');
     }
 
@@ -246,7 +294,11 @@ class AdminController extends Controller
             'author' => 'required|string',
             'link' => 'required|string',
         ]);
-        \App\Models\CybersecurityGuide::create($data);
+        try {
+            \App\Models\CybersecurityGuide::create($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal menyimpan panduan. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Guide added!');
     }
 
@@ -262,13 +314,21 @@ class AdminController extends Controller
             'author' => 'required|string',
             'link' => 'required|string',
         ]);
-        $guide->update($data);
+        try {
+            $guide->update($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal memperbarui panduan. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Guide updated!');
     }
 
     public function guideDelete($id) {
         $guide = \App\Models\CybersecurityGuide::findOrFail($id);
-        $guide->delete();
+        try {
+            $guide->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['title' => 'Gagal menghapus panduan. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Guide deleted!');
     }
 
@@ -285,7 +345,11 @@ class AdminController extends Controller
             'title' => 'required|string',
             'thumbnail' => 'required|string',
         ]);
-        \App\Models\Infographic::create($data);
+        try {
+            \App\Models\Infographic::create($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal menyimpan infografis. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Infographic added!');
     }
 
@@ -300,13 +364,21 @@ class AdminController extends Controller
             'title' => 'required|string',
             'thumbnail' => 'required|string',
         ]);
-        $infographic->update($data);
+        try {
+            $infographic->update($data);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['title' => 'Gagal memperbarui infografis. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Infographic updated!');
     }
 
     public function infographicDelete($id) {
         $infographic = \App\Models\Infographic::findOrFail($id);
-        $infographic->delete();
+        try {
+            $infographic->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['title' => 'Gagal menghapus infografis. Silakan coba lagi.']);
+        }
         return redirect()->route('admin.dashboard')->with('success', 'Infographic deleted!');
     }
 }

@@ -24,10 +24,16 @@ class ContactController extends Controller
             'inquiry_type' => 'required|string|in:general,support,partnership,media,other',
         ]);
 
-        ContactMessage::create($validated);
+        try {
+            ContactMessage::create($validated);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors([
+                'message' => 'Gagal mengirim pesan. Silakan coba lagi.',
+            ]);
+        }
 
         return redirect()->route('contact.thank-you')
-            ->with('success', 'Your message has been sent. We will get back to you soon.');
+            ->with('success', 'Pesan berhasil dikirim. Kami akan segera merespons.');
     }
 
     public function thankYou()
