@@ -34,9 +34,6 @@ class AdminController extends Controller
     // Show admin dashboard
     public function dashboard()
     {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $news = \App\Models\CybersecurityNews::orderBy('date', 'desc')->get();
         $events = \App\Models\Event::orderBy('event_date', 'desc')->get();
         $infographics = \App\Models\Infographic::orderByDesc('id')->get();
@@ -55,17 +52,11 @@ class AdminController extends Controller
 
     // NEWS CRUD for admin
     public function newsList() {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $news = \App\Models\CybersecurityNews::orderBy('date', 'desc')->get();
         return view('admin.partials.news', compact('news'));
     }
 
     public function newsStore(Request $request) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $data = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
@@ -78,17 +69,11 @@ class AdminController extends Controller
     }
 
     public function newsEdit($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $newsItem = \App\Models\CybersecurityNews::findOrFail($id);
         return view('admin.news_edit', compact('newsItem'));
     }
 
     public function newsUpdate(Request $request, $id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $newsItem = \App\Models\CybersecurityNews::findOrFail($id);
         $data = $request->validate([
             'title' => 'required|string',
@@ -102,9 +87,6 @@ class AdminController extends Controller
     }
 
     public function newsDelete($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $newsItem = \App\Models\CybersecurityNews::findOrFail($id);
         $newsItem->delete();
         return redirect()->route('admin.dashboard')->with('success', 'News deleted!');
@@ -114,17 +96,11 @@ class AdminController extends Controller
     // EVENTS CRUD
     // ============================================
     public function eventsList() {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $events = \App\Models\Event::orderBy('event_date', 'desc')->get();
         return view('admin.partials.events', compact('events'));
     }
 
     public function eventStore(Request $request) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $data = $request->validate([
             'title' => 'required|string',
             'description' => 'nullable|string',
@@ -140,17 +116,11 @@ class AdminController extends Controller
     }
 
     public function eventEdit($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $event = \App\Models\Event::findOrFail($id);
         return view('admin.event_edit', compact('event'));
     }
 
     public function eventUpdate(Request $request, $id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $event = \App\Models\Event::findOrFail($id);
         $data = $request->validate([
             'title' => 'required|string',
@@ -167,9 +137,6 @@ class AdminController extends Controller
     }
 
     public function eventDelete($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $event = \App\Models\Event::findOrFail($id);
         $event->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Event deleted!');
@@ -179,17 +146,11 @@ class AdminController extends Controller
     // WARNINGS CRUD
     // ============================================
     public function warningsList() {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $warnings = \App\Models\WarningPost::orderBy('date', 'desc')->get();
         return view('admin.partials.warnings', compact('warnings'));
     }
 
     public function warningStore(Request $request) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $data = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
@@ -202,17 +163,11 @@ class AdminController extends Controller
     }
 
     public function warningEdit($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $warning = \App\Models\WarningPost::findOrFail($id);
         return view('admin.warning_edit', compact('warning'));
     }
 
     public function warningUpdate(Request $request, $id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $warning = \App\Models\WarningPost::findOrFail($id);
         $data = $request->validate([
             'title' => 'required|string',
@@ -226,9 +181,6 @@ class AdminController extends Controller
     }
 
     public function warningDelete($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $warning = \App\Models\WarningPost::findOrFail($id);
         $warning->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Warning deleted!');
@@ -238,17 +190,11 @@ class AdminController extends Controller
     // LAWS CRUD
     // ============================================
     public function lawsList() {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $laws = \App\Models\LawRulePost::orderBy('date', 'desc')->get();
         return view('admin.partials.laws', compact('laws'));
     }
 
     public function lawStore(Request $request) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $data = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
@@ -262,17 +208,11 @@ class AdminController extends Controller
     }
 
     public function lawEdit($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $law = \App\Models\LawRulePost::findOrFail($id);
         return view('admin.law_edit', compact('law'));
     }
 
     public function lawUpdate(Request $request, $id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $law = \App\Models\LawRulePost::findOrFail($id);
         $data = $request->validate([
             'title' => 'required|string',
@@ -287,9 +227,6 @@ class AdminController extends Controller
     }
 
     public function lawDelete($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $law = \App\Models\LawRulePost::findOrFail($id);
         $law->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Law deleted!');
@@ -299,17 +236,11 @@ class AdminController extends Controller
     // GUIDES CRUD
     // ============================================
     public function guidesList() {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $guides = \App\Models\CybersecurityGuide::all();
         return view('admin.partials.guides', compact('guides'));
     }
 
     public function guideStore(Request $request) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $data = $request->validate([
             'title' => 'required|string',
             'author' => 'required|string',
@@ -320,17 +251,11 @@ class AdminController extends Controller
     }
 
     public function guideEdit($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $guide = \App\Models\CybersecurityGuide::findOrFail($id);
         return view('admin.guide_edit', compact('guide'));
     }
 
     public function guideUpdate(Request $request, $id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $guide = \App\Models\CybersecurityGuide::findOrFail($id);
         $data = $request->validate([
             'title' => 'required|string',
@@ -342,9 +267,6 @@ class AdminController extends Controller
     }
 
     public function guideDelete($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $guide = \App\Models\CybersecurityGuide::findOrFail($id);
         $guide->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Guide deleted!');
@@ -354,17 +276,11 @@ class AdminController extends Controller
     // INFOGRAPHICS CRUD
     // ============================================
     public function infographicsList() {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $infographics = \App\Models\Infographic::all();
         return view('admin.partials.infographics', compact('infographics'));
     }
 
     public function infographicStore(Request $request) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $data = $request->validate([
             'title' => 'required|string',
             'thumbnail' => 'required|string',
@@ -374,17 +290,11 @@ class AdminController extends Controller
     }
 
     public function infographicEdit($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $infographic = \App\Models\Infographic::findOrFail($id);
         return view('admin.infographic_edit', compact('infographic'));
     }
 
     public function infographicUpdate(Request $request, $id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $infographic = \App\Models\Infographic::findOrFail($id);
         $data = $request->validate([
             'title' => 'required|string',
@@ -395,9 +305,6 @@ class AdminController extends Controller
     }
 
     public function infographicDelete($id) {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            return redirect()->route('admin.login');
-        }
         $infographic = \App\Models\Infographic::findOrFail($id);
         $infographic->delete();
         return redirect()->route('admin.dashboard')->with('success', 'Infographic deleted!');
