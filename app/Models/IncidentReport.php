@@ -9,20 +9,27 @@ class IncidentReport extends Model
     protected $table = 'lapor_insiden';
 
     protected $fillable = [
-        'reporter_name',
-        'reporter_email',
-        'reporter_phone',
-        'organization',
-        'incident_type',
-        'description',
-        'incident_date',
-        'affected_systems',
-        'actions_taken',
+        'fullName',
+        'email',
+        'phoneNumber',
+        'foundDate',
+        'domain',
+        'url',
+        'laporDesc',
+        'riskType',
+        'riskLevel',
+        'cvssScore',
+        'videoUrl',
+        'reference',
+        'recommendation',
+        'proofPic',
         'status',
-        'severity',
     ];
 
+    public $timestamps = true;
+
     protected $casts = [
-        'incident_date' => 'datetime',
+        'foundDate' => 'date',
+        'cvssScore' => 'float',
     ];
 }

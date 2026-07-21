@@ -18,21 +18,25 @@ class IncidentReportController extends Controller
         // 1. Validate EVERYTHING at once because it's all in this request now
         $validated = $request->validate([
             // Data from Step 1
-            'fullName'    => 'required|string|max:255',
-            'email'       => 'required|email|max:255',
-            'phoneNumber' => 'required|string|max:50',
-            'foundDate'   => 'nullable|date',
-            
+            'fullName'       => 'required|string|max:255',
+            'email'          => 'required|email|max:255',
+            'phoneNumber'    => 'required|string|max:50',
+            'foundDate'      => 'nullable|date',
+
             // Data from Step 2
-            'domain'      => 'required|string|max:255',
-            'url'         => 'required|url|max:255',
-            
+            'domain'         => 'required|string|max:255',
+            'url'            => 'required|url|max:255',
+
             // Data from Step 3
             'laporDesc'      => 'required|string',
+            'riskType'       => 'nullable|string|max:255',
             'riskLevel'      => 'nullable|string|max:255',
             'cvssScore'      => 'nullable|numeric|min:0|max:10',
+            'videoUrl'       => 'nullable|url|max:255',
+            'reference'      => 'nullable|string|max:255',
+            'recommendation' => 'nullable|string|max:255',
             'proofPic'       => 'nullable|file|mimes:png,jpg,jpeg|max:2048',
-            'captcha'        => 'required|in:JKT,jkt'
+            'captcha'        => 'required|in:JKT,jkt',
         ]);
 
         // 2. Handle the file upload
@@ -44,19 +48,23 @@ class IncidentReportController extends Controller
         // 3. Insert directly into the database using the $validated array
         // We don't need array_merge($step1and2) anymore!
         DB::table('lapor_insiden')->insert([
-            'fullName'    => $validated['fullName'],
-            'email'       => $validated['email'],
-            'phoneNumber' => $validated['phoneNumber'],
-            'foundDate'   => $validated['foundDate'],
-            'domain'      => $validated['domain'],
-            'url'         => $validated['url'],
-            'laporDesc'   => $validated['laporDesc'],
-            'riskLevel'   => $validated['riskLevel'] ?? null,
-            'cvssScore'   => $validated['cvssScore'] ?? null,
-            'proofPic'    => $proofPath,
-            'status'      => 'Menunggu Validasi',
-            'created_at'  => now(),
-            'updated_at'  => now(),
+            'fullName'       => $validated['fullName'],
+            'email'          => $validated['email'],
+            'phoneNumber'    => $validated['phoneNumber'],
+            'foundDate'      => $validated['foundDate'] ?? null,
+            'domain'         => $validated['domain'],
+            'url'            => $validated['url'],
+            'laporDesc'      => $validated['laporDesc'],
+            'riskType'       => $validated['riskType'] ?? null,
+            'riskLevel'      => $validated['riskLevel'] ?? null,
+            'cvssScore'      => $validated['cvssScore'] ?? null,
+            'videoUrl'       => $validated['videoUrl'] ?? null,
+            'reference'      => $validated['reference'] ?? null,
+            'recommendation' => $validated['recommendation'] ?? null,
+            'proofPic'       => $proofPath,
+            'status'         => 'Menunggu Validasi',
+            'created_at'     => now(),
+            'updated_at'     => now(),
         ]);
 
         // 4. Clean up
