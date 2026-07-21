@@ -34,7 +34,7 @@ Models map to non-English table names. Do not assume Laravel conventions:
 | Event | `event` |
 | Infographic | `infografis_keamanan` |
 | LawRulePost | `peraturan_kebijakan` |
-| CybersecurityGuide / Guide | `panduan_teknis` |
+| CybersecurityGuide | `panduan_teknis` |
 | IncidentReport | `lapor_insiden` |
 | ContactMessage | `contact_us` |
 
@@ -42,20 +42,23 @@ Models map to non-English table names. Do not assume Laravel conventions:
 
 Most migrations do not include `$table->timestamps()`. Corresponding models set `public $timestamps = false`. Only `users`, `contact_us`, and `lapor_insiden` have timestamps.
 
-### Duplicate Guide Models
-
-Both `Guide` and `CybersecurityGuide` map to `panduan_teknis`. `CybersecurityGuide` is used by `AdminController`; `Guide` exists but appears unused. Do not create a third model for this table.
-
 ### Admin Auth Is Custom (Not a Package)
 
 - `users` table has an `is_admin` boolean column
-- `AdminMiddleware` checks `Auth::user()->is_admin`
-- However, admin routes in `routes/web.php` use the `auth` middleware, not `admin`
-- `AdminController` re-checks `is_admin` manually in every method — this is redundant but intentional; keep the pattern if adding new admin methods
+- Admin routes use `['auth', 'admin']` middleware — `AdminMiddleware` checks `is_admin` at the route level
+- No manual `is_admin` checks in controllers
 
-### IncidentReportController Uses Raw DB
+### IncidentReport Model Matches Migration
 
-The `store` method inserts via `DB::table('lapor_insiden')` instead of Eloquent. The `IncidentReport` model's `$fillable` fields do not match the actual migration columns. Do not rely on the model for incident report writes.
+The `IncidentReport` model's `$fillable` fields match the migration columns and Blade form fields exactly. The controller still uses `DB::table('lapor_insiden')` for inserts but with full error handling (try/catch).
+
+### Error Handling
+
+All form submissions and admin CRUD write operations (create/update/delete) are wrapped in try/catch blocks. On failure, users are redirected back with an error message instead of seeing a raw 500 page. Error messages are in Indonesian.
+
+### Rate Limiting
+
+POST routes for incident reports and contact form have `throttle:60,1` middleware (60 requests/minute per IP). GET routes are not throttled.
 
 ### Layout and Styling
 
