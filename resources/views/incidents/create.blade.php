@@ -677,16 +677,17 @@
 
                         <div class="form-row cols-3">
                             <div class="form-field">
-                                <label class="lapor-label" for="riskType">Jenis Risiko</label>
+                                <label class="lapor-label" for="riskType">Jenis Risiko <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--mid);">(jika diketahui)</span></label>
                                 <input type="text" id="riskType" name="riskType"
                                        class="lapor-input"
                                        value="{{ old('riskType') }}"
                                        placeholder="Misal: XSS, SQL Injection">
                             </div>
                             <div class="form-field">
-                                <label class="lapor-label" for="riskLevel">Tingkat Risiko</label>
+                                <label class="lapor-label" for="riskLevel">Tingkat Risiko <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--mid);">(jika diketahui)</span></label>
                                 <select id="riskLevel" name="riskLevel" class="lapor-select lapor-input">
                                     <option value="" disabled {{ old('riskLevel') ? '' : 'selected' }}>Pilih...</option>
+                                    <option value="Tidak tahu"  {{ old('riskLevel') == 'Tidak tahu'  ? 'selected' : '' }}>Tidak tahu</option>
                                     <option value="Low"      {{ old('riskLevel') == 'Low'      ? 'selected' : '' }}>Low</option>
                                     <option value="Medium"   {{ old('riskLevel') == 'Medium'   ? 'selected' : '' }}>Medium</option>
                                     <option value="High"     {{ old('riskLevel') == 'High'     ? 'selected' : '' }}>High</option>
@@ -694,7 +695,7 @@
                                 </select>
                             </div>
                             <div class="form-field">
-                                <label class="lapor-label" for="cvssScore">CVSS Score</label>
+                                <label class="lapor-label" for="cvssScore">CVSS Score <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--mid);">(jika diketahui)</span></label>
                                 <input type="number" step="0.1" min="0" max="10"
                                        id="cvssScore" name="cvssScore"
                                        class="lapor-input"
@@ -705,7 +706,7 @@
 
                         <div class="form-row">
                             <div class="form-field">
-                                <label class="lapor-label" for="videoUrl">URL Bukti Video</label>
+                                <label class="lapor-label" for="videoUrl">URL Bukti Video <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--mid);">(jika ada)</span></label>
                                 <input type="url" id="videoUrl" name="videoUrl"
                                        class="lapor-input"
                                        value="{{ old('videoUrl') }}"
@@ -721,7 +722,7 @@
                         </div>
 
                         <div class="form-field">
-                            <label class="lapor-label" for="recommendation">Rekomendasi Perbaikan</label>
+                            <label class="lapor-label" for="recommendation">Rekomendasi Perbaikan <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--mid);">(jika ada)</span></label>
                             <input type="text" id="recommendation" name="recommendation"
                                    class="lapor-input"
                                    value="{{ old('recommendation') }}"
