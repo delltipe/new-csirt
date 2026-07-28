@@ -60,7 +60,7 @@
 .event-hero__title {
     font-family: var(--font-display);
     font-size: clamp(28px, 4.5vw, 48px);
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.01em;
     text-transform: uppercase;
     color: var(--white);
@@ -129,7 +129,7 @@
 .event-desc-card__heading {
     font-family: var(--font-display);
     font-size: 20px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--ink);
@@ -159,7 +159,7 @@
     transform: translateY(-50%);
     font-family: var(--font-display);
     font-size: 120px;
-    font-weight: 900;
+    font-weight: 800;
     color: rgba(255,255,255,0.04);
     line-height: 1;
     pointer-events: none;
@@ -167,7 +167,7 @@
 .event-register-card__title {
     font-family: var(--font-display);
     font-size: 22px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--white);
@@ -188,7 +188,7 @@
     color: var(--navy-dim);
     font-family: var(--font-display);
     font-size: 14px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     padding: 12px 24px;

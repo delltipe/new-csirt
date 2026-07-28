@@ -37,7 +37,7 @@
     transform: translateY(-50%);
     font-family: var(--font-display);
     font-size: 140px;
-    font-weight: 900;
+    font-weight: 800;
     color: rgba(255,255,255,0.04);
     line-height: 1;
     pointer-events: none;
@@ -61,7 +61,7 @@
 .thankyou-card__header h1 {
     font-family: var(--font-display);
     font-size: clamp(28px, 4vw, 44px);
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--white);
@@ -119,7 +119,7 @@
     justify-content: center;
     font-family: var(--font-display);
     font-size: 14px;
-    font-weight: 900;
+    font-weight: 800;
     color: var(--navy);
     flex-shrink: 0;
     margin-top: 1px;

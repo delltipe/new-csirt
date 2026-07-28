@@ -1,15 +1,15 @@
 /* =============================================================
    JAKARTA CSIRT — Global Stylesheet
    Design: NYC.gov-inspired, DKI Jakarta blue palette
-   Fonts: Barlow Condensed (display) + Inter (body)
+   Fonts: Plus Jakarta Sans (display) + Inter (body)
    ============================================================= */
 
 /* -------------------------------------------------------------
    GOOGLE FONTS IMPORT
    Include this in your main layout <head> instead if preferred:
-   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
    ------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 
 
 /* -------------------------------------------------------------
@@ -33,7 +33,7 @@
     --alert-light: #EF4444;  /* Lighter alert: badges, hover accents */
     --alert-dark:  #991B1B;  /* Darker alert: error text */
 
-    --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --font-display: 'Plus Jakarta Sans', sans-serif;
     --font-body:    'Inter', system-ui, sans-serif;
 
     --ease: 0.16s ease;
@@ -133,7 +133,7 @@ button {
 .section-title {
     font-family: var(--font-display);
     font-size: 36px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--ink);
@@ -534,7 +534,7 @@ button {
     transform: translateY(-50%);
     font-family: var(--font-display);
     font-size: 260px;
-    font-weight: 900;
+    font-weight: 800;
     color: rgba(255, 255, 255, 0.03);
     letter-spacing: -8px;
     line-height: 1;
@@ -577,7 +577,7 @@ button {
 .cta-section__title {
     font-family: var(--font-display);
     font-size: clamp(36px, 4.5vw, 58px);
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.01em;
     text-transform: uppercase;
     color: var(--white);
@@ -617,7 +617,7 @@ button {
     color: var(--navy-dim);
     font-family: var(--font-display);
     font-size: 16px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     padding: 17px 36px;

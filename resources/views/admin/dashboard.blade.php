@@ -18,7 +18,7 @@
 .admin-title {
     font-family: var(--font-display);
     font-size: 42px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--ink);

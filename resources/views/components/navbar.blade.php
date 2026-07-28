@@ -92,7 +92,7 @@
 
     .nav-logo__fallback {
         font-family: var(--font-display);
-        font-weight: 900;
+        font-weight: 800;
         font-size: 18px;
         letter-spacing: 0.06em;
         color: var(--navy);

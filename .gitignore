@@ -28,3 +28,13 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+!/storage/framework/.gitkeep
+!/storage/logs/.gitkeep
+
+# Stale artifact paths from Windows cross-mount
+/public/D:*/**

@@ -29,7 +29,7 @@
 .login-title {
     font-family: var(--font-display);
     font-size: 28px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--white);

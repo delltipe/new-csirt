@@ -146,7 +146,7 @@
 
 <section class="cta-footer text-center">
     <div class="container">
-        <h2 class="text-white mb-4 display-4" style="font-family: var(--font-display); font-weight: 900; text-transform: uppercase;">Butuh Bantuan Teknis?</h2>
+        <h2 class="text-white mb-4 display-4" style="font-family: var(--font-display); font-weight: 800; text-transform: uppercase;">Butuh Bantuan Teknis?</h2>
         <div class="d-flex flex-wrap justify-content-center gap-3">
             <a href="{{ route('incidents.create.step1') }}" class="btn btn-navy-bold btn-barlow fs-5">
                 Lapor Insiden

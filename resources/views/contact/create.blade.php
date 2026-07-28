@@ -45,7 +45,7 @@
 .lapor-header h1 {
     font-family: var(--font-display);
     font-size: clamp(32px, 5vw, 52px);
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--white);
@@ -79,7 +79,7 @@
 .form-step__title {
     font-family: var(--font-display);
     font-size: 26px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--ink, #0A0F1A);
@@ -180,7 +180,7 @@
     color: var(--white);
     font-family: var(--font-display);
     font-size: 16px;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     padding: 15px 36px;
