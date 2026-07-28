@@ -82,7 +82,7 @@ resources/views/layouts/
 ### Design Tokens
 The widget uses your existing design system:
 - Colors: Navy, Ink, White, Border from `style.css`
-- Fonts: Inter (body), Barlow Condensed (display)
+- Fonts: Inter (body), Plus Jakarta Sans (display)
 - Spacing: Consistent with your layout
 
 ## Customization

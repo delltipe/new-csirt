@@ -14,7 +14,7 @@ class HomeController extends Controller
     public function index(): View
     {
         $recentNews = CybersecurityNews::orderBy('date', 'desc')
-            ->limit(3)
+            ->limit(6)
             ->get();
 
         $upcomingEvents = Event::where('event_date', '>=', now())

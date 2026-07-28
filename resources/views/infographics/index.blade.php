@@ -53,7 +53,7 @@
 .infographics-header h1 {
     font-family: var(--font-display);
     font-size: clamp(32px, 5vw, 54px);
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     color: var(--white);

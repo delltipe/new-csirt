@@ -39,11 +39,11 @@ All tokens are defined in `public/css/style.css` under `:root`. **Never hardcode
 
 | Token | Value | Usage |
 |---|---|---|
-| `--font-display` | `'Barlow Condensed', 'Arial Narrow', sans-serif` | Headings, buttons, labels, navigation |
+| `--font-display` | `'Plus Jakarta Sans', sans-serif` | Headings, buttons, labels, navigation |
 | `--font-body` | `'Inter', system-ui, sans-serif` | Body text, descriptions, form inputs |
 
 **Font weights used:**
-- Display: 500, 700, 800, 900
+- Display: 500, 600, 700, 800
 - Body: 300, 400, 500, 600
 
 ### Transitions
@@ -157,7 +157,7 @@ Small label above the title in the dark header:
 
 | Class | Usage | Style |
 |---|---|---|
-| `.btn-primary-solid` | Primary CTA on dark backgrounds | White bg, navy text, uppercase, Barlow Condensed |
+| `.btn-primary-solid` | Primary CTA on dark backgrounds | White bg, navy text, uppercase, Plus Jakarta Sans |
 | `.btn-ghost` | Secondary CTA on dark backgrounds | Transparent, white border |
 | `.btn-navy` | Primary CTA on light backgrounds | Navy bg, white text, uppercase |
 
