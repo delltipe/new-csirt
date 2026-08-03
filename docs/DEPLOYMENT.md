@@ -16,14 +16,24 @@
 
 ## Option A: Render.com (Recommended for Prototype)
 
-Render.com has native PHP support and a generous free tier.
+Render.com has a generous free tier, but **no native PHP runtime** — the available
+runtimes are Docker, Elixir, Go, Node, Python 3, Ruby, Rust. The app therefore
+deploys via the **Docker runtime** using the `Dockerfile` committed at the repo root.
+
+### Dockerfile overview
+
+- Base image `php:8.2-cli` with `pdo_sqlite`, `mbstring`, `zip`, `bcmath` extensions
+- `composer install --no-dev --optimize-autoloader` at build
+- No npm/Vite — the layout loads assets from `public/` directly
+- On container start: `key:generate`, `migrate --force --seed`, `storage:link`,
+  then `php artisan serve --host=0.0.0.0 --port=$PORT`
 
 ### Steps
 
 1. **Push to GitHub**
    ```bash
-   git add .
-   git commit -m "deploy: initial production setup"
+   git add Dockerfile .dockerignore
+   git commit -m "deploy: add Dockerfile for Render Docker runtime"
    git push origin main
    ```
 
@@ -31,30 +41,32 @@ Render.com has native PHP support and a generous free tier.
    - Go to [render.com](https://render.com) → New → Web Service
    - Connect your GitHub repo
    - Settings:
-     - **Runtime:** PHP
-     - **Build Command:** `composer install && php artisan migrate --seed`
-     - **Start Command:** `php artisan serve --host=0.0.0.0 --port=$PORT`
+     - **Runtime:** Docker
+     - **Build & Start:** leave default — Render auto-detects the `Dockerfile`
+     - **Instance Type:** Free
 
 3. **Environment Variables** (set in Render dashboard):
    ```
    APP_NAME=JakartaProv-CSIRT
    APP_ENV=production
-   APP_KEY=base64:...          # Generate with: php artisan key:generate --show
    APP_DEBUG=false
    APP_URL=https://your-app.onrender.com
-   SESSION_DRIVER=file
    DB_CONNECTION=sqlite
    ```
-
-4. **Storage symlink** — Add to build command:
-   ```bash
-   php artisan storage:link
+   Optional but recommended — a stable key generated once locally:
+   ```
+   APP_KEY=base64:...          # Generate with: php artisan key:generate --show
    ```
 
+4. **Verify** — homepage loads, then `/admin/login` with the seeded
+   credentials `admin@gmail.com` / `12345678`. Change the admin password after
+   deploy (it is public in the repo).
+
 ### Limitations (Free Tier)
-- Spins down after 15 minutes of inactivity (first request takes ~30s)
-- SQLite file storage resets on redeploy (fine for prototype)
-- No background queue worker
+- Spins down after ~15 minutes of inactivity (first request takes ~30s)
+- SQLite file storage resets on redeploy/restart (fine for prototype)
+- Uploaded incident proof images (`storage/app/public`) are ephemeral
+- No background queue worker (jobs run inline via sync)
 
 ---
 

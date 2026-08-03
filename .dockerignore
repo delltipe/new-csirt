@@ -1,0 +1,14 @@
+vendor
+node_modules
+.env
+.git
+.gitignore
+.obsidian
+.vscode
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+database/database.sqlite
+presentation
+*.md
