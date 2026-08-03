@@ -49,7 +49,7 @@ Most migrations omit `$table->timestamps()`; matching models set `public $timest
 
 Auth is Laravel's built-in `users`-table auth (login via `Auth::attempt` in `AdminController::login`), with an `is_admin` boolean flag on `users`. There is **no** public registration/login flow — `/login`, `/register`, `/profile`, `/dashboard` are static `view()` routes with no POST handler. Only `/admin/login` posts.
 
-**Known bug (as of now):** the `admin` middleware alias is defined only in the legacy `app/Http/Kernel.php` `$routeMiddleware`, but this app uses `bootstrap/app.php` config and binds Laravel's default kernel — the alias is **not registered**. Hitting any `['auth','admin']` route as an authenticated user throws `BindingResolutionException: Target class [admin] does not exist.` Register it with `$middleware->alias(['admin' => \App\Http\Middleware\AdminMiddleware::class])` in `bootstrap/app.php` (or inline the FQCN in routes). `AdminMiddleware` itself does the `is_admin` check.
+**Fixed (commit `ee81505`):** the `admin` middleware alias was previously broken — defined only in the legacy `app/Http/Kernel.php` `$routeMiddleware` (unused, app binds Laravel's default kernel via `bootstrap/app.php`). It is now registered via `$middleware->alias(['admin' => \App\Http\Middleware\AdminMiddleware::class])` in `bootstrap/app.php`. Do not move it back to `Kernel.php`.
 
 ### IncidentReport Uses Raw DB::table Inserts
 
@@ -77,6 +77,17 @@ All form submissions and admin CRUD writes are wrapped in try/catch — on failu
 - `public/css/accessibility-contrast.css` overrides tokens for high-contrast and dark mode
 - Content pages use custom card system (`.news-grid`, `.news-card`) — not Bootstrap `.card`
 - Admin pages may use Bootstrap `.table` and `.form-control`
+
+### Admin Views (Layout Gotcha)
+
+Admin pages render inside the public layout (`@yield('content')` of `layouts/app.blade.php`) wrapped in `.admin-container` panes in `admin/dashboard.blade.php`. The dashboard is a tabbed interface (`#news-tab` … `#guides-tab`); each tab `@include`s a partial from `resources/views/admin/partials/`.
+
+**When editing partials, keep the `<div>` balance intact.** An extra stray `</div>` at the end of a partial (found in `events.blade.php` and `warnings.blade.php`, fixed in commit `00d7931`) breaks the whole dashboard layout: subsequent tabs and the logout button escape the centered container. Verify with:
+
+```powershell
+# balanced partials should all show diff=0
+$files = Get-ChildItem resources/views/admin/partials/*.blade.php; foreach ($f in $files) { $c = Get-Content $f.FullName -Raw; "{0,-22} diff={1}" -f $f.Name, (([regex]::Matches($c,'<div[\s>]')).Count - ([regex]::Matches($c,'</div>')).Count) }
+```
 
 ### Tests
 
@@ -107,3 +118,16 @@ Run from `presentation/`. These are regenerated artifacts, not hand-edited. Also
 - **The `event` table name collides with MySQL reserved word** — fine in SQLite but breaks on MySQL without quoting; note `docs/DEPLOYMENT.md` covers production setup
 - **Blade views use Indonesian text throughout** — government portal for DKI Jakarta
 - `config.php`, `bootstrap/app.php` trust all proxies (`trustProxies(at: '*')`)
+
+## Deployment (Render, Docker runtime)
+
+**Status (as of 2026-08-04): NOT deployed.** The repo is deploy-ready (`Dockerfile` + `.dockerignore` committed, `docs/DEPLOYMENT.md` updated, commit `b9e13c2`), but Render blocked signup: Render's UI offers no PHP runtime (only Docker/Elixir/Go/Node/Python/Ruby/Rust), and creating a Web Service on the free Hobby plan requires card verification — the debit card was declined by the bank. Next session: either get a working card (enable international/online payments in the bank app) or move to Railway/Koyeb/Fly.io, which accept the same Dockerfile.
+
+Key deploy facts (already committed, do not re-derive):
+
+- **Runtime:** Docker, not PHP — Render has no PHP runtime option. `Dockerfile` base: `php:8.2-cli` + `pdo_sqlite/mbstring/zip/bcmath`.
+- **Start command (in CMD):** `php artisan key:generate --force --quiet && php artisan migrate --force --seed && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT` — runs at container start, so a fresh SQLite DB is migrated+seeded every boot (seeders are non-idempotent, but the ephemeral disk resets anyway; never add `--seed` to a long-lived DB).
+- **Build:** `composer install --no-dev --optimize-autoloader`; **no npm/Vite** (assets live in `public/`).
+- `database/database.sqlite` is git-ignored (`database/.gitignore`); build must `touch` it.
+- Data is ephemeral on free tier: SQLite file + uploaded proof images reset on redeploy/spin-down. Fine for prototype.
+- Render env vars to set: `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://<name>.onrender.com`, `DB_CONNECTION=sqlite` (stable `APP_KEY` optional since it's regenerated each start).

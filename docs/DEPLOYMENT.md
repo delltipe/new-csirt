@@ -20,6 +20,12 @@ Render.com has a generous free tier, but **no native PHP runtime** — the avail
 runtimes are Docker, Elixir, Go, Node, Python 3, Ruby, Rust. The app therefore
 deploys via the **Docker runtime** using the `Dockerfile` committed at the repo root.
 
+> **Blocked (as of 2026-08-04):** Render requires card verification even for the
+> free Hobby plan; a debit card was declined by the bank. Either enable
+> international/online payments on the card (or use a credit card) and retry, or
+> use the `Dockerfile` on an alternative platform (Railway, Koyeb, Fly.io) that
+> doesn't require a card to start.
+
 ### Dockerfile overview
 
 - Base image `php:8.2-cli` with `pdo_sqlite`, `mbstring`, `zip`, `bcmath` extensions
