@@ -16,20 +16,29 @@
 
 ## Option A: Render.com (Recommended for Prototype)
 
-Render.com has a generous free tier, but **no native PHP runtime** — the available
-runtimes are Docker, Elixir, Go, Node, Python 3, Ruby, Rust. The app therefore
-deploys via the **Docker runtime** using the `Dockerfile` committed at the repo root.
+Render.com has a generous free tier. Render **does not have a native PHP runtime** —
+the available runtimes are Docker, Elixir, Go, Node, Python 3, Ruby, Rust — so the
+app deploys via the **Docker runtime** using the `Dockerfile` committed at the repo
+root. Render's Docker runtime is confirmed working: the "New Web Service" form
+auto-detects the `Dockerfile` and auto-fills the repo, branch, and fields.
 
-> **Blocked (as of 2026-08-04):** Render requires card verification even for the
-> free Hobby plan; a debit card was declined by the bank. Either enable
-> international/online payments on the card (or use a credit card) and retry, or
-> use the `Dockerfile` on an alternative platform (Railway, Koyeb, Fly.io) that
-> doesn't require a card to start.
+> **Blocked (as of 2026-08-05):** Render requires card verification even for the
+> free plan, and the bank declines the debit card. This is a **bank-side decline,
+> not a Render UI bug** — the Stripe card step silently re-prompts with no error
+> text after entry (classic bank-decline signature). The card works for streaming
+> (e.g., Crunchyroll) but is blocked for the cloud-hosting/stripe.com merchant
+> category, even with international payments enabled. Fix options: enable
+> per-category toggles in the bank app ("digital goods / online subscriptions"),
+> enable 3D-Secure/OTP, whitelist `stripe.com`, or try a virtual card from another
+> bank (Jenius/Jago). Cardless fallbacks: **Hetzner + PayPal** (same Dockerfile,
+> ~€4/mo), **Zeabur + Wonder Mesh** (zero code change), **Cloudflare Tunnel** (free).
 
 ### Dockerfile overview
 
 - Base image `php:8.2-cli` with `pdo_sqlite`, `mbstring`, `zip`, `bcmath` extensions
 - `composer install --no-dev --optimize-autoloader` at build
+- **`cp .env.example .env`** at build — required, because `php artisan key:generate`
+  fails at boot if no `.env` exists (`.env` is git-ignored, so `COPY . .` omits it)
 - No npm/Vite — the layout loads assets from `public/` directly
 - On container start: `key:generate`, `migrate --force --seed`, `storage:link`,
   then `php artisan serve --host=0.0.0.0 --port=$PORT`
@@ -45,20 +54,23 @@ deploys via the **Docker runtime** using the `Dockerfile` committed at the repo 
 
 2. **Create a Render Web Service**
    - Go to [render.com](https://render.com) → New → Web Service
-   - Connect your GitHub repo
+   - Connect your GitHub repo (auto-detected)
    - Settings:
-     - **Runtime:** Docker
-     - **Build & Start:** leave default — Render auto-detects the `Dockerfile`
+     - **Name:** `csirt-jakarta` (yields `https://csirt-jakarta.onrender.com`)
+     - **Language/Runtime:** Docker (auto-detected)
+     - **Branch:** `main`
+     - **Region:** Singapore (Southeast Asia)
      - **Instance Type:** Free
+     - **Docker Command:** leave empty (the Dockerfile `CMD` handles startup)
 
 3. **Environment Variables** (set in Render dashboard):
    ```
-   APP_NAME=JakartaProv-CSIRT
    APP_ENV=production
    APP_DEBUG=false
-   APP_URL=https://your-app.onrender.com
+   APP_URL=https://csirt-jakarta.onrender.com
    DB_CONNECTION=sqlite
    ```
+   `APP_KEY` is not needed — the Dockerfile CMD regenerates it each boot.
    Optional but recommended — a stable key generated once locally:
    ```
    APP_KEY=base64:...          # Generate with: php artisan key:generate --show

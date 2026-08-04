@@ -121,13 +121,23 @@ Run from `presentation/`. These are regenerated artifacts, not hand-edited. Also
 
 ## Deployment (Render, Docker runtime)
 
-**Status (as of 2026-08-04): NOT deployed.** The repo is deploy-ready (`Dockerfile` + `.dockerignore` committed, `docs/DEPLOYMENT.md` updated, commit `b9e13c2`), but Render blocked signup: Render's UI offers no PHP runtime (only Docker/Elixir/Go/Node/Python/Ruby/Rust), and creating a Web Service on the free Hobby plan requires card verification — the debit card was declined by the bank. Next session: either get a working card (enable international/online payments in the bank app) or move to Railway/Koyeb/Fly.io, which accept the same Dockerfile.
+**Status (as of 2026-08-05): NOT deployed.** The repo is deploy-ready and Render's Docker runtime is confirmed working (the New Web Service form auto-detects Docker and the repo auto-fills — the old "no PHP runtime" concern is obsolete). The **only remaining blocker is card verification**: Render requires card verification even on the Free plan, and the bank declines the debit card.
+
+- The decline is **bank-side, not a Render UI bug**: the Stripe card step silently re-prompts (no error text) after entry — classic signature of a bank decline. Card works for Crunchyroll (entertainment MCC) but is blocked for cloud-hosting/stripe.com MCC, even with "international payments" enabled. Likely per-category block or failing 3D-Secure/OTP.
+- **Last session fixes (committed):** commit `b9e13c2` added `Dockerfile` + `.dockerignore`; commit `ebc4e54` added `cp .env.example .env` to the Dockerfile `RUN` step — **required**, because `php artisan key:generate` fails at boot if no `.env` file exists (`.env` is git-ignored). Keep that line.
+- **Next session paths:** (a) unblock the card — bank app: per-category toggles ("digital goods/online subscriptions"), enable 3D-Secure/OTP, whitelist `stripe.com`, or try a virtual card from another bank (Jenius/Jago); or (b) go cardless: **Hetzner + PayPal** (same Dockerfile, 24/7, ~€4/mo), **Zeabur + Wonder Mesh** (zero code change, needs the generated install script run on the dev machine — creates a `zeabur` sudo user + Tailscale + K3s; script generated but NOT run), or **Cloudflare Tunnel** (free, no card, needs a PC online).
 
 Key deploy facts (already committed, do not re-derive):
 
-- **Runtime:** Docker, not PHP — Render has no PHP runtime option. `Dockerfile` base: `php:8.2-cli` + `pdo_sqlite/mbstring/zip/bcmath`.
+- **Runtime:** Docker. Render now offers a Docker runtime (the form auto-detects the committed `Dockerfile`). Base: `php:8.2-cli` + `pdo_sqlite/mbstring/zip/bcmath`.
 - **Start command (in CMD):** `php artisan key:generate --force --quiet && php artisan migrate --force --seed && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT` — runs at container start, so a fresh SQLite DB is migrated+seeded every boot (seeders are non-idempotent, but the ephemeral disk resets anyway; never add `--seed` to a long-lived DB).
-- **Build:** `composer install --no-dev --optimize-autoloader`; **no npm/Vite** (assets live in `public/`).
+- **Build:** `composer install --no-dev --optimize-autoloader` **and `cp .env.example .env`**; **no npm/Vite** (assets live in `public/`).
 - `database/database.sqlite` is git-ignored (`database/.gitignore`); build must `touch` it.
 - Data is ephemeral on free tier: SQLite file + uploaded proof images reset on redeploy/spin-down. Fine for prototype.
-- Render env vars to set: `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://<name>.onrender.com`, `DB_CONNECTION=sqlite` (stable `APP_KEY` optional since it's regenerated each start).
+- Render env vars to set: `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://<name>.onrender.com`, `DB_CONNECTION=sqlite` (stable `APP_KEY` optional since it's regenerated each start). No `APP_NAME` needed (defaults fine).
+
+## Deployment (other platforms — explored, NOT pursued)
+
+- **Vercel:** feasible but requires a real architecture port, NOT a drop-in: Vercel has no PHP/Docker and no persistent filesystem → must switch SQLite→**Neon Postgres** (free), add `vercel-php@0.9.0` runtime + `api/index.php` + `vercel.json` rewrites, move sessions/cache off `file`, and move incident proof-pic uploads to **Supabase Storage** (free) since uploads can't persist on Vercel's disk. User chose "just exploring" — not pursuing. Hobby is free, no card, personal-use only, ~300s function ceiling, cold starts.
+- **Koyeb:** abandoned — console shows "Koyeb is joining Mistral" banner, API/token page broken, CLI login fails.
+- **Zeabur:** signup done (GitHub auth). Chose the free server path: New Project → Bind External Server → **Wonder Mesh**. A server card was created and an install script generated (`curl ... api.zeabur.com/mesh-server/install.sh?token=... | sudo bash`) but **NOT run** — it installs Tailscale, creates a `zeabur` sudo user (passwordless sudo), enables SSH password auth, and installs K3s. Invasive to the dev machine; user was cautious. Status: "Server not connected yet."
