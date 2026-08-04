@@ -11,6 +11,7 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader \
+    && cp .env.example .env \
     && php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');" \
     && chmod -R 777 storage bootstrap/cache
 
