@@ -21,8 +21,9 @@ provincial government. Two audiences, two subsystems:
 | **Content publishing** | Admin authors → public readers | Read-heavy, admin CRUD |
 | **Inbound submissions** | Public users → CSIRT staff | Write-heavy, intake workflow |
 
-There is **no public registration/login**. The only authenticated role is a
-single admin (flagged via `is_admin` on the user record).
+There is **public registration/login** for incident reporters (bug hunters),
+gated behind an `is_bug_hunter` flag on the user record. Admins are flagged with
+`is_admin`. No 2FA, no email verification, no password reset.
 
 ### Core flow
 
@@ -30,20 +31,26 @@ single admin (flagged via `is_admin` on the user record).
 Public (unauthenticated)
   1. Browse content (6 types)              → read queries
   2. Search across all content             → read query
-  3. Submit incident report (+ optional file) → validated write
+  3. Register / log in (bug hunters)       → session auth (is_bug_hunter)
   4. Submit contact message                → validated write
+
+Reporter (authenticated, is_bug_hunter)
+  1. Accept Terms & Conditions (versioned) → write tac_agreement
+  2. Submit incident report (+ ≤3 bukti)   → validated write (ticket no.)
+  3. Track own tickets (list + detail)     → read (scoped to user)
 
 Admin (authenticated, is_admin)
   1. Login / logout                        → session auth
   2. CRUD all 6 content types              → read/write
-  3. Review inbound submissions            → read + status transitions
+  3. Review incident reports               → read + CWE/severity + status transitions
 ```
 
 ---
 
 ## 2. Entities & Data Contract
 
-Nine domain tables. A reimplementation should define **foreign keys** between
+Ten domain tables (6 content + incident reports, attachments, TaC agreements,
+contact) plus `users`. A reimplementation should define **foreign keys** between
 related tables (the original has none — integrity is application-level only) and
 use **timestamps on every table** (the original omits them on most).
 
@@ -120,27 +127,42 @@ path), plus type-specific extras. All are ordered by date descending in listings
 | `link` | text | external URL |
 | `file_path` | text | nullable — uploaded file |
 
-### 2.2 Submission tables (2)
+### 2.2 Submission tables
 
-**Incident Reports** — the core inbound product of a CSIRT portal.
+**Incident Reports** — the core inbound product of a CSIRT portal. Submitted by
+an authenticated reporter; assigned CWE/severity by an admin during review.
 | Column | Type | Notes |
 |---|---|---|
 | `id` | PK | |
-| `full_name` | text | reporter name (required) |
-| `email` | text | reporter email (required, valid email) |
-| `phone_number` | text | reporter phone (required) |
-| `found_date` | date | nullable — when incident was discovered |
-| `domain` | text | affected domain, expected `*.jakarta.go.id` (required) |
-| `url` | text | affected URL (required, valid URL) |
-| `description` | text | incident description (required) |
-| `risk_type` | text | nullable — e.g. "XSS", "SQL Injection" |
-| `risk_level` | text | nullable — Low / Medium / High / Critical |
-| `cvss_score` | float | nullable — 0.0 to 10.0 |
-| `video_url` | text | nullable — evidence video |
-| `reference` | text | nullable — CVE links, articles |
-| `recommendation` | text | nullable — suggested fix |
-| `proof_pic` | text | nullable — file path to uploaded screenshot |
+| `user_id` | FK → users.id | reporter (required) |
+| `tiket_no` | text | unique, `INS-YYYY-XXXX` — human-facing ticket number |
+| `kategori_insiden` | text | required — e.g. "Phishing", "Malware / Ransomware", "Lainnya" |
+| `waktu_kejadian` | datetime | required — when the incident occurred |
+| `lokasi_url` | text | required, valid URL — affected location |
+| `down_time` | time | required — downtime of the affected service |
+| `deskripsi` | text | required — incident description |
+| `tindakan_teknis` | text | required — technical actions already taken |
+| `cwe` | text | nullable — CWE identifier, assigned by admin |
+| `severity` | enum | nullable — Low / Medium / High / Critical, assigned by admin |
 | `status` | enum | default `menunggu_validasi` (see §4.4) |
+| `created_at` / `updated_at` | timestamp | required |
+
+**Incident Attachments** — 0–3 rows per report, each a file **or** URL.
+| Column | Type | Notes |
+|---|---|---|
+| `id` | PK | |
+| `laporan_id` | FK → incident reports | parent report |
+| `jenis` | enum | `file` / `url` |
+| `value` | text | stored file path or evidence URL |
+| `created_at` / `updated_at` | timestamp | required |
+
+**TaC Agreements** — records acceptance of the current Terms & Conditions version.
+| Column | Type | Notes |
+|---|---|---|
+| `id` | PK | |
+| `user_id` | FK → users.id | reporter |
+| `version` | text | e.g. `2026.08` |
+| `agreed_at` | timestamp | when accepted |
 | `created_at` / `updated_at` | timestamp | required |
 
 **Contact Messages**
@@ -167,8 +189,11 @@ path), plus type-specific extras. All are ordered by date descending in listings
 | `email` | text | unique |
 | `password` | text | strongly hashed (bcrypt/argon2) |
 | `is_admin` | bool | default false — gates all admin access |
+| `is_bug_hunter` | bool | default false — set true on public registration |
 
-Only one admin exists (created by seeding). No public signup.
+Public signup creates reporters with `is_bug_hunter = true`; admins are created
+by seeding. The same login page routes admins to `/admin` and reporters to the
+TaC gate.
 
 ---
 
@@ -205,17 +230,37 @@ UI-agnostic endpoints. Any route shape is fine as long as semantics match.
 - Implementation: simple substring/`LIKE` match is acceptable for the prototype;
   full-text search (Postgres `tsvector`, etc.) is a recommended upgrade.
 
-### 3.3 Public write (rate-limited)
+### 3.3 Public auth & contact
 
 | Method/Path | Semantics |
 |---|---|
-| `POST /report-incident` | Create incident report. See §4.1 for validation, §4.2 for file upload, §4.3 for CAPTCHA. On success return a confirmation/thank-you. On failure return the input back with per-field errors. |
-| `POST /contact` | Create contact message. Same success/failure contract. |
+| `GET /register` | render registration form |
+| `POST /register` | create user with `is_bug_hunter = true`; log in; redirect to TaC gate |
+| `GET /login` | render login form |
+| `POST /login` | authenticate; redirect admins → admin area, reporters → TaC gate |
+| `POST /logout` | destroy session, redirect home |
+| `GET /contact` | render contact form |
+| `POST /contact` | create contact message — rate-limited (**60 requests/min per IP**) |
+| `GET /thank-you/contact` | confirmation page |
 
-Both endpoints **rate-limited to 60 requests/min per IP**. Get-only routes are
-not rate-limited.
+No 2FA, email verification, or password reset in the current build.
 
-### 3.4 Admin
+### 3.4 Reporter (bug hunter, authenticated)
+
+| Method/Path | Semantics |
+|---|---|
+| `GET /bug-hunter` | ticket list for the current user (No Tiket, tanggal, kategori, CWE, severity, status, aksi) |
+| `GET /bug-hunter/laporan` | TaC gate; skip if current version already agreed |
+| `POST /bug-hunter/laporan/agree` | record acceptance for the current TaC version |
+| `GET /bug-hunter/laporan/baru` | render single-page report form |
+| `POST /bug-hunter/laporan/simpan` | create incident report + attachments — rate-limited (**60 requests/min per IP**). See §4.1 for validation, §4.2 for uploads. Returns a thank-you page showing the ticket number. |
+| `GET /bug-hunter/laporan/selesai` | thank-you / confirmation page |
+| `GET /bug-hunter/laporan/{id}` | full report detail (scoped to current user), incl. attachment links |
+
+All routes require a valid session auth + `is_bug_hunter`. Only the incident
+submit POST (and the contact POST, §3.3) are rate-limited; GET routes are not.
+
+### 3.5 Admin
 
 All admin routes require a valid **session auth** + **`is_admin`** check. Failed
 auth redirects to the admin login. All writes follow the error-handling
@@ -237,13 +282,13 @@ convention in §4.5.
 | `POST /admin/{type}/{id}/update` | update record |
 | `POST /admin/{type}/{id}/delete` | delete record |
 
-**Submission review (new in this spec — closes a gap in the original):**
+**Submission review:**
 
 | Method/Path | Semantics |
 |---|---|
 | `GET /admin/incidents` | paginated incident reports (15/page), newest first, filterable by `status` |
-| `GET /admin/incidents/{id}` | full report detail incl. proof file link |
-| `POST /admin/incidents/{id}/status` | transition `status` to a valid value (see §4.4) |
+| `GET /admin/incidents/{id}` | full report detail incl. attachments + reporter info |
+| `POST /admin/incidents/{id}/review` | assign `cwe` + `severity` (Low/Medium/High/Critical) and transition `status` to a valid value (see §4.4) |
 | `GET /admin/contacts` | paginated contact messages, filterable by `status` |
 | `GET /admin/contacts/{id}` | full message detail |
 | `POST /admin/contacts/{id}/status` | transition `status` to a valid value |
@@ -259,40 +304,49 @@ they are potential legal evidence and must not be hard-deleted.
 
 Every write validates at the boundary before persisting:
 
-- Required fields enforced (per §2).
-- Formats: `email`, `url`, dates.
-- Ranges: `cvss_score` 0.0–10.0; file size ≤ 2MB.
-- Enums whitelisted: `inquiry_type`, report `risk_level`, all `status` values.
+- Required fields enforced (per §2); incident reports additionally require an
+  authenticated reporter and acceptance of the current TaC version.
+- Formats: `email`, `url`, dates, times (`H:i`).
+- Size: attachment files ≤ **5MB**.
+- Enums whitelisted: `inquiry_type`, attachment `jenis` (`file`/`url`),
+  severity (`Low`/`Medium`/`High`/`Critical`), all `status` values.
+- Max 3 attachment rows per incident report; each row is a file **or** a URL.
 - Reject invalid input with **per-field** error messages; preserve the user's
   input so they don't retype everything.
 
 ### 4.2 File uploads
 
-- Accepted types for incident proof: **PNG / JPG / JPEG**, max **2MB**.
+- Accepted types for incident evidence: **PNG / JPG / JPEG / GIF / PDF**, max
+  **5MB**.
 - Laws/guides/warnings may also carry an uploaded file (PDF/image).
 - Store files on persistent storage (local public dir or object storage); store
   only the **relative path/object key** in the DB row.
 - Serve via a public URL (local: `public/storage/...` symlink; cloud: CDN).
-- Only an image is expected for incident reports; validate the MIME type.
 
-### 4.3 CAPTCHA / abuse prevention
+### 4.3 Abuse prevention
 
-The original uses a trivial static token (`JKT`/`jkt`) — **do not reproduce it**.
-In a rework use a real CAPTCHA (hCaptcha, reCAPTCHA, Turnstile) on the incident
-report form. Rate limiting (§3.3) applies regardless.
+Incident submission requires authentication + TaC acceptance and the submit
+POST is **rate-limited (60 requests/min per IP)**. There is no CAPTCHA in the
+current build — a real CAPTCHA (hCaptcha, reCAPTCHA, Turnstile) is a recommended
+upgrade. Rate limiting applies regardless.
 
 ### 4.4 Status workflows
 
 Incident report statuses (closed enum, default `menunggu_validasi`):
-`menunggu_validasi` (pending validation) → `divalidasi` (validated) |
-`ditolak` (rejected) | `ditindaklanjuti` (being acted upon).
+
+```
+menunggu_validasi → divalidasi → ditindaklanjuti → dipulihkan → selesai
+        │               │              │
+        └───→ ditolak ←─┴──────────────┘            (terminal)
+```
+
+`ditolak` (rejected) is reachable from `menunggu_validasi`, `divalidasi`, and
+`ditindaklanjuti`; `dipulihkan` only moves to `selesai`; `selesai` and `ditolak`
+are terminal. Transitions are validated on the server (`canTransitionTo`) before
+persisting. Labels are localized on the UI side; stored enum values stay stable.
 
 Contact message statuses (closed enum, default `pending`):
 `pending` → `in_progress` | `resolved`.
-
-The original stores the initial status at insert time and never changes it
-afterward. This spec **adds admin transitions** (see §3.4). Display localized
-labels on the UI side; keep the stored enum values stable.
 
 ### 4.5 Error handling convention
 
@@ -315,7 +369,8 @@ Every write operation must be wrapped in a try/catch. On failure:
 
 - 1 admin user: `admin@gmail.com` / password `12345678` (change in production).
 - 5 news, 6 events, 2 warnings, 1 law.
-- Guides, infographics, contact messages, and incident reports start empty.
+- Guides, infographics, contact messages, incident reports, attachments, and TaC
+  agreements start empty.
 - Seeders should be idempotent or run only on a fresh database.
 
 ---
@@ -325,7 +380,8 @@ Every write operation must be wrapped in a try/catch. On failure:
 - **Frontend**: layout, CSS/design system, fonts, accessibility widget, Bootstrap,
   component libraries, JS bundlers. The incident form may be a wizard client-side;
   the backend contract stays a single validated POST.
-- **Auth UX**: password reset, email verification, public registration.
+- **Auth UX**: password reset, email verification, 2FA. Public registration for
+  bug hunters **is** implemented.
 - **Background jobs**: the prototype runs synchronously; a queue is only needed
   if notifications/email are added.
 - **Analytics**: the original has placeholder-only statistics pages.
@@ -337,12 +393,10 @@ Every write operation must be wrapped in a try/catch. On failure:
 These are deliberate improvements over the original — an agent should implement
 them:
 
-1. **Real CAPTCHA** on incident reports (original used a trivially broken static token).
-2. **Foreign keys** between related rows (original had none).
-3. **Timestamps on all tables** (original omitted them on most content tables).
-4. **Admin submission-review workflow** (original ingested reports/messages but had no management UI).
-5. **`events` table name** (original `event` collides with a MySQL reserved word).
-6. **Soft-delete for incident reports** (legal-evidence retention).
-7. **Status transitions** enforced as a closed enum + admin action, not free-form text.
-8. **Full-text search** as an upgrade over substring matching.
-9. **Stable app encryption key + hashed admin password** in any production deployment (default creds are public).
+1. **Real CAPTCHA** on incident reports (current build has none — relies on auth + rate limiting).
+2. **Foreign keys** between related rows (current build has none — application-level integrity only).
+3. **Timestamps on all tables** (content tables still omit them).
+4. **`events` table name** (current `event` collides with a MySQL reserved word).
+5. **Soft-delete for incident reports** (legal-evidence retention).
+6. **Full-text search** as an upgrade over substring matching.
+7. **Stable app encryption key + hashed admin password** in any production deployment (default creds are public).

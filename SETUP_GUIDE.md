@@ -25,8 +25,8 @@ Your Jakarta CSIRT portal has been successfully set up with all essential models
 6. **CybersecurityGuide** - Educational guides and best practices
    - Fields: title, content, category, difficulty_level
 
-7. **IncidentReport** - User-submitted cyber incident reports
-   - Fields: reporter_name, reporter_email, reporter_phone, organization, incident_type, description, incident_date, affected_systems, actions_taken, status, severity
+7. **IncidentReport** - Cyber incident reports submitted by registered reporters
+   - Fields: user_id, tiket_no, kategori_insiden, waktu_kejadian, lokasi_url, down_time, deskripsi, tindakan_teknis, cwe, severity, status
 
 8. **ContactMessage** - Contact form submissions
    - Fields: name, email, phone, organization, subject, message, inquiry_type, status
@@ -48,9 +48,16 @@ Your Jakarta CSIRT portal has been successfully set up with all essential models
 - `GET /guides/{id}` - Guide detail
 
 ### Form Submission Routes
-- `GET /report-incident` - Incident report form
-- `POST /report-incident` - Submit incident report
-- `GET /thank-you/incident` - Thank you page
+- `GET /register` - Public registration (bug hunters)
+- `POST /register` - Create account (`is_bug_hunter = true`)
+- `GET /login` - Public login
+- `POST /login` - Authenticate (redirects admins → `/admin`, bug hunters → TaC)
+- `POST /logout` - Destroy session
+- `GET /bug-hunter/laporan` - Terms & Conditions gate
+- `POST /bug-hunter/laporan/agree` - Accept TaC
+- `GET /bug-hunter/laporan/baru` - Incident report form
+- `POST /bug-hunter/laporan/simpan` - Submit incident report (throttled)
+- `GET /bug-hunter/laporan/selesai` - Thank-you page (shows ticket number)
 - `GET /contact` - Contact form
 - `POST /contact` - Submit contact message
 - `GET /thank-you/contact` - Thank you page
@@ -63,41 +70,50 @@ Your Jakarta CSIRT portal has been successfully set up with all essential models
 4. **WarningPostController** - Manages security warnings
 5. **LawRulePostController** - Manages laws and regulations
 6. **GuideController** - Manages cybersecurity guides
-7. **IncidentReportController** - Handles incident report submissions
-8. **ContactController** - Handles contact form submissions
+7. **AuthController** - Public registration/login/logout for bug hunters
+8. **BugHunterController** - TaC gate + single-page incident report intake + reporter dashboard
+9. **ContactController** - Handles contact form submissions
+10. **AdminController** - Admin login + content CRUD + incident review
 
 ## View Structure
 
 ```
 resources/views/
-├── incidents/
-│   ├── create.blade.php      (Incident report form)
-│   └── thank-you.blade.php   (Submission confirmation)
+├── auth/
+│   ├── login.blade.php           (Public login)
+│   └── register.blade.php        (Public registration)
+├── bug-hunter/
+│   ├── tac.blade.php             (Terms & Conditions gate)
+│   ├── create.blade.php          (Incident report form)
+│   ├── dashboard.blade.php       (Reporter ticket list)
+│   ├── show.blade.php            (Ticket detail)
+│   └── thank-you.blade.php       (Submission confirmation + ticket number)
 ├── contact/
-│   ├── create.blade.php      (Contact form)
-│   └── thank-you.blade.php   (Submission confirmation)
+│   ├── create.blade.php          (Contact form)
+│   └── thank-you.blade.php       (Submission confirmation)
 ├── news/
-│   ├── index.blade.php       (News listing)
-│   └── show.blade.php        (News detail)
+│   ├── index.blade.php           (News listing)
+│   └── show.blade.php            (News detail)
 ├── events/
-│   ├── index.blade.php       (Events listing)
-│   └── show.blade.php        (Event detail)
+│   ├── index.blade.php           (Events listing)
+│   └── show.blade.php            (Event detail)
 ├── infographics/
-│   ├── index.blade.php       (Gallery)
-│   └── show.blade.php        (Detail)
+│   ├── index.blade.php           (Gallery)
+│   └── show.blade.php            (Detail)
 ├── warnings/
-│   ├── index.blade.php       (Warnings listing)
-│   └── show.blade.php        (Warning detail)
+│   ├── index.blade.php           (Warnings listing)
+│   └── show.blade.php            (Warning detail)
 ├── laws/
-│   ├── index.blade.php       (Laws listing)
-│   └── show.blade.php        (Law detail)
+│   ├── index.blade.php           (Laws listing)
+│   └── show.blade.php            (Law detail)
 ├── guides/
-│   ├── index.blade.php       (Guides listing)
-│   └── show.blade.php        (Guide detail)
-├── dashboard.blade.php       (Admin dashboard)
-├── login.blade.php          (Login page)
-├── register.blade.php       (Registration page)
-└── welcome.blade.php        (Homepage)
+│   ├── index.blade.php           (Guides listing)
+│   └── show.blade.php            (Guide detail)
+├── admin/
+│   ├── dashboard.blade.php       (Admin dashboard)
+│   └── incidents/                (Incident review list + detail)
+├── dashboard.blade.php           (Placeholder)
+└── welcome.blade.php             (Homepage)
 ```
 
 ## Next Steps - Implementing Your Figma Design
@@ -117,7 +133,7 @@ For each section (news, events, guides, etc.):
 - Apply consistent styling across all pages
 
 ### 3. Forms Styling
-- Update `incidents/create.blade.php` with your Figma form design
+- Update `bug-hunter/create.blade.php` with your Figma form design
 - Update `contact/create.blade.php` with your Figma form design
 - Style validation error messages to match your design
 
@@ -142,13 +158,13 @@ Create reusable components if needed:
 - **Views**: `resources/views/`
 - **Migrations**: `database/migrations/`
 
-## Admin Features (To Implement)
+## Admin Features
 
-For administrative access, you'll want to add:
+Administrative access is implemented:
 - Admin dashboard to manage content
 - CRUD operations for all models
+- Incident review workflow (`/admin/incidents`)
 - User authentication (login/register)
-- Admin panel routes and views
 
 ## Database Commands
 

@@ -38,10 +38,6 @@ Gotchas for this subsystem:
 - Admin login: the public `/login` also works for the admin user (is_admin check)
   and the admin nav CTA points to `/admin`.
 
-NOTE: the "Admin Auth" / "no public signup" notes below still describe the
-pre-rework state for the content subsystem — the incident subsystem now has
-full public registration/login.
-
 ## Stack
 
 - **Laravel 12** / PHP 8.2+ / SQLite (default)
@@ -66,21 +62,28 @@ Models map to non-English table names. Do not assume Laravel conventions:
 | LawRulePost | `peraturan_kebijakan` |
 | CybersecurityGuide | `panduan_teknis` |
 | IncidentReport | `lapor_insiden` |
+| LampiranInsiden | `lampiran_insiden` |
+| TacAgreement | `tac_agreements` |
 | ContactMessage | `contact_us` |
 
 ### Timestamps Disabled on Most Models
 
-Most migrations omit `$table->timestamps()`; matching models set `public $timestamps = false`. Only `users`, `contact_us`, and `lapor_insiden` have timestamps.
+Most migrations omit `$table->timestamps()`; matching models set `public $timestamps = false`. Only `users`, `contact_us`, `lapor_insiden`, `lampiran_insiden`, and `tac_agreements` have timestamps.
 
-### Admin Auth Is Custom (Not a Package)
+### Auth Is Custom (Not a Package)
 
-Auth is Laravel's built-in `users`-table auth (login via `Auth::attempt` in `AdminController::login`), with an `is_admin` boolean flag on `users`. There is **no** public registration/login flow — `/login`, `/register`, `/profile`, `/dashboard` are static `view()` routes with no POST handler. Only `/admin/login` posts.
+Auth is Laravel's built-in `users`-table auth. Two controllers drive it:
 
-**Fixed (commit `ee81505`):** the `admin` middleware alias was previously broken — defined only in the legacy `app/Http/Kernel.php` `$routeMiddleware` (unused, app binds Laravel's default kernel via `bootstrap/app.php`). It is now registered via `$middleware->alias(['admin' => \App\Http\Middleware\AdminMiddleware::class])` in `bootstrap/app.php`. Do not move it back to `Kernel.php`.
+- **`AdminController::login`** — admin-only login at `/admin/login`; checks `is_admin`.
+- **`AuthController`** — public `/register` + `/login` for bug hunters (`routes/web.php:44-48`). Registration creates a user with `is_bug_hunter = true`; login redirects admins to `/admin` and bug hunters to `bug-hunter.tac`. No 2FA, no email verification.
 
-### IncidentReport Uses Raw DB::table Inserts
+`/profile` and `/dashboard` remain static `view()` routes with no POST handler.
 
-The wizard is a **single-page JS stepper** — exactly one POST to `/report-incident/store` (`incidents.store`), where `IncidentReportController::store` runs one `$request->validate([...])` covering all steps. Do not add per-step routes. The controller writes via `DB::table('lapor_insiden')->insert(...)` with try/catch, though the `IncidentReport` model's `$fillable` matches the migration columns.
+**Middleware aliases** (`admin` + `bug_hunter`) are registered in `bootstrap/app.php` — NOT the legacy `app/Http/Kernel.php` (unused; app binds Laravel's default kernel). Do not move them back to `Kernel.php`.
+
+### Incident Report Intake (Eloquent, single POST)
+
+Incident intake is a **logged-in single-page form** (no wizard, no per-step routes). Flow: login → TaC gate (`bug-hunter.tac`) → `bug-hunter/create.blade.php` → one POST `/bug-hunter/laporan/simpan` (`bug-hunter.store`, `throttle:60,1`) → thank-you with ticket number. `BugHunterController::store` runs one `$request->validate([...])` covering all fields, then creates the `IncidentReport` via Eloquent plus up to 3 `LampiranInsiden` rows (jenis `file`|`url`). Ticket numbers `INS-YYYY-XXXX` come from `generateTiketNo()`. Do not add per-step routes.
 
 ### Error Handling
 

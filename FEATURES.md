@@ -86,25 +86,61 @@ JakartaProv-CSIRT is a public-facing portal for the Computer Security Incident R
 
 ---
 
-## Incident Reporting
+## Incident Reporting (Bug Hunter Portal)
 
-### Report Form (`/report-incident`)
-- **Purpose:** Multi-step incident reporting wizard
+Reporters register/login publicly (`/register`, `/login` — no 2FA, no email
+verification) and reach a Komdigi-style reporter portal under `/bug-hunter`.
+
+### Registration & Login (`/register`, `/login`)
+- **Purpose:** Public account creation for incident reporters
 - **Features:**
-  - 3-step JS wizard (no page reloads between steps):
-    - **Step 1:** Reporter data (name, email, phone, date found)
-    - **Step 2:** Website data (domain, URL)
-    - **Step 3:** Incident details (description, risk type/level, CVSS score, evidence, recommendation)
-  - CAPTCHA verification ("JKT" / "jkt")
-  - File upload for proof screenshots (PNG/JPG, max 2MB)
-  - Risk fields are optional — designed for non-technical users
-  - Rate limited: 60 requests/minute per IP
-- **Routes:** `incidents.create.step1`, `incidents.store`, `incidents.thank-you`
-- **Storage:** Files stored in `storage/app/public/proof_pics/`
+  - Register: name, email, password (min 8, confirmation) → `is_bug_hunter = true`
+  - Login redirects admins to `/admin` and bug hunters to the TaC gate
+  - No 2FA, no email verification, no password reset
+- **Routes:** `register`, `register.submit`, `login`, `login.submit`, `logout`
 
-### Thank You (`/report-incident/thank-you`)
-- **Purpose:** Confirmation after successful report submission
-- **Route:** `incidents.thank-you`
+### Terms & Conditions Gate (`/bug-hunter/laporan`)
+- **Purpose:** Consent gate before reporting; versioned so a new T&C re-asks
+- **Features:**
+  - One-time accept per `TAC_VERSION` (`2026.08`), stored in `tac_agreements`
+  - Users who already agreed go straight to the form
+- **Routes:** `bug-hunter.tac`, `bug-hunter.agree`
+
+### Report Form (`/bug-hunter/laporan/baru`)
+- **Purpose:** Single-page incident report form (replaces the old 3-step wizard)
+- **Features:**
+  - Fields: `kategori_insiden` (dropdown), `waktu_kejadian`, `lokasi_url`,
+    `down_time`, `deskripsi`, `tindakan_teknis`, plus up to **3 bukti** rows
+    (each a file **or** URL)
+  - File types: png/jpg/jpeg/gif/pdf, max 5MB → `storage/app/public/bukti_laporan/`
+  - One POST, one `validate()` — no per-step routes
+  - Rate limited: 60 requests/minute per IP
+  - Creates an `IncidentReport` (status `menunggu_validasi`) with ticket number
+    `INS-YYYY-XXXX` + `LampiranInsiden` rows
+- **Routes:** `bug-hunter.create`, `bug-hunter.store`
+
+### Reporter Dashboard (`/bug-hunter`)
+- **Purpose:** Ticket list for the logged-in reporter
+- **Features:**
+  - Columns: `No | No Tiket | Tanggal Pengajuan | Jenis Laporan | CWE | Severity | Status | Aksi`
+  - Row action links to the per-ticket detail page
+- **Routes:** `bug-hunter.dashboard`
+
+### Ticket Detail (`/bug-hunter/laporan/{id}`)
+- **Purpose:** Full report view, scoped to the logged-in reporter
+- **Features:**
+  - Report fields + attachment list (files linked via `storage/`, URLs external)
+  - Shows current status label
+- **Route:** `bug-hunter.show` — static paths (`baru`, `selesai`) MUST be declared before this dynamic route
+
+### Thank You (`/bug-hunter/laporan/selesai`)
+- **Purpose:** Confirmation after successful report submission, shows the ticket number
+- **Route:** `bug-hunter.thank-you`
+
+### Status Flow
+- `menunggu_validasi → divalidasi → ditindaklanjuti → dipulihkan → selesai`
+- `ditolak` reachable from `menunggu_validasi`, `divalidasi`, `ditindaklanjuti`
+- Transitions + labels live on `App\Models\IncidentReport`
 
 ---
 
@@ -120,15 +156,17 @@ JakartaProv-CSIRT is a public-facing portal for the Computer Security Incident R
 
 ---
 
-## Authentication (Placeholders)
+## Authentication
 
 | Route | Status |
 |-------|--------|
-| `/login` | Placeholder — "under development" page |
-| `/register` | Placeholder — "under development" page |
+| `/login` | Public login — admins → `/admin`, bug hunters → TaC gate (`AuthController@login`) |
+| `/register` | Public registration — creates `is_bug_hunter = true` user (`AuthController@register`) |
+| `/admin/login` | Admin-only login (`AdminController@login`, checks `is_admin`) |
+| `/logout` | Session destroy |
 | `/dashboard` | Placeholder — "under development" page |
 
-These pages extend the layout but have no functionality yet.
+Admins use the standard `users` table; there is no separate admin model.
 
 ---
 
@@ -163,6 +201,13 @@ Each content type has full CRUD (Create, Read, Update, Delete):
 | Infographics | `admin.infographics.list` | `admin.infographic.store` | `admin.infographic.edit` | `admin.infographic.delete` |
 
 All admin write operations are wrapped in try/catch with Indonesian error messages.
+
+### Incident Review
+
+- **List:** `GET /admin/incidents` — paginated (15/page), newest first, filterable by `status`
+- **Detail:** `GET /admin/incidents/{id}` — full report incl. attachments + reporter info
+- **Review:** `POST /admin/incidents/{id}/review` — assign `cwe` (string) + `severity` (Low/Medium/High/Critical) and transition `status` (validated via `canTransitionTo()`)
+- Reached from the "Insiden" tab on the admin dashboard (shows a pending-count badge)
 
 ---
 
@@ -199,7 +244,7 @@ On fresh migration, the database is seeded with:
 | `peraturan_kebijakan` | 1 | Sample regulation |
 | `peringatan_keamanan` | 2 | Security warnings |
 
-**Empty on fresh install:** `panduan_teknis`, `infografis_keamanan`, `contact_us`, `lapor_insiden`
+**Empty on fresh install:** `panduan_teknis`, `infografis_keamanan`, `contact_us`, `lapor_insiden`, `lampiran_insiden`, `tac_agreements`
 
 ---
 
@@ -221,11 +266,10 @@ resources/views/
 ├── infographics/                  # Infographics listing + detail
 ├── laws/                          # Laws listing + detail
 ├── guides/                        # Guides listing + detail
-├── incidents/                     # Report form + thank you
+├── auth/                          # login.blade.php + register.blade.php
+├── bug-hunter/                    # TaC gate, report form, dashboard, detail, thank-you
 ├── contact/                       # Contact form + thank you
-├── admin/                         # Admin dashboard + CRUD partials + edit pages
-├── login.blade.php                # Placeholder
-├── register.blade.php             # Placeholder
+├── admin/                         # Admin dashboard + CRUD partials + edit pages + incidents/
 ├── dashboard.blade.php            # Placeholder
 ├── statistics.blade.php           # Placeholder
 ├── publickey.blade.php            # Placeholder

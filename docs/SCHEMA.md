@@ -1,6 +1,6 @@
 # Database Schema — Jakarta CSIRT Portal
 
-> All tables, columns, and types for the Laravel project at `/mnt/d/laravel projects/new-csirt`.
+> All tables, columns, and types for the Laravel project at `/mnt/d/intern project/new-csirt`.
 > SQLite by default. See `DEPLOYMENT.md` for MySQL/PostgreSQL migration notes.
 
 ---
@@ -16,7 +16,8 @@
 | email_verified_at | timestamp | nullable |
 | password | string | |
 | remember_token | string(100) | nullable |
-| is_admin | boolean | default: false — custom admin flag |
+| is_admin | boolean | default: false — admin flag |
+| is_bug_hunter | boolean | default: false — reporter flag (set true on public registration) |
 | created_at | timestamp | |
 | updated_at | timestamp | |
 
@@ -98,25 +99,51 @@
 | Column | Type | Notes |
 |---|---|---|
 | id | bigIncrements | PK |
-| fullName | string | reporter name |
-| email | string | reporter email |
-| phoneNumber | string | reporter phone |
-| foundDate | date | nullable — when incident was found |
-| domain | string | affected domain (*.jakarta.go.id) |
-| url | text | affected URL |
-| loporDesc | text | incident description |
-| riskType | string | nullable — e.g. "XSS", "SQL Injection" |
-| riskLevel | string | nullable — Low/Medium/High/Critical |
-| cvssScore | float | nullable — 0.0 to 10.0 |
-| videoUrl | text | nullable — evidence video |
-| reference | text | nullable — CVE links, articles |
-| recommendation | text | nullable — suggested fix |
-| proofPic | string | nullable — file path to screenshot |
-| status | string | default: 'Menunggu Validasi' |
+| user_id | unsignedBigInteger | reporter (`users.id`) — no FK enforced |
+| tiket_no | string | unique — `INS-YYYY-XXXX` |
+| kategori_insiden | string | e.g. "Phishing", "Malware / Ransomware" |
+| waktu_kejadian | dateTime | nullable — when incident occurred |
+| lokasi_url | text | affected URL |
+| down_time | time | nullable — downtime of the service |
+| deskripsi | text | incident description |
+| tindakan_teknis | text | nullable — technical actions already taken |
+| cwe | string | nullable — assigned by admin (e.g. "CWE-79") |
+| severity | string | nullable — Low/Medium/High/Critical (assigned by admin) |
+| status | string | default: `menunggu_validasi` (see below) |
 | created_at | timestamp | |
 | updated_at | timestamp | |
 
-**Has timestamps.** File uploads stored in `storage/app/public/proof_pics/`.
+**Has timestamps.** Status is a closed enum with 6 values:
+`menunggu_validasi → divalidasi → ditindaklanjuti → dipulihkan → selesai`,
+plus `ditolak` (rejectable from `menunggu_validasi`, `divalidasi`,
+`ditindaklanjuti`). Valid transitions are enforced on `App\Models\IncidentReport`
+(`transitions()` / `canTransitionTo()`).
+
+### `lampiran_insiden` (Incident Attachments)
+| Column | Type | Notes |
+|---|---|---|
+| id | bigIncrements | PK |
+| laporan_id | unsignedBigInteger | parent `lapor_insiden.id` — no FK enforced |
+| jenis | string | `file` or `url` |
+| value | text | file path or evidence URL |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Has timestamps.** Up to 3 rows per report. File attachments are stored in
+`storage/app/public/bukti_laporan/`.
+
+### `tac_agreements` (Terms & Conditions Acceptances)
+| Column | Type | Notes |
+|---|---|---|
+| id | bigIncrements | PK |
+| user_id | unsignedBigInteger | reporter (`users.id`) — no FK enforced |
+| version | string | e.g. `2026.08` |
+| agreed_at | timestamp | when accepted |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Has timestamps.** One row per (user, version); the TaC gate skips users who
+already agreed to the current version (`BugHunterController::TAC_VERSION`).
 
 ### `contact_us` (Contact Messages)
 | Column | Type | Notes |
@@ -157,5 +184,5 @@ These are standard Laravel tables — you typically don't need to modify them:
 
 - **No foreign keys** are defined in migrations. The database relies on application-level integrity.
 - **`event` table** uses a MySQL reserved word. This works in SQLite but will require quoting (`event`) if you switch to MySQL.
-- **Most tables have no timestamps** — only `users`, `lapor_insiden`, and `contact_us` track `created_at`/`updated_at`.
-- **File storage:** Proof images and uploaded files use Laravel's `storage/app/public/` directory. In production, symlink `public/storage` → `storage/app/public`.
+- **Most tables have no timestamps** — only `users`, `contact_us`, `lapor_insiden`, `lampiran_insiden`, and `tac_agreements` track `created_at`/`updated_at`.
+- **File storage:** Incident evidence and uploaded files use Laravel's `storage/app/public/` directory (attachments → `bukti_laporan/`). In production, symlink `public/storage` → `storage/app/public`.
