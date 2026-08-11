@@ -38,7 +38,7 @@
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
+    color: var(--muted-on-dark);
     margin-bottom: 10px;
     display: flex;
     align-items: center;
@@ -123,7 +123,7 @@
     width: 20px; height: 20px;
     border-radius: 50%;
     background: var(--border);
-    color: var(--mid);
+    color: var(--ink);
     font-size: 11px;
     line-height: 20px;
     text-align: center;

@@ -30,7 +30,7 @@
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
+    color: var(--muted-on-dark);
     margin-bottom: 10px;
     display: flex;
     align-items: center;
