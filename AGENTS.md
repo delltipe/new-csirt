@@ -15,6 +15,19 @@ php artisan route:list               # List all routes
 
 No linting, formatting, or typecheck commands are configured. Laravel Pint is available via `vendor/bin/pint` but has no project-level config file.
 
+## Next Session: Incident Portal Rework (PLANNED, not started)
+
+Read `docs/INCIDENT_PORTAL_PLAN.md` first. Decisions already locked:
+public registration + login (NO 2FA), Komdigi-style single-page incident form +
+TaC gate + `INS-YYYY-XXXX` ticket numbers, reporter ticket dashboard
+(`No | No Tiket | ... | Status | Aksi`), 5-state status flow
+(`menunggu_validasi → divalidasi → ditindaklanjuti → dipulihkan → selesai`, + `ditolak`),
+lean admin review assigning CWE/Severity. Requires `php artisan migrate:fresh --seed`
+(`lapor_insiden` schema is rewritten). Do not start until the plan is re-reviewed.
+
+NOTE: until this rework lands, the "Admin Auth" / "no public signup" notes below
+still describe the current state.
+
 ## Stack
 
 - **Laravel 12** / PHP 8.2+ / SQLite (default)
