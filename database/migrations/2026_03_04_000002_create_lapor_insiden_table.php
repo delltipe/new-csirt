@@ -8,31 +8,18 @@ return new class extends Migration {
     {
         Schema::create('lapor_insiden', function (Blueprint $table) {
             $table->bigIncrements('id');
-            // Data Pelapor
-            $table->string('fullName');
-            $table->string('email');
-            $table->string('phoneNumber'); // CHANGED to string
-            
-            // Data Website & Insiden
-            $table->date('foundDate')->nullable();
-            $table->string('domain');
-            $table->text('url');
-            $table->text('laporDesc');
-            
-            // Risk & Scoring
-            $table->string('riskType')->nullable();
-            $table->string('riskLevel')->nullable();
-            $table->float('cvssScore')->nullable();
-            
-            // Evidences
-            $table->text('videoUrl')->nullable();
-            $table->text('reference')->nullable();
-            $table->text('recommendation')->nullable();
-            $table->string('proofPic')->nullable(); // Storing the file path
-            
-            // CSIRT Internal Status
-            $table->string('status')->default('Menunggu Validasi'); // ADDED for tracking
-            $table->timestamps(); // ADDED: Critical for knowing WHEN the report was submitted
+            $table->unsignedBigInteger('user_id');
+            $table->string('tiket_no')->unique(); // INS-YYYY-XXXX
+            $table->string('kategori_insiden');
+            $table->dateTime('waktu_kejadian')->nullable();
+            $table->text('lokasi_url');
+            $table->time('down_time')->nullable();
+            $table->text('deskripsi');
+            $table->text('tindakan_teknis')->nullable();
+            $table->string('cwe')->nullable();
+            $table->string('severity')->nullable();
+            $table->string('status')->default('menunggu_validasi');
+            $table->timestamps();
         });
     }
 

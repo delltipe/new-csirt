@@ -15,18 +15,32 @@ php artisan route:list               # List all routes
 
 No linting, formatting, or typecheck commands are configured. Laravel Pint is available via `vendor/bin/pint` but has no project-level config file.
 
-## Next Session: Incident Portal Rework (PLANNED, not started)
+## Incident Portal Rework (IMPLEMENTED 2026-08-11)
 
-Read `docs/INCIDENT_PORTAL_PLAN.md` first. Decisions already locked:
-public registration + login (NO 2FA), Komdigi-style single-page incident form +
-TaC gate + `INS-YYYY-XXXX` ticket numbers, reporter ticket dashboard
-(`No | No Tiket | ... | Status | Aksi`), 5-state status flow
-(`menunggu_validasi → divalidasi → ditindaklanjuti → dipulihkan → selesai`, + `ditolak`),
-lean admin review assigning CWE/Severity. Requires `php artisan migrate:fresh --seed`
-(`lapor_insiden` schema is rewritten). Do not start until the plan is re-reviewed.
+Read `docs/INCIDENT_PORTAL_PLAN.md` for the full record + implementation notes.
+Landed: public register/login (NO 2FA, `is_bug_hunter` flag on `users`),
+Komdigi-style single-page incident form + TaC gate (versioned `tac_agreements`),
+`INS-YYYY-XXXX` ticket numbers, reporter dashboard
+(`No | No Tiket | ... | Status | Aksi`) + per-ticket detail page, 5-state status
+flow (`menunggu_validasi → divalidasi → ditindaklanjuti → dipulihkan → selesai`,
++ `ditolak`), lean admin review assigning CWE/Severity (routes
+`/admin/incidents`, plus an "Insiden" tab + pending badge on the admin dashboard).
 
-NOTE: until this rework lands, the "Admin Auth" / "no public signup" notes below
-still describe the current state.
+Gotchas for this subsystem:
+- `lapor_insiden` schema rewritten + new `lampiran_insiden` / `tac_agreements`
+  tables → touches require `php artisan migrate:fresh --seed`.
+- In the `bug-hunter/laporan/*` route group, static paths (`baru`, `selesai`)
+  MUST be declared before the dynamic `/bug-hunter/laporan/{id}` (`int $id`).
+- Files (≤3 bukti rows, File OR URL) → `storage/app/public/bukti_laporan/`.
+- Seeders do **not** create incidents; the Insiden tab is empty until reports exist.
+- Status transitions + labels live on `App\Models\IncidentReport`
+  (constants, `labels()`, `transitions()`, `canTransitionTo()`).
+- Admin login: the public `/login` also works for the admin user (is_admin check)
+  and the admin nav CTA points to `/admin`.
+
+NOTE: the "Admin Auth" / "no public signup" notes below still describe the
+pre-rework state for the content subsystem — the incident subsystem now has
+full public registration/login.
 
 ## Stack
 

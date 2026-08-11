@@ -360,7 +360,7 @@
                     <p style="font-size: 14px; line-height: 1.6; color: var(--mid); margin-bottom: 16px;">
                         Laporkan jika sistem atau infrastruktur Anda terpengaruh oleh ancaman ini.
                     </p>
-                    <a href="{{ route('incidents.create.step1') }}" class="warning-detail-cta">
+                    <a href="{{ route('bug-hunter.dashboard') }}" class="warning-detail-cta">
                         <i class="bi bi-exclamation-circle"></i>
                         Lapor Insiden
                     </a>

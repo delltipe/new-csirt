@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Must be declared here (Laravel 12) — the legacy app/Http/Kernel.php routeMiddleware is not loaded.
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'bug_hunter' => \App\Http\Middleware\BugHunterMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

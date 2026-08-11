@@ -655,6 +655,54 @@ button {
 
 
 /* -------------------------------------------------------------
+   STATUS BADGES — incident ticket status (shared public/admin)
+   Maps to existing tokens; do not add new colors here.
+   ------------------------------------------------------------- */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+.status-menunggu_validasi {
+    background: var(--mist);
+    color: var(--mid);
+    border: 1px solid var(--border);
+}
+.status-divalidasi {
+    background: var(--navy-tint);
+    color: var(--navy);
+    border: 1px solid var(--navy);
+}
+.status-ditindaklanjuti {
+    background: var(--navy-tint);
+    color: var(--navy-mid);
+    border: 1px solid var(--navy-mid);
+}
+.status-dipulihkan {
+    background: var(--navy-tint);
+    color: var(--navy-dim);
+    border: 1px solid var(--navy-dim);
+}
+.status-selesai {
+    background: var(--navy);
+    color: var(--white);
+    border: 1px solid var(--navy);
+}
+.status-ditolak {
+    background: var(--alert-bg);
+    color: var(--alert);
+    border: 1px solid var(--alert);
+}
+
+
+/* -------------------------------------------------------------
    RESPONSIVE BREAKPOINTS
    ------------------------------------------------------------- */
 @media (max-width: 960px) {

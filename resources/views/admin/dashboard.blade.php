@@ -61,6 +61,22 @@
     background: var(--navy-tint);
 }
 
+.tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    margin-left: 8px;
+    background: var(--alert);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 800;
+    border-radius: 10px;
+}
+
 .tab-content-wrapper {
     background: var(--white);
 }
@@ -248,6 +264,12 @@
         <button class="admin-tab" onclick="switchTab('warnings')">Warnings</button>
         <button class="admin-tab" onclick="switchTab('laws')">Laws</button>
         <button class="admin-tab" onclick="switchTab('guides')">Guides</button>
+        <button class="admin-tab" onclick="switchTab('insiden')">
+            Insiden
+            @if($pendingIncidents > 0)
+                <span class="tab-badge">{{ $pendingIncidents }}</span>
+            @endif
+        </button>
     </div>
 
     <!-- Tab Content -->
@@ -280,6 +302,11 @@
         <!-- GUIDES TAB -->
         <div id="guides-tab" class="tab-pane">
             @include('admin.partials.guides')
+        </div>
+
+        <!-- INSIDEN TAB -->
+        <div id="insiden-tab" class="tab-pane">
+            @include('admin.partials.incidents')
         </div>
     </div>
 
@@ -315,7 +342,7 @@ function switchTab(tabName) {
 // On page load, restore tab from URL hash
 document.addEventListener('DOMContentLoaded', function() {
     var hash = window.location.hash.replace('#', '');
-    var validTabs = ['news', 'events', 'infographics', 'warnings', 'laws', 'guides'];
+    var validTabs = ['news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'insiden'];
     if (hash && validTabs.includes(hash)) {
         // Activate the tab button
         var tabs = document.querySelectorAll('.admin-tab');

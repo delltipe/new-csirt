@@ -360,7 +360,7 @@
                     <p style="font-size: 14px; line-height: 1.6; color: var(--mid); margin-bottom: 16px;">
                         Tim Jakarta CSIRT siap membantu jika Anda menghadapi insiden keamanan siber.
                     </p>
-                    <a href="{{ route('incidents.create.step1') }}" class="news-detail-cta">
+                    <a href="{{ route('bug-hunter.dashboard') }}" class="news-detail-cta">
                         <i class="bi bi-exclamation-circle"></i>
                         Lapor Insiden
                     </a>

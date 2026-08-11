@@ -1,8 +1,31 @@
 # Incident Portal Rework — Komdigi-style Bug-Hunter Flow (Plan)
 
-> Status: PLANNED — not implemented. For the next session.
+> Status: **IMPLEMENTED** (2026-08-11). All 7 phases landed + verified.
 > Model: csirt.komdigi.go.id incident-report flow (user-recorded, Aug 2026),
 > adapted to the Jakarta Prov CSIRT Laravel portal.
+
+## Implementation notes (deviations / additions from the plan)
+
+- **Route shadowing fix:** `/bug-hunter/laporan/baru`, `/selesai` etc. must be
+  declared **before** `/bug-hunter/laporan/{id}` (dynamic `show` route) or the
+  static paths match `{id}` (a `string` hits the `int $id` type hint → 500).
+  Verified by a failing feature test.
+- **Reporter detail page** (`bug-hunter/show`, `GET /bug-hunter/laporan/{id}`)
+  added as the target of the dashboard `Aksi` column — not in the original
+  plan, needed to make the `Aksi` cell meaningful.
+- **Smoke tests kept:** `tests/Feature/IncidentPortalSmokeTest.php` (2 tests,
+  36 assertions) covering public auth → TaC → submit (file+URL attachment) →
+  ticket → admin review incl. invalid-transition rejection. Although
+  "feature tests" were listed out of scope, these document the locked flow.
+- **Pre-existing test fix:** `tests/Feature/ExampleTest.php` had
+  `RefreshDatabase` commented out, so `composer test` always failed on the
+  in-memory DB (`no such table: berita_siber`). Enabling it makes the suite
+  green — unrelated to the rework but required for `composer test`.
+- **Status badge colors** mapped to existing tokens (`--mid`, `--navy`,
+  `--alert`, … ) — no new tokens, no `accessibility-contrast.css` changes.
+  Badge component lives in `public/css/style.css` (`.status-badge.*`).
+- `php artisan migrate:fresh --seed` required and run; seeders do **not**
+  create incidents, so the admin "Insiden" tab is empty until reports exist.
 
 ## Locked decisions
 

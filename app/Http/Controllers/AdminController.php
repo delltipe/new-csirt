@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CybersecurityNews;
+use App\Models\IncidentReport;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -40,7 +41,9 @@ class AdminController extends Controller
         $warnings = \App\Models\WarningPost::orderBy('date', 'desc')->paginate(15);
         $laws = \App\Models\LawRulePost::orderBy('date', 'desc')->paginate(15);
         $guides = \App\Models\CybersecurityGuide::orderByDesc('id')->paginate(15);
-        return view('admin.dashboard', compact('news', 'events', 'infographics', 'warnings', 'laws', 'guides'));
+        $incidents = IncidentReport::orderByDesc('created_at')->paginate(15);
+        $pendingIncidents = IncidentReport::where('status', IncidentReport::STATUS_PENDING)->count();
+        return view('admin.dashboard', compact('news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'incidents', 'pendingIncidents'));
     }
 
     // Handle logout
@@ -380,5 +383,51 @@ class AdminController extends Controller
             return back()->withErrors(['title' => 'Gagal menghapus infografis. Silakan coba lagi.']);
         }
         return redirect()->route('admin.dashboard')->with('success', 'Infographic deleted!');
+    }
+
+    // ============================================
+    // INCIDENT REVIEW
+    // ============================================
+    public function incidentsList(Request $request) {
+        $incidents = IncidentReport::with('user')
+            ->orderByDesc('created_at')
+            ->when($request->get('status'), function ($query, $status) {
+                return $query->where('status', $status);
+            })
+            ->paginate(15);
+        return view('admin.incidents.index', compact('incidents'));
+    }
+
+    public function incidentShow($id) {
+        $incident = IncidentReport::with(['attachments', 'user'])->findOrFail($id);
+        return view('admin.incidents.show', compact('incident'));
+    }
+
+    public function incidentReview(Request $request, $id) {
+        $incident = IncidentReport::findOrFail($id);
+
+        $validated = $request->validate([
+            'cwe' => 'nullable|string|max:255',
+            'severity' => 'nullable|string|in:Low,Medium,High,Critical',
+            'status' => 'required|string',
+        ]);
+
+        $newStatus = $validated['status'];
+
+        if ($newStatus !== $incident->status && !$incident->canTransitionTo($newStatus)) {
+            return back()->withErrors(['status' => 'Transisi status tidak valid untuk status saat ini.']);
+        }
+
+        try {
+            $incident->update([
+                'cwe' => $validated['cwe'] ?? $incident->cwe,
+                'severity' => $validated['severity'] ?? $incident->severity,
+                'status' => $newStatus,
+            ]);
+        } catch (\Exception $e) {
+            return back()->withErrors(['status' => 'Gagal memperbarui laporan. Silakan coba lagi.']);
+        }
+
+        return back()->with('success', 'Laporan insiden berhasil diperbarui.');
     }
 }

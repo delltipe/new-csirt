@@ -424,7 +424,7 @@
                 Pemerintah Provinsi DKI Jakarta — Computer Security Incident Response Team. Menjaga infrastruktur digital dan data kritis Jakarta dari ancaman siber, 24 jam sehari, 7 hari seminggu.
             </p>
             <div class="hero__actions">
-                <a href="{{ route('incidents.create.step1') }}" class="btn-hero-primary">
+                <a href="{{ route('bug-hunter.dashboard') }}" class="btn-hero-primary">
                     <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
                     Lapor Insiden Sekarang
                 </a>
@@ -663,7 +663,7 @@
             </p>
         </div>
         <div class="cta-section__actions">
-            <a href="{{ route('incidents.create.step1') }}" class="btn-cta-main">
+            <a href="{{ route('bug-hunter.dashboard') }}" class="btn-cta-main">
                 <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
                 Lapor Insiden Sekarang
             </a>

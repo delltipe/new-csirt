@@ -7,9 +7,10 @@ use App\Http\Controllers\InfographicController;
 use App\Http\Controllers\WarningPostController;
 use App\Http\Controllers\LawRulePostController;
 use App\Http\Controllers\GuideController;
-use App\Http\Controllers\IncidentReportController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BugHunterController;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -38,14 +39,34 @@ Route::get('/guides/{guide}', [GuideController::class, 'show'])->name('guides.sh
 Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
 
 // ---------------------------------------------------------------
-// Incident Report Routes
+// Public Authentication Routes (bug hunter registration/login)
 // ---------------------------------------------------------------
-Route::prefix('report-incident')->group(function () {
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Single-page JS wizard — this is what the navbar button points to
-    Route::get('/', [IncidentReportController::class, 'create'])->name('incidents.create.step1');
-    Route::post('/store', [IncidentReportController::class, 'store'])->middleware('throttle:60,1')->name('incidents.store');
-    Route::get('/thank-you', [IncidentReportController::class, 'thankYou'])->name('incidents.thank-you');
+// ---------------------------------------------------------------
+// Bug Hunter (Reporter) Routes — requires login
+// ---------------------------------------------------------------
+Route::middleware(['auth', 'bug_hunter'])->group(function () {
+    // Reporter ticket dashboard
+    Route::get('/bug-hunter', [BugHunterController::class, 'dashboard'])->name('bug-hunter.dashboard');
+
+    // Terms & Conditions gate
+    Route::get('/bug-hunter/laporan', [BugHunterController::class, 'showTac'])->name('bug-hunter.tac');
+    Route::post('/bug-hunter/laporan/agree', [BugHunterController::class, 'agreeTac'])->name('bug-hunter.agree');
+
+    // Single-page incident form (Komdigi-style)
+    Route::get('/bug-hunter/laporan/baru', [BugHunterController::class, 'create'])->name('bug-hunter.create');
+    Route::post('/bug-hunter/laporan/simpan', [BugHunterController::class, 'store'])->middleware('throttle:60,1')->name('bug-hunter.store');
+
+    // Thank-you with ticket number
+    Route::get('/bug-hunter/laporan/selesai', [BugHunterController::class, 'thankYou'])->name('bug-hunter.thank-you');
+
+    // Reporter detail (dynamic — must be declared last)
+    Route::get('/bug-hunter/laporan/{id}', [BugHunterController::class, 'show'])->name('bug-hunter.show');
 });
 
 // ---------------------------------------------------------------
@@ -55,16 +76,7 @@ Route::get('/contact', [ContactController::class, 'create'])->name('contact.crea
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:60,1')->name('contact.store');
 Route::get('/thank-you/contact', [ContactController::class, 'thankYou'])->name('contact.thank-you');
 
-// Authentication Routes
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('register');
-})->name('register');
-
-// Dashboard Route
+// Dashboard Route (placeholder)
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
@@ -78,6 +90,11 @@ Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.lo
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     // More admin routes for CRUD will go here
+
+    // Incident review
+    Route::get('/admin/incidents', [AdminController::class, 'incidentsList'])->name('admin.incidents.list');
+    Route::get('/admin/incidents/{id}', [AdminController::class, 'incidentShow'])->name('admin.incidents.show');
+    Route::post('/admin/incidents/{id}/review', [AdminController::class, 'incidentReview'])->name('admin.incidents.review');
 
     // News CRUD
     Route::get('/admin/news', [AdminController::class, 'newsList'])->name('admin.news.list');

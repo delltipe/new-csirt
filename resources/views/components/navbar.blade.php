@@ -241,6 +241,29 @@
         background: var(--navy);
     }
 
+    /* Logout button (authenticated users) */
+    .nav-logout {
+        display: flex;
+        align-items: center;
+    }
+    .nav-logout button {
+        background: transparent;
+        color: var(--mid);
+        border: 1px solid var(--border);
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        transition: color var(--ease), border-color var(--ease);
+    }
+    .nav-logout button:hover {
+        color: var(--alert);
+        border-color: var(--alert);
+    }
+
     /* Responsive */
     @media (max-width: 640px) {
         .nav-search { display: none; }
@@ -329,9 +352,28 @@
                     <i class="bi bi-search" aria-hidden="true"></i>
                 </button>
             </form>
-            <a href="{{ route('incidents.create.step1') }}" class="btn-navy">
-                Lapor Insiden <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
-            </a>
+
+            @auth
+                @if (auth()->user()->is_admin)
+                    <a href="{{ route('admin.dashboard') }}" class="btn-navy">
+                        Admin <i class="bi bi-speedometer2" aria-hidden="true"></i>
+                    </a>
+                @else
+                    <a href="{{ route('bug-hunter.dashboard') }}" class="btn-navy">
+                        Lapor Insiden <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
+                    </a>
+                @endif
+                <form class="nav-logout" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" aria-label="Keluar" title="Keluar">
+                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="btn-navy">
+                    Masuk <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                </a>
+            @endauth
         </div>
 
     </div>
