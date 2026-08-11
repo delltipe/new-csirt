@@ -25,8 +25,11 @@
 
     --mist:       #F4F5F7;   /* Light gray: section backgrounds */
     --border:     #D8DCE3;   /* Border color */
-    --mid:        #6B7280;   /* Muted text */
+    --mid:        #5B6472;   /* Muted text */
     --white:      #FFFFFF;
+
+    --muted-on-dark: #93A2B7;  /* Secondary text on --ink / --navy-dim surfaces */
+    --faint-on-dark: #8A99AD;  /* Tertiary text on --ink / --navy-dim surfaces */
 
     --alert:      #B91C1C;   /* WARNING / ALERT CONTENT ONLY — not a brand color */
     --alert-bg:   #FEF2F2;
@@ -559,7 +562,7 @@ button {
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.38);
+    color: var(--muted-on-dark);
     margin-bottom: 16px;
     display: flex;
     align-items: center;
@@ -603,7 +606,7 @@ button {
 .cta-section__note {
     text-align: center;
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.25);
+    color: var(--faint-on-dark);
     letter-spacing: 0.04em;
 }
 

@@ -19,7 +19,7 @@
         font-size: 11px;
         font-weight: 500;
         letter-spacing: 0.04em;
-        color: #8A9AB5;
+        color: var(--muted-on-dark);
     }
 
     .nav-strip .container {
@@ -32,7 +32,7 @@
         display: flex;
         align-items: center;
         gap: 7px;
-        color: #8A9AB5;
+        color: var(--muted-on-dark);
     }
 
     .nav-strip__badge i {
@@ -46,7 +46,7 @@
     }
 
     .nav-strip__links a {
-        color: #5A6A80;
+        color: var(--muted-on-dark);
         font-size: 10.5px;
         font-weight: 500;
         letter-spacing: 0.07em;
@@ -56,7 +56,7 @@
     }
 
     .nav-strip__links a:hover {
-        color: #8A9AB5;
+        color: var(--muted-on-dark);
     }
 
     /* --- Main navigation bar --- */
