@@ -38,9 +38,3 @@ auth.json
 
 # Stale artifact paths from Windows cross-mount
 /public/D:*/**
-
-# Internship personal documents (large binaries)
-/presentation/intern assignments/
-/presentation/intern assignments.rar
-/presentation/LAPORAN PERKEMBANGAN PROYEK_ PORTAL JAKARTA CSIRT.docx
-/presentation/Intern Project Proposal.pptx
