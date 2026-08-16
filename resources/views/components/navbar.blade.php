@@ -282,7 +282,7 @@
         </div>
         <div class="nav-strip__links">
             <a href="#">Bahasa Indonesia</a>
-            <a href="{{ url('publickey') }}">Enkripsi</a>
+            <a href="{{ route('publickey') }}">Enkripsi</a>
             <a href="#">Aksesibilitas</a>
         </div>
     </div>
@@ -328,6 +328,7 @@
                     <li><div class="nav-dropdown__divider"></div></li>
                     <li><a href="{{ url('statistics') }}">Statistik Honeypot</a></li>
                     <li><a href="{{ url('rfc2350') }}">RFC 2350</a></li>
+                    <li><a href="{{ route('publickey') }}">Public Key</a></li>
                 </ul>
             </li>
             <li>

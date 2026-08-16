@@ -200,8 +200,8 @@
                     <li><a href="{{ route('profile') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Profil</a></li>
                     <li><a href="{{ route('events.index') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Event</a></li>
                     <li><a href="{{ route('contact.create') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Hubungi Kami</a></li>
-                    <li><a href="{{ url('rfc2350') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>RFC 2350</a></li>
-                    <li><a href="{{ url('publickey') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Public Key</a></li>
+                    <li><a href="{{ route('rfc2350') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>RFC 2350</a></li>
+                    <li><a href="{{ route('publickey') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Public Key</a></li>
                 </ul>
             </div>
 
@@ -214,7 +214,7 @@
                     <li><a href="{{ url('infographics') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Infografis</a></li>
                     <li><a href="{{ url('laws') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Peraturan & Kebijakan</a></li>
                     <li><a href="{{ url('guides') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Panduan Teknis</a></li>
-                    <li><a href="{{ url('statistics') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Statistik Honeypot</a></li>
+                    <li><a href="{{ route('statistics') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Statistik Honeypot</a></li>
                 </ul>
             </div>
 
