@@ -1,6 +1,6 @@
 # Database Schema — Jakarta CSIRT Portal
 
-> All tables, columns, and types for the Laravel project at `/mnt/d/laravel projects/new-csirt`.
+> All tables, columns, and types for the Laravel project (repo root `new-csirt`).
 > SQLite by default. See `DEPLOYMENT.md` for MySQL/PostgreSQL migration notes.
 
 ---
@@ -17,6 +17,7 @@
 | password | string | |
 | remember_token | string(100) | nullable |
 | is_admin | boolean | default: false — custom admin flag |
+| is_bug_hunter | boolean | default: false — public incident reporters (added 2026-08-11) |
 | created_at | timestamp | |
 | updated_at | timestamp | |
 
@@ -98,25 +99,46 @@
 | Column | Type | Notes |
 |---|---|---|
 | id | bigIncrements | PK |
-| fullName | string | reporter name |
-| email | string | reporter email |
-| phoneNumber | string | reporter phone |
-| foundDate | date | nullable — when incident was found |
-| domain | string | affected domain (*.jakarta.go.id) |
-| url | text | affected URL |
-| loporDesc | text | incident description |
-| riskType | string | nullable — e.g. "XSS", "SQL Injection" |
-| riskLevel | string | nullable — Low/Medium/High/Critical |
-| cvssScore | float | nullable — 0.0 to 10.0 |
-| videoUrl | text | nullable — evidence video |
-| reference | text | nullable — CVE links, articles |
-| recommendation | text | nullable — suggested fix |
-| proofPic | string | nullable — file path to screenshot |
-| status | string | default: 'Menunggu Validasi' |
+| user_id | unsignedBigInteger | reporter's `users.id` |
+| tiket_no | string | unique — `INS-YYYY-XXXX` |
+| kategori_insiden | string | incident category |
+| waktu_kejadian | dateTime | nullable — when the incident happened |
+| lokasi_url | text | affected URL / location |
+| down_time | time | nullable |
+| deskripsi | text | incident description |
+| tindakan_teknis | text | nullable — technical action taken |
+| cwe | string | nullable — assigned by admin |
+| severity | string | nullable — assigned by admin |
+| status | string | default: `menunggu_validasi` |
 | created_at | timestamp | |
 | updated_at | timestamp | |
 
-**Has timestamps.** File uploads stored in `storage/app/public/proof_pics/`.
+**Has timestamps.** Status flow:
+`menunggu_validasi → divalidasi → ditindaklanjuti → dipulihkan → selesai` (+ `ditolak`).
+
+### `lampiran_insiden` (Incident Attachments)
+| Column | Type | Notes |
+|---|---|---|
+| id | bigIncrements | PK |
+| laporan_id | unsignedBigInteger | parent `lapor_insiden.id` |
+| jenis | string | `file` or `url` |
+| value | text | file path or URL |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Has timestamps.** ≤3 rows per report; files stored in `storage/app/public/bukti_laporan/`.
+
+### `tac_agreements` (Terms & Conditions Acceptance)
+| Column | Type | Notes |
+|---|---|---|
+| id | bigIncrements | PK |
+| user_id | unsignedBigInteger | `users.id` |
+| version | string | TaC version, e.g. `2026.08` |
+| agreed_at | timestamp | |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Has timestamps.** One row per user per agreed version.
 
 ### `contact_us` (Contact Messages)
 | Column | Type | Notes |
@@ -157,5 +179,5 @@ These are standard Laravel tables — you typically don't need to modify them:
 
 - **No foreign keys** are defined in migrations. The database relies on application-level integrity.
 - **`event` table** uses a MySQL reserved word. This works in SQLite but will require quoting (`event`) if you switch to MySQL.
-- **Most tables have no timestamps** — only `users`, `lapor_insiden`, and `contact_us` track `created_at`/`updated_at`.
-- **File storage:** Proof images and uploaded files use Laravel's `storage/app/public/` directory. In production, symlink `public/storage` → `storage/app/public`.
+- **Most tables have no timestamps** — only `users`, `lapor_insiden`, `lampiran_insiden`, `tac_agreements`, and `contact_us` track `created_at`/`updated_at`.
+- **File storage:** Proof images and uploaded files use Laravel's `storage/app/public/` directory (`bukti_laporan/` for incident evidence). In production, symlink `public/storage` → `storage/app/public`.

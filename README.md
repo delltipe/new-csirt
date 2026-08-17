@@ -1,59 +1,126 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Jakarta Prov CSIRT Portal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Public-facing portal for the Computer Security Incident Response Team of DKI Jakarta
+Provincial Government (csirt.jakarta.go.id). Citizens and government employees can report
+cyber incidents and read security resources; CSIRT staff manage content and review reports.
 
-## About Laravel
+**Stack:** Laravel 12 · PHP 8.2+ · SQLite · Bootstrap 5.3 (grid/forms/tables) · custom
+design system (CSS custom properties) · Vite registered but unused (assets load from `public/`).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Quick Start
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+composer setup          # Fresh install: composer install, .env, APP_KEY, migrate, npm, build
+composer dev            # Runs 4 processes: php artisan serve, queue:listen, pail, vite
+composer test           # Clears config cache, then runs php artisan test
+```
 
-## Learning Laravel
+- `composer setup` runs `migrate --force` **without seeding** — the DB starts empty.
+  For the admin account and sample content, run `php artisan migrate:fresh --seed`.
+- `composer dev` needs `npx concurrently` (Node).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Default Credentials
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Role | Credentials |
+|---|---|
+| Admin | `admin@gmail.com` / `12345678` (seeded — change before any live deploy) |
+| Reporter | self-register via `/register` (`is_bug_hunter` flag) |
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Features
 
-### Premium Partners
+### Public Pages
+- Home, profile, and six content types: **news, events, infographics, warnings,
+  laws/regulations, technical guides** (listing + detail, paginated, Indonesian copy)
+- Site-wide **search** across all content types (min. 2 characters)
+- Official CSIRT documents: **RFC 2350**, **public key** download, archived **statistics** pages
+- **Accessibility widget** — high-contrast, dark-contrast, and default modes
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Incident Portal (public bug-hunter flow)
+- Public **registration / login** (no 2FA), reporters gated via `is_bug_hunter`
+- **Terms & Conditions gate** (versioned `tac_agreements`)
+- Komdigi-style **single-page report form**: category, incident time, URL, downtime,
+  description, technical action, evidence (≤3 rows, File or URL each)
+- **Ticket tracking** — `INS-YYYY-XXXX` numbers, reporter dashboard with per-ticket
+  detail and status (`menunggu_validasi → divalidasi → ditindaklanjuti → dipulihkan → selesai`, or `ditolak`)
+- **Admin review** — assigns CWE + Severity and advances status (`/admin/incidents`)
 
-## Contributing
+### Admin Panel (`/admin`)
+- Tabbed dashboard: News, Events, Infographics, Warnings, Laws, Guides
+- Full CRUD per content type (15/page), plus the incident review workflow
+- All writes wrapped in try/catch with Indonesian error messages
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Contact
+- Contact form intake only (no admin review workflow yet) — stored in `contact_us`
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Testing
 
-## Security Vulnerabilities
+PHPUnit with SQLite in-memory (`phpunit.xml`). Run:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+composer test                     # whole suite
+php artisan test --filter=TestName   # single test
+```
 
-## License
+Coverage: `IncidentPortalSmokeTest` (public auth → TaC → submit → ticket → admin
+review) and the default `ExampleTest`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Project Structure
+
+```
+routes/web.php                   # all routes (auth, bug-hunter, contact, admin)
+app/Http/Controllers/            # content, search, auth, bug-hunter, contact, admin
+app/Models/                      # maps to Indonesian table names (see SCHEMA.md)
+resources/views/
+  layouts/app.blade.php          # master layout (navbar, footer, a11y widget)
+  admin/                         # dashboard + CRUD partials + incident review
+  bug-hunter/                    # reporter dashboard, TaC, form, thank-you, detail
+  auth/ news/ events/ warnings/  # public pages
+  infographics/ laws/ guides/ search/ contact/ incidents/
+database/migrations/             # SQLite schema (Indonesian table names)
+public/css/style.css             # design tokens (CSS custom properties)
+docs/                            # FEATURES.md, SCHEMA.md, DEPLOYMENT.md, plan docs
+```
+
+For the full inventory see **`FEATURES.md`**; for the database schema see
+**`docs/SCHEMA.md`**; for design tokens see **`DESIGN_SYSTEM.md`**.
+
+---
+
+## Deployment
+
+Docker-ready (`Dockerfile` at repo root, Render Docker runtime confirmed working) but
+**not yet deployed**. The only blocker is Render's card verification — the bank declines
+the debit card for the cloud-hosting merchant category. Cardless alternatives are
+documented: **Hetzner + PayPal**, **Zeabur + Wonder Mesh**, or **Cloudflare Tunnel**.
+
+See **`docs/DEPLOYMENT.md`** for the full guide.
+
+---
+
+## Roadmap / Planned
+
+- **CAPTCHA** on the incident and contact forms (self-hosted, legacy-style; deferred —
+  not needed for the frontend demo)
+- **Admin contact review** workflow (list / detail / status transitions)
+- **Schema hardening**: foreign keys, timestamps on content tables, `event` → `events`
+  rename (MySQL reserved-word collision), soft-delete for incident reports
+- **Full-text search** over substring matching
+- **Legacy-feature port-in**: select features from the legacy portal, after the main
+  data-input and content pages are finalized
+
+---
+
+## Design System
+
+All pages follow the design system in **`DESIGN_SYSTEM.md`** — every color/font/spacing
+value is a CSS custom property in `public/css/style.css`; never hardcode hex values or
+fonts. Bootstrap is used only for grid, forms, and tables. Accessibility overrides live
+in `public/css/accessibility-contrast.css`.

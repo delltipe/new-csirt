@@ -1,7 +1,7 @@
 # FEATURES.md — Jakarta Prov CSIRT Portal
 
 > Complete feature inventory for the DKI Jakarta Cybersecurity Portal (csirt.jakarta.go.id).
-> For developers接手 this project: this file tells you **what exists and why**.
+> For developers taking over this project: this file tells you **what exists and why**.
 
 ---
 
@@ -86,25 +86,26 @@ JakartaProv-CSIRT is a public-facing portal for the Computer Security Incident R
 
 ---
 
-## Incident Reporting
+## Incident Portal (Bug-Hunter Flow)
 
-### Report Form (`/report-incident`)
-- **Purpose:** Multi-step incident reporting wizard
+### Report Flow (`/bug-hunter`)
+- **Purpose:** Public incident reporting for reporters ("bug hunters") with ticket tracking
 - **Features:**
-  - 3-step JS wizard (no page reloads between steps):
-    - **Step 1:** Reporter data (name, email, phone, date found)
-    - **Step 2:** Website data (domain, URL)
-    - **Step 3:** Incident details (description, risk type/level, CVSS score, evidence, recommendation)
-  - CAPTCHA verification ("JKT" / "jkt")
-  - File upload for proof screenshots (PNG/JPG, max 2MB)
-  - Risk fields are optional — designed for non-technical users
+  - Public registration/login (no 2FA), gated via `is_bug_hunter` flag
+  - Terms & Conditions gate (versioned `tac_agreements`, scroll-to-bottom + checkbox)
+  - Komdigi-style **single-page report form**: Kategori Insiden, Waktu Kejadian,
+    Lokasi Insiden / URL, Down Time, Deskripsi, Tindakan Teknis, Bukti Laporan
+    (≤3 rows, each File OR URL, ≤5MB each)
+  - Files stored in `storage/app/public/bukti_laporan/`
+  - Ticket numbers `INS-YYYY-XXXX`, reporter dashboard with per-ticket detail
+  - 5-state status flow: `menunggu_validasi → divalidasi → ditindaklanjuti → dipulihkan → selesai` (+ `ditolak`)
   - Rate limited: 60 requests/minute per IP
-- **Routes:** `incidents.create.step1`, `incidents.store`, `incidents.thank-you`
-- **Storage:** Files stored in `storage/app/public/proof_pics/`
+- **Routes:** `bug-hunter.dashboard`, `bug-hunter.tac`, `bug-hunter.agree`, `bug-hunter.create`, `bug-hunter.store`, `bug-hunter.thank-you`, `bug-hunter.show`
+- **Admin review:** `/admin/incidents` (assign CWE/Severity, advance status)
 
-### Thank You (`/report-incident/thank-you`)
-- **Purpose:** Confirmation after successful report submission
-- **Route:** `incidents.thank-you`
+### Thank You (`/bug-hunter/laporan/selesai`)
+- **Purpose:** Confirmation with the ticket number after successful submission
+- **Route:** `bug-hunter.thank-you`
 
 ---
 
@@ -120,15 +121,17 @@ JakartaProv-CSIRT is a public-facing portal for the Computer Security Incident R
 
 ---
 
-## Authentication (Placeholders)
+## Authentication
 
 | Route | Status |
 |-------|--------|
-| `/login` | Placeholder — "under development" page |
-| `/register` | Placeholder — "under development" page |
+| `/register` | Real — public bug-hunter registration (`AuthController@register`) |
+| `/login` | Real — public login (works for admin too, `is_admin` check) |
+| `/logout` | Real — POST logout (`AuthController@logout`) |
+| `/profile` | Placeholder — "under development" page |
 | `/dashboard` | Placeholder — "under development" page |
 
-These pages extend the layout but have no functionality yet.
+Public auth exists **only** for the incident subsystem. See the Incident Portal section.
 
 ---
 
@@ -207,27 +210,34 @@ On fresh migration, the database is seeded with:
 
 ```
 resources/views/
-├── layouts/app.blade.php          # Master layout (navbar, footer, assets)
+├── layouts/app.blade.php          # Master layout (navbar, footer, a11y widget)
 ├── components/
-│   ├── navbar.blade.php           # Site navigation with search
+│   ├── navbar.blade.php           # Site navigation with search, auth-aware CTA
 │   ├── footer.blade.php           # Site footer
 │   └── accessibility.blade.php    # Accessibility widget
 ├── home.blade.php                 # Landing page
 ├── profile.blade.php              # About CSIRT
+├── rfc2350.blade.php              # RFC 2350 page
+├── statistics.blade.php           # Archived honeypot statistics
 ├── search/index.blade.php         # Search results
+├── auth/
+│   ├── register.blade.php         # Public registration (bug hunters)
+│   └── login.blade.php            # Public login
+├── bug-hunter/
+│   ├── dashboard.blade.php        # Reporter ticket dashboard
+│   ├── tac.blade.php              # Terms & Conditions gate
+│   ├── create.blade.php           # Single-page report form
+│   ├── thank-you.blade.php        # Confirmation with ticket number
+│   └── show.blade.php             # Per-ticket detail
 ├── news/                          # News listing + detail
 ├── events/                        # Events listing + detail
 ├── warnings/                      # Warnings listing + detail
 ├── infographics/                  # Infographics listing + detail
 ├── laws/                          # Laws listing + detail
 ├── guides/                        # Guides listing + detail
-├── incidents/                     # Report form + thank you
 ├── contact/                       # Contact form + thank you
-├── admin/                         # Admin dashboard + CRUD partials + edit pages
-├── login.blade.php                # Placeholder
-├── register.blade.php             # Placeholder
+├── admin/                         # Dashboard + CRUD partials + edit pages
+│   └── incidents/                 # Incident review list + detail
 ├── dashboard.blade.php            # Placeholder
-├── statistics.blade.php           # Placeholder
-├── publickey.blade.php            # Placeholder
-└── rfc2350.blade.php              # Placeholder
+└── (publickey is a download route — no view)
 ```

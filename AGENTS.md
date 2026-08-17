@@ -38,10 +38,6 @@ Gotchas for this subsystem:
 - Admin login: the public `/login` also works for the admin user (is_admin check)
   and the admin nav CTA points to `/admin`.
 
-NOTE: the "Admin Auth" / "no public signup" notes below still describe the
-pre-rework state for the content subsystem — the incident subsystem now has
-full public registration/login.
-
 ## Stack
 
 - **Laravel 12** / PHP 8.2+ / SQLite (default)
@@ -74,13 +70,13 @@ Most migrations omit `$table->timestamps()`; matching models set `public $timest
 
 ### Admin Auth Is Custom (Not a Package)
 
-Auth is Laravel's built-in `users`-table auth (login via `Auth::attempt` in `AdminController::login`), with an `is_admin` boolean flag on `users`. There is **no** public registration/login flow — `/login`, `/register`, `/profile`, `/dashboard` are static `view()` routes with no POST handler. Only `/admin/login` posts.
+Auth is Laravel's built-in `users`-table auth (login via `Auth::attempt` in `AdminController::login`), with an `is_admin` boolean flag on `users`. Public registration/login exists **only** for the incident subsystem (bug hunters): `/register` and `/login` POST via `AuthController` and set the `is_bug_hunter` flag (see the Incident Portal Rework section). `/profile` and `/dashboard` remain static placeholder `view()` routes with no POST handler; only `/admin/login` posts for the admin role.
 
 **Fixed (commit `ee81505`):** the `admin` middleware alias was previously broken — defined only in the legacy `app/Http/Kernel.php` `$routeMiddleware` (unused, app binds Laravel's default kernel via `bootstrap/app.php`). It is now registered via `$middleware->alias(['admin' => \App\Http\Middleware\AdminMiddleware::class])` in `bootstrap/app.php`. Do not move it back to `Kernel.php`.
 
 ### IncidentReport Uses Raw DB::table Inserts
 
-The wizard is a **single-page JS stepper** — exactly one POST to `/report-incident/store` (`incidents.store`), where `IncidentReportController::store` runs one `$request->validate([...])` covering all steps. Do not add per-step routes. The controller writes via `DB::table('lapor_insiden')->insert(...)` with try/catch, though the `IncidentReport` model's `$fillable` matches the migration columns.
+The form is a **single-page form** — exactly one POST to `/bug-hunter/laporan/simpan` (`bug-hunter.store`), where `BugHunterController::store` runs one `$request->validate([...])` covering all fields. Do not add per-step routes. The controller writes via `DB::table('lapor_insiden')->insert(...)` with try/catch, though the `IncidentReport` model's `$fillable` matches the migration columns.
 
 ### Error Handling
 
@@ -119,7 +115,7 @@ $files = Get-ChildItem resources/views/admin/partials/*.blade.php; foreach ($f i
 ### Tests
 
 - `phpunit.xml` uses SQLite in-memory (`DB_DATABASE=:memory:`)
-- Only default `ExampleTest` exists in `tests/Unit` and `tests/Feature`
+- `tests/Unit` has the default `ExampleTest`; `tests/Feature` has `ExampleTest` + `IncidentPortalSmokeTest` (public auth → TaC → submit → ticket → admin review)
 - `composer test` clears the config cache first
 
 ### Seeders
@@ -140,7 +136,7 @@ Run from `presentation/`. These are regenerated artifacts, not hand-edited. Also
 ## Gotchas
 
 - **No `.env` committed** — `.env.example` has `DB_CONNECTION=sqlite` and `APP_KEY=` empty
-- **Views `publickey.blade.php`, `rfc2350.blade.php`, `statistics.blade.php` have no routes** — the footer/navbar link to `/publickey`, `/rfc2350`, `/statistics` (will 404)
+- **`/publickey`, `/rfc2350`, `/statistics` are routed** (since commit `af73f3e`) — footer/navbar links resolve. Note: `/publickey` is a file-download route (no `publickey.blade.php` view)
 - **Foreign keys are not enforced** in migrations — no `$table->foreign()` calls
 - **The `event` table name collides with MySQL reserved word** — fine in SQLite but breaks on MySQL without quoting; note `docs/DEPLOYMENT.md` covers production setup
 - **Blade views use Indonesian text throughout** — government portal for DKI Jakarta
