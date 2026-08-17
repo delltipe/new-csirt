@@ -4,8 +4,9 @@ Public-facing portal for the Computer Security Incident Response Team of DKI Jak
 Provincial Government (csirt.jakarta.go.id). Citizens and government employees can report
 cyber incidents and read security resources; CSIRT staff manage content and review reports.
 
-**Stack:** Laravel 12 · PHP 8.2+ · SQLite · Bootstrap 5.3 (grid/forms/tables) · custom
-design system (CSS custom properties) · Vite registered but unused (assets load from `public/`).
+**Stack:** Laravel 12 · PHP 8.2+ · SQLite · Bootstrap 5.3 (grid/forms) · custom
+design system (CSS custom properties, incl. admin `.data-table`) · Vite registered
+but unused (assets load from `public/`).
 
 ---
 
@@ -49,8 +50,9 @@ composer test           # Clears config cache, then runs php artisan test
 - **Admin review** — assigns CWE + Severity and advances status (`/admin/incidents`)
 
 ### Admin Panel (`/admin`)
-- Tabbed dashboard: News, Events, Infographics, Warnings, Laws, Guides
+- Tabbed dashboard: News, Events, Infographics, Warnings, Laws, Guides, Insiden
 - Full CRUD per content type (15/page), plus the incident review workflow
+- Tables use the insiden-style custom `.data-table` component (boxy, uppercase headers)
 - All writes wrapped in try/catch with Indonesian error messages
 
 ### Contact
@@ -122,5 +124,6 @@ See **`docs/DEPLOYMENT.md`** for the full guide.
 
 All pages follow the design system in **`DESIGN_SYSTEM.md`** — every color/font/spacing
 value is a CSS custom property in `public/css/style.css`; never hardcode hex values or
-fonts. Bootstrap is used only for grid, forms, and tables. Accessibility overrides live
+fonts. Bootstrap is used only for grid and forms (admin tables use the custom
+`.data-table` component). Accessibility overrides live
 in `public/css/accessibility-contrast.css`.

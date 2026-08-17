@@ -103,8 +103,9 @@ resources/views/
 └── dashboard.blade.php            # Placeholder
 ```
 
-Styling: Bootstrap 5.3 (CDN) for grid/forms/tables plus a custom design system in
-`public/css/style.css` (CSS custom properties). Vite is registered but unused — assets
+Styling: Bootstrap 5.3 (CDN) for grid/forms plus a custom design system in
+`public/css/style.css` (CSS custom properties). Admin tables use the custom `.data-table`
+component (see `DESIGN_SYSTEM.md`). Vite is registered but unused — assets
 load from `public/`, not the Vite bundle. See `DESIGN_SYSTEM.md`.
 
 ---

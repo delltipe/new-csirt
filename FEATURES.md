@@ -145,9 +145,9 @@ Public auth exists **only** for the incident subsystem. See the Incident Portal 
 ### Dashboard (`/admin`)
 - **Purpose:** Central management hub for all content
 - **Features:**
-  - Tabbed interface (News, Events, Infographics, Warnings, Laws, Guides)
-  - Each tab shows a table of records with Edit/Delete actions
-  - "Add" button opens a modal form for new records
+  - Tabbed interface (News, Events, Infographics, Warnings, Laws, Guides, Insiden)
+  - Each tab lists records in the insiden-style custom `.data-table` (boxy, uppercase headers, Edit/Delete actions)
+  - "Add" button (`.btn-add`) opens a modal form for new records
   - Pagination: 15 records per tab
   - Tab state preserved across pagination via URL hash
 - **Route:** `admin.dashboard`
@@ -186,7 +186,7 @@ All pages follow a consistent design system documented in `DESIGN_SYSTEM.md`:
 - Dark header pattern with NYC.gov-inspired styling
 - CSS custom properties for all colors and fonts
 - Custom card system (not Bootstrap cards)
-- Bootstrap used only for grid, forms, and tables
+- Bootstrap used only for grid and forms (admin tables use the custom `.data-table` component)
 
 ---
 
@@ -212,7 +212,7 @@ On fresh migration, the database is seeded with:
 resources/views/
 ├── layouts/app.blade.php          # Master layout (navbar, footer, a11y widget)
 ├── components/
-│   ├── navbar.blade.php           # Site navigation with search, auth-aware CTA
+│   ├── navbar.blade.php           # Site navigation with search, partner logos, auth-aware CTA
 │   ├── footer.blade.php           # Site footer
 │   └── accessibility.blade.php    # Accessibility widget
 ├── home.blade.php                 # Landing page
