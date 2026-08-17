@@ -100,6 +100,37 @@
         display: none;
     }
 
+    /* Partner logos cluster (brand row) */
+    .nav-partners {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-left: 22px;
+        margin-right: 44px;
+        border-left: 1px solid var(--border);
+        flex-shrink: 0;
+    }
+
+    .nav-partners a {
+        display: flex;
+        align-items: center;
+        line-height: 0;
+        text-decoration: none;
+        opacity: 0.9;
+        transition: opacity var(--ease);
+    }
+
+    .nav-partners a:hover {
+        opacity: 1;
+    }
+
+    .nav-partners img {
+        height: 34px;
+        width: auto;
+        max-width: 96px;
+        object-fit: contain;
+    }
+
     /* Nav links list */
     .nav-links {
         display: flex;
@@ -265,6 +296,9 @@
     }
 
     /* Responsive */
+    @media (max-width: 1100px) {
+        .nav-partners { display: none; }
+    }
     @media (max-width: 640px) {
         .nav-search { display: none; }
         .nav-links > li > a { padding: 0 10px; font-size: 12.5px; }
@@ -301,6 +335,22 @@
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
             <span class="nav-logo__fallback">CSIRT</span>
         </a>
+
+        {{-- Partner logos with outbound links --}}
+        <div class="nav-partners" role="group" aria-label="Logo instansi mitra">
+            <a href="#" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya">
+                <img src="{{ asset('jaya_raya.png') }}" alt="Jaya Raya">
+            </a>
+            <a href="#" target="_blank" rel="noopener" title="Diskominfo DKI Jakarta" aria-label="Logo Diskominfo DKI Jakarta">
+                <img src="{{ asset('logo_diskominfo.png') }}" alt="Diskominfo DKI Jakarta">
+            </a>
+            <a href="#" target="_blank" rel="noopener" title="5 Abad Jakarta" aria-label="Logo 5 Abad Jakarta">
+                <img src="{{ asset('logo_5abad.png') }}" alt="5 Abad Jakarta">
+            </a>
+            <a href="#" target="_blank" rel="noopener" title="HUT RI ke-81" aria-label="Logo HUT RI ke-81">
+                <img src="{{ asset('HUTRI81.png') }}" alt="HUT RI ke-81">
+            </a>
+        </div>
 
         {{-- Nav links --}}
         <ul class="nav-links">
