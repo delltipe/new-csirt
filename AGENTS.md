@@ -133,6 +133,23 @@ All form submissions and admin CRUD writes are wrapped in try/catch — on failu
 - Loads Bootstrap 5.3 + icons from CDN, plus `public/css/style.css` and `public/css/accessibility-contrast.css`; `public/js/accessibility.js` at end of body
 - Vite bundle is **not** loaded anywhere in the layout
 
+**Accessibility widget** (`components/accessibility.blade.php`): modeled on the **jakarta.go.id
+"Widget Aksesibilitas Version 2.0"** and restyled entirely on design tokens (boxy,
+`border-radius: 0`). It's an icon-tile grid with strip gauges: Mode Suara (Web Speech API TTS,
+`id-ID`), Perbesar/Perkecil Teks, Skala Abu-Abu, Kontras+ (Normal→High→Dark→Invert),
+Sembunyikan Gambar, Rata Tulisan, Tulisan Dapat Dibaca, Tinggi Garis, Animasi Dijeda, Kursor,
+Spasi Teks, Garis Bawahi Tautan, + a language row (only Indonesian) and a reset bar. New root
+state classes live at the **end of `accessibility-contrast.css`** (`-grayscale`, `-invert`,
+`-hide-images`, `-readable-font`, `-pause-animations`, `-large-cursor`, `-underline-links`,
+`-align-*`). Gauge tiles increment on tap and **wrap** (max → 0). Both the high-contrast and
+dark **overrides restyle the widget itself** (see the widget blocks in
+`accessibility-contrast.css`) — always keep those in sync when touching the widget CSS.
+`accessibility-grayscale`/`accessibility-invert` are applied **per-element**
+(`body *:not(.accessibility-widget):not(.accessibility-widget *)`) — never move the filter onto
+`html`/`body`, or the `position: fixed` widget re-anchors to the whole document and disappears.
+The widget is also excluded from Perbesar/Perkecil Teks scaling (it stays fixed-size) so Reset
+stays reachable.
+
 ### Design System
 
 - Full documentation in `DESIGN_SYSTEM.md`

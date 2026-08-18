@@ -51,22 +51,26 @@ Expected output should show 3 lines:
 
 2. Open browser to `http://localhost:8000`
 
-3. **Look for blue button** in bottom-right corner
+3. **Look for the navy square button** in the bottom-right corner
 
-4. **Click the button** - panel should slide up
+4. **Click the button** - the icon-tile panel should open
 
 5. **Test each feature**:
-   - Font Size (A- / A+) - Text should grow/shrink
-   - Line Height (↑/↓) - Line spacing should change
-   - Text Spacing (↑/↓) - Letter spacing should increase
-   - Contrast (Normal/Tinggi/Gelap) - Colors should change
-   - Grayscale (Normal/Skala Abu) - Colors should desaturate
-   - Reset - Everything returns to normal
+   - Mode Suara (speaks page text; stops on 2nd tap / panel close)
+   - Perbesar / Perkecil Teks (4-strip gauge; wrap at 145%) — page text grows/shrinks,
+     but the widget itself stays fixed-size
+   - Skala Abu (grayscale filter) · Sembunyikan Gambar
+   - Kontras+ (Normal → High → Dark → Invert, icon swaps per level)
+   - Grayscale / Invert — widget stays visible (bottom-right) while scrolling
+   - Rata Tulisan (L / C / R / Justify) · Tulisan Dapat Dibaca
+   - Tinggi Garis (3-strip) · Spasi Teks (3-strip) · Kursor (large cursor)
+   - Animasi Dijeda · Garis Bawahi Tautan (2-strip)
+   - Reset - everything returns to normal
 
 ### Step 4: Persistence Test
 1. Open accessibility widget
-2. Set Font Size to 130%
-3. Set Contrast to "Gelap" (Dark)
+2. Tap Perbesar Teks twice (font → 130% level)
+3. Tap Kontras+ once (→ Dark)
 4. **Refresh page** (F5)
 5. Settings should still be active! ✓
 
@@ -99,7 +103,7 @@ Test in multiple browsers if available:
 │    [Web content here]               │
 │                                     │
 │                        ┌──────────┐ │
-│                        │    [A]   │ │  ← Blue button (56px circle)
+│                        │   ⌘/🎨   │ │  ← Navy square (boxy, border-radius: 0)
 │                        │ (navy)   │ │
 │                        └──────────┘ │
 └─────────────────────────────────────┘
@@ -110,21 +114,21 @@ Test in multiple browsers if available:
 ┌─────────────────────────────────────┐
 │         Your Website Content         │
 │                                     │
-│  ┌──────────────────────┐           │
-│  │ Menu Aksesibilitas ✕ │           │
-│  ├──────────────────────┤           │
-│  │ Ukuran Teks: A- 100% A+ │       │
-│  │ Tinggi Garis: ↓ Normal ↑ │      │
-│  │ Spasi Teks: ↓ Normal ↑  │       │
-│  │ ─────────────────────── │       │
-│  │ Kontras: [Normal] [Tinggi] [Gelap] │
-│  │ Warna: [Normal] [Skala Abu]    │
-│  │ ─────────────────────── │       │
-│  │ [Atur Ulang]            │       │
-│  │ Versi 1.0               │       │
-│  └──────────────────────┘           │
+│  ┌──────────────────────────┐       │
+│  │ Widget Aksesibilitas  ✕  │       │
+│  │ ┌────┐ ┌────┐ ┌────┐ ┌  │       │
+│  │ │Mode│ │Abu │ │Img │ │… │  icons │
+│  │ │Suara│ │    │ │    │ │  │       │
+│  │ └────┘ └────┘ └────┘ └  │  tiles │
+│  │ Perbesar [■■■■□□□]      │  gauge │
+│  │ Kontras+ [■□□□□□□]      │  gauge │
+│  │ [Bahasa: Indonesia ▾]   │       │
+│  │ [Atur Ulang …]          │       │
+│  │ Widget Aksesibilitas    │       │
+│  │ Version 2.0             │       │
+│  └──────────────────────────┘       │
 │                        ┌──────────┐ │
-│                        │    [A]   │ │  ← Button still visible
+│                        │   ⌘/🎨   │ │  ← Button still visible
 │                        │ (navy)   │ │
 │                        └──────────┘ │
 └─────────────────────────────────────┘
@@ -185,16 +189,18 @@ The widget itself is accessible:
 
 **Everything is working correctly if:**
 
-1. ✅ Blue button visible in bottom-right corner
+1. ✅ Navy toggle button visible in bottom-right corner (boxy, not rounded)
 2. ✅ Button opens/closes panel smoothly
-3. ✅ All 6 controls (Font, Height, Spacing, Contrast, Grayscale, Reset) work
-4. ✅ Settings persist after page refresh
-5. ✅ Ctrl+U opens/closes widget
-6. ✅ Works on mobile devices
-7. ✅ Dark mode makes page readable
-8. ✅ Reset button restores defaults
-9. ✅ No JavaScript errors in console
-10. ✅ All files load successfully
+3. ✅ All 13 features + language row + reset work
+4. ✅ Strip gauges advance on tap and wrap (max → 0)
+5. ✅ Mode Suara reads page text and stops on off/close/reset
+6. ✅ Settings persist after page refresh
+7. ✅ Ctrl+U opens/closes widget
+8. ✅ Works on mobile devices (2-3 column grid at small widths)
+9. ✅ Dark mode & high contrast keep the widget itself readable
+10. ✅ Reset button restores defaults
+11. ✅ No JavaScript errors in console
+12. ✅ All files load successfully
 
 ## Next Steps After Verification
 
@@ -206,14 +212,21 @@ The widget itself is accessible:
 
 ## Quick Reference
 
-| Feature | Shortcut | Range | Storage |
-|---------|----------|-------|---------|
-| Font Size | A- / A+ | 80-150% | Yes |
-| Line Height | ↓ / ↑ | 1.3-2.0 | Yes |
-| Text Spacing | ↓ / ↑ | 0-4px | Yes |
-| Contrast | Buttons | 3 modes | Yes |
-| Grayscale | Buttons | On/Off | Yes |
-| Keyboard | Ctrl+U | - | N/A |
+| Feature | Control | Levels | Storage |
+|---------|---------|--------|---------|
+| Perbesar / Perkecil Teks | Gauge (shared) | 100 / 115 / 130 / 145 % | Yes |
+| Tinggi Garis | Gauge | 1.5 / 1.7 / 2.0 | Yes |
+| Spasi Teks | Gauge | 0 / 1.5 / 3 px | Yes |
+| Kontras+ | Gauge | Normal → High → Dark → Invert | Yes |
+| Rata Tulisan | Gauge | L / C / R / Justify | Yes |
+| Garis Bawahi Tautan | Gauge | Off / On | Yes |
+| Mode Suara | Toggle | On/Off (TTS id-ID) | Yes |
+| Skala Abu-Abu | Toggle | On/Off | Yes |
+| Sembunyikan Gambar | Toggle | On/Off | Yes |
+| Tulisan Dapat Dibaca | Toggle | On/Off | Yes |
+| Animasi Dijeda | Toggle | On/Off | Yes |
+| Kursor | Toggle | On/Off | Yes |
+| Widget panel | Ctrl+U | - | N/A |
 | Reset | Button | - | Clears |
 
 ## Questions?

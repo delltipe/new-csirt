@@ -38,7 +38,10 @@ composer test           # Clears config cache, then runs php artisan test
   laws/regulations, technical guides** (listing + detail, paginated, Indonesian copy)
 - Site-wide **search** across all content types (min. 2 characters)
 - Official CSIRT documents: **RFC 2350**, **public key** download, archived **statistics** pages
-- **Accessibility widget** — high-contrast, dark-contrast, and default modes
+- **Accessibility widget** — jakarta.go.id v2.0-style icon-tile panel (design-token based):
+  Mode Suara (TTS), Perbesar/Perkecil Teks, Skala Abu-Abu, Kontras+, Sembunyikan Gambar,
+  Rata Tulisan, Tulisan Dapat Dibaca, Tinggi Garis, Animasi Dijeda, Kursor, Spasi Teks,
+  Garis Bawahi Tautan, plus high-contrast / dark-contrast modes
 
 ### Incident Portal (public bug-hunter flow)
 - Public **registration / login** (no 2FA), reporters gated via `is_bug_hunter`
@@ -128,4 +131,4 @@ All pages follow the design system in **`DESIGN_SYSTEM.md`** — every color/fon
 value is a CSS custom property in `public/css/style.css`; never hardcode hex values or
 fonts. Bootstrap is used only for grid and forms (admin tables use the custom
 `.data-table` component). Accessibility overrides live
-in `public/css/accessibility-contrast.css`.
+in `public/css/accessibility-contrast.css` (both modes restyle the widget itself).

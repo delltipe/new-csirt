@@ -213,12 +213,19 @@ All admin write operations are wrapped in try/catch with Indonesian error messag
 
 ## Accessibility
 
-- **Widget:** `components/accessibility.blade.php` — floating panel with 3 modes:
-  - High contrast mode
-  - Dark contrast mode
-  - Default mode
-- **Implementation:** CSS custom properties overridden via `accessibility-contrast.css`
-- **JavaScript:** `public/js/accessibility.js` toggles classes on `<html>` element
+- **Widget:** `components/accessibility.blade.php` — modeled on the jakarta.go.id **"Widget
+  Aksesibilitas Version 2.0"**, rebuilt on design tokens (boxy, `border-radius: 0`). Icon-tile
+  grid with strip gauges: Mode Suara (Web Speech API TTS `id-ID`), Perbesar/Perkecil Teks (4),
+  Skala Abu-Abu, Kontras+ (Normal→High→Dark→Invert, 4), Sembunyikan Gambar, Rata Tulisan (4),
+  Tulisan Dapat Dibaca, Tinggi Garis (3), Animasi Dijeda, Kursor, Spasi Teks (3), Garis Bawahi
+  Tautan (2), a language row (only Indonesian), and a reset bar
+- **Contrast modes:** High contrast + dark mode override the design tokens via
+  `accessibility-contrast.css`; extra states (`-grayscale`, `-invert`, `-hide-images`,
+  `-readable-font`, `-pause-animations`, `-large-cursor`, `-underline-links`, `-align-*`) live at
+  the end of the same file, each toggled by `accessibility.js` classes on `<html>`
+- **JavaScript:** `public/js/accessibility.js` (mirrored as `resources/js/accessibility.js`)
+  manages state in `localStorage` (`accessibilityState`), Ctrl+U shortcut, gauge strips that
+  wrap, and TTS play/stop
 
 ---
 

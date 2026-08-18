@@ -6,35 +6,32 @@ A fully functional accessibility widget has been added to your CSIRT website. It
 
 ## Features
 
-The accessibility widget includes:
+The accessibility widget (rebuilt to match jakarta.go.id "Widget Aksesibilitas Version 2.0")
+is an icon-tile grid with two tile kinds: **switches** and **gauges**. Gauge tiles advance on tap
+and wrap (max → 0). Preferences persist via LocalStorage.
 
-1. **Font Size Control** (80% - 150%)
-   - Increase/decrease text size
-   - Persists across sessions
-   - Applies to all page elements
+**Switches** (`aria-pressed` toggles):
+1. **Mode Suara** — reads the visible page text aloud via the Web Speech API (`id-ID`); stops on
+   toggle-off / panel close / reset
+2. **Skala Abu-Abu** — grayscale filter on the page (per-element, so the floating button/panel
+   stay in full color and keep their fixed position)
+3. **Sembunyikan Gambar** — hides image content (layout preserved)
+4. **Tulisan Dapat Dibaca** — dyslexia-friendly system font stack
+5. **Animasi Dijeda** — pauses CSS animations/transitions
+6. **Kursor** — 32px large cursor
 
-2. **Line Height Control** (1.3 - 2.0)
-   - Adjust spacing between lines
-   - Options: Small, Normal, Medium, Large, Very Large
-   - Improves readability
+**Gauges** (strip indicator, wrap):
+7. **Perbesar / Perkecil Teks** — 4 levels: 100 / 115 / 130 / 145 % (the widget panel itself
+   stays fixed-size so Reset remains reachable)
+8. **Kontras+** — 4 levels: Normal → High → Dark → Invert (icon swaps per level)
+9. **Rata Tulisan** — 4 levels: Left → Center → Right → Justify
+10. **Tinggi Garis** — 3 levels: 1.5 / 1.7 / 2.0
+11. **Spasi Teks** — 3 levels: 0 / 1.5 / 3 px
+12. **Garis Bawahi Tautan** — 2 levels: off/on (underline links)
 
-3. **Letter Spacing Control** (0 - 4px)
-   - Increase spacing between letters
-   - Options: Normal, Medium, Large, Larger, Maximum
-   - Helps with reading clarity
-
-4. **Contrast Modes**
-   - **Normal**: Default website colors
-   - **High**: Maximum contrast (black/white with clear borders)
-   - **Dark**: Dark mode with blue accents for readability
-
-5. **Grayscale Toggle**
-   - Normal colors or complete grayscale
-   - Useful for color-blind users
-
-6. **Reset Button**
-   - Restores all settings to defaults
-   - Clears localStorage preferences
+Plus a **language row** (ID / Bahasa Indonesia — single language), a **reset bar**
+("Atur Ulang Semua Pengaturan Aksesibilitas"), and a footer version tag
+"Widget Aksesibilitas Version 2.0".
 
 ## File Structure
 
@@ -219,13 +216,16 @@ For issues or questions about the accessibility widget:
 ## Version History
 
 - **v1.0** - Initial release
-  - Font size control
-  - Line height control
-  - Letter spacing control
-  - Three contrast modes
-  - Grayscale toggle
-  - LocalStorage persistence
-  - Keyboard shortcut support
+  - Font size control · Line height control · Letter spacing control
+  - Three contrast modes · Grayscale toggle
+  - LocalStorage persistence · Keyboard shortcut support
+- **v2.0** - jakarta.go.id-style rebuild (design-token based, boxy corners)
+  - Icon-tile grid + strip gauges; gauge tiles wrap (max → 0)
+  - Mode Suara (Web Speech API TTS `id-ID`) · Sembunyikan Gambar · Rata Tulisan
+  - Tulisan Dapat Dibaca · Animasi Dijeda · Kursor · Garis Bawahi Tautan
+  - Kontras+ cycle (Normal → High → Dark → Invert)
+  - Language row (only Indonesian) · Reset bar · version footer
+  - v1 → v2 LocalStorage migration
 
 ---
 

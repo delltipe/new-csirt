@@ -2,28 +2,31 @@
 
 ## ✅ Implementation Complete
 
-Your accessibility widget has been fully integrated into your CSIRT website. Here's what was implemented:
+Your accessibility widget (jakarta.go.id v2.0 style) has been fully integrated into your CSIRT
+website. Here's what was implemented:
 
 ## What's New
 
-### Files Created:
+### Files:
 1. **Blade Component**: `resources/views/components/accessibility.blade.php`
-   - Floating button with accessibility icon
-   - Collapsible panel with all controls
-   - Inline CSS styling
+   - Floating toggle button + icon-tile panel
+   - 13 features + language row + reset bar + version footer
+   - Inline CSS styling on design tokens (boxy, `border-radius: 0`)
 
-2. **JavaScript Logic**: `public/js/accessibility.js`
-   - Font size adjustments (80-150%)
-   - Line height control (1.3-2.0)
-   - Letter spacing adjustments
-   - Contrast mode switcher (Normal/High/Dark)
-   - Grayscale toggle
-   - LocalStorage persistence
+2. **JavaScript Logic**: `public/js/accessibility.js` (+ mirror `resources/js/accessibility.js`)
+   - Perbesar/Perkecil Teks (4-level gauge)
+   - Tinggi Garis (3-level gauge) · Spasi Teks (3-level gauge)
+   - Kontras+ cycle (Normal→High→Dark→Invert, 4-level) · Rata Tulisan (L/C/R/Justify, 4-level)
+   - Garis Bawahi Tautan (2-level) · Skala Abu-Abu · Sembunyikan Gambar
+   - Tulisan Dapat Dibaca · Animasi Dijeda · Kursor (large cursor)
+   - Mode Suara = text-to-speech via Web Speech API (`id-ID`)
+   - LocalStorage persistence (`accessibilityState`), Ctrl+U shortcut
 
 3. **Contrast Styles**: `public/css/accessibility-contrast.css`
-   - High Contrast Mode (pure black/white)
-   - Dark Mode (dark theme with blue accents)
-   - Smart CSS variables override system
+   - High Contrast Mode (pure black/white) + Dark Mode (dark with blue accents)
+   - Widget-specific overrides for tiles/toggles/strips in **both** modes
+   - Root state classes at the end: `-grayscale`, `-invert`, `-hide-images`, `-readable-font`,
+     `-pause-animations`, `-large-cursor`, `-underline-links`, `-align-*`
 
 ### Files Modified:
 1. **Layout**: `resources/views/layouts/app.blade.php`
@@ -36,14 +39,15 @@ Your accessibility widget has been fully integrated into your CSIRT website. Her
 ### 1. **Browser Test**
 ```
 1. Open your website: http://localhost/
-2. Look for blue accessibility button (bottom-right corner)
-3. Click the button to open the panel
+2. Look for the navy square accessibility button (bottom-right corner)
+3. Click the button to open the icon-tile panel
 4. Test each feature:
-   - Font Size (A- / A+)
-   - Line Height (adjust up/down)
-   - Text Spacing (adjust up/down)
-   - Contrast (toggle Normal/High/Dark)
-   - Grayscale (toggle Normal/Grayscale)
+   - Mode Suara (speaks page text; stops on 2nd tap / close / reset)
+   - Perbesar / Perkecil Teks (4-strip gauge)
+   - Kontras+ (Normal → High → Dark → Invert)
+   - Rata Tulisan · Sembunyikan Gambar · Tulisan Dapat Dibaca
+   - Tinggi Garis · Spasi Teks · Kursor · Animasi Dijeda
+   - Skala Abu-Abu · Garis Bawahi Tautan
    - Reset (restore defaults)
 5. Refresh page - settings should persist!
 ```
@@ -56,8 +60,8 @@ Press Ctrl+U (or Cmd+U on Mac) to open/close widget
 ### 3. **Settings Persistence**
 ```
 1. Open widget
-2. Change font size to 130%
-3. Change contrast to Dark
+2. Tap Perbesar Teks twice (font → 130% level)
+3. Tap Kontras+ once (→ Dark)
 4. Close browser tab
 5. Open your site again
 6. Settings are still there! ✓
@@ -65,11 +69,11 @@ Press Ctrl+U (or Cmd+U on Mac) to open/close widget
 
 ### 4. **Dark Mode Test**
 ```
-1. Click Contrast
-2. Select "Gelap" (Dark)
-3. Watch entire website transform to dark theme
-4. Colors adjust to blue accents for readability
-5. Reset to Normal
+1. Tap Kontras+ until Dark (2nd level in the cycle)
+2. Watch entire website transform to dark theme
+3. Colors adjust to blue accents for readability
+4. Keep tapping to reach Invert, then back to Normal
+5. Reset to Normal if desired
 ```
 
 ### 5. **Mobile Test**
@@ -82,46 +86,31 @@ Press Ctrl+U (or Cmd+U on Mac) to open/close widget
 
 ## Features Breakdown
 
-### Font Size Control
-- **Range**: 80% to 150% of normal
-- **Step**: 10% increments
-- **Apply To**: Entire page (all text)
-- **Indicator**: Shows current percentage
+### Icon-Tile Grid (jakarta.go.id v2.0 layout)
 
-### Line Height Control
-- **Range**: 1.3 (Small) to 2.0 (Very Large)
-- **Step**: 0.2 increments
-- **Labels**: Kecil, Normal, Sedang, Besar, Sangat Besar
-- **Benefit**: Improves readability, especially for dyslexic users
+The widget is a 4-column grid of icon tiles. Toggle tiles switch on/off (navy fill while active);
+gauge tiles show a strip indicator (filled = level). Gauge tiles advance on tap and **wrap**
+(from max back to 0).
 
-### Text Spacing Control
-- **Range**: 0px (Normal) to 4px (Maksimal)
-- **Step**: 1px increments
-- **Labels**: Normal, Sedang, Besar, Lebih Besar, Maksimal
-- **Benefit**: Increased letter spacing aids legibility
+**Switches** (`aria-pressed`):
+- **Mode Suara** — reads the visible page text aloud via the Web Speech API (`id-ID`), stops on
+  toggle-off / panel close / reset
+- **Skala Abu-Abu** — grayscale filter (per-element; the widget itself stays in full color and
+  keeps its fixed position)
+- **Sembunyikan Gambar** — hides image content while keeping layout
+- **Tulisan Dapat Dibaca** — dyslexia-friendly system font stack
+- **Animasi Dijeda** — pauses animations/transitions
+- **Kursor** — large 32px cursor
 
-### Contrast Modes
-
-**Normal**
-- Default website colors
-- Standard navy, white, grays
-
-**High Contrast** (Kontras Tinggi)
-- Pure black text on white
-- Bold borders
-- Maximum visual distinction
-- WCAG AAA compliant
-
-**Dark Mode** (Gelap)
-- Dark background (#0a0a0a)
-- Light text (#FFFFFF)
-- Blue accents (#4DA6FF)
-- Comfortable for low-light viewing
-
-### Grayscale
-- **Off**: Full colors (default)
-- **On**: Complete grayscale filter
-- **Benefit**: Helpful for certain types of color blindness
+**Gauges** (tap to cycle, wrap at max → 0):
+- **Perbesar Teks / Perkecil Teks** — shared 4-level gauge → 100 / 115 / 130 / 145 % font
+  (the widget itself stays fixed-size so Reset remains reachable)
+- **Kontras+** — 4-level cycle: Normal → High (pure black/white) → Dark (dark theme) → Invert
+  (inverted colors); swaps the tile icon and fills strips
+- **Rata Tulisan** — 4-level cycle: Left → Center → Right → Justify
+- **Tinggi Garis** — 3-level → 1.5 / 1.7 / 2.0 line height
+- **Spasi Teks** — 3-level → 0 / 1.5 / 3 px letter spacing
+- **Garis Bawahi Tautan** — 2-level on/off, underlines all links
 
 ### Reset
 - Restores all settings to defaults
@@ -133,14 +122,21 @@ Press Ctrl+U (or Cmd+U on Mac) to open/close widget
 
 Settings are saved in **LocalStorage** with key: `accessibilityState`
 
-Example stored data:
+Example stored data (v2 adapter, migrating the old v1 fields on load):
 ```json
 {
-  "fontSize": 120,
-  "lineHeight": 1.7,
-  "letterSpacing": 2,
-  "contrast": "dark",
-  "grayscale": false
+  "fontSizeLevel": 1,
+  "lineHeightLevel": 1,
+  "letterSpacingLevel": 0,
+  "contrast": 1,
+  "grayscale": false,
+  "textAlign": 0,
+  "hideImages": false,
+  "voice": false,
+  "readableFont": false,
+  "pauseAnimations": false,
+  "largeCursor": false,
+  "underlineLinks": 0
 }
 ```
 
@@ -247,6 +243,6 @@ k:\GitHub\new-csirt\
 
 ---
 
-**Ready to use!** Your accessibility widget is live and ready for testing. Start by clicking the blue button in the bottom-right corner of any page.
+**Ready to use!** Your accessibility widget is live and ready for testing. Start by clicking the navy square button in the bottom-right corner of any page.
 
 Good luck! 🚀

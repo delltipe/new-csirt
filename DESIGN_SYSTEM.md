@@ -296,6 +296,36 @@ The design system supports two accessibility modes via `accessibility-contrast.c
 
 Both modes override all design tokens. **Any hardcoded color will NOT adapt** — this is why token usage is mandatory.
 
+### Accessibility Widget v2.0
+
+The floating "Widget Aksesibilitas" panel (`resources/views/components/accessibility.blade.php`)
+is modeled on the **jakarta.go.id "Widget Aksesibilitas Version 2.0"** and, like every other
+component, is styled exclusively on the tokens above (`--navy` active tiles, `--ink` icons,
+`--mist` surfaces, boxy `border-radius: 0`). It ships as a 4-column icon-tile grid with
+strip gauges:
+
+- **Switches** (`aria-pressed`): Mode Suara (Web Speech API TTS, `id-ID`), Skala Abu-Abu,
+  Sembunyikan Gambar, Tulisan Dapat Dibaca, Animasi Dijeda, Kursor
+- **Gauge tiles** (tap to increment, wrap from max → 0): Perbesar/Perkecil Teks (4),
+  Kontras+ Normal→High→Dark→Invert (4), Rata Tulisan L/C/R/Justify (4), Tinggi Garis (3),
+  Spasi Teks (3), Garis Bawahi Tautan (2)
+- Language row (`ID / Bahasa Indonesia` — single language available), reset bar, version footer.
+
+State classes applied on `<html>`/`<body>` (defined at the end of `accessibility-contrast.css`):
+`accessibility-grayscale`, `accessibility-invert`, `accessibility-hide-images`,
+`accessibility-readable-font`, `accessibility-pause-animations`, `accessibility-large-cursor`,
+`accessibility-underline-links`, and `accessibility-align-{center,right,justify}`. High-contrast
+and dark overrides restyle the widget itself (tiles/toggles/strips/language row) so the widget
+stays readable in both modes.
+
+`-grayscale` and `-invert` are applied per-element (`:not(.accessibility-widget)`) so no ancestor
+of the fixed-position widget is ever filtered; under `-invert` the body gets a `--ink` fill so
+transparent gaps stay dark. The widget itself never scales with Perbesar Teks — it stays
+fixed-size so Reset remains reachable.
+
+Toggle via `public/js/accessibility.js` (Ctrl+U shortcut, persisted in `localStorage`,
+key `accessibilityState`).
+
 ---
 
 ## Rules
