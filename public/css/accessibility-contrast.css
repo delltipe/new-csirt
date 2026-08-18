@@ -69,36 +69,139 @@ html.accessibility-contrast-high .nav-links > li > a.active {
   border-bottom-color: #000080;
 }
 
+/* ---- Accessibility widget v2.0 (high contrast) ---- */
+html.accessibility-contrast-high .accessibility-toggle {
+  background: #000080;
+  color: #FFFFFF;
+  border: 2px solid #000000;
+}
+
 html.accessibility-contrast-high .accessibility-panel {
   background: #FFFFFF;
   border: 2px solid #000000;
   box-shadow: 0 0 0 3px #000000;
 }
 
-html.accessibility-contrast-high .accessibility-header {
+html.accessibility-contrast-high .group_title_disabilitas,
+html.accessibility-contrast-high .group_title_bahasa {
   background: #F0F0F0;
   border-bottom: 2px solid #000000;
 }
 
-html.accessibility-contrast-high .accessibility-divider {
-  background: #000000;
-  height: 2px;
-}
-
-html.accessibility-contrast-high .control-btn {
-  border: 2px solid #000000;
-  background: #FFFFFF;
+html.accessibility-contrast-high .title_disabilitas,
+html.accessibility-contrast-high .title_daftar_bahasa {
   color: #000000;
 }
 
-html.accessibility-contrast-high .control-btn-toggle {
+html.accessibility-contrast-high .box_circle_disabilitas {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .group_action_bahasa {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .layout_bahasa_widget {
+  border: 2px solid #000000;
+}
+
+html.accessibility-contrast-high .box_selected_bahasa {
+  background: #F0F0F0;
+  border: 2px solid #000000;
+}
+
+html.accessibility-contrast-high .box_text_bottom_disabilitas {
+  color: #000000;
+}
+
+html.accessibility-contrast-high .box_group_disabilitas {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas {
+  background: #000080;
+  border: 2px solid #000000;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .box_text_bottom_disabilitas {
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-high .box_group_disabilitas .icon_svg_color,
+html.accessibility-contrast-high .box_group_disabilitas .icon_svg_grey_scale_color_1,
+html.accessibility-contrast-high .box_group_disabilitas .icon_svg_grey_scale_color_2,
+html.accessibility-contrast-high .box_group_disabilitas .icon_svg_grey_scale_color_3,
+html.accessibility-contrast-high .box_group_disabilitas .icon_svg_grey_scale_color_4,
+html.accessibility-contrast-high .box_group_disabilitas .active_icon_svg_color {
+  fill: #000000;
+}
+
+html.accessibility-contrast-high .box_group_disabilitas .icon_svg_sroke_color,
+html.accessibility-contrast-high .box_group_disabilitas .active_icon_svg_sroke_color {
+  stroke: #000000;
+}
+
+html.accessibility-contrast-high .box_group_disabilitas .circle_multi,
+html.accessibility-contrast-high .box_group_disabilitas .circle_single {
+  stroke: #000000;
+}
+
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_color,
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_grey_scale_color_1,
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_grey_scale_color_2,
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_grey_scale_color_3,
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_grey_scale_color_4,
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .active_icon_svg_color,
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .icon_contrast_black {
+  fill: #FFFFFF;
+}
+
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_sroke_color,
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .active_icon_svg_sroke_color {
+  stroke: #FFFFFF;
+}
+
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .circle_multi,
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .circle_single {
+  stroke: #FFFFFF;
+}
+
+html.accessibility-contrast-high .strip_loading_process_v2,
+html.accessibility-contrast-high .strip_loading_process_v3,
+html.accessibility-contrast-high .strip_loading_process_v4 {
+  background: #000080;
+}
+
+html.accessibility-contrast-high .strip_loading_unprocess_v2,
+html.accessibility-contrast-high .strip_loading_unprocess_v3,
+html.accessibility-contrast-high .strip_loading_unprocess_v4 {
+  background: #000000;
+}
+
+html.accessibility-contrast-high .row_persegi_reset {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .row_persegi_reset:hover {
   background: #F0F0F0;
 }
 
-html.accessibility-contrast-high .control-btn-toggle[aria-pressed="true"] {
-  background: #000080;
-  color: #FFFFFF;
-  border: 2px solid #000000;
+html.accessibility-contrast-high .column_cek_version_dsb {
+  border-top: 2px solid #000000;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .icon_persegi_riset {
+  color: #000000;
 }
 
 /* DARK CONTRAST MODE */
@@ -197,76 +300,161 @@ html.accessibility-contrast-dark .nav-dropdown a:hover {
   color: #4DA6FF;
 }
 
+/* ---- Accessibility widget v2.0 (dark mode) ---- */
+html.accessibility-contrast-dark .accessibility-toggle {
+  background: #4DA6FF;
+  color: #0A0F1A;
+  border: 1px solid #66B3FF;
+}
+
 html.accessibility-contrast-dark .accessibility-panel {
   background: #1a1a1a;
   border: 1px solid #333333;
   box-shadow: 0 8px 32px rgba(77, 166, 255, 0.15);
 }
 
-html.accessibility-contrast-dark .accessibility-header {
+html.accessibility-contrast-dark .group_title_disabilitas,
+html.accessibility-contrast-dark .group_title_bahasa {
   background: #0F0F0F;
   border-bottom: 1px solid #333333;
 }
 
-html.accessibility-contrast-dark .accessibility-title {
+html.accessibility-contrast-dark .title_disabilitas,
+html.accessibility-contrast-dark .title_daftar_bahasa {
   color: #FFFFFF;
 }
 
-html.accessibility-contrast-dark .accessibility-close-btn {
+html.accessibility-contrast-dark .box_circle_disabilitas {
+  background: #1a1a1a;
+  border: 1px solid #333333;
   color: #CCCCCC;
 }
 
-html.accessibility-contrast-dark .accessibility-close-btn:hover {
-  color: #FFFFFF;
+html.accessibility-contrast-dark .box_circle_disabilitas:hover {
+  background: #2a2a3e;
+  color: #4DA6FF;
 }
 
-html.accessibility-contrast-dark .accessibility-divider {
-  background: #333333;
-}
-
-html.accessibility-contrast-dark .control-label {
-  color: #FFFFFF;
-}
-
-html.accessibility-contrast-dark .control-btn {
+html.accessibility-contrast-dark .group_action_bahasa {
+  background: #1a1a1a;
   border: 1px solid #333333;
-  background: #0F0F0F;
   color: #FFFFFF;
 }
 
-html.accessibility-contrast-dark .control-btn:hover {
+html.accessibility-contrast-dark .group_action_bahasa .icon_svg_color {
+  fill: #CCCCCC;
+}
+
+html.accessibility-contrast-dark .layout_bahasa_widget {
+  background: #1a1a1a;
+  border: 1px solid #333333;
+}
+
+html.accessibility-contrast-dark .box_selected_bahasa {
+  background: #2a2a3e;
+  border: 1px solid #4DA6FF;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .box_text_bottom_disabilitas {
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas {
+  background: #0F0F0F;
+  border: 1px solid #333333;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas:hover {
   background: #2a2a3e;
   border-color: #4DA6FF;
 }
 
-html.accessibility-contrast-dark .control-btn-toggle {
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas {
+  background: #4DA6FF;
+  border: 1px solid #4DA6FF;
+  color: #0A0F1A;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .box_text_bottom_disabilitas {
+  color: #0A0F1A;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas .icon_svg_color,
+html.accessibility-contrast-dark .box_group_disabilitas .icon_svg_grey_scale_color_1,
+html.accessibility-contrast-dark .box_group_disabilitas .icon_svg_grey_scale_color_2,
+html.accessibility-contrast-dark .box_group_disabilitas .icon_svg_grey_scale_color_3,
+html.accessibility-contrast-dark .box_group_disabilitas .icon_svg_grey_scale_color_4,
+html.accessibility-contrast-dark .box_group_disabilitas .active_icon_svg_color {
+  fill: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas .icon_svg_sroke_color,
+html.accessibility-contrast-dark .box_group_disabilitas .active_icon_svg_sroke_color {
+  stroke: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas .circle_multi,
+html.accessibility-contrast-dark .box_group_disabilitas .circle_single {
+  stroke: #FFFFFF;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_color,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_grey_scale_color_1,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_grey_scale_color_2,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_grey_scale_color_3,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_grey_scale_color_4,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .active_icon_svg_color,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .icon_contrast_black,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .icon_fill_svg_color_white {
+  fill: #0A0F1A;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .icon_svg_sroke_color,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .active_icon_svg_sroke_color {
+  stroke: #0A0F1A;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .circle_multi,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .circle_single {
+  stroke: #0A0F1A;
+}
+
+html.accessibility-contrast-dark .strip_loading_process_v2,
+html.accessibility-contrast-dark .strip_loading_process_v3,
+html.accessibility-contrast-dark .strip_loading_process_v4 {
+  background: #4DA6FF;
+}
+
+html.accessibility-contrast-dark .strip_loading_unprocess_v2,
+html.accessibility-contrast-dark .strip_loading_unprocess_v3,
+html.accessibility-contrast-dark .strip_loading_unprocess_v4 {
+  background: #555555;
+}
+
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .strip_loading_unprocess_v2,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .strip_loading_unprocess_v3,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .strip_loading_unprocess_v4 {
+  background: rgba(10, 15, 26, 0.35);
+}
+
+html.accessibility-contrast-dark .row_persegi_reset {
   background: #0F0F0F;
+  border: 1px solid #333333;
+  color: #FFFFFF;
 }
 
-html.accessibility-contrast-dark .control-btn-toggle[aria-pressed="true"] {
-  background: #4DA6FF;
-  color: #000000;
+html.accessibility-contrast-dark .row_persegi_reset:hover {
+  background: #2a2a3e;
   border-color: #4DA6FF;
 }
 
-html.accessibility-contrast-dark .control-btn-reset {
-  background: #4DA6FF;
-  color: #000000;
-  border-color: #4DA6FF;
-}
-
-html.accessibility-contrast-dark .control-btn-reset:hover {
-  background: #66B3FF;
-}
-
-html.accessibility-contrast-dark .font-size-display,
-html.accessibility-contrast-dark .line-height-display,
-html.accessibility-contrast-dark .letter-spacing-display {
+html.accessibility-contrast-dark .icon_persegi_riset {
   color: #CCCCCC;
 }
 
-html.accessibility-contrast-dark .accessibility-footer {
-  background: #0F0F0F;
+html.accessibility-contrast-dark .column_cek_version_dsb {
   border-top: 1px solid #333333;
   color: #999999;
 }
@@ -707,4 +895,70 @@ html.accessibility-contrast-dark .nav-logout button:hover {
 html.accessibility-contrast-dark .nav-logo img,
 html.accessibility-contrast-dark .profile-logo-container img {
   filter: brightness(0) invert(1) opacity(0.9);
+}
+
+/* ============================================================
+   ACCESSIBILITY STATE CLASSES (widget v2.0)
+   Applied by accessibility.js — one per user toggle.
+   Tokens: --ink / --navy / --navy-mid / --white
+   ============================================================ */
+
+/* Grayscale — per-element so the fixed/absolute layout (incl. the widget
+   itself) is never inside a filtered ancestor. */
+html.accessibility-grayscale body *:not(.accessibility-widget):not(.accessibility-widget *) {
+  filter: grayscale(1);
+}
+
+/* Invert colors (Kontras+ level 3) — same per-element approach. Body gets a
+   dark fill so transparent gaps read as the inverse of the light theme. */
+html.accessibility-invert body {
+  background: var(--ink, #0A0F1A);
+}
+html.accessibility-invert body *:not(.accessibility-widget):not(.accessibility-widget *) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Hide all images, keeping layout intact */
+html.accessibility-hide-images img {
+  visibility: hidden;
+}
+
+/* Readable (dyslexia-friendly) typeface — no external font, system stack */
+html.accessibility-readable-font body {
+  font-family: 'Trebuchet MS', Verdana, Tahoma, Arial, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Pause animations & transitions */
+html.accessibility-pause-animations *,
+html.accessibility-pause-animations *::before,
+html.accessibility-pause-animations *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+/* Large cursor (32px navy arrow with white outline) */
+html.accessibility-large-cursor,
+html.accessibility-large-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M6 3l14 20-6 1-4 6-3-2 3-6-7-2z' fill='%23003580' stroke='%23FFFFFF' stroke-width='2'/%3E%3C/svg%3E") 4 3, auto;
+}
+
+/* Underline links */
+html.accessibility-underline-links a,
+html.accessibility-underline-links a:hover {
+  text-decoration: underline !important;
+}
+
+/* Text alignment modes */
+html.accessibility-align-center :is(p, li, blockquote, td, th, dd, figcaption, h1, h2, h3, h4, h5, h6) {
+  text-align: center !important;
+}
+
+html.accessibility-align-right :is(p, li, blockquote, td, th, dd, figcaption, h1, h2, h3, h4, h5, h6) {
+  text-align: right !important;
+}
+
+html.accessibility-align-justify :is(p, li, blockquote, td, th, dd, figcaption, h1, h2, h3, h4, h5, h6) {
+  text-align: justify !important;
 }
