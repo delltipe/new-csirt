@@ -255,6 +255,28 @@
     margin: 0;
     line-height: 1.5;
 }
+.contact-text a {
+    color: var(--navy, #003580);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+}
+.contact-text a:hover { color: var(--navy-dim); }
+
+/* ============================================================
+   MAP WIDGET (Lokasi Kami)
+   ============================================================ */
+.contact-map {
+    border: 1px solid var(--border, #D8DCE3);
+}
+.contact-map iframe {
+    display: block;
+    width: 100%;
+    height: 320px;
+    border: 0;
+    border-radius: 0;
+    background: var(--mist, #F4F5F7);
+}
 
 @media (max-width: 991px) {
     .form-row { grid-template-columns: 1fr; }
@@ -363,7 +385,7 @@
                         </div>
                         <div class="contact-text">
                             <h4>Email</h4>
-                            <p>jakarta.csirt@jakarta.go.id</p>
+                            <p><a href="mailto:csirt@jakarta.go.id">csirt@jakarta.go.id</a></p>
                         </div>
                     </div>
 
@@ -372,8 +394,8 @@
                             <i class="bi bi-telephone-fill"></i>
                         </div>
                         <div class="contact-text">
-                            <h4>Telepon</h4>
-                            <p>(021) 1234-5678</p>
+                            <h4>Telepon / WhatsApp</h4>
+                            <p><a href="https://wa.me/6281388870152" target="_blank" rel="noopener noreferrer">0813-8887-0152</a></p>
                         </div>
                     </div>
 
@@ -395,6 +417,21 @@
                             <h4>Alamat</h4>
                             <p>Balaikota Blok H Lt. 13,<br>Jl. Merdeka Selatan 8-9,<br>Jakarta Pusat 10110</p>
                         </div>
+                    </div>
+                </aside>
+
+                <aside class="sidebar-card">
+                    <h3 class="form-step__title mb-4">Lokasi Kami</h3>
+                    <div class="contact-map">
+                        <iframe
+                            src="https://maps.google.com/maps?q=Diskominfotik%20DKI&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            width="100%"
+                            height="320"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Peta lokasi JakartaProv-CSIRT di Balaikota DKI Jakarta"
+                            aria-label="Peta lokasi JakartaProv-CSIRT di Balaikota DKI Jakarta"></iframe>
                     </div>
                 </aside>
             </div>
