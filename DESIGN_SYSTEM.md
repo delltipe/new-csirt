@@ -220,6 +220,10 @@ A compact `.nav-partners` cluster sits in the navbar brand row (next to the CSIR
   (~1230px min-content in a 1144px container), so partners only render when the container
   has full width; `white-space: nowrap` on `.nav-links > li > a` keeps "Hubungi Kami" on
   one line without overflowing.
+- Nav links are right-anchored (`.nav-links { margin: 0 0 0 auto }`, `.nav-right { margin-left: 12px }`)
+  so the menu cluster sticks to the right of the bar, separated from the logo/partner cluster
+  on the left. A 6px `.nav-links > li::after` hover bridge (`top: 100%`) keeps the Publikasi
+  dropdown open across the nav's 4px `border-bottom` gap.
 - Always `target="_blank" rel="noopener"` + `title` tooltip + `aria-label`. Real links:
   Jaya Raya → `https://www.jakarta.go.id/`, Diskominfo →
   `https://diskominfotik.jakarta.go.id/`, 5 Abad → `https://jakarta500.id/`.

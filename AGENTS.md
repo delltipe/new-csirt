@@ -85,6 +85,17 @@ Commit `dbcc22f` (plus earlier dark-mode work in `ee81505`+). No schema changes 
   section) to `.btn`, `.form-control`, `.card`/headers/footers, `.modal-*`, `.btn-close`,
   `.page-link` — matches the NYC.gov/insiden look in both themes.
 
+## Contact Page & Navbar Polish (IMPLEMENTED 2026-08-18)
+
+No schema changes — no `migrate:fresh` needed for any of this.
+
+- **Contact page** (`resources/views/contact/create.blade.php`): the right `col-lg-4`
+  sidebar now has a second `.sidebar-card` "Lokasi Kami" below the Informasi Kontak
+  card — a keyless Google Maps iframe (`https://maps.google.com/maps?q=Diskominfotik%20DKI&t=&z=15&ie=UTF8&iwloc=&output=embed`, the legacy site's embed pattern, no API key), full-width, `height: 320px`, boxy (`border-radius: 0`), `border: 1px solid var(--border)`, `loading="lazy"`, `referrerpolicy` + a11y `title`/`aria-label`. `.contact-map` CSS lives in the page `<style>` block.
+  Official contacts on the card are now real links: Email → `<a href="mailto:csirt@jakarta.go.id">` (the wrong `jakarta.csirt@jakarta.go.id` is gone) and Telepon/WhatsApp `0813-8887-0152` → `https://wa.me/6281388870152` (was a placeholder `(021) 1234-5678`). The number matches the footer/presentation hotline `0813-8887-0152`.
+- **Navbar link alignment** (`components/navbar.blade.php`): nav links are right-anchored instead of stretching from the logo — `.nav-links` uses `margin: 0 0 0 auto` (was `flex: 1`) and `.nav-right` uses `margin-left: 12px` (was `auto`, which would split free space between two auto margins leaving a hole). Result: `[logo] [partner logos] ·········· [Beranda Profil Publikasi▾ Event Hubungi Kami] [search] [Masuk]`.
+- **Dropdown hover-gap fix**: `.nav-links > li::after` adds a 6px hover bridge at `top: 100%` covering the nav's 4px `border-bottom` gap, so the Publikasi submenu stays open when moving the cursor down from the parent link (no other `li` pseudo-element existed — safe).
+
 
 ## Stack
 
@@ -200,7 +211,9 @@ $files = Get-ChildItem resources/views/admin/partials/*.blade.php; foreach ($f i
 
 ### Seeders
 
-`DatabaseSeeder` calls: AdminUserSeeder, CybersecurityNewsSeeder, EventSeeder, PublicationSeeder, WarningPostSeeder.
+`DatabaseSeeder` calls: AdminUserSeeder, CybersecurityNewsSeeder, WarningPostSeeder, EventSeeder, InfographicSeeder, LawRulePostSeeder, CybersecurityGuideSeeder.
+
+Seed data is real legacy content scraped from the live site (`csirt.jakarta.go.id`) into `database/seeders/legacy/*.json` (12 warnings/news, 6 events, 6 infographics, 10 laws, 5 guides). `berita_siber` and `peringatan_keamanan` intentionally share identical content (the legacy site serves one table through both views). Thumbnails and law/guide download links hotlink to the legacy site — the app needs internet to display images. To refresh the subset, re-scrape the legacy listing/detail pages into the JSON files (seeders never hit the network).
 
 Admin credentials (from seeder): `admin@gmail.com` / `12345678`
 
