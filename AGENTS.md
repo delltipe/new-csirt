@@ -65,9 +65,22 @@ Commit `dbcc22f` (plus earlier dark-mode work in `ee81505`+). No schema changes 
   same technique as the footer logo.
 - **Navbar partner logos**: `.nav-partners` cluster in `components/navbar.blade.php` —
   `jaya_raya.png`, `logo_diskominfo.png`, `logo_5abad.png`, `HUTRI81.png` (all in
-  `public/`), each an `<a href="#" target="_blank" rel="noopener" title aria-label>`,
-  `role="group"` + `aria-label` on the container, hidden below `1100px`. The `href="#"`
-  are placeholders until real partner URLs are supplied.
+  `public/`). Real links: Jaya Raya → `https://www.jakarta.go.id/`, Diskominfo →
+  `https://diskominfotik.jakarta.go.id/`, 5 Abad → `https://jakarta500.id/`;
+  **HUT RI ke-81 has no link** (plain `<span class="nav-partner">`). Dark mode swaps
+  to `logo_5abad_white.svg` (official white SVG with its `#0F141E` background rect
+  stripped — transparent white artwork) / `hutri81_white.png` (dual-image
+  `.partner-light`/`.partner-dark` stack toggled in `accessibility-contrast.css`).
+  Jaya Raya uses the **same** `jaya_raya.png` in both modes (no white-out). The
+  HUT RI 81 marks are the **tertiary "81 only" (no-text) versions**: light =
+  `HUTRI81.png` (merah/hitam on putih), dark = `hutri81_white.png` (putih on merah).
+  The whole cluster is hidden below `1200px` — the navbar is over-packed (~1230px
+  min-content in a 1144px container at 1200px), so partners only render when the
+  container has full width; `white-space: nowrap` on `.nav-links > li > a` keeps
+  "Hubungi Kami" on one line without overflowing.
+- **Footer socials** (`components/footer.blade.php`): X → `https://x.com/dkijakarta`,
+  Instagram → `https://www.instagram.com/diskominfotik.jakarta/`, YouTube →
+  `https://www.youtube.com/dkijakarta`, Email → `mailto:csirt@jakarta.go.id`.
 - Boxy corners: `border-radius: 0` applied sitewide in `style.css` (Bootstrap utilities
   section) to `.btn`, `.form-control`, `.card`/headers/footers, `.modal-*`, `.btn-close`,
   `.page-link` — matches the NYC.gov/insiden look in both themes.
@@ -149,6 +162,15 @@ dark **overrides restyle the widget itself** (see the widget blocks in
 `html`/`body`, or the `position: fixed` widget re-anchors to the whole document and disappears.
 The widget is also excluded from Perbesar/Perkecil Teks scaling (it stays fixed-size) so Reset
 stays reachable.
+**FOUC guard**: an inline `<script>` in the `<head>` of `layouts/app.blade.php` (right after the
+CSS links) re-applies the saved `accessibilityState` classes to `<html>` *before first paint*
+(localStorage is sync, inline head scripts run during parsing). Without it, every page load
+flashed the original look for a split second before `accessibility.js`'s `DOMContentLoaded`
+handler kicked in. The head script mirrors `applyContrast`/`applyTextAlign`/toggle class names
+(including legacy `contrast:'high'/'dark'` migration) and is idempotent with the full widget
+init. If you add a new root state class in `accessibility.js`, add it here too. Font-size /
+line-height / letter-spacing stay JS-applied at DOMContentLoaded (they need computed styles),
+so those reflow slightly after paint — acceptable, only when a non-zero level is set.
 
 ### Design System
 

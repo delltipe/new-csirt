@@ -267,6 +267,10 @@ html.accessibility-contrast-dark .nav-main {
   border-bottom: 4px solid #4DA6FF;
 }
 
+/* ---- Navbar partner logos: swap to dark variants (5 Abad / HUTRI81) ---- */
+html.accessibility-contrast-dark .nav-partner img.partner-light { display: none; }
+html.accessibility-contrast-dark .nav-partner img.partner-dark  { display: inline-block; }
+
 html.accessibility-contrast-dark .nav-strip {
   background: #0a0a0a;
   color: #CCCCCC;

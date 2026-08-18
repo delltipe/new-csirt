@@ -81,7 +81,7 @@
         align-items: center;
         gap: 11px;
         flex-shrink: 0;
-        margin-right: 44px;
+        margin-right: 24px;
         text-decoration: none;
     }
 
@@ -104,9 +104,9 @@
     .nav-partners {
         display: flex;
         align-items: center;
-        gap: 14px;
-        padding-left: 22px;
-        margin-right: 44px;
+        gap: 10px;
+        padding-left: 16px;
+        margin-right: 24px;
         border-left: 1px solid var(--border);
         flex-shrink: 0;
     }
@@ -124,10 +124,22 @@
         opacity: 1;
     }
 
+    /* Partner logo dual-image stack: light variant default,
+       dark variant swapped in via accessibility-contrast.css */
+    .nav-partner {
+        display: flex;
+        align-items: center;
+        line-height: 0;
+    }
+
+    .nav-partner img.partner-dark {
+        display: none;
+    }
+
     .nav-partners img {
         height: 34px;
         width: auto;
-        max-width: 96px;
+        max-width: 80px;
         object-fit: contain;
     }
 
@@ -153,7 +165,7 @@
         align-items: center;
         gap: 4px;
         height: 100%;
-        padding: 0 16px;
+        padding: 0 12px;
         font-family: var(--font-body);
         font-size: 13.5px;
         font-weight: 600;
@@ -162,6 +174,7 @@
         border-bottom: 4px solid transparent;
         margin-bottom: -4px;
         text-decoration: none;
+        white-space: nowrap;
         transition: color var(--ease), border-color var(--ease);
     }
 
@@ -247,7 +260,7 @@
         font-family: var(--font-body);
         font-size: 13px;
         color: var(--ink);
-        width: 150px;
+        width: 120px;
         background: var(--mist);
     }
 
@@ -296,7 +309,7 @@
     }
 
     /* Responsive */
-    @media (max-width: 1100px) {
+    @media (max-width: 1200px) {
         .nav-partners { display: none; }
     }
     @media (max-width: 640px) {
@@ -338,18 +351,22 @@
 
         {{-- Partner logos with outbound links --}}
         <div class="nav-partners" role="group" aria-label="Logo instansi mitra">
-            <a href="#" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya">
+            <a href="https://www.jakarta.go.id/" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya">
                 <img src="{{ asset('jaya_raya.png') }}" alt="Jaya Raya">
             </a>
-            <a href="#" target="_blank" rel="noopener" title="Diskominfo DKI Jakarta" aria-label="Logo Diskominfo DKI Jakarta">
+            <a href="https://diskominfotik.jakarta.go.id/" target="_blank" rel="noopener" title="Diskominfo DKI Jakarta" aria-label="Logo Diskominfo DKI Jakarta">
                 <img src="{{ asset('logo_diskominfo.png') }}" alt="Diskominfo DKI Jakarta">
             </a>
-            <a href="#" target="_blank" rel="noopener" title="5 Abad Jakarta" aria-label="Logo 5 Abad Jakarta">
-                <img src="{{ asset('logo_5abad.png') }}" alt="5 Abad Jakarta">
+            <a href="https://jakarta500.id/" target="_blank" rel="noopener" title="5 Abad Jakarta" aria-label="Logo 5 Abad Jakarta">
+                <span class="nav-partner">
+                    <img class="partner-light" src="{{ asset('logo_5abad.png') }}" alt="5 Abad Jakarta">
+                    <img class="partner-dark" src="{{ asset('logo_5abad_white.svg') }}" alt="5 Abad Jakarta">
+                </span>
             </a>
-            <a href="#" target="_blank" rel="noopener" title="HUT RI ke-81" aria-label="Logo HUT RI ke-81">
-                <img src="{{ asset('HUTRI81.png') }}" alt="HUT RI ke-81">
-            </a>
+            <span class="nav-partner">
+                <img class="partner-light" src="{{ asset('HUTRI81.png') }}" alt="HUT RI ke-81">
+                <img class="partner-dark" src="{{ asset('hutri81_white.png') }}" alt="HUT RI ke-81">
+            </span>
         </div>
 
         {{-- Nav links --}}

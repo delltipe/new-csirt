@@ -185,9 +185,9 @@
                     Tim Tanggap Insiden Siber (Computer Security Incident Response Team) Pemerintah Provinsi DKI Jakarta. Menjaga keamanan infrastruktur digital dan data kritis Jakarta dari ancaman siber.
                 </p>
                 <div class="footer-social">
-                    <a href="#" aria-label="Twitter/X"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
-                    <a href="#" aria-label="YouTube"><i class="bi bi-youtube" aria-hidden="true"></i></a>
+                    <a href="https://x.com/dkijakarta" target="_blank" rel="noopener" aria-label="Twitter/X"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
+                    <a href="https://www.instagram.com/diskominfotik.jakarta/" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
+                    <a href="https://www.youtube.com/dkijakarta" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube" aria-hidden="true"></i></a>
                     <a href="mailto:csirt@jakarta.go.id" aria-label="Email"><i class="bi bi-envelope" aria-hidden="true"></i></a>
                 </div>
             </div>

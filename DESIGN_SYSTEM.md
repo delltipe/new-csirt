@@ -208,16 +208,30 @@ A compact `.nav-partners` cluster sits in the navbar brand row (next to the CSIR
 
 ```html
 <div class="nav-partners" role="group" aria-label="Logo instansi mitra">
-    <a href="#" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya">
+    <a href="https://www.jakarta.go.id/" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya">
         <img src="{{ asset('jaya_raya.png') }}" alt="Jaya Raya">
     </a>
     <!-- …more partner logos… -->
 </div>
 ```
 
-- Logos render at `height: 34px`, `max-width: 96px`, thin `var(--border)` divider on the left, `opacity: 0.9` → `1` on hover.
-- Hidden below `1100px` (`.nav-partners { display: none }`).
-- Always `target="_blank" rel="noopener"` + `title` tooltip + `aria-label`. Current `href="#"` values are placeholders until real partner URLs are provided.
+- Logos render at `height: 34px`, `max-width: 80px`, thin `var(--border)` divider on the left, `opacity: 0.9` → `1` on hover.
+- Hidden below `1200px` (`.nav-partners { display: none }`) — the navbar is over-packed
+  (~1230px min-content in a 1144px container), so partners only render when the container
+  has full width; `white-space: nowrap` on `.nav-links > li > a` keeps "Hubungi Kami" on
+  one line without overflowing.
+- Always `target="_blank" rel="noopener"` + `title` tooltip + `aria-label`. Real links:
+  Jaya Raya → `https://www.jakarta.go.id/`, Diskominfo →
+  `https://diskominfotik.jakarta.go.id/`, 5 Abad → `https://jakarta500.id/`.
+  **HUT RI ke-81 is intentionally linkless** (plain `<span class="nav-partner">`, no anchor).
+- **Dark-mode variants**: each of 5 Abad and HUT RI ke-81 renders a dual-image stack
+  (`img.partner-light` default + `img.partner-dark` hidden). In dark mode
+  `accessibility-contrast.css` swaps to `logo_5abad_white.svg` (official white SVG with its
+  `#0F141E` background rect stripped — transparent white artwork) and `hutri81_white.png`
+  ("Putih Latar Merah"). **Jaya Raya uses the same `jaya_raya.png` in both modes** — no
+  white-out filter. The HUT RI 81 marks are the tertiary "81 only" (no-text) versions per
+  the official pedoman: light `HUTRI81.png` (merah/hitam on putih), dark
+  `hutri81_white.png` (putih on merah).
 
 ### Admin Pages
 
