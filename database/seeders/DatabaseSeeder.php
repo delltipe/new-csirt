@@ -19,9 +19,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminUserSeeder::class,
             CybersecurityNewsSeeder::class,
-            EventSeeder::class,
-            PublicationSeeder::class,
             WarningPostSeeder::class,
+            EventSeeder::class,
+            InfographicSeeder::class,
+            LawRulePostSeeder::class,
+            CybersecurityGuideSeeder::class,
         ]);
     }
 }

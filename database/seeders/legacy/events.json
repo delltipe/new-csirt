@@ -1,0 +1,62 @@
+[
+    {
+        "title": "\"Google Dorking\"",
+        "description": "Sosialisasi Security Awareness bertema Google Dorking bersama narasumber Gilang Dwi Setyawan, Penetration Tester. Kegiatan ini membahas teknik Google Dorking dan potensi ancamannya terhadap keamanan informasi instansi pemerintah. Diselenggarakan secara online melalui platform Zoom Meeting.",
+        "thumbnail": "https://csirt.jakarta.go.id/images/gallery/WhatsApp Image 2024-11-22 at 2.39.46 PM_20241122074118.jpeg",
+        "event_date": "2024-11-21 09:00:00",
+        "location": "Online via Zoom Meeting",
+        "event_type": "webinar",
+        "registration_url": null,
+        "capacity": null
+    },
+    {
+        "title": "Security Awareness : Pengelolaan insiden Siber",
+        "description": "Webinar Security Awareness dengan tema Pengelolaan Insiden Siber. Narasumber: Dwi Kardonii, S.SOS., M.A. — Sandiman Ahli Madya, Badan Siber dan Sandi Negara (BSSN). Kegiatan berlangsung pada pukul 09.00 – 11.00 WIB melalui Zoom Meeting, terbuka untuk ASN di lingkungan Pemprov DKI Jakarta.",
+        "thumbnail": "https://csirt.jakarta.go.id/images/gallery/Flyer Security Awareness 28 Juni 2024_20240726065008.png",
+        "event_date": "2024-06-28 09:00:00",
+        "location": "Online via Zoom Meeting",
+        "event_type": "webinar",
+        "registration_url": null,
+        "capacity": null
+    },
+    {
+        "title": "Sosialisasi Security Awareness",
+        "description": "Webinar Security Awareness membahas teknik peningkatan keamanan sistem elektronik melalui Penetration Testing dan Hardening. Narasumber: Della Aneva Pristanti, S.TrKom — IT Security Assessment (TSA), Badan Siber dan Sandi Negara. Pukul 09.00 – 11.00 WIB melalui Zoom Meeting.",
+        "thumbnail": "https://csirt.jakarta.go.id/images/gallery/WhatsApp Image 2024-07-26 at 10.59.22_6cb13ad8_20240726040334.jpg",
+        "event_date": "2024-07-26 09:00:00",
+        "location": "Online via Zoom Meeting",
+        "event_type": "webinar",
+        "registration_url": null,
+        "capacity": null
+    },
+    {
+        "title": "Sosialisasi Security Awareness - Pencegahan dan penanganan Serangan ransomware",
+        "description": "Sosialisasi Security Awareness bertema pencegahan dan penanganan serangan ransomware. Narasumber: R. Budi Rahardjo Msc., PhD — Security Expert. Diselenggarakan pada Selasa, 6 Juni 2023 pukul 09.00 WIB melalui Zoom Meeting. Meeting ID dan password terlampir pada undangan resmi.",
+        "thumbnail": "https://csirt.jakarta.go.id/images/gallery/leafleat kegiatan - ransomware_20230617053811.jpg",
+        "event_date": "2023-06-06 09:00:00",
+        "location": "Online via Zoom Meeting",
+        "event_type": "sosialisasi",
+        "registration_url": null,
+        "capacity": null
+    },
+    {
+        "title": "Sosialisasi Security Awareness - Keamanan Mobile Computing dan Teleworking",
+        "description": "Sosialisasi Security Awareness membahas keamanan dalam penggunaan perangkat mobile dan pola kerja teleworking. Narasumber: Serni Yulianto, S.E., M.Kom., SME-vCSO — Security Consultant. Senin, 17 April 2023, pukul 08.00 WIB melalui Zoom Meeting.",
+        "thumbnail": "https://csirt.jakarta.go.id/images/gallery/leafleat kegiatan -mobile computing_20230617053623.jpg",
+        "event_date": "2023-04-17 08:00:00",
+        "location": "Online via Zoom Meeting",
+        "event_type": "sosialisasi",
+        "registration_url": null,
+        "capacity": null
+    },
+    {
+        "title": "Edukasi Pemanfaatan - Indeks Keamanan Informasi (indeks Kami)",
+        "description": "Edukasi tentang pemanfaatan Indeks Keamanan Informasi (Indeks KAMI) sebagai instrumen evaluasi kesiapan pengamanan informasi di instansi pemerintah. Narasumber: Melita Irnopuri, S.ST., M.M. Kamis, 13 April 2023, pukul 08.00 WIB melalui Zoom Meeting.",
+        "thumbnail": "https://csirt.jakarta.go.id/images/gallery/leafleat kegiatan - indeks kami_20230617051835.jpg",
+        "event_date": "2023-04-13 08:00:00",
+        "location": "Online via Zoom Meeting",
+        "event_type": "sosialisasi",
+        "registration_url": null,
+        "capacity": null
+    }
+]
