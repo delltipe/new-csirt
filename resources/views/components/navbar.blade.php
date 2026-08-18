@@ -148,9 +148,8 @@
         display: flex;
         align-items: stretch;
         height: 100%;
-        flex: 1;
+        margin: 0 0 0 auto;
         list-style: none;
-        margin: 0;
         padding: 0;
     }
 
@@ -158,6 +157,17 @@
         position: relative;
         display: flex;
         align-items: center;
+    }
+
+    /* Hover bridge: covers the nav's 4px border-bottom gap so the
+       dropdown stays open while moving the cursor down from the parent link */
+    .nav-links > li::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        height: 6px;
     }
 
     .nav-links > li > a {
@@ -244,7 +254,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        margin-left: auto;
+        margin-left: 12px;
     }
 
     .nav-search {
