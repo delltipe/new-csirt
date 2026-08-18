@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->text('author');
             $table->text('link');
             $table->string('file_path')->nullable(); // For uploaded file (e.g., PDF)
+            $table->timestamps();
         });
     }
 

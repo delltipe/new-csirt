@@ -51,8 +51,8 @@ Admin (authenticated, is_admin)
 
 Ten domain tables (6 content + incident reports, attachments, TaC agreements,
 contact) plus `users`. A reimplementation should define **foreign keys** between
-related tables (the original has none — integrity is application-level only) and
-use **timestamps on every table** (the original omits them on most).
+related tables and use **timestamps on every table** (both now implemented in
+the Laravel build, 2026-08-18).
 
 Use a modern relational DB (Postgres/MySQL/SQLite all fine). Column names below
 use `snake_case`; any naming convention is acceptable as long as the contract is
@@ -391,12 +391,13 @@ Every write operation must be wrapped in a try/catch. On failure:
 ## 6. Known Gaps to Improve in the Rework
 
 These are deliberate improvements over the original — an agent should implement
-them:
+them. Status as of 2026-08-18: items **2–5 are implemented** in the Laravel
+build; 1, 6, and 7 remain open.
 
 1. **Real CAPTCHA** on incident reports (current build has none — relies on auth + rate limiting).
-2. **Foreign keys** between related rows (current build has none — application-level integrity only).
-3. **Timestamps on all tables** (content tables still omit them).
-4. **`events` table name** (current `event` collides with a MySQL reserved word).
-5. **Soft-delete for incident reports** (legal-evidence retention).
+2. **Foreign keys** between related rows — **IMPLEMENTED**: `lapor_insiden.user_id` / `tac_agreements.user_id` → `users` (`ON DELETE RESTRICT`), `lampiran_insiden.laporan_id` → `lapor_insiden` (`ON DELETE CASCADE`).
+3. **Timestamps on all tables** — **IMPLEMENTED**: the six content tables gained `created_at` / `updated_at`.
+4. **`events` table name** — **IMPLEMENTED**: renamed from `event` (MySQL reserved-word collision gone).
+5. **Soft-delete for incident reports** — **IMPLEMENTED**: `deleted_at` + `SoftDeletes`; admin soft-deletes only (legal-evidence retention).
 6. **Full-text search** as an upgrade over substring matching.
 7. **Stable app encryption key + hashed admin password** in any production deployment (default creds are public).

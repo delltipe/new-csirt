@@ -218,6 +218,35 @@
 }
 .btn-review-submit:hover { background: var(--navy-dim); }
 
+.delete-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+}
+
+.btn-delete {
+    width: 100%;
+    background: var(--alert);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background var(--ease);
+}
+.btn-delete:hover {
+    background: var(--alert-dark);
+    color: var(--white);
+}
+
 .attachment-link {
     display: inline-flex;
     align-items: center;
@@ -362,6 +391,15 @@
 
                     <button type="submit" class="btn-review-submit">
                         <i class="bi bi-check2-circle" aria-hidden="true"></i> Simpan Review
+                    </button>
+                </form>
+
+                <hr class="delete-divider">
+
+                <form method="POST" action="{{ route('admin.incidents.delete', $incident->id) }}" onsubmit="return confirm('Hapus laporan {{ $incident->tiket_no }}? Laporan hanya ditandai terhapus dan tetap tersimpan untuk arsip.');">
+                    @csrf
+                    <button type="submit" class="btn-delete">
+                        <i class="bi bi-trash" aria-hidden="true"></i> Hapus Laporan
                     </button>
                 </form>
             </div>

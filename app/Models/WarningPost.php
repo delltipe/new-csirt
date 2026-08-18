@@ -9,7 +9,7 @@ class WarningPost extends Model
     protected $table = 'peringatan_keamanan';
     
     // Disable timestamps since they aren't in your migration
-    public $timestamps = false; 
+    public $timestamps = true; 
 
     protected $fillable = [
         'title',

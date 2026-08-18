@@ -17,6 +17,8 @@ class CybersecurityNewsSeeder extends Seeder
                 'thumbnail' => 'https://picsum.photos/seed/cyber1/800/400',
                 'source' => 'https://csirt.jakarta.go.id',
                 'date' => Carbon::now()->subDays(2),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'title' => 'Google Chrome Kini Bisa Mengubah Password Anda Secara Otomatis',
@@ -24,6 +26,8 @@ class CybersecurityNewsSeeder extends Seeder
                 'thumbnail' => 'https://picsum.photos/seed/cyber2/800/400',
                 'source' => 'https://csirt.jakarta.go.id',
                 'date' => Carbon::now()->subDays(5),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'title' => 'Penipuan Berkedok Video Demo Palsu Mengincar Data Pengguna Android',
@@ -31,6 +35,8 @@ class CybersecurityNewsSeeder extends Seeder
                 'thumbnail' => 'https://picsum.photos/seed/cyber3/800/400',
                 'source' => 'https://csirt.jakarta.go.id',
                 'date' => Carbon::now()->subDays(10),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
         ]);
     }

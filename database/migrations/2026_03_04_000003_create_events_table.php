@@ -4,15 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-// ================================================================
-// REPLACES: 2026_03_04_000003_create_event_table.php
-// Run with: php artisan migrate:fresh --seed
-// ================================================================
-
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('event', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('title');
             $table->text('description')->nullable();
@@ -22,12 +17,12 @@ return new class extends Migration {
             $table->string('event_type')->nullable();     // e.g. "webinar", "sosialisasi"
             $table->string('registration_url')->nullable(); // link to register
             $table->integer('capacity')->nullable();      // max participants
-            // No timestamps — keep consistent with other tables
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('event');
+        Schema::dropIfExists('events');
     }
 };

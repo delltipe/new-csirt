@@ -235,12 +235,6 @@ If you need MySQL for production:
    composer require symfony/mailer
    ```
 
-3. **Fix the `event` table** — it's a MySQL reserved word. Update the migration to quote it:
-   ```php
-   Schema::create('event', function (Blueprint $table) {
-       // Laravel automatically quotes table names in most cases,
-       // but raw queries may need manual quoting: `event`
-   });
-   ```
+   (No reserved-word fix needed — the events table is already named `events` since the 2026-08-18 hardening.)
 
-4. Run `php artisan migrate:fresh --seed`
+3. Run `php artisan migrate:fresh --seed`

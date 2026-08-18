@@ -430,4 +430,14 @@ class AdminController extends Controller
 
         return back()->with('success', 'Laporan insiden berhasil diperbarui.');
     }
+
+    public function incidentDelete($id) {
+        $incident = IncidentReport::findOrFail($id);
+        try {
+            $incident->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['status' => 'Gagal menghapus laporan. Silakan coba lagi.']);
+        }
+        return redirect()->route('admin.incidents.list')->with('success', 'Laporan insiden berhasil dihapus.');
+    }
 }

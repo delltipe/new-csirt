@@ -22,6 +22,8 @@ class PublicationSeeder extends Seeder
                 'thumbnail' => 'phishing-alert.jpg', // Placeholder image name
                 'source' => 'Jakarta CSIRT',
                 'date' => Carbon::now()->subDays(2),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
                 'title' => 'Panduan Keamanan WFH bagi Pegawai',
@@ -29,6 +31,8 @@ class PublicationSeeder extends Seeder
                 'thumbnail' => 'wfh-security.jpg',
                 'source' => 'BSSN',
                 'date' => Carbon::now()->subDays(5),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]
         ]);
 
@@ -41,6 +45,8 @@ class PublicationSeeder extends Seeder
                 'date' => Carbon::now()->subMonths(1),
                 'time' => '10:00:00',
                 'downloadAmount' => 145,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]
         ]);
     }

@@ -206,6 +206,7 @@ All admin write operations are wrapped in try/catch with Indonesian error messag
 - **List:** `GET /admin/incidents` — paginated (15/page), newest first, filterable by `status`
 - **Detail:** `GET /admin/incidents/{id}` — full report incl. attachments + reporter info
 - **Review:** `POST /admin/incidents/{id}/review` — assign `cwe` (string) + `severity` (Low/Medium/High/Critical) and transition `status` (validated via `canTransitionTo()`)
+- **Soft-delete:** `POST /admin/incidents/{id}/delete` (button on the detail page) — soft-deletes only (`SoftDeletes`); trashed reports leave the list and 404 on review, legal-evidence retention
 - Reached from the "Insiden" tab on the admin dashboard (shows a pending-count badge)
 
 ---
@@ -239,7 +240,7 @@ On fresh migration, the database is seeded with:
 |---|---|---|
 | `users` | 1 | Admin user |
 | `berita_siber` | 5 | Cybersecurity news articles |
-| `event` | 6 | Past security events |
+| `events` | 6 | Past security events |
 | `peraturan_kebijakan` | 1 | Sample regulation |
 | `peringatan_keamanan` | 2 | Security warnings |
 

@@ -112,11 +112,13 @@ See **`docs/DEPLOYMENT.md`** for the full guide.
 - **CAPTCHA** on the incident and contact forms (self-hosted, legacy-style; deferred —
   not needed for the frontend demo)
 - **Admin contact review** workflow (list / detail / status transitions)
-- **Schema hardening**: foreign keys, timestamps on content tables, `event` → `events`
-  rename (MySQL reserved-word collision), soft-delete for incident reports
 - **Full-text search** over substring matching
 - **Legacy-feature port-in**: select features from the legacy portal, after the main
   data-input and content pages are finalized
+
+> **Done (2026-08-18):** schema hardening — foreign keys enforced, timestamps on
+> the 6 content tables, `event` → `events` rename, and soft-delete on incident
+> reports (see AGENTS.md → Schema Hardening).
 
 ---
 

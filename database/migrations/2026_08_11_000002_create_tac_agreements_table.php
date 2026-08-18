@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('tac_agreements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
             $table->string('version');
             $table->timestamp('agreed_at');
             $table->timestamps();

@@ -107,4 +107,36 @@ class IncidentPortalSmokeTest extends TestCase
         $this->get('/bug-hunter')->assertSee('CWE-79')->assertSee('High');
         $this->get('/bug-hunter/laporan/' . $report->id)->assertSee(IncidentReport::labels()[IncidentReport::STATUS_VALIDATED]);
     }
+
+    public function test_admin_soft_deletes_incident_report(): void
+    {
+        $admin = User::create(['name' => 'Admin', 'email' => 'admin2@example.com', 'password' => 'password', 'is_admin' => true]);
+        $reporter = User::create(['name' => 'Reporter', 'email' => 'rep2@example.com', 'password' => 'password', 'is_bug_hunter' => true]);
+
+        $report = IncidentReport::create([
+            'user_id' => $reporter->id,
+            'tiket_no' => 'INS-2026-0002',
+            'kategori_insiden' => 'Phishing',
+            'lokasi_url' => 'https://portal.jakarta.go.id/y',
+            'deskripsi' => 'Laporan untuk dihapus.',
+            'tindakan_teknis' => 'Pantau.',
+            'status' => IncidentReport::STATUS_PENDING,
+        ]);
+
+        $this->actingAs($admin);
+        $this->get('/admin/incidents')->assertOk()->assertSee($report->tiket_no);
+
+        $this->post('/admin/incidents/' . $report->id . '/delete')
+            ->assertRedirect(route('admin.incidents.list'));
+
+        $this->assertSoftDeleted('lapor_insiden', ['id' => $report->id]);
+
+        // Soft-deleted reports leave the list and 404 on detail/review
+        $this->get('/admin/incidents')->assertOk()->assertDontSee($report->tiket_no);
+        $this->get('/admin/incidents/' . $report->id)->assertNotFound();
+
+        // Admin restores it, and the full path works again
+        $report->restore();
+        $this->get('/admin/incidents')->assertOk()->assertSee($report->tiket_no);
+    }
 }

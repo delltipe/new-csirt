@@ -31,7 +31,7 @@
 | source | text | e.g. "Jakarta CSIRT", "BSSN" |
 | date | dateTime | publication date |
 
-**No timestamps.**
+**Has timestamps.**
 
 ### `peringatan_keamanan` (Security Warnings)
 | Column | Type | Notes |
@@ -44,9 +44,9 @@
 | date | dateTime | |
 | file_path | string | nullable — uploaded image |
 
-**No timestamps.**
+**Has timestamps.**
 
-### `event` (Events)
+### `events` (Events)
 | Column | Type | Notes |
 |---|---|---|
 | id | bigIncrements | PK |
@@ -59,7 +59,7 @@
 | registration_url | string | nullable |
 | capacity | integer | nullable |
 
-**No timestamps.**
+**Has timestamps.**
 
 ### `infografis_keamanan` (Security Infographics)
 | Column | Type | Notes |
@@ -68,7 +68,7 @@
 | title | text | |
 | thumbnail | text | URL or file path |
 
-**No timestamps.**
+**Has timestamps.**
 
 ### `peraturan_kebijakan` (Laws & Regulations)
 | Column | Type | Notes |
@@ -82,7 +82,7 @@
 | downloadAmount | integer | default: 0 |
 | file_path | string | nullable — uploaded PDF |
 
-**No timestamps.**
+**Has timestamps.**
 
 ### `panduan_teknis` (Technical Guides)
 | Column | Type | Notes |
@@ -93,13 +93,13 @@
 | link | text | external URL |
 | file_path | string | nullable — uploaded file |
 
-**No timestamps.**
+**Has timestamps.**
 
 ### `lapor_insiden` (Incident Reports)
 | Column | Type | Notes |
 |---|---|---|
 | id | bigIncrements | PK |
-| user_id | unsignedBigInteger | reporter (`users.id`) — no FK enforced |
+| user_id | unsignedBigInteger | reporter (`users.id`) — FK enforced, `ON DELETE RESTRICT` |
 | tiket_no | string | unique — `INS-YYYY-XXXX` |
 | kategori_insiden | string | e.g. "Phishing", "Malware / Ransomware" |
 | waktu_kejadian | dateTime | nullable — when incident occurred |
@@ -110,6 +110,7 @@
 | cwe | string | nullable — assigned by admin (e.g. "CWE-79") |
 | severity | string | nullable — Low/Medium/High/Critical (assigned by admin) |
 | status | string | default: `menunggu_validasi` (see below) |
+| deleted_at | timestamp | nullable — soft-delete timestamp (added 2026-08-18) |
 | created_at | timestamp | |
 | updated_at | timestamp | |
 
@@ -123,7 +124,7 @@ plus `ditolak` (rejectable from `menunggu_validasi`, `divalidasi`,
 | Column | Type | Notes |
 |---|---|---|
 | id | bigIncrements | PK |
-| laporan_id | unsignedBigInteger | parent `lapor_insiden.id` — no FK enforced |
+| laporan_id | unsignedBigInteger | parent `lapor_insiden.id` — FK enforced, `ON DELETE CASCADE` |
 | jenis | string | `file` or `url` |
 | value | text | file path or evidence URL |
 | created_at | timestamp | |
@@ -136,7 +137,7 @@ plus `ditolak` (rejectable from `menunggu_validasi`, `divalidasi`,
 | Column | Type | Notes |
 |---|---|---|
 | id | bigIncrements | PK |
-| user_id | unsignedBigInteger | reporter (`users.id`) — no FK enforced |
+| user_id | unsignedBigInteger | reporter (`users.id`) — FK enforced, `ON DELETE RESTRICT` |
 | version | string | e.g. `2026.08` |
 | agreed_at | timestamp | when accepted |
 | created_at | timestamp | |
@@ -182,7 +183,15 @@ These are standard Laravel tables — you typically don't need to modify them:
 
 ## Notes
 
-- **No foreign keys** are defined in migrations. The database relies on application-level integrity.
-- **`event` table** uses a MySQL reserved word. This works in SQLite but will require quoting (`event`) if you switch to MySQL.
-- **Most tables have no timestamps** — only `users`, `lapor_insiden`, `lampiran_insiden`, `tac_agreements`, and `contact_us` track `created_at`/`updated_at`.
+- **Foreign keys are enforced** (added 2026-08-18): `lapor_insiden.user_id` and
+  `tac_agreements.user_id` → `users` (`ON DELETE RESTRICT`), and
+  `lampiran_insiden.laporan_id` → `lapor_insiden` (`ON DELETE CASCADE`).
+  Deleting a user that owns reports or TaC rows fails at the DB level;
+  deleting an incident cascade-deletes its attachments.
+- **`events` table** (renamed from `event` in the 2026-08-18 hardening) — the
+  plural name avoids the MySQL reserved-word collision; no quoting needed.
+- **Every table has timestamps** — `users`, `lapor_insiden` (incl. `deleted_at`),
+  `lampiran_insiden`, `tac_agreements`, `contact_us`, and the six content tables.
+- **Soft-delete:** `lapor_insiden.deleted_at` + `SoftDeletes` on
+  `IncidentReport` — admin delete soft-deletes only (legal-evidence retention).
 - **File storage:** Proof images and uploaded files use Laravel's `storage/app/public/` directory (`bukti_laporan/` for incident evidence). In production, symlink `public/storage` → `storage/app/public`.

@@ -92,7 +92,7 @@ Models map to non-English table names. Do not assume Laravel conventions:
 |---|---|
 | CybersecurityNews | `berita_siber` |
 | WarningPost | `peringatan_keamanan` |
-| Event | `event` |
+| Event | `events` |
 | Infographic | `infografis_keamanan` |
 | LawRulePost | `peraturan_kebijakan` |
 | CybersecurityGuide | `panduan_teknis` |
@@ -101,9 +101,12 @@ Models map to non-English table names. Do not assume Laravel conventions:
 | TacAgreement | `tac_agreements` |
 | ContactMessage | `contact_us` |
 
-### Timestamps Disabled on Most Models
+### Timestamps on All Tables
 
-Most migrations omit `$table->timestamps()`; matching models set `public $timestamps = false`. Only `users`, `contact_us`, `lapor_insiden`, `lampiran_insiden`, and `tac_agreements` have timestamps.
+Every application table now has `created_at` / `updated_at` (added in the
+2026-08-18 schema hardening). Content-table models previously set
+`public $timestamps = false`; that line is gone — all models use the Eloquent
+default. Seeders that insert via `DB::table()` set timestamps explicitly.
 
 ### Auth Is Custom (Not a Package)
 
@@ -175,10 +178,39 @@ Run from `presentation/`. These are regenerated artifacts, not hand-edited. Also
 
 - **No `.env` committed** — `.env.example` has `DB_CONNECTION=sqlite` and `APP_KEY=` empty
 - **`/publickey`, `/rfc2350`, `/statistics` are routed** (since commit `af73f3e`) — footer/navbar links resolve. Note: `/publickey` is a file-download route (no `publickey.blade.php` view)
-- **Foreign keys are not enforced** in migrations — no `$table->foreign()` calls
-- **The `event` table name collides with MySQL reserved word** — fine in SQLite but breaks on MySQL without quoting; note `docs/DEPLOYMENT.md` covers production setup
+- **Foreign keys are enforced** since the 2026-08-18 hardening — see the Schema
+  Hardening section for the FK map; deleting a user with incidents/TaC rows fails at the DB level
+- **The `events` table name** (plural, renamed from `event` in the 2026-08-18 hardening) no longer collides with a MySQL reserved word; `docs/DEPLOYMENT.md` covers production setup
 - **Blade views use Indonesian text throughout** — government portal for DKI Jakarta
 - `config.php`, `bootstrap/app.php` trust all proxies (`trustProxies(at: '*')`)
+
+## Schema Hardening (IMPLEMENTED 2026-08-18)
+
+Schema changes — **requires `php artisan migrate:fresh --seed`** (migrations
+edited in place, per this repo's rework convention). Part of the same commit
+series as the Admin Dashboard Polish.
+
+- **Foreign keys now enforced** (SQLite `PRAGMA foreign_keys=ON` is the Laravel
+  default here — `config/database.php` `DB_FOREIGN_KEYS` defaults true):
+  - `lapor_insiden.user_id` → `users(id)` `ON DELETE RESTRICT`
+  - `tac_agreements.user_id` → `users(id)` `ON DELETE RESTRICT`
+  - `lampiran_insiden.laporan_id` → `lapor_insiden(id)` `ON DELETE CASCADE`
+  Deleting a user that owns reports or TaC rows fails at the DB level.
+- **Timestamps on all 6 content tables** (`berita_siber`, `peringatan_keamanan`,
+  `events`, `infografis_keamanan`, `peraturan_kebijakan`, `panduan_teknis`);
+  matching models dropped `$timestamps = false`. Seeders set timestamps on
+  `DB::table()` inserts; admin CRUD goes through Eloquent so it auto-fills.
+- **`event` table renamed → `events`** (MySQL reserved-word collision gone):
+  migration file `..._create_events_table.php`, `Event` model, and
+  `EventSeeder` (`DB::table('events')`). All queries use the `Event` Eloquent
+  model — no controller changes were needed.
+- **Soft-delete on incidents:** `lapor_insiden` gained `deleted_at`;
+  `IncidentReport` uses `SoftDeletes`. Admin "Hapus Laporan" button on
+  `/admin/incidents/{id}` soft-deletes only (`POST /admin/incidents/{id}/delete`
+  → `AdminController@incidentDelete`) — legal-evidence retention, hard-delete is
+  never exposed. Trashed rows drop out of lists and 404 on review/detail (the
+  `findOrFail` calls respect the SoftDeletes global scope). Covered by
+  `IncidentPortalSmokeTest::test_admin_soft_deletes_incident_report`.
 
 ## Deployment (Render, Docker runtime)
 

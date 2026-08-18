@@ -8,7 +8,7 @@ return new class extends Migration {
     {
         Schema::create('lapor_insiden', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
             $table->string('tiket_no')->unique(); // INS-YYYY-XXXX
             $table->string('kategori_insiden');
             $table->dateTime('waktu_kejadian')->nullable();
@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('cwe')->nullable();
             $table->string('severity')->nullable();
             $table->string('status')->default('menunggu_validasi');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

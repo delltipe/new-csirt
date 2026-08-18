@@ -16,6 +16,8 @@ class WarningPostSeeder extends Seeder
                 'thumbnail' => 'https://picsum.photos/seed/warn1/800/400',
                 'source' => 'https://csirt.jakarta.go.id',
                 'date' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'title' => 'Update Keamanan Kritis: Windows Kerberos',
@@ -23,6 +25,8 @@ class WarningPostSeeder extends Seeder
                 'thumbnail' => 'https://picsum.photos/seed/warn2/800/400',
                 'source' => 'https://csirt.jakarta.go.id',
                 'date' => now()->subDays(2),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
     }

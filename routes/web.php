@@ -112,6 +112,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/incidents', [AdminController::class, 'incidentsList'])->name('admin.incidents.list');
     Route::get('/admin/incidents/{id}', [AdminController::class, 'incidentShow'])->name('admin.incidents.show');
     Route::post('/admin/incidents/{id}/review', [AdminController::class, 'incidentReview'])->name('admin.incidents.review');
+    Route::post('/admin/incidents/{id}/delete', [AdminController::class, 'incidentDelete'])->name('admin.incidents.delete');
 
     // News CRUD
     Route::get('/admin/news', [AdminController::class, 'newsList'])->name('admin.news.list');

@@ -20,7 +20,7 @@ class EventSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('event')->insert([
+        DB::table('events')->insert([
 
             // 1. Google Dorking — Kamis, 21 November 2024
             [
@@ -32,6 +32,8 @@ class EventSeeder extends Seeder
                 'event_type'       => 'webinar',
                 'registration_url' => null,
                 'capacity'         => null,
+                'created_at'       => now(),
+                'updated_at'       => now(),
             ],
 
             // 2. Pengelolaan Insiden Siber — Jumat, 28 Juni 2024
@@ -44,6 +46,8 @@ class EventSeeder extends Seeder
                 'event_type'       => 'webinar',
                 'registration_url' => null,
                 'capacity'         => null,
+                'created_at'       => now(),
+                'updated_at'       => now(),
             ],
 
             // 3. Sosialisasi Security Awareness (Penetration Testing & Hardening) — Juli 2024
@@ -56,6 +60,8 @@ class EventSeeder extends Seeder
                 'event_type'       => 'webinar',
                 'registration_url' => null,
                 'capacity'         => null,
+                'created_at'       => now(),
+                'updated_at'       => now(),
             ],
 
             // 4. Ransomware — Selasa, 06 Juni 2023
@@ -68,6 +74,8 @@ class EventSeeder extends Seeder
                 'event_type'       => 'sosialisasi',
                 'registration_url' => null,
                 'capacity'         => null,
+                'created_at'       => now(),
+                'updated_at'       => now(),
             ],
 
             // 5. Mobile Computing — Senin, 17 April 2023
@@ -80,6 +88,8 @@ class EventSeeder extends Seeder
                 'event_type'       => 'sosialisasi',
                 'registration_url' => null,
                 'capacity'         => null,
+                'created_at'       => now(),
+                'updated_at'       => now(),
             ],
 
             // 6. Indeks KAMI — Kamis, 13 April 2023
@@ -92,6 +102,8 @@ class EventSeeder extends Seeder
                 'event_type'       => 'sosialisasi',
                 'registration_url' => null,
                 'capacity'         => null,
+                'created_at'       => now(),
+                'updated_at'       => now(),
             ],
 
         ]);

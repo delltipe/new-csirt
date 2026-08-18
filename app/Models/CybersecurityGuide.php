@@ -8,7 +8,7 @@ class CybersecurityGuide extends Model
 {
     protected $table = 'panduan_teknis';
     
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'title',

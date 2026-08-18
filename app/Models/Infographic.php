@@ -8,7 +8,7 @@ class Infographic extends Model
 {
     protected $table = 'infografis_keamanan';
     
-    public $timestamps = false;
+    public $timestamps = true;
     
     protected $fillable = [
         'title',

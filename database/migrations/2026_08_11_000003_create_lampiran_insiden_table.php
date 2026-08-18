@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('lampiran_insiden', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('laporan_id');
+            $table->foreignId('laporan_id')->constrained('lapor_insiden')->cascadeOnDelete();
             $table->string('jenis'); // file | url
             $table->text('value');   // file path or URL
             $table->timestamps();

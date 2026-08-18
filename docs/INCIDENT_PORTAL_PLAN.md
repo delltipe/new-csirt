@@ -78,6 +78,9 @@
 
 2FA, Cloudflare Turnstile, soft-delete, contact review, feature tests.
 
+> Note: **soft-delete** later landed in the 2026-08-18 schema hardening —
+> `lapor_insiden` gained `deleted_at` + `SoftDeletes` and an admin "Hapus Laporan" button.
+
 ## Verification
 
 ```bash

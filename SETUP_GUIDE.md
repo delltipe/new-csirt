@@ -66,7 +66,7 @@ do not assume Laravel conventions (see `docs/SCHEMA.md` for the full schema):
 |---|---|
 | CybersecurityNews | `berita_siber` |
 | WarningPost | `peringatan_keamanan` |
-| Event | `event` |
+| Event | `events` |
 | Infographic | `infografis_keamanan` |
 | LawRulePost | `peraturan_kebijakan` |
 | CybersecurityGuide | `panduan_teknis` |
@@ -75,7 +75,7 @@ do not assume Laravel conventions (see `docs/SCHEMA.md` for the full schema):
 | TacAgreement | `tac_agreements` |
 | ContactMessage | `contact_us` |
 
-Most content tables have no timestamps; matching models set `public $timestamps = false`.
+Every table has `created_at` / `updated_at` (added in the 2026-08-18 schema hardening; see `docs/SCHEMA.md`).
 
 ---
 

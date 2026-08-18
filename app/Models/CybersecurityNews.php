@@ -9,7 +9,7 @@ class CybersecurityNews extends Model
     protected $table = 'berita_siber';
     
     // Disable timestamps because they aren't in your migration
-    public $timestamps = false; 
+    public $timestamps = true; 
 
     protected $fillable = [
         'title',

@@ -8,7 +8,7 @@ class LawRulePost extends Model
 {
     protected $table = 'peraturan_kebijakan';
     
-    public $timestamps = false;
+    public $timestamps = true;
     
     protected $fillable = [
         'title',

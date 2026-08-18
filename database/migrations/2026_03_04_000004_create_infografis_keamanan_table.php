@@ -10,6 +10,7 @@ return new class extends Migration {
             $table->bigIncrements('id');
             $table->text('title');
             $table->text('thumbnail');
+            $table->timestamps();
         });
     }
 

@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->time('time');
             $table->integer('downloadAmount');
             $table->string('file_path')->nullable(); // For uploaded document (e.g., PDF)
+            $table->timestamps();
         });
     }
 
