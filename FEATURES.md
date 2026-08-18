@@ -1,7 +1,7 @@
 # FEATURES.md — Jakarta Prov CSIRT Portal
 
 > Complete feature inventory for the DKI Jakarta Cybersecurity Portal (csirt.jakarta.go.id).
-> For developers接手 this project: this file tells you **what exists and why**.
+> For developers taking over this project: this file tells you **what exists and why**.
 
 ---
 
@@ -163,10 +163,9 @@ verification) and reach a Komdigi-style reporter portal under `/bug-hunter`.
 | `/login` | Public login — admins → `/admin`, bug hunters → TaC gate (`AuthController@login`) |
 | `/register` | Public registration — creates `is_bug_hunter = true` user (`AuthController@register`) |
 | `/admin/login` | Admin-only login (`AdminController@login`, checks `is_admin`) |
-| `/logout` | Session destroy |
+| `/logout` | Session destroy (POST logout via `AuthController@logout`) |
+| `/profile` | Placeholder — "under development" page |
 | `/dashboard` | Placeholder — "under development" page |
-
-Admins use the standard `users` table; there is no separate admin model.
 
 ---
 
@@ -180,9 +179,9 @@ Admins use the standard `users` table; there is no separate admin model.
 ### Dashboard (`/admin`)
 - **Purpose:** Central management hub for all content
 - **Features:**
-  - Tabbed interface (News, Events, Infographics, Warnings, Laws, Guides)
-  - Each tab shows a table of records with Edit/Delete actions
-  - "Add" button opens a modal form for new records
+  - Tabbed interface (News, Events, Infographics, Warnings, Laws, Guides, Insiden)
+  - Each tab lists records in the insiden-style custom `.data-table` (boxy, uppercase headers, Edit/Delete actions)
+  - "Add" button (`.btn-add`) opens a modal form for new records
   - Pagination: 15 records per tab
   - Tab state preserved across pagination via URL hash
 - **Route:** `admin.dashboard`
@@ -228,7 +227,7 @@ All pages follow a consistent design system documented in `DESIGN_SYSTEM.md`:
 - Dark header pattern with NYC.gov-inspired styling
 - CSS custom properties for all colors and fonts
 - Custom card system (not Bootstrap cards)
-- Bootstrap used only for grid, forms, and tables
+- Bootstrap used only for grid and forms (admin tables use the custom `.data-table` component)
 
 ---
 
@@ -252,14 +251,25 @@ On fresh migration, the database is seeded with:
 
 ```
 resources/views/
-├── layouts/app.blade.php          # Master layout (navbar, footer, assets)
+├── layouts/app.blade.php          # Master layout (navbar, footer, a11y widget)
 ├── components/
-│   ├── navbar.blade.php           # Site navigation with search
+│   ├── navbar.blade.php           # Site navigation with search, partner logos, auth-aware CTA
 │   ├── footer.blade.php           # Site footer
 │   └── accessibility.blade.php    # Accessibility widget
 ├── home.blade.php                 # Landing page
 ├── profile.blade.php              # About CSIRT
+├── rfc2350.blade.php              # RFC 2350 page
+├── statistics.blade.php           # Archived honeypot statistics
 ├── search/index.blade.php         # Search results
+├── auth/
+│   ├── register.blade.php         # Public registration (bug hunters)
+│   └── login.blade.php            # Public login
+├── bug-hunter/
+│   ├── dashboard.blade.php        # Reporter ticket dashboard
+│   ├── tac.blade.php              # Terms & Conditions gate
+│   ├── create.blade.php           # Single-page report form
+│   ├── thank-you.blade.php        # Confirmation with ticket number
+│   └── show.blade.php             # Per-ticket detail
 ├── news/                          # News listing + detail
 ├── events/                        # Events listing + detail
 ├── warnings/                      # Warnings listing + detail
@@ -270,8 +280,7 @@ resources/views/
 ├── bug-hunter/                    # TaC gate, report form, dashboard, detail, thank-you
 ├── contact/                       # Contact form + thank you
 ├── admin/                         # Admin dashboard + CRUD partials + edit pages + incidents/
+
 ├── dashboard.blade.php            # Placeholder
-├── statistics.blade.php           # Placeholder
-├── publickey.blade.php            # Placeholder
-└── rfc2350.blade.php              # Placeholder
+└── (publickey is a download route — no view)
 ```

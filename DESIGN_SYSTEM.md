@@ -9,7 +9,7 @@
 - **Global styles:** `public/css/style.css` (design tokens + components)
 - **Accessibility:** `public/css/accessibility-contrast.css` (high contrast + dark mode)
 - **Fonts:** Google Fonts loaded via `@import` in `style.css`
-- **Framework:** Bootstrap 5.3 (CDN) — used for grid, forms, tables only. **Not** for cards or page layout.
+- **Framework:** Bootstrap 5.3 (CDN) — used for grid and forms only. **Not** for tables, cards, or page layout (admin tables use the custom `.data-table`, see Admin Pages).
 
 ---
 
@@ -202,9 +202,62 @@ Content pages use a custom card system — **not** Bootstrap `.card`:
 }
 ```
 
+### Navbar Partner Logos
+
+A compact `.nav-partners` cluster sits in the navbar brand row (next to the CSIRT logo), showing partner-institution logos with outbound links:
+
+```html
+<div class="nav-partners" role="group" aria-label="Logo instansi mitra">
+    <a href="#" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya">
+        <img src="{{ asset('jaya_raya.png') }}" alt="Jaya Raya">
+    </a>
+    <!-- …more partner logos… -->
+</div>
+```
+
+- Logos render at `height: 34px`, `max-width: 96px`, thin `var(--border)` divider on the left, `opacity: 0.9` → `1` on hover.
+- Hidden below `1100px` (`.nav-partners { display: none }`).
+- Always `target="_blank" rel="noopener"` + `title` tooltip + `aria-label`. Current `href="#"` values are placeholders until real partner URLs are provided.
+
 ### Admin Pages
 
-Admin CRUD tables use Bootstrap `.table` classes — this is acceptable for admin interfaces. Admin pages also use the dark header pattern and design tokens for styling.
+Admin CRUD interfaces use a custom boxy `.data-table` component — **not** Bootstrap `.table`. Component CSS lives in the `<style>` block of `admin/dashboard.blade.php` (it is scoped to admin pages, not in `style.css`):
+
+```html
+<div class="section-actions">
+    <h4 class="section-title-small">Kelola Berita</h4>
+    <a href="#" class="btn-add" data-bs-toggle="modal" data-bs-target="#addNewsModal">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i> Tambah Berita
+    </a>
+</div>
+<div class="table-responsive">
+    <table class="data-table">
+        <thead><tr><th>Judul</th><th>Aksi</th></tr></thead>
+        <tbody>
+            <tr>
+                <td>…</td>
+                <td>
+                    <a href="{{ route('admin.news.edit', $item->id) }}" class="btn-edit">…</a>
+                    <form method="POST" action="…">@csrf
+                        <button type="submit" class="btn-delete">…</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+```
+
+Key classes:
+- `.data-table` — full-width, `border: 1px solid var(--border)`, boxy. Thead `background: var(--mist)`, th 12px/800 uppercase (display font), td 14px; row hover `var(--navy-tint)`.
+- `.section-actions` / `.section-title-small` — flex header row with the 24px uppercase section title.
+- `.btn-add` / `.btn-edit` — navy fill, uppercase/add-label CTAs.
+- `.btn-delete` — red fill (`var(--alert)`), used on the inline `<form>` delete `<button>`.
+- `.empty-state` — centered placeholder when a collection is empty.
+
+Dark-mode overrides for all of these (plus admin tabs `.admin-tab` and `.btn-navy:hover`) live in `accessibility-contrast.css` — the generic `html.accessibility-contrast-dark button`/`a:hover` rules will flatten unscoped admin buttons, so new admin controls need matching dark overrides.
+
+Admin pages also use the dark header pattern and design tokens for styling.
 
 ### Alert Strip
 
@@ -252,6 +305,6 @@ Both modes override all design tokens. **Any hardcoded color will NOT adapt** �
 3. **Always use the dark header pattern** — consistent page title area
 4. **Use `.btn-primary-solid` / `.btn-ghost` / `.btn-navy`** — not Bootstrap `.btn` for primary actions
 5. **Use custom card system** — not Bootstrap `.card` for content pages
-6. **Admin pages** — Bootstrap tables/forms are acceptable
+6. **Admin pages** — use the custom `.data-table` component (not Bootstrap `.table`); forms may use Bootstrap `.form-control`
 7. **Scope page styles** in `<style>` blocks within `@section('content')` — keep design system CSS in `style.css`
 8. **New tokens** must be added to `style.css` AND both modes in `accessibility-contrast.css`

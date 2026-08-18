@@ -112,8 +112,8 @@ html.accessibility-contrast-dark {
   --border: #333333;
   --mid: #CCCCCC;
   --white: #1a1a1a;
-  --muted-on-dark: #111111;
-  --faint-on-dark: #333333;
+  --muted-on-dark: #B0BCC9;
+  --faint-on-dark: #9AA7B6;
   --alert: #FF6B6B;
   --alert-bg: #330000;
   --alert-light: #FF9999;
@@ -324,4 +324,387 @@ html.accessibility-contrast-dark form {
 
 html.accessibility-contrast-dark label {
   color: #FFFFFF;
+}
+
+/* ============================================================
+   DARK MODE — FULL-THEME OVERRIDES
+   Force dark surfaces + light text on shared chrome and
+   per-page headers (high-specificity: prefix wins over the
+   page-scoped <style> blocks rendered later in <body>).
+   ============================================================ */
+
+/* ---- Footer: keep dark, light text ---- */
+html.accessibility-contrast-dark .site-footer {
+  background: #0F0F0F;
+}
+html.accessibility-contrast-dark .footer-bottom {
+  border-top-color: #333333;
+}
+html.accessibility-contrast-dark .footer-logo {
+  filter: brightness(0) invert(1) opacity(0.9);
+}
+html.accessibility-contrast-dark .footer-heading {
+  color: #FFFFFF;
+}
+html.accessibility-contrast-dark .footer-desc,
+html.accessibility-contrast-dark .footer-contact__item,
+html.accessibility-contrast-dark .footer-contact__item i,
+html.accessibility-contrast-dark .footer-links a {
+  color: #B0BCC9;
+}
+html.accessibility-contrast-dark .footer-links a:hover {
+  color: #FFFFFF;
+}
+html.accessibility-contrast-dark .footer-copy,
+html.accessibility-contrast-dark .footer-legal a {
+  color: #9AA7B6;
+}
+html.accessibility-contrast-dark .footer-legal a:hover {
+  color: #B0BCC9;
+}
+html.accessibility-contrast-dark .footer-social a {
+  border-color: #333333;
+  color: #9AA7B6;
+}
+html.accessibility-contrast-dark .footer-social a:hover {
+  background: #4DA6FF;
+  border-color: #4DA6FF;
+  color: #0A0F1A;
+}
+
+/* ---- Nav strip: light text on dark strip ---- */
+html.accessibility-contrast-dark .nav-strip__badge,
+html.accessibility-contrast-dark .nav-strip__links a {
+  color: #B0BCC9;
+}
+html.accessibility-contrast-dark .nav-strip__badge i,
+html.accessibility-contrast-dark .nav-strip__links a:hover {
+  color: #66B3FF;
+}
+
+/* ---- Alert-strip CTA + warning-detail CTA: readable on the alert token ---- */
+html.accessibility-contrast-dark .alert-strip__cta,
+html.accessibility-contrast-dark .warning-detail-cta {
+  background: #FF6B6B;
+  color: #1a1a1a;
+}
+html.accessibility-contrast-dark .alert-strip__cta:hover,
+html.accessibility-contrast-dark .warning-detail-cta:hover {
+  background: #FF9999;
+  color: #1a1a1a;
+}
+
+/* ---- CTA section: dark navy bg + light text ---- */
+html.accessibility-contrast-dark .cta-section {
+  background: #0F1B33;
+}
+html.accessibility-contrast-dark .cta-section__eyebrow {
+  color: #B0BCC9;
+}
+html.accessibility-contrast-dark .cta-section__desc {
+  color: #C6D2E0;
+}
+html.accessibility-contrast-dark .cta-section__note {
+  color: #9AA7B6;
+}
+html.accessibility-contrast-dark .btn-cta-main {
+  background: #4DA6FF;
+  color: #0A0F1A;
+}
+html.accessibility-contrast-dark .btn-cta-main:hover {
+  background: #66B3FF;
+  color: #0A0F1A;
+}
+html.accessibility-contrast-dark .btn-cta-ghost {
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+html.accessibility-contrast-dark .btn-cta-ghost:hover {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+/* ---- Hero: stats + buttons readable on the dark navy band ---- */
+html.accessibility-contrast-dark .hero-stats__number {
+  color: #FFFFFF;
+}
+html.accessibility-contrast-dark .hero-stats__label {
+  color: #B0BCC9;
+}
+html.accessibility-contrast-dark .btn-hero-primary {
+  background: #4DA6FF;
+  color: #0A0F1A;
+}
+html.accessibility-contrast-dark .btn-hero-primary:hover {
+  background: #66B3FF;
+  color: #0A0F1A;
+}
+html.accessibility-contrast-dark .btn-hero-ghost {
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+html.accessibility-contrast-dark .btn-hero-ghost:hover {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+/* ---- Page headers: force dark navy band + light text ---- */
+html.accessibility-contrast-dark .news-header,
+html.accessibility-contrast-dark .news-detail-header,
+html.accessibility-contrast-dark .events-header,
+html.accessibility-contrast-dark .event-detail-header,
+html.accessibility-contrast-dark .warnings-header,
+html.accessibility-contrast-dark .warning-detail-header,
+html.accessibility-contrast-dark .laws-header,
+html.accessibility-contrast-dark .law-detail-header,
+html.accessibility-contrast-dark .guides-header,
+html.accessibility-contrast-dark .guide-detail-header,
+html.accessibility-contrast-dark .infographics-header,
+html.accessibility-contrast-dark .infographic-show-header,
+html.accessibility-contrast-dark .search-header,
+html.accessibility-contrast-dark .rfc-page-header,
+html.accessibility-contrast-dark .statistics-header,
+html.accessibility-contrast-dark .lapor-header,
+html.accessibility-contrast-dark .thankyou-header,
+html.accessibility-contrast-dark .tac-header,
+html.accessibility-contrast-dark .dash-header,
+html.accessibility-contrast-dark .detail-header,
+html.accessibility-contrast-dark .login-header,
+html.accessibility-contrast-dark .placeholder-header {
+  background: #0F1B33;
+}
+html.accessibility-contrast-dark .rfc-page-header::before {
+  background-image: repeating-linear-gradient(90deg, #0F1B33 0, #0F1B33 79px, #1a2b4d 80px);
+}
+html.accessibility-contrast-dark .event-back,
+html.accessibility-contrast-dark .event-hero__meta,
+html.accessibility-contrast-dark .event-hero__meta-item,
+html.accessibility-contrast-dark .event-hero__meta-item i,
+html.accessibility-contrast-dark .event-hero__meta-item strong {
+  color: #B0BCC9;
+}
+html.accessibility-contrast-dark .login-title,
+html.accessibility-contrast-dark .login-sub {
+  color: #FFFFFF;
+}
+
+/* ---- Profile page: card text + cta-footer readable in dark ---- */
+html.accessibility-contrast-dark .profile-card {
+  background: #1a1a1a;
+  border-left-color: #4DA6FF;
+}
+html.accessibility-contrast-dark .profile-card .text-dark,
+html.accessibility-contrast-dark .profile-card .text-secondary,
+html.accessibility-contrast-dark .profile-card .text-muted {
+  color: #B0BCC9 !important;
+}
+html.accessibility-contrast-dark .profile-card .text-dark {
+  color: #FFFFFF !important;
+}
+html.accessibility-contrast-dark .profile-card .section-title {
+  color: #FFFFFF;
+}
+html.accessibility-contrast-dark .cta-footer {
+  background: #0F1B33;
+}
+html.accessibility-contrast-dark .cta-footer .btn-outline-light {
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+html.accessibility-contrast-dark .cta-footer .btn-outline-light:hover {
+  background: #FFFFFF;
+  color: #0A0F1A;
+}
+html.accessibility-contrast-dark .cta-footer .btn-navy-bold {
+  background: #4DA6FF;
+  color: #0A0F1A;
+}
+html.accessibility-contrast-dark .cta-footer .btn-navy-bold:hover {
+  background: #66B3FF;
+  color: #0A0F1A;
+}
+
+/* ---- Thank-you card header: dark navy band + light text ---- */
+html.accessibility-contrast-dark .thankyou-card__header {
+  background: #0F1B33;
+}
+html.accessibility-contrast-dark .thankyou-badge {
+  background: rgba(255, 255, 255, 0.12);
+  color: #C6D2E0;
+}
+html.accessibility-contrast-dark .thankyou-card__header p {
+  color: #B0BCC9;
+}
+
+/* ---- Bootstrap solid buttons used as <a> (admin dashboard): keep white text ---- */
+html.accessibility-contrast-dark a.btn-success,
+html.accessibility-contrast-dark a.btn-primary,
+html.accessibility-contrast-dark a.btn-secondary,
+html.accessibility-contrast-dark a.btn-danger,
+html.accessibility-contrast-dark a.btn-info,
+html.accessibility-contrast-dark a.btn-dark {
+  color: #FFFFFF;
+}
+html.accessibility-contrast-dark a.btn-success:hover,
+html.accessibility-contrast-dark a.btn-primary:hover,
+html.accessibility-contrast-dark a.btn-secondary:hover,
+html.accessibility-contrast-dark a.btn-danger:hover,
+html.accessibility-contrast-dark a.btn-info:hover,
+html.accessibility-contrast-dark a.btn-dark:hover {
+  color: #FFFFFF;
+}
+
+/* ---- Custom admin <a> buttons (.btn-add / .btn-edit): dark text on the light-blue fill ---- */
+html.accessibility-contrast-dark a.btn-add,
+html.accessibility-contrast-dark a.btn-edit {
+  color: #0A0F1A;
+}
+html.accessibility-contrast-dark a.btn-add:hover,
+html.accessibility-contrast-dark a.btn-edit:hover {
+  color: #0A0F1A;
+}
+
+/* ---- Custom admin delete button (.btn-delete on <button>): red fill + dark text ---- */
+html.accessibility-contrast-dark button.btn-delete {
+  background: #FF6B6B;
+  color: #1a1a1a;
+  border: none;
+}
+html.accessibility-contrast-dark button.btn-delete:hover {
+  background: #FF9999;
+  color: #1a1a1a;
+}
+
+/* ---- Admin logout: restore transparent + red outline instead of generic blue ---- */
+html.accessibility-contrast-dark .btn-logout {
+  background: transparent;
+  color: #FF6B6B;
+  border: 2px solid #FF6B6B;
+}
+html.accessibility-contrast-dark .btn-logout:hover {
+  background: #FF6B6B;
+  color: #1a1a1a;
+  border-color: #FF6B6B;
+}
+
+/* ---- Admin modals: dark surface, light text, visible title ---- */
+html.accessibility-contrast-dark .modal-content {
+  background: #1a1a1a;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+}
+html.accessibility-contrast-dark .modal-header {
+  border-bottom: 1px solid #333333;
+}
+html.accessibility-contrast-dark .modal-footer {
+  border-top: 1px solid #333333;
+}
+html.accessibility-contrast-dark .modal-title,
+html.accessibility-contrast-dark .modal-body label,
+html.accessibility-contrast-dark .modal-body .form-label {
+  color: #FFFFFF;
+}
+html.accessibility-contrast-dark .btn-close {
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  border: none;
+  opacity: 1;
+}
+
+/* ---- Bootstrap semantic button colors restored on <button> elements ---- */
+html.accessibility-contrast-dark button.btn-danger {
+  background: #FF6B6B;
+  color: #1a1a1a;
+  border-color: #FF6B6B;
+}
+html.accessibility-contrast-dark button.btn-danger:hover {
+  background: #FF9999;
+  color: #1a1a1a;
+  border-color: #FF9999;
+}
+html.accessibility-contrast-dark button.btn-secondary {
+  background: #6C757D;
+  color: #FFFFFF;
+  border-color: #6C757D;
+}
+html.accessibility-contrast-dark button.btn-secondary:hover {
+  background: #5C636A;
+  color: #FFFFFF;
+  border-color: #5C636A;
+}
+html.accessibility-contrast-dark button.btn-primary {
+  background: #4DA6FF;
+  color: #0A0F1A;
+  border-color: #4DA6FF;
+}
+html.accessibility-contrast-dark button.btn-primary:hover {
+  background: #66B3FF;
+  color: #0A0F1A;
+  border-color: #66B3FF;
+}
+
+/* ---- Admin dashboard tabs: keep design-system colors, not the generic blue ---- */
+html.accessibility-contrast-dark .admin-tab,
+html.accessibility-contrast-dark button.admin-tab {
+  background: transparent;
+  color: #CCCCCC;
+  border: none;
+  border-bottom: 3px solid transparent;
+}
+html.accessibility-contrast-dark .admin-tab:hover,
+html.accessibility-contrast-dark button.admin-tab:hover {
+  background: #1a1a2e;
+  color: #4DA6FF;
+  border-bottom-color: transparent;
+}
+html.accessibility-contrast-dark .admin-tab.active,
+html.accessibility-contrast-dark button.admin-tab.active {
+  background: #1a1a2e;
+  color: #4DA6FF;
+  border-bottom-color: #4DA6FF;
+}
+html.accessibility-contrast-dark .tab-badge {
+  color: #FFFFFF;
+}
+
+/* ---- Navbar .btn-navy: dark text stays readable on hover fill ---- */
+html.accessibility-contrast-dark .btn-navy,
+html.accessibility-contrast-dark a.btn-navy {
+  background: #4DA6FF;
+  color: #0A0F1A;
+  border: 1px solid #66B3FF;
+}
+html.accessibility-contrast-dark .btn-navy:hover,
+html.accessibility-contrast-dark a.btn-navy:hover {
+  background: #66B3FF;
+  color: #0A0F1A;
+  border-color: #4DA6FF;
+}
+
+/* ---- Navbar search button: restore ink surface (white) + dark icon ---- */
+html.accessibility-contrast-dark .nav-search button {
+  background: #FFFFFF;
+  color: #0A0F1A;
+  border: none;
+}
+html.accessibility-contrast-dark .nav-search button:hover {
+  background: #4DA6FF;
+  color: #0A0F1A;
+}
+
+/* ---- Navbar logout button: restore transparent + mid icon, red on hover ---- */
+html.accessibility-contrast-dark .nav-logout button {
+  background: transparent;
+  color: #CCCCCC;
+  border: 1px solid #333333;
+}
+html.accessibility-contrast-dark .nav-logout button:hover {
+  background: transparent;
+  color: #FF6B6B;
+  border-color: #FF6B6B;
+}
+
+/* ---- CSIRT logos turn white in dark mode (navbar + profile), same as footer ---- */
+html.accessibility-contrast-dark .nav-logo img,
+html.accessibility-contrast-dark .profile-logo-container img {
+  filter: brightness(0) invert(1) opacity(0.9);
 }

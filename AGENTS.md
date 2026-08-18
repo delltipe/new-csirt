@@ -38,10 +38,45 @@ Gotchas for this subsystem:
 - Admin login: the public `/login` also works for the admin user (is_admin check)
   and the admin nav CTA points to `/admin`.
 
+## Admin Dashboard Polish (IMPLEMENTED 2026-08-18)
+
+Commit `dbcc22f` (plus earlier dark-mode work in `ee81505`+). No schema changes — no
+`migrate:fresh` needed for any of this.
+
+- **All 6 CRUD partials** (`resources/views/admin/partials/{news,events,infographics,
+  warnings,laws,guides}.blade.php`) now use the same custom `.data-table` pattern as the
+  Insiden partial: `.section-actions` header (`h4.section-title-small` + `.btn-add` opening
+  the existing modal), `.table-responsive` > `table.data-table`, action buttons
+  `.btn-edit` / `.btn-delete`, and a `.empty-state` block when the collection is empty.
+  Component CSS lives in the `<style>` block of `admin/dashboard.blade.php`.
+- **Dark-mode contrast overrides** in `public/css/accessibility-contrast.css`:
+  `.admin-tab` (and `:hover`/`.active`) keep `--navy-tint` bg + `--navy` text instead of
+  the generic `button` blue; `.btn-navy:hover` forces dark text `#0A0F1A` on `#66B3FF`
+  (fixes blue-on-blue); `.nav-search button` / `.nav-logout button` restore their intended
+  ink/transparent surfaces; `button.btn-delete` gets a red fill + dark text. The generic
+  `html.accessibility-contrast-dark button` / `a:hover` rules flatten any unscoped button —
+  new admin buttons MUST get matching dark overrides.
+- **`.admin-header`** removed from the dark navy-band group (no more `#0F1B33` band) and
+  its `border-bottom` changed `var(--ink)` → `var(--border)` in `dashboard.blade.php`,
+  `admin/incidents/index.blade.php`, `admin/incidents/show.blade.php` — blends with the
+  page background in both light and dark modes.
+- **CSIRT logo whites out in dark mode** on navbar (`.nav-logo img`) and profile page
+  (`.profile-logo-container img`) via `filter: brightness(0) invert(1) opacity(0.9)` —
+  same technique as the footer logo.
+- **Navbar partner logos**: `.nav-partners` cluster in `components/navbar.blade.php` —
+  `jaya_raya.png`, `logo_diskominfo.png`, `logo_5abad.png`, `HUTRI81.png` (all in
+  `public/`), each an `<a href="#" target="_blank" rel="noopener" title aria-label>`,
+  `role="group"` + `aria-label` on the container, hidden below `1100px`. The `href="#"`
+  are placeholders until real partner URLs are supplied.
+- Boxy corners: `border-radius: 0` applied sitewide in `style.css` (Bootstrap utilities
+  section) to `.btn`, `.form-control`, `.card`/headers/footers, `.modal-*`, `.btn-close`,
+  `.page-link` — matches the NYC.gov/insiden look in both themes.
+
+
 ## Stack
 
 - **Laravel 12** / PHP 8.2+ / SQLite (default)
-- **Bootstrap 5.3** via CDN (in layout) for grid, forms, tables
+- **Bootstrap 5.3** via CDN (in layout) for grid, forms only — admin tables use the custom `.data-table` component (see Admin Dashboard Polish)
 - **Custom design system** (`public/css/style.css`) with CSS custom properties — see `DESIGN_SYSTEM.md`
 - **Vite 7** registered but unused: layout loads CSS/JS from `public/`, not the Vite bundle. `resources/css/app.css` is just a comment; do not expect Vite output in templates.
 - No CI/CD pipeline (no `.github/workflows`)
@@ -72,18 +107,14 @@ Most migrations omit `$table->timestamps()`; matching models set `public $timest
 
 ### Auth Is Custom (Not a Package)
 
-Auth is Laravel's built-in `users`-table auth. Two controllers drive it:
+Auth is Laravel's built-in `users`-table auth (login via `Auth::attempt` in `AdminController::login`), with an `is_admin` boolean flag on `users`. Public registration/login exists **only** for the incident subsystem (bug hunters): `/register` and `/login` POST via `AuthController` and set the `is_bug_hunter` flag (see the Incident Portal Rework section). `/profile` and `/dashboard` remain static placeholder `view()` routes with no POST handler; only `/admin/login` posts for the admin role.
 
 - **`AdminController::login`** — admin-only login at `/admin/login`; checks `is_admin`.
 - **`AuthController`** — public `/register` + `/login` for bug hunters (`routes/web.php:44-48`). Registration creates a user with `is_bug_hunter = true`; login redirects admins to `/admin` and bug hunters to `bug-hunter.tac`. No 2FA, no email verification.
 
 `/profile` and `/dashboard` remain static `view()` routes with no POST handler.
 
-**Middleware aliases** (`admin` + `bug_hunter`) are registered in `bootstrap/app.php` — NOT the legacy `app/Http/Kernel.php` (unused; app binds Laravel's default kernel). Do not move them back to `Kernel.php`.
-
-### Incident Report Intake (Eloquent, single POST)
-
-Incident intake is a **logged-in single-page form** (no wizard, no per-step routes). Flow: login → TaC gate (`bug-hunter.tac`) → `bug-hunter/create.blade.php` → one POST `/bug-hunter/laporan/simpan` (`bug-hunter.store`, `throttle:60,1`) → thank-you with ticket number. `BugHunterController::store` runs one `$request->validate([...])` covering all fields, then creates the `IncidentReport` via Eloquent plus up to 3 `LampiranInsiden` rows (jenis `file`|`url`). Ticket numbers `INS-YYYY-XXXX` come from `generateTiketNo()`. Do not add per-step routes.
+The form is a **single-page form** — exactly one POST to `/bug-hunter/laporan/simpan` (`bug-hunter.store`), where `BugHunterController::store` runs one `$request->validate([...])` covering all fields. Do not add per-step routes. The controller creates the `IncidentReport` and up to 3 `LampiranInsiden` rows (jenis `file`|`url`). Implementation notes: some code paths use Eloquent models (`IncidentReport`/`LampiranInsiden`) while others perform a `DB::table('lapor_insiden')->insert(...)` inside a try/catch; the `IncidentReport` model's `$fillable` matches the migration columns.
 
 ### Error Handling
 
@@ -106,11 +137,11 @@ All form submissions and admin CRUD writes are wrapped in try/catch — on failu
 - **Always use `var(--token)`** — never hardcode hex values, font names, or spacing
 - `public/css/accessibility-contrast.css` overrides tokens for high-contrast and dark mode
 - Content pages use custom card system (`.news-grid`, `.news-card`) — not Bootstrap `.card`
-- Admin pages may use Bootstrap `.table` and `.form-control`
+- Admin tables use the custom `.data-table` component (see Admin Dashboard Polish), not Bootstrap `.table`; forms still use Bootstrap `.form-control`
 
 ### Admin Views (Layout Gotcha)
 
-Admin pages render inside the public layout (`@yield('content')` of `layouts/app.blade.php`) wrapped in `.admin-container` panes in `admin/dashboard.blade.php`. The dashboard is a tabbed interface (`#news-tab` … `#guides-tab`); each tab `@include`s a partial from `resources/views/admin/partials/`.
+Admin pages render inside the public layout (`@yield('content')` of `layouts/app.blade.php`) wrapped in `.admin-container` panes in `admin/dashboard.blade.php`. The dashboard is a tabbed interface (`#news-tab` … `#guides-tab` + `#insiden-tab`); each tab `@include`s a partial from `resources/views/admin/partials/`. All CRUD partials use the same `.data-table` / `.section-actions` / `.btn-add` pattern as the Insiden partial.
 
 **When editing partials, keep the `<div>` balance intact.** An extra stray `</div>` at the end of a partial (found in `events.blade.php` and `warnings.blade.php`, fixed in commit `00d7931`) breaks the whole dashboard layout: subsequent tabs and the logout button escape the centered container. Verify with:
 
@@ -122,7 +153,7 @@ $files = Get-ChildItem resources/views/admin/partials/*.blade.php; foreach ($f i
 ### Tests
 
 - `phpunit.xml` uses SQLite in-memory (`DB_DATABASE=:memory:`)
-- Only default `ExampleTest` exists in `tests/Unit` and `tests/Feature`
+- `tests/Unit` has the default `ExampleTest`; `tests/Feature` has `ExampleTest` + `IncidentPortalSmokeTest` (public auth → TaC → submit → ticket → admin review)
 - `composer test` clears the config cache first
 
 ### Seeders
@@ -143,7 +174,7 @@ Run from `presentation/`. These are regenerated artifacts, not hand-edited. Also
 ## Gotchas
 
 - **No `.env` committed** — `.env.example` has `DB_CONNECTION=sqlite` and `APP_KEY=` empty
-- **Views `publickey.blade.php`, `rfc2350.blade.php`, `statistics.blade.php` have no routes** — the footer/navbar link to `/publickey`, `/rfc2350`, `/statistics` (will 404)
+- **`/publickey`, `/rfc2350`, `/statistics` are routed** (since commit `af73f3e`) — footer/navbar links resolve. Note: `/publickey` is a file-download route (no `publickey.blade.php` view)
 - **Foreign keys are not enforced** in migrations — no `$table->foreign()` calls
 - **The `event` table name collides with MySQL reserved word** — fine in SQLite but breaks on MySQL without quoting; note `docs/DEPLOYMENT.md` covers production setup
 - **Blade views use Indonesian text throughout** — government portal for DKI Jakarta

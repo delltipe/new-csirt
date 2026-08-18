@@ -1,35 +1,51 @@
 <div class="mb-4">
-    <h4>Manage Warnings</h4>
-    <a href="#" class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#addWarningModal">Add Warning</a>
+    <div class="section-actions">
+        <h4 class="section-title-small">Kelola Peringatan</h4>
+        <a href="#" class="btn-add" data-bs-toggle="modal" data-bs-target="#addWarningModal">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i> Tambah Peringatan
+        </a>
+    </div>
     @if(session('success'))
-      <div class="alert alert-success">{{ session('success') }}</div>
+      <div class="alert-success">{{ session('success') }}</div>
     @endif
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($warnings as $item)
-        <tr>
-          <td>{{ $item->title }}</td>
-          <td>{{ $item->date ? $item->date->format('Y-m-d H:i') : '' }}</td>
-          <td>
-            <a href="{{ route('admin.warning.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
-            <form action="{{ route('admin.warning.delete', $item->id) }}" method="POST" style="display:inline-block;">
-              @csrf
-              <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this warning?')">Delete</button>
-            </form>
-          </td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
-    @if($warnings->hasPages())
-        <div class="mt-3">{{ $warnings->links() }}</div>
+    @if ($warnings->isEmpty())
+        <div class="empty-state">
+            <p>Tidak ada data yang tersedia pada tabel ini</p>
+        </div>
+    @else
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Judul</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($warnings as $item)
+                    <tr>
+                        <td>{{ $item->title }}</td>
+                        <td>{{ $item->date ? $item->date->format('Y-m-d H:i') : '' }}</td>
+                        <td>
+                            <a href="{{ route('admin.warning.edit', $item->id) }}" class="btn-edit">
+                                <i class="bi bi-pencil" aria-hidden="true"></i> Edit
+                            </a>
+                            <form action="{{ route('admin.warning.delete', $item->id) }}" method="POST" style="display:inline-block;">
+                                @csrf
+                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this warning?')">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @if($warnings->hasPages())
+            <div class="mt-3">{{ $warnings->links() }}</div>
+        @endif
     @endif
 </div>
 

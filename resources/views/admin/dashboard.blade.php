@@ -10,7 +10,7 @@
 }
 
 .admin-header {
-    border-bottom: 3px solid var(--ink);
+    border-bottom: 3px solid var(--border);
     padding-bottom: 20px;
     margin-bottom: 40px;
 }

@@ -1,51 +1,51 @@
-# Jakarta CSIRT Portal - Setup Complete
+# Setup Guide — Jakarta Prov CSIRT Portal
 
-## Overview
-Your Jakarta CSIRT portal has been successfully set up with all essential models, controllers, routes, and views. The application is ready for implementation of your Figma UI/UX design.
+> How to set up, run, and test the Laravel 12 portal. For the feature inventory see
+> **`FEATURES.md`**; for the database schema see **`docs/SCHEMA.md`**; for production
+> deployment see **`docs/DEPLOYMENT.md`**.
 
-## Database Structure
+---
 
-### Models & Tables Created
+## Requirements
 
-1. **CybersecurityNews** - News articles about cybersecurity topics
-   - Fields: title, content, excerpt, image_url, source_url, author, published_at
+- PHP 8.2+
+- Composer
+- Node.js (for `composer dev`'s `npx concurrently` and the unused Vite build)
 
-2. **Event** - Training, workshops, webinars, conferences
-   - Fields: title, description, event_date, location, event_type, registration_url, capacity
+---
 
-3. **Infographic** - Visual guides and infographics
-   - Fields: title, description, image_url, category, tags
+## Quick Start
 
-4. **WarningPost** - Security alerts and threat notifications
-   - Fields: title, content, severity, threat_type, issued_at, affected_systems, recommendations
+```bash
+composer setup          # Fresh install: composer install, .env, APP_KEY, migrate, npm, build
+composer dev            # Runs 4 processes: php artisan serve, queue:listen, pail, vite
+composer test           # Clears config cache, then runs php artisan test
+```
 
-5. **LawRulePost** - Indonesian cybersecurity laws and regulations
-   - Fields: title, content, summary, law_number, regulation_type, effective_date, document_url
+Notes:
 
-6. **CybersecurityGuide** - Educational guides and best practices
-   - Fields: title, content, category, difficulty_level
+- `composer setup` runs `migrate --force` **without seeding** — the DB starts empty.
+  For the admin account and sample content, run `php artisan migrate:fresh --seed`.
+- After the incident-portal rework, any schema changes require
+  `php artisan migrate:fresh --seed`.
+- `composer dev` requires `npx concurrently` (Node).
 
 7. **IncidentReport** - Cyber incident reports submitted by registered reporters
    - Fields: user_id, tiket_no, kategori_insiden, waktu_kejadian, lokasi_url, down_time, deskripsi, tindakan_teknis, cwe, severity, status
 
-8. **ContactMessage** - Contact form submissions
-   - Fields: name, email, phone, organization, subject, message, inquiry_type, status
+### Default Credentials
 
-## API Routes
+| Role | Credentials |
+|---|---|
+| Admin | `admin@gmail.com` / `12345678` (seeded — change before any live deploy) |
+| Reporter (bug hunter) | self-register via `/register` (`is_bug_hunter` flag) |
 
-### Public Information Routes
-- `GET /news` - News listing
-- `GET /news/{id}` - News detail
-- `GET /events` - Events listing
-- `GET /events/{id}` - Event detail
-- `GET /infographics` - Infographics listing
-- `GET /infographics/{id}` - Infographic detail
-- `GET /warnings` - Security warnings listing
-- `GET /warnings/{id}` - Warning detail
-- `GET /laws` - Laws & regulations listing
-- `GET /laws/{id}` - Law detail
-- `GET /guides` - Guides listing
-- `GET /guides/{id}` - Guide detail
+---
+
+## Database & Models
+
+SQLite by default (`database/database.sqlite`). Models map to Indonesian table names —
+do not assume Laravel conventions (see `docs/SCHEMA.md` for the full schema):
 
 ### Form Submission Routes
 - `GET /register` - Public registration (bug hunters)
@@ -62,87 +62,91 @@ Your Jakarta CSIRT portal has been successfully set up with all essential models
 - `POST /contact` - Submit contact message
 - `GET /thank-you/contact` - Thank you page
 
-## Controllers Created
+| Model | Table |
+|---|---|
+| CybersecurityNews | `berita_siber` |
+| WarningPost | `peringatan_keamanan` |
+| Event | `event` |
+| Infographic | `infografis_keamanan` |
+| LawRulePost | `peraturan_kebijakan` |
+| CybersecurityGuide | `panduan_teknis` |
+| IncidentReport | `lapor_insiden` |
+| LampiranInsiden | `lampiran_insiden` |
+| TacAgreement | `tac_agreements` |
+| ContactMessage | `contact_us` |
 
-1. **NewsController** - Manages cybersecurity news articles
-2. **EventController** - Manages events
-3. **InfographicController** - Manages infographics
-4. **WarningPostController** - Manages security warnings
-5. **LawRulePostController** - Manages laws and regulations
-6. **GuideController** - Manages cybersecurity guides
-7. **AuthController** - Public registration/login/logout for bug hunters
-8. **BugHunterController** - TaC gate + single-page incident report intake + reporter dashboard
-9. **ContactController** - Handles contact form submissions
-10. **AdminController** - Admin login + content CRUD + incident review
+Most content tables have no timestamps; matching models set `public $timestamps = false`.
+
+---
+
+## Routes
+
+All routes live in `routes/web.php`:
+
+| Group | Routes |
+|---|---|
+| Public content | `/`, `/profile`, `/rfc2350`, `/publickey`, `/statistics` |
+| Content listings | `/news`, `/events`, `/infographics`, `/warnings`, `/laws`, `/guides` (+ `/{id}` detail) |
+| Search | `/search?q=...` |
+| Public auth | `GET/POST /register`, `GET/POST /login`, `POST /logout` |
+| Bug hunter | `/bug-hunter` (dashboard), `/bug-hunter/laporan` (TaC), `/bug-hunter/laporan/baru`, `/bug-hunter/laporan/simpan` (POST), `/bug-hunter/laporan/selesai`, `/bug-hunter/laporan/{id}` |
+| Contact | `GET/POST /contact`, `/thank-you/contact` |
+| Admin auth | `GET/POST /admin/login`, `POST /admin/logout` |
+| Admin (auth + admin middleware) | `/admin` dashboard, incident review `/admin/incidents`, CRUD for all 6 content types |
+
+---
+
+## Controllers
+
+- **Public content:** `NewsController`, `EventController`, `InfographicController`,
+  `WarningPostController`, `LawRulePostController`, `GuideController`, `SearchController`,
+  `HomeController`
+- **Auth:** `AuthController` (public register/login/logout), `AdminController` (admin login + all admin CRUD/review)
+- **Intake:** `BugHunterController` (incident portal), `ContactController`
 
 ## View Structure
 
 ```
 resources/views/
-├── auth/
-│   ├── login.blade.php           (Public login)
-│   └── register.blade.php        (Public registration)
-├── bug-hunter/
-│   ├── tac.blade.php             (Terms & Conditions gate)
-│   ├── create.blade.php          (Incident report form)
-│   ├── dashboard.blade.php       (Reporter ticket list)
-│   ├── show.blade.php            (Ticket detail)
-│   └── thank-you.blade.php       (Submission confirmation + ticket number)
-├── contact/
-│   ├── create.blade.php          (Contact form)
-│   └── thank-you.blade.php       (Submission confirmation)
-├── news/
-│   ├── index.blade.php           (News listing)
-│   └── show.blade.php            (News detail)
-├── events/
-│   ├── index.blade.php           (Events listing)
-│   └── show.blade.php            (Event detail)
-├── infographics/
-│   ├── index.blade.php           (Gallery)
-│   └── show.blade.php            (Detail)
-├── warnings/
-│   ├── index.blade.php           (Warnings listing)
-│   └── show.blade.php            (Warning detail)
-├── laws/
-│   ├── index.blade.php           (Laws listing)
-│   └── show.blade.php            (Law detail)
-├── guides/
-│   ├── index.blade.php           (Guides listing)
-│   └── show.blade.php            (Guide detail)
-├── admin/
-│   ├── dashboard.blade.php       (Admin dashboard)
-│   └── incidents/                (Incident review list + detail)
-├── dashboard.blade.php           (Placeholder)
-└── welcome.blade.php             (Homepage)
+├── layouts/app.blade.php          # Master layout (navbar, footer, a11y widget)
+├── components/                    # navbar, footer, accessibility
+├── home.blade.php  profile.blade.php  rfc2350.blade.php  statistics.blade.php
+├── auth/                          # register, login
+├── bug-hunter/                    # dashboard, tac, create, thank-you, show
+├── news/  events/  warnings/  infographics/  laws/  guides/  search/  contact/
+├── admin/                         # dashboard + partials/ + *_edit pages
+│   └── incidents/                 # index, show
+└── dashboard.blade.php            # Placeholder
+
+├── auth/                          (Public login + register views)
+├── bug-hunter/                    (TaC gate, report form, dashboard, detail, thank-you)
+├── contact/                       (Contact form + thank you)
+├── admin/                         (Admin dashboard + CRUD partials + edit pages + incidents/)
 ```
 
-## Next Steps - Implementing Your Figma Design
+Styling: Bootstrap 5.3 (CDN) for grid/forms plus a custom design system in
+`public/css/style.css` (CSS custom properties). Admin tables use the custom `.data-table`
+component (see `DESIGN_SYSTEM.md`). Vite is registered but unused — assets
+load from `public/`, not the Vite bundle. See `DESIGN_SYSTEM.md`.
 
-To implement your Figma UI/UX design:
+---
 
-### 1. Layout & Styling
-- Create a shared layout file (`resources/views/layouts/app.blade.php`)
-- Add your CSS/Tailwind styles
-- Create header/navigation components
-- Create footer component
+## Testing
 
-### 2. Update Each View
-For each section (news, events, guides, etc.):
-- Update the `index.blade.php` listing view with your design
-- Update the `show.blade.php` detail view with your design
-- Apply consistent styling across all pages
+PHPUnit with SQLite in-memory (`phpunit.xml`):
+
+```bash
+composer test                     # whole suite
+php artisan test --filter=TestName   # single test
+```
 
 ### 3. Forms Styling
 - Update `bug-hunter/create.blade.php` with your Figma form design
 - Update `contact/create.blade.php` with your Figma form design
 - Style validation error messages to match your design
 
-### 4. Components
-Create reusable components if needed:
-- Card components for news, events, warnings
-- Form field components
-- Pagination components
-- Alert/notification components
+Coverage: `tests/Feature/IncidentPortalSmokeTest` (public auth → TaC → submit →
+ticket → admin review) and the default `ExampleTest`.
 
 ## Testing the Application
 
@@ -169,16 +173,11 @@ Administrative access is implemented:
 ## Database Commands
 
 ```bash
-# Run migrations
-php artisan migrate
-
-# Reset and re-seed database
-php artisan migrate:fresh
-
-# View all routes
-php artisan route:list
+php artisan migrate:fresh --seed     # Reset DB and re-seed
+php artisan route:list               # List all routes
 ```
 
----
+## File Uploads
 
-Your Jakarta CSIRT portal is ready for design implementation. Start by updating the Blade views with your Figma design!
+Incident evidence files are stored in `storage/app/public/bukti_laporan/` (served via
+`public/storage` symlink). Run `php artisan storage:link` in production.

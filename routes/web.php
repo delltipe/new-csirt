@@ -16,6 +16,23 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('h
 
 Route::view('/profile', 'profile')->name('profile');
 
+// Official CSIRT reference documents and archived statistics
+Route::view('/rfc2350', 'rfc2350')->name('rfc2350');
+Route::get('/publickey', function () {
+    return response()->download(
+        public_path('downloads/JakartaProv-CSIRT-csirt@jakarta.go.id-0x7B1A4B82D1C4F8A4-public.asc'),
+        'JakartaProv-CSIRT-csirt@jakarta.go.id-0x7B1A4B82D1C4F8A4-public.asc',
+        ['Content-Type' => 'application/pgp-keys']
+    );
+})->name('publickey');
+Route::get('/statistics', function (\Illuminate\Http\Request $request) {
+    $page = $request->integer('page', 1);
+
+    abort_unless(in_array($page, [1, 2], true), 404);
+
+    return view('statistics', compact('page'));
+})->name('statistics');
+
 // Public Info Routes
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');

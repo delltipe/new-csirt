@@ -703,6 +703,27 @@ button {
 
 
 /* -------------------------------------------------------------
+   BOOTSTRAP UTILITIES — boxy corners (design-system consistency)
+   ------------------------------------------------------------- */
+.btn,
+.form-control,
+.form-select,
+.input-group-text,
+.card,
+.card-header,
+.card-body,
+.card-footer,
+.card-header:first-child,
+.card-footer:last-child,
+.modal-content,
+.modal-header,
+.modal-footer,
+.btn-close,
+.page-link {
+    border-radius: 0;
+}
+
+/* -------------------------------------------------------------
    RESPONSIVE BREAKPOINTS
    ------------------------------------------------------------- */
 @media (max-width: 960px) {

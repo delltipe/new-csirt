@@ -1,35 +1,51 @@
 <div class="mb-4">
-    <h4>Manage Infographics</h4>
-    <a href="#" class="btn btn-success mb-2" data-bs-toggle="modal" data-bs-target="#addInfographicModal">Add Infographic</a>
+    <div class="section-actions">
+        <h4 class="section-title-small">Kelola Infografis</h4>
+        <a href="#" class="btn-add" data-bs-toggle="modal" data-bs-target="#addInfographicModal">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i> Tambah Infografis
+        </a>
+    </div>
     @if(session('success'))
-      <div class="alert alert-success">{{ session('success') }}</div>
+      <div class="alert-success">{{ session('success') }}</div>
     @endif
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Thumbnail</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($infographics as $item)
-        <tr>
-          <td>{{ $item->title }}</td>
-          <td><a href="{{ $item->thumbnail }}" target="_blank">View Image</a></td>
-          <td>
-            <a href="{{ route('admin.infographic.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
-            <form action="{{ route('admin.infographic.delete', $item->id) }}" method="POST" style="display:inline-block;">
-              @csrf
-              <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this infographic?')">Delete</button>
-            </form>
-          </td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
-    @if($infographics->hasPages())
-        <div class="mt-3">{{ $infographics->links() }}</div>
+    @if ($infographics->isEmpty())
+        <div class="empty-state">
+            <p>Tidak ada data yang tersedia pada tabel ini</p>
+        </div>
+    @else
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Judul</th>
+                        <th>Thumbnail</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($infographics as $item)
+                    <tr>
+                        <td>{{ $item->title }}</td>
+                        <td><a href="{{ $item->thumbnail }}" target="_blank">View Image</a></td>
+                        <td>
+                            <a href="{{ route('admin.infographic.edit', $item->id) }}" class="btn-edit">
+                                <i class="bi bi-pencil" aria-hidden="true"></i> Edit
+                            </a>
+                            <form action="{{ route('admin.infographic.delete', $item->id) }}" method="POST" style="display:inline-block;">
+                                @csrf
+                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this infographic?')">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @if($infographics->hasPages())
+            <div class="mt-3">{{ $infographics->links() }}</div>
+        @endif
     @endif
 </div>
 

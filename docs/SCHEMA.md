@@ -1,6 +1,6 @@
 # Database Schema — Jakarta CSIRT Portal
 
-> All tables, columns, and types for the Laravel project at `/mnt/d/intern project/new-csirt`.
+> All tables, columns, and types for the Laravel project (repo root `new-csirt`).
 > SQLite by default. See `DEPLOYMENT.md` for MySQL/PostgreSQL migration notes.
 
 ---
@@ -17,7 +17,7 @@
 | password | string | |
 | remember_token | string(100) | nullable |
 | is_admin | boolean | default: false — admin flag |
-| is_bug_hunter | boolean | default: false — reporter flag (set true on public registration) |
+| is_bug_hunter | boolean | default: false — reporter flag (added 2026-08-11; set true on public registration) |
 | created_at | timestamp | |
 | updated_at | timestamp | |
 
@@ -184,5 +184,5 @@ These are standard Laravel tables — you typically don't need to modify them:
 
 - **No foreign keys** are defined in migrations. The database relies on application-level integrity.
 - **`event` table** uses a MySQL reserved word. This works in SQLite but will require quoting (`event`) if you switch to MySQL.
-- **Most tables have no timestamps** — only `users`, `contact_us`, `lapor_insiden`, `lampiran_insiden`, and `tac_agreements` track `created_at`/`updated_at`.
-- **File storage:** Incident evidence and uploaded files use Laravel's `storage/app/public/` directory (attachments → `bukti_laporan/`). In production, symlink `public/storage` → `storage/app/public`.
+- **Most tables have no timestamps** — only `users`, `lapor_insiden`, `lampiran_insiden`, `tac_agreements`, and `contact_us` track `created_at`/`updated_at`.
+- **File storage:** Proof images and uploaded files use Laravel's `storage/app/public/` directory (`bukti_laporan/` for incident evidence). In production, symlink `public/storage` → `storage/app/public`.
