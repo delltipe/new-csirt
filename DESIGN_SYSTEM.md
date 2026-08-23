@@ -277,6 +277,21 @@ Dark-mode overrides for all of these (plus admin tabs `.admin-tab` and `.btn-nav
 
 Admin pages also use the dark header pattern and design tokens for styling.
 
+### Content Background Wrapper (homepage)
+
+Homepage `alert-strip` + `news/services/events` share one wash wrapper. Copy this verbatim:
+
+```html
+<div class="content-bg-wrap wash" id="contentWrap">
+    <div class="halftone-field left" aria-hidden="true"><div class="halftone-glow"></div><div class="halftone-dots"></div></div>
+    <div class="halftone-field right" aria-hidden="true"><div class="halftone-glow"></div><div class="halftone-dots"></div></div>
+    <!-- alert-strip + news-section + services-section + events-section -->
+</div>
+<!-- cta-section stays outside (var(--navy-dim)) -->
+```
+
+Scoped CSS is in `resources/views/home.blade.php:404` — wash `linear-gradient 180deg var(--white) 32%→var(--mist) 92%`, `halftone-field 560×760 (-110px / top 4%/30%, 420×520 <1200px)`, `halftone-glow 72%×62% rgba(148,164,188,0.18) blur 12px` behind `halftone-dots 13px 1.35px rgba(148,164,188,0.82) mask 88%×68% black 48%→transparent 84%` (slate `#94A4BC` so it doesn’t clash with `var(--navy)` buttons). Interactive `brighten` only on `#contentWrap` `mousemove` (`opacity 0.62+t*0.36 within 520px`, `mouseleave` reset, respects `prefers-reduced-motion`/`html.accessibility-pause-animations` → static). Dark swap `--ht-dot/--ht-glow 176,188,201` in `public/css/accessibility-contrast.css:899`. Inside the wrapper set `.news-section/.services-section/.events-section {background:transparent !important}` so the wash shows through gutters; cards stay `var(--white)` + `var(--border)`. Use to A/B `Slate/Steel/Grey`, `-70/-110`, `Normal/Wide`, `parallax/brighten` via the temp file `C:\Users\Latif\AppData\Local\Temp\opencode\content-background-demos-v2.html:43` (Tab E Both L+R).
+
 ### Alert Strip
 
 For site-wide security alerts (home page):

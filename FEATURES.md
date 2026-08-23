@@ -24,6 +24,7 @@ JakartaProv-CSIRT is a public-facing portal for the Computer Security Incident R
   - Latest news cards (3 most recent)
   - Services grid linking to warnings, infographics, laws, guides
   - Footer CTA section with 24/7 hotline info
+  - Content background: `alert-strip` + `news/services/events` share one `div.content-bg-wrap.wash` (`linear-gradient white 32%→mist 92%`) with two desaturated halftone edge glows (Both L+R, 560×760 at -110px, slate `#94A4BC`, mask `88%×68%`, glow `72%×62%`, `brighten` on proximity, CTA `Temukan Insiden…` stays `var(--navy-dim)` outside — see `DESIGN_SYSTEM.md` → Content Background Wrapper)
 - **Route:** `home` → `HomeController@index`
 
 ### News (`/news`, `/news/{id}`)

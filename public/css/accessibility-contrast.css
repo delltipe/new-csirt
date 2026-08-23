@@ -895,6 +895,18 @@ html.accessibility-contrast-dark .nav-logout button:hover {
   border-color: #FF6B6B;
 }
 
+/* ---- Content halftone wrapper: smooth wash + slate desat adapts to dark ---- */
+html.accessibility-contrast-dark .content-bg-wrap.wash {
+  background: linear-gradient(180deg, #1a1a1a 0%, #1a1a1a 32%, #0F0F0F 92%);
+}
+html.accessibility-contrast-dark .halftone-field {
+  --ht-dot: 176,188,201;
+  --ht-glow: 176,188,201;
+}
+html.accessibility-contrast-dark .halftone-field .halftone-glow {
+  opacity: 0.52;
+}
+
 /* ---- CSIRT logos turn white in dark mode (navbar + profile), same as footer ---- */
 html.accessibility-contrast-dark .nav-logo img,
 html.accessibility-contrast-dark .profile-logo-container img {

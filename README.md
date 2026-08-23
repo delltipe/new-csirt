@@ -34,7 +34,7 @@ composer test           # Clears config cache, then runs php artisan test
 ## Features
 
 ### Public Pages
-- Home, profile, and six content types: **news, events, infographics, warnings,
+- Home (homepage content wrapper: `alert-strip` + `news/services/events` share `div.content-bg-wrap.wash` with two desaturated halftone edge glows, Both L+R, brighten on proximity — CTA `Temukan Insiden…` stays `navy-dim` outside), profile, and six content types: **news, events, infographics, warnings,
   laws/regulations, technical guides** (listing + detail, paginated, Indonesian copy)
 - Site-wide **search** across all content types (min. 2 characters)
 - Official CSIRT documents: **RFC 2350**, **public key** download, archived **statistics** pages

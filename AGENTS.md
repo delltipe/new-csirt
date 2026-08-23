@@ -281,6 +281,16 @@ Key deploy facts (already committed, do not re-derive):
 - Data is ephemeral on free tier: SQLite file + uploaded proof images reset on redeploy/spin-down. Fine for prototype.
 - Render env vars to set: `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://<name>.onrender.com`, `DB_CONNECTION=sqlite` (stable `APP_KEY` optional since it's regenerated each start). No `APP_NAME` needed (defaults fine).
 
+## Homepage Content Background (IMPLEMENTED 2026-08-24)
+
+Final state: `resources/views/home.blade.php:481` `div.content-bg-wrap.wash#contentWrap` (`linear-gradient 180deg var(--white) 32%→var(--mist) 92%` `public/css/style.css:19`) wrapping `alert-strip:484` + `news-section:508` + `services-section:572` + `events-section:613` until before `cta-section:677` (`var(--navy-dim)` stays outside). Inner sections `background:transparent !important` (`home.blade.php:415`).
+
+Two `halftone-field left/right 560×760 (-110px / top 4%/30%, 420×520 <1200px)` `home.blade.php:419` each with `halftone-glow 72%×62% rgba(148,164,188,0.18) blur 12px` behind `halftone-dots 13px 1.35px rgba(148,164,188,0.82) mask 88%×68% black 48%→transparent 84%` (`home.blade.php:424`). Desaturated slate `#94A4BC` (148,164,188) avoids clash with `var(--navy) #003580` buttons. Interactive `brighten` only (`home.blade.php:704` `mousemove → opacity 0.62+t*0.36 within 520px`, `mouseleave` reset, `prefers-reduced-motion`/`html.accessibility-pause-animations` `public/css/accessibility-contrast.css:937` → static). Dark swap `--ht-dot/--ht-glow 176,188,201` (`public/css/accessibility-contrast.css:899`), glow opacity 0.52.
+
+Evolved from mesh `52 dots α0.18` + clamp fix (`home.blade.php:736` `if(x<0){x=0;vx*=-1}` to avoid thrash vs naive `if(x<0||x>w)`). Temp previews `C:\Users\Latif\AppData\Local\Temp\opencode\hero-background-demos.html` + `content-background-demos.html`/`-v2.html:43` (Tab E Both L+R) are not committed; use them to A/B `Slate/Steel/Grey`, ` -70/-110`, `Normal/Wide`, `parallax/brighten`.
+
+> Frozen prototype specs moved to `docs/_frozen/` — `NEW_REPO_AGENTS.md`/`ARCHITECTURE_SPEC.md`/`FRONTEND_DESIGN.md` are byte-identical there; do not edit the `_frozen` copies. Current docs: `AGENTS.md`/`DESIGN_SYSTEM.md`/`FEATURES.md`.
+
 ## Deployment (other platforms — explored, NOT pursued)
 
 - **Vercel:** feasible but requires a real architecture port, NOT a drop-in: Vercel has no PHP/Docker and no persistent filesystem → must switch SQLite→**Neon Postgres** (free), add `vercel-php@0.9.0` runtime + `api/index.php` + `vercel.json` rewrites, move sessions/cache off `file`, and move incident proof-pic uploads to **Supabase Storage** (free) since uploads can't persist on Vercel's disk. User chose "just exploring" — not pursuing. Hobby is free, no card, personal-use only, ~300s function ceiling, cold starts.

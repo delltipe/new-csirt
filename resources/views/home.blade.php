@@ -401,11 +401,34 @@
     font-size: 10px;
 }
 
-@media (max-width: 960px) {
-    .events-section .events-grid {
-        grid-template-columns: 1fr;
-    }
+/* ============================================================
+   CONTENT WRAPPER — Halftone Edge Glow (slate, wider, Both L+R)
+   Replaces mesh: two halftone fields with glow, desaturated so it
+   doesn't clash with var(--navy) interactive buttons. Brighten on
+   hover (proximity), edge -110px, wide 88%×68% mask.
+   ============================================================ */
+.content-bg-wrap{ position:relative; overflow:hidden; isolation:isolate; }
+.content-bg-wrap.wash{
+    background: linear-gradient(180deg, var(--white) 0%, var(--white) 32%, var(--mist) 92%);
 }
+.content-bg-wrap .news-section,
+.content-bg-wrap .services-section,
+.content-bg-wrap .events-section{
+    background: transparent !important;
+    position: relative; z-index:1;
+}
+.content-bg-wrap .alert-strip{ position:relative; z-index:1; }
+.halftone-field{ position:absolute; width:560px; height:760px; pointer-events:none; z-index:0; overflow:hidden; --ht-dot:148,164,188; --ht-glow:148,164,188; transition: opacity 0.18s ease, transform 0.12s ease; will-change: transform, opacity; }
+.halftone-field.left{ left:-110px; top:4%; }
+.halftone-field.right{ right:-110px; top:30%; }
+.halftone-glow{ position:absolute; inset:-14%; background: radial-gradient(ellipse 72% 62% at 50% 50%, rgba(var(--ht-glow),0.18) 0%, rgba(var(--ht-glow),0.10) 28%, rgba(var(--ht-glow),0.04) 48%, transparent 70%); filter: blur(12px); }
+.halftone-dots{ position:absolute; inset:0; background-image: radial-gradient(circle, rgba(var(--ht-dot),0.82) 1.35px, transparent 1.75px); background-size:13px 13px; opacity:0.88; -webkit-mask-image: radial-gradient(ellipse 88% 68% at 50% 52%, black 48%, transparent 84%); mask-image: radial-gradient(ellipse 88% 68% at 50% 52%, black 48%, transparent 84%); }
+@media (max-width: 1200px){ .halftone-field{ width:420px; height:520px; } }
+@media (max-width: 960px){
+    .events-section .events-grid { grid-template-columns: 1fr; }
+    .halftone-field{ opacity:0.55; }
+}
+html.accessibility-pause-animations .halftone-field{ animation-play-state: paused !important; }
 </style>
 
 {{-- ================================================================
@@ -457,6 +480,16 @@
     </div>
 </section>
 
+
+<div class="content-bg-wrap wash" id="contentWrap">
+    <div class="halftone-field left" id="halftoneLeft" aria-hidden="true">
+        <div class="halftone-glow"></div>
+        <div class="halftone-dots"></div>
+    </div>
+    <div class="halftone-field right" id="halftoneRight" aria-hidden="true">
+        <div class="halftone-glow"></div>
+        <div class="halftone-dots"></div>
+    </div>
 
 {{-- ================================================================
      ALERT STRIP — red for warning content only
@@ -646,10 +679,11 @@
         @endif
     </div>
 </section>
+</div>{{-- /content-bg-wrap wash --}}
 
 
 {{-- ================================================================
-     CTA
+     CTA — untouched navy-dim, outside wrapper
      ================================================================ --}}
 <section class="cta-section" aria-labelledby="cta-heading">
     <div class="container">
@@ -678,6 +712,27 @@
 </section>
 
 <script>
+/* Halftone brighten — slate, wider, Both L+R -110px, present+glow */
+document.addEventListener('DOMContentLoaded', function () {
+    (function(){
+        var wrap=document.getElementById('contentWrap');
+        var left=document.getElementById('halftoneLeft');
+        var right=document.getElementById('halftoneRight');
+        if(!wrap||!left||!right) return;
+        if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        function isPaused(){ return document.documentElement.classList.contains('accessibility-pause-animations') || document.hidden; }
+        wrap.addEventListener('mousemove', function(e){
+            if(isPaused()) return;
+            var rL=left.getBoundingClientRect(), rR=right.getBoundingClientRect();
+            var dL=Math.hypot(e.clientX-(rL.left+rL.width/2), e.clientY-(rL.top+rL.height/2));
+            var dR=Math.hypot(e.clientX-(rR.left+rR.width/2), e.clientY-(rR.top+rR.height/2));
+            var tL=Math.max(0, 1 - dL/520), tR=Math.max(0, 1 - dR/520);
+            left.style.opacity= 0.62 + tL*0.36;
+            right.style.opacity= 0.62 + tR*0.36;
+        });
+        wrap.addEventListener('mouseleave', function(){ left.style.opacity=''; right.style.opacity=''; });
+    })();
+});
 document.addEventListener('DOMContentLoaded', function () {
     var track = document.querySelector('.news-carousel__track');
     if (!track) return;
