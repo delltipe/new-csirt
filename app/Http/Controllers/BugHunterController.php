@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\IncidentReport;
 use App\Models\LampiranInsiden;
 use App\Models\TacAgreement;
+use App\Support\MathCaptcha;
 use Illuminate\Http\Request;
 
 class BugHunterController extends Controller
@@ -71,8 +72,11 @@ class BugHunterController extends Controller
 
     public function create()
     {
+        $captchaQuestion = MathCaptcha::question();
+
         return view('bug-hunter.create', [
             'categories' => self::CATEGORIES,
+            'captchaQuestion' => $captchaQuestion,
         ]);
     }
 
@@ -89,7 +93,15 @@ class BugHunterController extends Controller
             'bukti.*.jenis' => 'nullable|in:file,url',
             'bukti.*.file' => 'nullable|file|mimes:png,jpg,jpeg,gif,pdf|max:5120',
             'bukti.*.url' => 'nullable|url|max:255',
+            'captcha_answer' => 'required|integer',
         ]);
+
+        if (! MathCaptcha::verify($validated['captcha_answer'])) {
+            MathCaptcha::regenerate();
+            return back()->withInput()->withErrors([
+                'captcha_answer' => 'Jawaban verifikasi salah. Silakan coba lagi.',
+            ]);
+        }
 
         $attachments = [];
         foreach ($request->input('bukti', []) as $index => $row) {
@@ -126,10 +138,13 @@ class BugHunterController extends Controller
                 ]);
             }
         } catch (\Exception $e) {
+            MathCaptcha::regenerate();
             return back()->withInput()->withErrors([
                 'deskripsi' => 'Gagal menyimpan laporan. Silakan coba lagi atau hubungi CSIRT langsung.',
             ]);
         }
+
+        MathCaptcha::forget();
 
         return redirect()->route('bug-hunter.thank-you')->with('tiket_no', $report->tiket_no);
     }

@@ -363,6 +363,8 @@
                         @error('message') <div class="field-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div> @enderror
                     </div>
 
+                    @include('components.captcha', ['question' => $captchaQuestion])
+
                     <div class="step-nav">
                         <a href="{{ route('home') }}" class="btn-ghost">Batalkan</a>
                         <button type="submit" class="btn-submit">

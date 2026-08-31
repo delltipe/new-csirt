@@ -11,6 +11,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BugHunterController;
+use App\Http\Controllers\CaptchaController;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -52,8 +53,14 @@ Route::get('/laws/{post}', [LawRulePostController::class, 'show'])->name('laws.s
 Route::get('/guides', [GuideController::class, 'index'])->name('guides.index');
 Route::get('/guides/{guide}', [GuideController::class, 'show'])->name('guides.show');
 
+// Demo — hero contrast mitigations (temporary, local only)
+Route::get('/demo/hero-contrast', fn() => view('demo.hero-contrast'))->name('demo.hero-contrast');
+
 // Search
 Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
+
+// CAPTCHA (math, self-hosted, no external API) — shared by incident + contact forms
+Route::get('/captcha/refresh', [CaptchaController::class, 'refresh'])->name('captcha.refresh');
 
 // ---------------------------------------------------------------
 // Public Authentication Routes (bug hunter registration/login)

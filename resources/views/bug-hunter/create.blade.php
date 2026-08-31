@@ -448,6 +448,8 @@
                 </button>
             </div>
 
+            @include('components.captcha', ['question' => $captchaQuestion])
+
             <div class="submit-nav">
                 <a href="{{ route('bug-hunter.dashboard') }}" class="btn-cancel">
                     <i class="bi bi-arrow-left" aria-hidden="true"></i> Batal

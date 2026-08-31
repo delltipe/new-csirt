@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: column; /* FIX: column flow so stats bar never overlaps buttons */
     background:
-        linear-gradient(100deg, rgba(0,32,96,0.94) 0%, rgba(0,53,128,0.85) 55%, rgba(0,53,128,0.55) 100%),
+        linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%),
         url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
 }
 .hero::before {
@@ -52,6 +52,21 @@
     background: rgba(255,255,255,0.35);
 }
 .hero__eyebrow i { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+/* B — scrim plate behind text only: guarantees contrast on any image (see /demo/hero-contrast) */
+.hero__scrim{
+    display: inline-block;
+    max-width: 640px;
+    background: linear-gradient(90deg, rgba(10,15,26,0.72) 0%, rgba(10,15,26,0.58) 68%, rgba(10,15,26,0.00) 100%);
+    padding: 18px 22px 16px;
+    margin: -18px -22px -16px;
+    border-left: 3px solid var(--navy);
+}
+.hero__scrim .hero__title,
+.hero__scrim .hero__lead{ text-shadow: 0 1px 10px rgba(0,0,0,0.35); }
+@media (max-width: 640px){
+    .hero__scrim{ display:block; max-width:none; margin: -14px -16px; padding: 14px 16px; }
+}
 
 .hero__title {
     font-family: var(--font-display);
@@ -419,10 +434,15 @@
 }
 .content-bg-wrap .alert-strip{ position:relative; z-index:1; }
 .halftone-field{ position:absolute; width:560px; height:760px; pointer-events:none; z-index:0; overflow:hidden; --ht-dot:148,164,188; --ht-glow:148,164,188; transition: opacity 0.18s ease, transform 0.12s ease; will-change: transform, opacity; }
-.halftone-field.left{ left:-110px; top:4%; }
-.halftone-field.right{ right:-110px; top:30%; }
+.halftone-field.left{ left:-70px; top:4%; }
+.halftone-field.right{ right:-70px; top:30%; }
 .halftone-glow{ position:absolute; inset:-14%; background: radial-gradient(ellipse 72% 62% at 50% 50%, rgba(var(--ht-glow),0.18) 0%, rgba(var(--ht-glow),0.10) 28%, rgba(var(--ht-glow),0.04) 48%, transparent 70%); filter: blur(12px); }
-.halftone-dots{ position:absolute; inset:0; background-image: radial-gradient(circle, rgba(var(--ht-dot),0.82) 1.35px, transparent 1.75px); background-size:13px 13px; opacity:0.88; -webkit-mask-image: radial-gradient(ellipse 88% 68% at 50% 52%, black 48%, transparent 84%); mask-image: radial-gradient(ellipse 88% 68% at 50% 52%, black 48%, transparent 84%); }
+.halftone-dots{ position:absolute; inset:0; background-image: radial-gradient(circle, rgba(var(--ht-dot),0.82) 1.35px, transparent 1.75px); background-size:13px 13px; opacity:0.88; -webkit-mask-image: radial-gradient(ellipse 92% 70% at 50% 50%, black 52%, transparent 88%); mask-image: radial-gradient(ellipse 92% 70% at 50% 50%, black 52%, transparent 88%); }
+/* Moved 40px toward center + softer top/bottom: shorter ellipse so vertical fades well before field edge — no straight top/bottom line */
+.halftone-field.left .halftone-dots{ -webkit-mask-image: radial-gradient(ellipse 108% 78% at 22% 50%, black 18%, transparent 72%); mask-image: radial-gradient(ellipse 108% 78% at 22% 50%, black 18%, transparent 72%); }
+.halftone-field.right .halftone-dots{ -webkit-mask-image: radial-gradient(ellipse 108% 78% at 78% 50%, black 18%, transparent 72%); mask-image: radial-gradient(ellipse 108% 78% at 78% 50%, black 18%, transparent 72%); }
+.halftone-field.left .halftone-glow{ background: radial-gradient(ellipse 74% 62% at 28% 50%, rgba(var(--ht-glow),0.14) 0%, rgba(var(--ht-glow),0.08) 32%, rgba(var(--ht-glow),0.02) 56%, transparent 76%); }
+.halftone-field.right .halftone-glow{ background: radial-gradient(ellipse 74% 62% at 72% 50%, rgba(var(--ht-glow),0.14) 0%, rgba(var(--ht-glow),0.08) 32%, rgba(var(--ht-glow),0.02) 56%, transparent 76%); }
 @media (max-width: 1200px){ .halftone-field{ width:420px; height:520px; } }
 @media (max-width: 960px){
     .events-section .events-grid { grid-template-columns: 1fr; }
@@ -438,22 +458,24 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
 
     <div class="hero__body">
         <div class="container">
-            <div class="hero__eyebrow">
-                <i class="bi bi-shield-lock" aria-hidden="true"></i>
-                Tim Tanggap Insiden Siber Resmi DKI Jakarta
-            </div>
-            <h1 class="hero__title">JakartaProvCSIRT</h1>
-            <p class="hero__lead">
-                Pemerintah Provinsi DKI Jakarta — Computer Security Incident Response Team. Menjaga infrastruktur digital dan data kritis Jakarta dari ancaman siber, 24 jam sehari, 7 hari seminggu.
-            </p>
-            <div class="hero__actions">
-                <a href="{{ route('bug-hunter.dashboard') }}" class="btn-hero-primary">
-                    <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
-                    Lapor Insiden Sekarang
-                </a>
-                <a href="{{ url('profile') }}" class="btn-hero-ghost">
-                    Tentang Kami <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                </a>
+            <div class="hero__scrim">
+                <div class="hero__eyebrow">
+                    <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                    Tim Tanggap Insiden Siber Resmi DKI Jakarta
+                </div>
+                <h1 class="hero__title">JakartaProvCSIRT</h1>
+                <p class="hero__lead">
+                    Pemerintah Provinsi DKI Jakarta — Computer Security Incident Response Team. Menjaga infrastruktur digital dan data kritis Jakarta dari ancaman siber, 24 jam sehari, 7 hari seminggu.
+                </p>
+                <div class="hero__actions">
+                    <a href="{{ route('bug-hunter.dashboard') }}" class="btn-hero-primary">
+                        <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
+                        Lapor Insiden Sekarang
+                    </a>
+                    <a href="{{ url('profile') }}" class="btn-hero-ghost">
+                        Tentang Kami <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

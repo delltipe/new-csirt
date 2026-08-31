@@ -34,6 +34,8 @@ class IncidentPortalSmokeTest extends TestCase
         // Agreed users skip TaC straight to the form
         $this->get('/bug-hunter/laporan')->assertRedirect(route('bug-hunter.create'));
         $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
+        $captchaAnswer = session('captcha_answer');
+        $this->assertNotNull($captchaAnswer, 'Math CAPTCHA should be generated on form GET');
 
         Storage::fake('public');
         $png = UploadedFile::fake()->createWithContent(
@@ -47,6 +49,7 @@ class IncidentPortalSmokeTest extends TestCase
             'down_time' => '02:15',
             'deskripsi' => 'Ditemukan halaman phishing meniru portal.',
             'tindakan_teknis' => 'Laporkan ke CSIRT dan blokir domain.',
+            'captcha_answer' => $captchaAnswer,
             'bukti' => [
                 ['jenis' => 'file', 'file' => $png, 'url' => ''],
                 ['jenis' => 'url', 'file' => null, 'url' => 'https://example.com/repro'],
@@ -138,5 +141,94 @@ class IncidentPortalSmokeTest extends TestCase
         // Admin restores it, and the full path works again
         $report->restore();
         $this->get('/admin/incidents')->assertOk()->assertSee($report->tiket_no);
+    }
+
+    public function test_math_captcha_on_incident_form(): void
+    {
+        $this->post('/register', [
+            'name' => 'Captcha Tester',
+            'email' => 'captcha@example.com',
+            'password' => 'rahasia123',
+            'password_confirmation' => 'rahasia123',
+        ])->assertRedirect(route('bug-hunter.tac'));
+
+        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+
+        $this->get('/bug-hunter/laporan/baru')->assertStatus(200)->assertSee('Verifikasi');
+        $correct = session('captcha_answer');
+        $this->assertNotNull($correct);
+        $question = session('captcha_q');
+        $this->assertMatchesRegularExpression('/^\d+ [\+\-] \d+ = \?$/', $question);
+
+        // Wrong answer rejected
+        $this->post('/bug-hunter/laporan/simpan', [
+            'kategori_insiden' => 'Phishing',
+            'waktu_kejadian' => '2026-08-11T10:30',
+            'lokasi_url' => 'https://portal.jakarta.go.id/halaman/abc',
+            'down_time' => '02:15',
+            'deskripsi' => 'Test captcha wrong.',
+            'tindakan_teknis' => 'Test.',
+            'captcha_answer' => $correct + 99,
+        ])->assertSessionHasErrors('captcha_answer');
+
+        // Missing answer rejected
+        $this->post('/bug-hunter/laporan/simpan', [
+            'kategori_insiden' => 'Phishing',
+            'waktu_kejadian' => '2026-08-11T10:30',
+            'lokasi_url' => 'https://portal.jakarta.go.id/halaman/abc',
+            'down_time' => '02:15',
+            'deskripsi' => 'Test missing.',
+            'tindakan_teknis' => 'Test.',
+        ])->assertSessionHasErrors('captcha_answer');
+
+        // Refresh generates new question
+        $oldQuestion = session('captcha_q');
+        $this->get(route('captcha.refresh'))->assertOk()->assertJsonStructure(['question']);
+        $newQuestion = session('captcha_q');
+        $this->assertNotEquals($oldQuestion, $newQuestion);
+        $this->assertMatchesRegularExpression('/^\d+ [\+\-] \d+ = \?$/', $newQuestion);
+        $newAnswer = session('captcha_answer');
+        $this->assertNotNull($newAnswer);
+
+        // Correct answer after refresh succeeds (minimal valid report)
+        Storage::fake('public');
+        $this->post('/bug-hunter/laporan/simpan', [
+            'kategori_insiden' => 'Phishing',
+            'waktu_kejadian' => '2026-08-11T10:30',
+            'lokasi_url' => 'https://portal.jakarta.go.id/halaman/abc',
+            'down_time' => '02:15',
+            'deskripsi' => 'Test captcha correct after refresh.',
+            'tindakan_teknis' => 'Test correct.',
+            'captcha_answer' => $newAnswer,
+        ])->assertRedirect(route('bug-hunter.thank-you'));
+    }
+
+    public function test_math_captcha_on_contact_form(): void
+    {
+        $this->get('/contact')->assertStatus(200)->assertSee('Verifikasi');
+        $correct = session('captcha_answer');
+        $this->assertNotNull($correct);
+
+        // Wrong answer
+        $this->post('/contact', [
+            'name' => 'Budi',
+            'email' => 'budi2@example.com',
+            'subject' => 'Test',
+            'message' => 'Halo',
+            'inquiry_type' => 'general',
+            'captcha_answer' => $correct + 50,
+        ])->assertSessionHasErrors('captcha_answer');
+
+        // Correct answer
+        $fresh = session('captcha_answer'); // after wrong, regenerated
+        $this->post('/contact', [
+            'name' => 'Budi',
+            'email' => 'budi2@example.com',
+            'subject' => 'Test OK',
+            'message' => 'Halo CSIRT',
+            'inquiry_type' => 'general',
+            'captcha_answer' => $fresh,
+        ])->assertRedirect(route('contact.thank-you'));
+        $this->assertDatabaseHas('contact_us', ['email' => 'budi2@example.com', 'subject' => 'Test OK']);
     }
 }
