@@ -57,8 +57,51 @@
     </main>
 
     @include('components.footer')
+
+    {{-- Logout confirmation — all account types (admin / bug hunter) --}}
+    <div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-labelledby="logoutConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius:0; border:1px solid var(--border);">
+                <div class="modal-header" style="border-bottom:1px solid var(--border); border-radius:0;">
+                    <h5 class="modal-title" id="logoutConfirmLabel" style="font-family:var(--font-display); font-weight:800; letter-spacing:0.02em; text-transform:uppercase; color:var(--ink);">Konfirmasi Keluar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="font-size:14px; color:var(--ink);">
+                    Yakin ingin keluar dari akun Anda?
+                </div>
+                <div class="modal-footer" style="border-top:1px solid var(--border); border-radius:0;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius:0; font-family:var(--font-display); font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Tidak</button>
+                    <button type="button" class="btn btn-primary" id="logoutConfirmYes" style="background:var(--navy); border:none; border-radius:0; font-family:var(--font-display); font-weight:800; letter-spacing:0.06em; text-transform:uppercase;">Ya</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/accessibility.js') }}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var modalEl = document.getElementById('logoutConfirmModal');
+        if (!modalEl) return;
+        var bsModal = new bootstrap.Modal(modalEl);
+        var pendingForm = null;
+        var confirmBtn = document.getElementById('logoutConfirmYes');
+        // Intercept all logout forms (public /logout and /admin/logout)
+        document.querySelectorAll('form[action*="logout"]').forEach(function (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                pendingForm = form;
+                bsModal.show();
+            });
+        });
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', function () {
+                if (pendingForm) pendingForm.submit();
+                bsModal.hide();
+            });
+        }
+        modalEl.addEventListener('hidden.bs.modal', function () { pendingForm = null; });
+    });
+    </script>
 </body>
 </html>

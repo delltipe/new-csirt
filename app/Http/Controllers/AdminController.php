@@ -44,7 +44,9 @@ class AdminController extends Controller
         $incidents = IncidentReport::orderByDesc('created_at')->paginate(15);
         $pendingIncidents = IncidentReport::where('status', IncidentReport::STATUS_PENDING)->count();
         $heroSlides = \App\Models\HeroSlide::ordered()->paginate(15);
-        return view('admin.dashboard', compact('news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'incidents', 'pendingIncidents', 'heroSlides'));
+        $contacts = \App\Models\ContactMessage::orderByDesc('created_at')->paginate(15);
+        $pendingContacts = \App\Models\ContactMessage::where('status', \App\Models\ContactMessage::STATUS_PENDING)->count();
+        return view('admin.dashboard', compact('news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'incidents', 'pendingIncidents', 'heroSlides', 'contacts', 'pendingContacts'));
     }
 
     // Handle logout
@@ -566,5 +568,51 @@ class AdminController extends Controller
             return back()->withErrors(['judul' => 'Gagal mengurutkan slide. Silakan coba lagi.']);
         }
         return back()->with('success', 'Urutan slide diperbarui!');
+    }
+
+    // ============================================
+    // CONTACT REVIEW
+    // ============================================
+    public function contactsList(Request $request) {
+        $contacts = \App\Models\ContactMessage::orderByDesc('created_at')
+            ->when($request->get('status'), fn($q,$s) => $q->where('status',$s))
+            ->paginate(15);
+        return view('admin.contacts.index', compact('contacts'));
+    }
+
+    public function contactShow($id) {
+        $contact = \App\Models\ContactMessage::findOrFail($id);
+        return view('admin.contacts.show', compact('contact'));
+    }
+
+    public function contactUpdate(Request $request, $id) {
+        $contact = \App\Models\ContactMessage::findOrFail($id);
+        $validated = $request->validate([
+            'status' => 'required|string|in:pending,diproses,selesai,ditolak',
+            'admin_note' => 'nullable|string|max:2000',
+        ]);
+        $newStatus = $validated['status'];
+        if ($newStatus !== $contact->status && !$contact->canTransitionTo($newStatus)) {
+            return back()->withErrors(['status' => 'Transisi status tidak valid untuk status saat ini.']);
+        }
+        try {
+            $contact->update([
+                'status' => $newStatus,
+                'admin_note' => $validated['admin_note'] ?? $contact->admin_note,
+            ]);
+        } catch (\Exception $e) {
+            return back()->withErrors(['status' => 'Gagal memperbarui pesan. Silakan coba lagi.']);
+        }
+        return back()->with('success', 'Pesan kontak berhasil diperbarui.');
+    }
+
+    public function contactDelete($id) {
+        $contact = \App\Models\ContactMessage::findOrFail($id);
+        try {
+            $contact->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['status' => 'Gagal menghapus pesan. Silakan coba lagi.']);
+        }
+        return redirect()->route('admin.contacts.list')->with('success', 'Pesan kontak dihapus.');
     }
 }

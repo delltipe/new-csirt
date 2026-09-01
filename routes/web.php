@@ -169,4 +169,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/hero/{id}/update', [AdminController::class, 'heroUpdate'])->name('admin.hero.update');
     Route::post('/admin/hero/{id}/delete', [AdminController::class, 'heroDelete'])->name('admin.hero.delete');
     Route::post('/admin/hero/reorder', [AdminController::class, 'heroReorder'])->name('admin.hero.reorder');
+
+    // Contact messages review
+    Route::get('/admin/contacts', [AdminController::class, 'contactsList'])->name('admin.contacts.list');
+    Route::get('/admin/contacts/{id}', [AdminController::class, 'contactShow'])->name('admin.contacts.show');
+    Route::post('/admin/contacts/{id}/update', [AdminController::class, 'contactUpdate'])->name('admin.contacts.update');
+    Route::post('/admin/contacts/{id}/delete', [AdminController::class, 'contactDelete'])->name('admin.contacts.delete');
 });

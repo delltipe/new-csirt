@@ -271,6 +271,12 @@
             @endif
         </button>
         <button class="admin-tab" onclick="switchTab('hero')">Hero</button>
+        <button class="admin-tab" onclick="switchTab('kontak')">
+            Kontak
+            @if($pendingContacts > 0)
+                <span class="tab-badge">{{ $pendingContacts }}</span>
+            @endif
+        </button>
     </div>
 
     <!-- Tab Content -->
@@ -314,6 +320,11 @@
         <div id="hero-tab" class="tab-pane">
             @include('admin.partials.hero')
         </div>
+
+        <!-- KONTAK TAB -->
+        <div id="kontak-tab" class="tab-pane">
+            @include('admin.partials.contact')
+        </div>
     </div>
 
     <!-- Logout -->
@@ -348,7 +359,7 @@ function switchTab(tabName) {
 // On page load, restore tab from URL hash
 document.addEventListener('DOMContentLoaded', function() {
     var hash = window.location.hash.replace('#', '');
-    var validTabs = ['news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'insiden', 'hero'];
+    var validTabs = ['news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'insiden', 'hero', 'kontak'];
     if (hash && validTabs.includes(hash)) {
         // Activate the tab button
         var tabs = document.querySelectorAll('.admin-tab');
