@@ -146,6 +146,22 @@ plus `ditolak` (rejectable from `menunggu_validasi`, `divalidasi`,
 **Has timestamps.** One row per (user, version); the TaC gate skips users who
 already agreed to the current version (`BugHunterController::TAC_VERSION`).
 
+### `slide_hero` (Hero Slider)
+| Column | Type | Notes |
+|---|---|---|
+| id | bigIncrements | PK |
+| judul | string | slide title |
+| subjudul | string | nullable — lead/description, clamped to 2 lines |
+| gambar | string | nullable — `storage/app/public/hero/` path or external URL (hotlink) |
+| tautan | string | nullable — CTA link (`/`, `/news/{id}`, `/bug-hunter`, external) |
+| teks_tautan | string | default: `LAPOR INSIDEN SEKARANG` |
+| urutan | integer | default: 0 — ordering (`ordered()` = `urutan` ASC, `created_at` DESC) |
+| is_active | boolean | default: true — `scopeActive()` filters |
+| created_at | timestamp | |
+| updated_at | timestamp | |
+
+**Has timestamps.** No FK. `gambar` validated `file|mimes:jpg,jpeg,png,webp|max:5120` → `storage/app/public/hero/`. Seeded with 4 slides (1 static `JAKARTAPROVCSIRT` + 3 scraped legacy banners `https://csirt.jakarta.go.id/images/banner/...` — see `HeroSlideSeeder`). `HomeController@index` loads `HeroSlide::active()->ordered()->get()` with fallback single static slide.
+
 ### `contact_us` (Contact Messages)
 | Column | Type | Notes |
 |---|---|---|
@@ -194,4 +210,5 @@ These are standard Laravel tables — you typically don't need to modify them:
   `lampiran_insiden`, `tac_agreements`, `contact_us`, and the six content tables.
 - **Soft-delete:** `lapor_insiden.deleted_at` + `SoftDeletes` on
   `IncidentReport` — admin delete soft-deletes only (legal-evidence retention).
-- **File storage:** Proof images and uploaded files use Laravel's `storage/app/public/` directory (`bukti_laporan/` for incident evidence). In production, symlink `public/storage` → `storage/app/public`.
+- **File storage:** Proof images and uploaded files use Laravel's `storage/app/public/` directory (`bukti_laporan/` for incident evidence, `hero/` for slider uploads). In production, symlink `public/storage` → `storage/app/public`.
+- **Hero slider:** `slide_hero` has no FK; `tautan` for scraped banners points to internal `berita_siber` rows (`/news/{id}`) created in the same seeder, except `SEMUA TENTANG WEB FILTERING` → `/`.

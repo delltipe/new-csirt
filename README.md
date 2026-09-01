@@ -34,14 +34,15 @@ composer test           # Clears config cache, then runs php artisan test
 ## Features
 
 ### Public Pages
-- Home (homepage content wrapper: `alert-strip` + `news/services/events` share `div.content-bg-wrap.wash` with two desaturated halftone edge glows, Both L+R, brighten on proximity — CTA `Temukan Insiden…` stays `navy-dim` outside), profile, and six content types: **news, events, infographics, warnings,
-  laws/regulations, technical guides** (listing + detail, paginated, Indonesian copy)
+- Home (hero slider `slide_hero` admin-updatable 4 slides 1 static + 3 scraped legacy, `min-height 340` `clamp 2` same-tab, carousel whole-box clickable + bottom line, homepage content wrapper `alert-strip` + `news/services/events` share `div.content-bg-wrap.wash` with two desaturated halftone edge glows `0.92/0.96` `glow 0.24` Both L+R brighten — CTA `Temukan Insiden…` stays `navy-dim` outside, `service-card` title `none` not caps, `gap 16px` listing grids, boxy navy pagination), profile, and six content types: **news, events, infographics, warnings,
+  laws/regulations, technical guides** (listing + detail, whole-box clickable `hover var(--navy-tint)` + bottom line + image zoom, `16px` vertical gap, paginated boxy navy, Indonesian copy)
 - Site-wide **search** across all content types (min. 2 characters)
 - Official CSIRT documents: **RFC 2350**, **public key** download, archived **statistics** pages
 - **Accessibility widget** — jakarta.go.id v2.0-style icon-tile panel (design-token based):
   Mode Suara (TTS), Perbesar/Perkecil Teks, Skala Abu-Abu, Kontras+, Sembunyikan Gambar,
   Rata Tulisan, Tulisan Dapat Dibaca, Tinggi Garis, Animasi Dijeda, Kursor, Spasi Teks,
   Garis Bawahi Tautan, plus high-contrast / dark-contrast modes
+- Navbar: no `nav-strip` bar (legacy style, only `nav-main`), footer: only `© 2026` copyright (no legal links)
 
 ### Incident Portal (public bug-hunter flow)
 - Public **registration / login** (no 2FA), reporters gated via `is_bug_hunter`
@@ -53,8 +54,8 @@ composer test           # Clears config cache, then runs php artisan test
 - **Admin review** — assigns CWE + Severity and advances status (`/admin/incidents`)
 
 ### Admin Panel (`/admin`)
-- Tabbed dashboard: News, Events, Infographics, Warnings, Laws, Guides, Insiden
-- Full CRUD per content type (15/page), plus the incident review workflow
+- Tabbed dashboard: News, Events, Infographics, Warnings, Laws, Guides, Insiden, Hero
+- Full CRUD per content type (15/page, boxy navy pagination), plus incident review + hero slider CRUD (`POST /admin/hero`, `reorder`) workflow
 - Tables use the insiden-style custom `.data-table` component (boxy, uppercase headers)
 - All writes wrapped in try/catch with Indonesian error messages
 
@@ -112,13 +113,13 @@ See **`docs/DEPLOYMENT.md`** for the full guide.
 
 ## Roadmap / Planned
 
-- **CAPTCHA** on the incident and contact forms (self-hosted, legacy-style; deferred —
-  not needed for the frontend demo)
 - **Admin contact review** workflow (list / detail / status transitions)
 - **Full-text search** over substring matching
 - **Legacy-feature port-in**: select features from the legacy portal, after the main
   data-input and content pages are finalized
 
+> **Done (2026-09-01):** hero slider admin-updatable `slide_hero` (scraped legacy banners `berita_siber 13/14`, same-tab, `min-height 340` `clamp 2`), card consistency (`service title none`, `news-carousel whole-box + bottom line`, `law/guide bottom line`, `event 44→22`, `gap 16px`), pagination boxy navy (`vendor/pagination/tailwind.blade.php`), nav `nav-strip` removal + footer legal removal + halftone `0.92/0.96` bump.
+> **Done (2026-08-31):** math captcha self-hosted `MathCaptcha` + `CaptchaController` refresh on incident/contact forms + hero scrim + halftone polish.
 > **Done (2026-08-18):** schema hardening — foreign keys enforced, timestamps on
 > the 6 content tables, `event` → `events` rename, and soft-delete on incident
 > reports (see AGENTS.md → Schema Hardening).

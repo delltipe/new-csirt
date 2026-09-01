@@ -168,24 +168,34 @@ Small label above the title in the dark header:
 Content pages use a custom card system — **not** Bootstrap `.card`:
 
 ```css
-/* 3-column grid with 1px colored gutter */
+/* 3-column grid — homepage news-grid uses 1px gutter, listing grids use 16px gap */
 .news-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--border);
 }
-
-/* Individual card */
-.news-card {
-    background: var(--white);
-    padding: 0;
-    position: relative;
-    overflow: hidden;
+.news-list-grid, .infographics-grid, .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    background: transparent;
+    border: none;
 }
 
-/* 3px navy hover bar */
-.news-card::after {
+/* Individual card — all cards share same hover: navy-tint bg + bottom 3px line + image zoom + whole-box clickable */
+.news-card, .news-list-card, .infographic-card, .law-card, .guide-card, .event-card, .news-carousel__card, .service-card {
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+    transition: background var(--ease);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 3px navy hover bar — bottom for all (law/guide moved from left vertical) */
+.news-card::after, .service-card::after, .news-carousel__card::after, .event-card::after, .law-card::after, .guide-card::after, .infographic-card::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -195,12 +205,19 @@ Content pages use a custom card system — **not** Bootstrap `.card`:
     background: var(--navy);
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform var(--ease);
+    transition: transform 0.2s ease;
 }
-.news-card:hover::after {
+.news-card:hover::after, .service-card:hover::after, .news-carousel__card:hover::after, .event-card:hover::after, .law-card:hover::after, .guide-card:hover::after, .infographic-card:hover::after {
     transform: scaleX(1);
 }
+.news-card:hover, .service-card:hover, .news-carousel__card:hover, .event-card:hover, .law-card:hover, .guide-card:hover, .infographic-card:hover {
+    background: var(--navy-tint);
+}
 ```
+
+### Navbar
+
+No `nav-strip` government identity bar (removed `navbar.blade.php:334` to match legacy `csirt.jakarta.go.id` — only `nav.nav-main` sticky `border-bottom 4px var(--navy)`). Same for footer `nav-strip` logic.
 
 ### Navbar Partner Logos
 
@@ -236,6 +253,14 @@ A compact `.nav-partners` cluster sits in the navbar brand row (next to the CSIR
   white-out filter. The HUT RI 81 marks are the tertiary "81 only" (no-text) versions per
   the official pedoman: light `HUTRI81.png` (merah/hitam on putih), dark
   `hutri81_white.png` (putih on merah).
+
+### Cards Consistency (2026-09-01)
+
+All boxed content shares `service-card` behavior: `hover var(--navy-tint)`, `img scale(1.03-1.04) grayscale 0%`, whole-box `<a>` clickable, bottom 3px `var(--navy)` line `scaleX`, 1px `var(--border)`, `gap 16px` for listing grids (`news-list/infographics/events`), `service-card title` now `text-transform:none 700` (not caps), `event-card__body` `padding 44→22`.
+
+### Footer
+
+No legal links row (removed `footer.blade.php:249` `ul.footer-legal` to match legacy — only `p.footer-copy` `© 2026 JakartaProv-CSIRT…` in `div.footer-bottom`).
 
 ### Admin Pages
 
@@ -277,6 +302,14 @@ Dark-mode overrides for all of these (plus admin tabs `.admin-tab` and `.btn-nav
 
 Admin pages also use the dark header pattern and design tokens for styling.
 
+### Hero Slider
+
+`resources/views/home.blade.php:173` `.hero--slider` `hero__track` `hero__slide` `min-height 340px` (320 <640) `clamp 2` lines on `hero__title`/`hero__lead` `ellipsis`, scrim per slide `linear-gradient 90deg rgba(10,15,26,0.72)→0.00` + `text-shadow`, `hero__nav`/`hero__dots` `is-active`. JS `home.blade.php:888` `transform translateX -idx*100%` `setInterval 5s` `touch swipe` `pause-animations`/`prefers-reduced-motion`/`visibilitychange`/`mouseenter` pause.
+
+### Pagination
+
+Boxy navy `resources/views/vendor/pagination/tailwind.blade.php` `ul gap:4px` `min-width:36px height:36px` `border 1px solid var(--border)` `background var(--white)` `hover var(--navy-tint)/var(--navy)` `aria-current var(--navy)` `aria-disabled var(--mist)/var(--mid)`. Global `public/css/style.css:705`. No `rounded-md`, `shadow`, `gray`. Used by all listing pages (`news/events/infographics/laws/guides`) and admin `15/page`.
+
 ### Content Background Wrapper (homepage)
 
 Homepage `alert-strip` + `news/services/events` share one wash wrapper. Copy this verbatim:
@@ -290,7 +323,7 @@ Homepage `alert-strip` + `news/services/events` share one wash wrapper. Copy thi
 <!-- cta-section stays outside (var(--navy-dim)) -->
 ```
 
-Scoped CSS is in `resources/views/home.blade.php:404` — wash `linear-gradient 180deg var(--white) 32%→var(--mist) 92%`, `halftone-field 560×760 (-110px / top 4%/30%, 420×520 <1200px)`, `halftone-glow 72%×62% rgba(148,164,188,0.18) blur 12px` behind `halftone-dots 13px 1.35px rgba(148,164,188,0.82) mask 88%×68% black 48%→transparent 84%` (slate `#94A4BC` so it doesn’t clash with `var(--navy)` buttons). Interactive `brighten` only on `#contentWrap` `mousemove` (`opacity 0.62+t*0.36 within 520px`, `mouseleave` reset, respects `prefers-reduced-motion`/`html.accessibility-pause-animations` → static). Dark swap `--ht-dot/--ht-glow 176,188,201` in `public/css/accessibility-contrast.css:899`. Inside the wrapper set `.news-section/.services-section/.events-section {background:transparent !important}` so the wash shows through gutters; cards stay `var(--white)` + `var(--border)`. Use to A/B `Slate/Steel/Grey`, `-70/-110`, `Normal/Wide`, `parallax/brighten` via the temp file `C:\Users\Latif\AppData\Local\Temp\opencode\content-background-demos-v2.html:43` (Tab E Both L+R).
+Scoped CSS is in `resources/views/home.blade.php:404` — wash `linear-gradient 180deg var(--white) 32%→var(--mist) 92%`, `halftone-field 560×760 (-70 / top 4%/30%, 420×520 <1200px)`, `halftone-glow 72%×62% rgba(148,164,188,0.24) blur 12px` behind `halftone-dots 13px 1.40px rgba(148,164,188,0.92) opacity 0.96 mask 92%×70% black 58%→transparent 88%` (slate `#94A4BC` so it doesn’t clash with `var(--navy)` buttons). Interactive `brighten` only on `#contentWrap` `mousemove` (`opacity 0.62+t*0.36 within 520px`, `mouseleave` reset, respects `prefers-reduced-motion`/`html.accessibility-pause-animations` → static). Dark swap `--ht-dot/--ht-glow 176,188,201` in `public/css/accessibility-contrast.css:899`. Inside the wrapper set `.news-section/.services-section/.events-section {background:transparent !important}` so the wash shows through gutters; cards stay `var(--white)` + `var(--border)`. Use to A/B `Slate/Steel/Grey`, `-70/-110`, `Normal/Wide`, `parallax/brighten` via the temp file `C:\Users\Latif\AppData\Local\Temp\opencode\content-background-demos-v2.html:43` (Tab E Both L+R).
 
 ### Alert Strip
 

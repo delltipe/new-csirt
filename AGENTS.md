@@ -124,6 +124,7 @@ Models map to non-English table names. Do not assume Laravel conventions:
 | LampiranInsiden | `lampiran_insiden` |
 | TacAgreement | `tac_agreements` |
 | ContactMessage | `contact_us` |
+| HeroSlide | `slide_hero` |
 
 ### Timestamps on All Tables
 
@@ -194,7 +195,7 @@ so those reflow slightly after paint — acceptable, only when a non-zero level 
 
 ### Admin Views (Layout Gotcha)
 
-Admin pages render inside the public layout (`@yield('content')` of `layouts/app.blade.php`) wrapped in `.admin-container` panes in `admin/dashboard.blade.php`. The dashboard is a tabbed interface (`#news-tab` … `#guides-tab` + `#insiden-tab`); each tab `@include`s a partial from `resources/views/admin/partials/`. All CRUD partials use the same `.data-table` / `.section-actions` / `.btn-add` pattern as the Insiden partial.
+Admin pages render inside the public layout (`@yield('content')` of `layouts/app.blade.php`) wrapped in `.admin-container` panes in `admin/dashboard.blade.php`. The dashboard is a tabbed interface (`#news-tab` … `#guides-tab` + `#insiden-tab` + `#hero-tab`); each tab `@include`s a partial from `resources/views/admin/partials/`. All CRUD partials use the same `.data-table` / `.section-actions` / `.btn-add` pattern as the Insiden partial. Hero tab uses same pattern + `urutan`/`is_active` badge.
 
 **When editing partials, keep the `<div>` balance intact.** An extra stray `</div>` at the end of a partial (found in `events.blade.php` and `warnings.blade.php`, fixed in commit `00d7931`) breaks the whole dashboard layout: subsequent tabs and the logout button escape the centered container. Verify with:
 
@@ -281,11 +282,17 @@ Key deploy facts (already committed, do not re-derive):
 - Data is ephemeral on free tier: SQLite file + uploaded proof images reset on redeploy/spin-down. Fine for prototype.
 - Render env vars to set: `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://<name>.onrender.com`, `DB_CONNECTION=sqlite` (stable `APP_KEY` optional since it's regenerated each start). No `APP_NAME` needed (defaults fine).
 
-## Homepage Content Background (IMPLEMENTED 2026-08-24)
+## Hero Slider & Design Consistency (IMPLEMENTED 2026-09-01)
+
+Commit `35b67af`: `slide_hero` table `2026_09_01` + `HeroSlide` `scopeActive/Ordered` + `HeroSlideSeeder` 4 slides (1 static `JAKARTAPROVCSIRT` `unsplash` + 3 scraped `csirt.jakarta.go.id/images/banner/...` `Mengapa Anti virus`, `openart PowerShell`, `Ako Ransomware` → `berita_siber 13/14` internal `/news/13/14` + `/` for web filtering, same-tab no `target_blank`); `HomeController@index` `HeroSlide::active()->ordered()` fallback; `AdminController heroStore/Edit/Update/Delete/Reorder` `storage/app/public/hero/` 5MB `mimes`; routes `admin.hero.*`; `home.blade.php:173` `hero--slider/track/slide min-height 340 (320 <640) clamp 2` `scrim` per slide + `hero__nav/dots` JS `translateX` 5s `touch swipe` `pause-animations`; `docs/HERO_SLIDER_PLAN.md` now IMPLEMENTED.
+
+Design consistency: `service-card__title` `public/css/style.css:485` `uppercase 800→none 700`; `news-carousel__card` `home.blade.php:296` whole-box `<a>` `position relative overflow hidden` `::after bottom 3px scaleX` `hover var(--navy-tint)` (was `var(--mist)`); `law-card` `laws/index.blade.php:179` + `guide-card` `guides/index.blade.php:174` `::before left vertical scaleY→::after bottom scaleX` + `overflow:hidden`; `event-card__body` `home.blade.php:478` `events/index.blade.php:149` `padding 44→22`; listing grids `news-list/infographics/events` `gap 1px→16px` `background transparent border none` `card border 1px`; `infographic-card` `infographics/index.blade.php:92` `border 1px width:100%` `::after top→bottom`. Pagination `vendor/pagination/tailwind.blade.php` `ul gap:4px 36px var(--border) var(--navy)` + `public/css/style.css:705` global (was Tailwind `rounded-md shadow gray`). Footer `footer.blade.php:249` `ul.footer-legal` removed (legacy only `© 2026`); navbar `navbar.blade.php:334` `div.nav-strip` removed (legacy only `nav-main`).
+
+## Homepage Content Background (IMPLEMENTED 2026-08-24, bumped 2026-09-01)
 
 Final state: `resources/views/home.blade.php:481` `div.content-bg-wrap.wash#contentWrap` (`linear-gradient 180deg var(--white) 32%→var(--mist) 92%` `public/css/style.css:19`) wrapping `alert-strip:484` + `news-section:508` + `services-section:572` + `events-section:613` until before `cta-section:677` (`var(--navy-dim)` stays outside). Inner sections `background:transparent !important` (`home.blade.php:415`).
 
-Two `halftone-field left/right 560×760 (-110px / top 4%/30%, 420×520 <1200px)` `home.blade.php:419` each with `halftone-glow 72%×62% rgba(148,164,188,0.18) blur 12px` behind `halftone-dots 13px 1.35px rgba(148,164,188,0.82) mask 88%×68% black 48%→transparent 84%` (`home.blade.php:424`). Desaturated slate `#94A4BC` (148,164,188) avoids clash with `var(--navy) #003580` buttons. Interactive `brighten` only (`home.blade.php:704` `mousemove → opacity 0.62+t*0.36 within 520px`, `mouseleave` reset, `prefers-reduced-motion`/`html.accessibility-pause-animations` `public/css/accessibility-contrast.css:937` → static). Dark swap `--ht-dot/--ht-glow 176,188,201` (`public/css/accessibility-contrast.css:899`), glow opacity 0.52.
+Two `halftone-field left/right 560×760 (-70 / top 4%/30%, 420×520 <1200px)` `home.blade.php:557` each with `halftone-glow 72%×62% rgba(148,164,188,0.24) blur 12px` behind `halftone-dots 13px 1.40px rgba(148,164,188,0.92) opacity 0.96 mask 92%×70% black 58%→transparent 88%` `home.blade.php:560` (was `0.18/0.82/0.88/1.35 48%`), bumped 2026-09-01 for tad more visibility. Desaturated slate `#94A4BC` (148,164,188) avoids clash with `var(--navy) #003580` buttons. Interactive `brighten` only (`home.blade.php:888` `mousemove → opacity 0.62+t*0.36 within 520px`, `mouseleave` reset, `prefers-reduced-motion`/`html.accessibility-pause-animations` `public/css/accessibility-contrast.css:937` → static). Dark swap `--ht-dot/--ht-glow 176,188,201` (`public/css/accessibility-contrast.css:899`), glow opacity 0.52.
 
 Evolved from mesh `52 dots α0.18` + clamp fix (`home.blade.php:736` `if(x<0){x=0;vx*=-1}` to avoid thrash vs naive `if(x<0||x>w)`). Temp previews `C:\Users\Latif\AppData\Local\Temp\opencode\hero-background-demos.html` + `content-background-demos.html`/`-v2.html:43` (Tab E Both L+R) are not committed; use them to A/B `Slate/Steel/Grey`, ` -70/-110`, `Normal/Wide`, `parallax/brighten`.
 

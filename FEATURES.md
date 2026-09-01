@@ -19,53 +19,56 @@ JakartaProv-CSIRT is a public-facing portal for the Computer Security Incident R
 ### Home (`/`)
 - **Purpose:** Landing page, main entry point
 - **Features:**
-  - Hero section with "Lapor Insiden" CTA
+  - Hero slider (admin-updatable `slide_hero` — 4 slides: `JAKARTAPROVCSIRT` static + 3 scraped legacy banners `csirt.jakarta.go.id/images/banner/...`, `min-height 340px` `clamp 2` lines, `scrim` per slide, same-tab `tautan` → `/`, `/news/13`, `/news/14`, `berita_siber` internal; fallback single static slide; `HomeController@index` loads `HeroSlide::active()->ordered()`)
   - Alert strip for active security warnings
-  - Latest news cards (3 most recent)
-  - Services grid linking to warnings, infographics, laws, guides
+  - Latest news carousel (6 most recent, whole-box clickable `<a class="news-carousel__card">`, `hover var(--navy-tint)` + bottom 3px `var(--navy)` line + image zoom)
+  - Services grid (`service-card` title now `text-transform:none 700` not caps, `hover var(--navy-tint)` + bottom line + icon `var(--navy)`)
+  - Events grid (`gap 16px`, `event-card` `padding 22px` `bottom line`, 1px border)
   - Footer CTA section with 24/7 hotline info
-  - Content background: `alert-strip` + `news/services/events` share one `div.content-bg-wrap.wash` (`linear-gradient white 32%→mist 92%`) with two desaturated halftone edge glows (Both L+R, 560×760 at -110px, slate `#94A4BC`, mask `88%×68%`, glow `72%×62%`, `brighten` on proximity, CTA `Temukan Insiden…` stays `var(--navy-dim)` outside — see `DESIGN_SYSTEM.md` → Content Background Wrapper)
+  - Content background: `alert-strip` + `news/services/events` share one `div.content-bg-wrap.wash` (`linear-gradient white 32%→mist 92%`) with two desaturated halftone edge glows (Both L+R, 560×760 at -110px, slate `#94A4BC` dot `1.40px rgba(148,164,188,0.92)` `opacity 0.96` `glow 0.24`, mask `92%×70% black 58%`, `brighten` on proximity, CTA `Temukan Insiden…` stays `var(--navy-dim)` outside — see `DESIGN_SYSTEM.md` → Content Background Wrapper)
+  - Pagination boxy navy `vendor/pagination/tailwind.blade.php` (`ul gap:4px` `36px` `var(--border)` `hover var(--navy-tint)` `aria-current var(--navy)`)
 - **Route:** `home` → `HomeController@index`
 
 ### News (`/news`, `/news/{id}`)
 - **Purpose:** Cybersecurity news articles
 - **Features:**
-  - Paginated listing (6 per page) with year filter
+  - Paginated listing (6 per page, `news-list-grid` `gap 16px` `card border 1px` `hover var(--navy-tint)` + bottom line + image zoom, whole-box clickable `<a class="news-list-card">`; boxy navy pagination) with year filter
   - Individual article view with sidebar
+  - Seeded hero-linked news `berita_siber 13/14` (`Penipuan Hacker… PowerShell`, `Ako Ransomware… Windows APIs`) for hero tautan
 - **Routes:** `news.index`, `news.show`
 
 ### Events (`/events`, `/events/{id}`)
 - **Purpose:** Security awareness events, webinars, sosialisasi
 - **Features:**
-  - Paginated listing (6 per page) sorted by date
+  - Paginated listing (6 per page `gap 16px` `card border 1px` `padding 22px` `bottom line` `hover var(--navy-tint)` sorted by date) with boxy navy pagination
   - Individual event view with registration link, capacity, related events
 - **Routes:** `events.index`, `events.show`
 
 ### Warnings (`/warnings`, `/warnings/{id}`)
 - **Purpose:** Active security warnings and advisories
 - **Features:**
-  - Paginated listing (12 per page)
+  - Paginated listing (12 per page, boxy navy pagination)
   - Individual warning view with severity indicators
 - **Routes:** `warnings.index`, `warnings.show`
 
 ### Infographics (`/infographics`, `/infographics/{id}`)
 - **Purpose:** Visual cybersecurity education materials
 - **Features:**
-  - Grid gallery with lightbox preview
+  - Grid gallery (`gap 16px` `infographic-card` `border 1px` `bottom line` `hover var(--navy-tint)` + zoom, whole-box clickable `<button>`) with lightbox preview, boxy navy pagination
   - Individual infographic view
 - **Routes:** `infographics.index`, `infographics.show`
 
 ### Laws & Regulations (`/laws`, `/laws/{id}`)
 - **Purpose:** Government regulations and policies related to cybersecurity
 - **Features:**
-  - Paginated listing (12 per page) with sidebar filter
+  - Paginated listing (12 per page `law-card` `border 1px` `overflow hidden` `bottom line` `hover var(--navy-tint)` with sidebar filter, boxy navy pagination)
   - Individual law view with document download
 - **Routes:** `laws.index`, `laws.show`
 
 ### Technical Guides (`/guides`, `/guides/{id}`)
 - **Purpose:** Cybersecurity guides and best practices
 - **Features:**
-  - Paginated listing (12 per page) with sidebar filter
+  - Paginated listing (12 per page `guide-card` `bottom line` like law, boxy navy pagination) with sidebar filter
   - Individual guide view with external link
 - **Routes:** `guides.index`, `guides.show`
 
@@ -180,10 +183,10 @@ verification) and reach a Komdigi-style reporter portal under `/bug-hunter`.
 ### Dashboard (`/admin`)
 - **Purpose:** Central management hub for all content
 - **Features:**
-  - Tabbed interface (News, Events, Infographics, Warnings, Laws, Guides, Insiden)
+  - Tabbed interface (News, Events, Infographics, Warnings, Laws, Guides, Insiden, Hero)
   - Each tab lists records in the insiden-style custom `.data-table` (boxy, uppercase headers, Edit/Delete actions)
   - "Add" button (`.btn-add`) opens a modal form for new records
-  - Pagination: 15 records per tab
+  - Pagination: 15 records per tab (boxy navy `vendor/pagination/tailwind.blade.php` `public/css/style.css:705`)
   - Tab state preserved across pagination via URL hash
 - **Route:** `admin.dashboard`
 
@@ -199,6 +202,7 @@ Each content type has full CRUD (Create, Read, Update, Delete):
 | Laws | `admin.laws.list` | `admin.law.store` | `admin.law.edit` | `admin.law.delete` |
 | Guides | `admin.guides.list` | `admin.guide.store` | `admin.guide.edit` | `admin.guide.delete` |
 | Infographics | `admin.infographics.list` | `admin.infographic.store` | `admin.infographic.edit` | `admin.infographic.delete` |
+| Hero Slider | `admin.hero.store` | `admin.hero.store` | `admin.hero.edit` | `admin.hero.delete` | (+ `admin.hero.reorder` `POST /admin/hero/reorder`) |
 
 All admin write operations are wrapped in try/catch with Indonesian error messages.
 
@@ -209,6 +213,14 @@ All admin write operations are wrapped in try/catch with Indonesian error messag
 - **Review:** `POST /admin/incidents/{id}/review` — assign `cwe` (string) + `severity` (Low/Medium/High/Critical) and transition `status` (validated via `canTransitionTo()`)
 - **Soft-delete:** `POST /admin/incidents/{id}/delete` (button on the detail page) — soft-deletes only (`SoftDeletes`); trashed reports leave the list and 404 on review, legal-evidence retention
 - Reached from the "Insiden" tab on the admin dashboard (shows a pending-count badge)
+
+### Hero Slider Admin
+
+- **List/Edit:** Hero tab on `/admin` (`admin/partials/hero.blade.php` `.data-table`, `urutan` + `is_active` badge)
+- **Create:** `POST /admin/hero` — `judul` required, `subjudul` nullable, `gambar` `file|mimes:jpg,jpeg,png,webp|max:5120` → `storage/app/public/hero/` or `gambar_url` external, `tautan` nullable, `teks_tautan` default `LAPOR INSIDEN SEKARANG`, `urutan` int, `is_active` bool
+- **Edit:** `GET /admin/hero/{id}/edit` → `POST /admin/hero/{id}/update` (deletes old file if new upload)
+- **Delete:** `POST /admin/hero/{id}/delete`
+- **Reorder:** `POST /admin/hero/reorder` — `order` comma string `3,1,2` → updates `urutan`
 
 ---
 
@@ -247,12 +259,15 @@ On fresh migration, the database is seeded with:
 | Table | Records | Description |
 |---|---|---|
 | `users` | 1 | Admin user |
-| `berita_siber` | 5 | Cybersecurity news articles |
+| `berita_siber` | 14 | 12 legacy + 2 hero-linked (`Penipuan Hacker… PowerShell`, `Ako Ransomware…`) |
+| `slide_hero` | 4 | Hero slides (1 static + 3 scraped legacy banners) |
 | `events` | 6 | Past security events |
 | `peraturan_kebijakan` | 1 | Sample regulation |
 | `peringatan_keamanan` | 2 | Security warnings |
 
 **Empty on fresh install:** `panduan_teknis`, `infografis_keamanan`, `contact_us`, `lapor_insiden`, `lampiran_insiden`, `tac_agreements`
+
+Legacy `berita_siber`/`peringatan_keamanan` hotlink thumbnails to `csirt.jakarta.go.id`; hero `gambar` hotlinks `csirt.jakarta.go.id/images/banner/...` (or `storage/app/public/hero/` if uploaded). `SEMUA TENTANG WEB FILTERING` tautan → `/` (not legacy).
 
 ---
 
