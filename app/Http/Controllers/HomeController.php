@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CybersecurityNews;
 use App\Models\Event;
+use App\Models\HeroSlide;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -22,9 +23,12 @@ class HomeController extends Controller
             ->limit(4)
             ->get();
 
+        $slides = HeroSlide::active()->ordered()->get();
+
         return view('home', [
             'recentNews' => $recentNews,
             'upcomingEvents' => $upcomingEvents,
+            'slides' => $slides,
         ]);
     }
 }

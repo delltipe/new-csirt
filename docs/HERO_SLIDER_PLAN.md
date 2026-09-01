@@ -1,6 +1,6 @@
-# Hero Slider — Slidable, Updatable Hero (Stashed Plan)
+# Hero Slider — Slidable, Updatable Hero
 
-> Status: **STASHED — NOT IMPLEMENTED** (2026-09-01). Hero visibility tweak (`0.94→0.82 / 0.85→0.68 / 0.55→0.32` at `home.blade.php:14`) is live. This doc stashes the slidable/updatable hero spec for a later build. Do not treat as live code until this header flips to IMPLEMENTED.
+> Status: **IMPLEMENTED** (2026-09-01). Builds on hero visibility tweak (`0.94→0.82 / 0.85→0.68 / 0.55→0.32` at `home.blade.php:14`) + scrim plate `home.blade.php:57`. Slider live with admin CRUD.
 
 ## Legacy reference (`csirt.jakarta.go.id`)
 
@@ -20,11 +20,11 @@
 * 3–4 slides, one `current_slide` visible, auto-rotates, each slide is a full-bleed image + overlay text + CTA.
 * Current portal hero is static: `JAKARTA PROV CSIRT` + lead + two CTAs on `photo-1558494949…` with `linear-gradient 100deg` wash `home.blade.php:14`.
 
-## Goals (deferred)
+## Goals
 
 * Admin can create / reorder / enable / disable hero slides without code deploy.
 * Slides pull newest / most important news/events or a custom message — like legacy where some slides link to `/news/view?id=115`.
-* Keeps design system (`DESIGN_SYSTEM.md`, `public/css/style.css` tokens, `accessibility-contrast.css`) and architecture conventions (Indonesian table names, timestamps, `SoftDeletes` where needed, `try/catch` Indonesian errors).
+* Keeps design system (`DESIGN_SYSTEM.md`, `public/css/style.css` tokens, `accessibility-contrast.css`) and architecture conventions (Indonesian table names, timestamps, `try/catch` Indonesian errors).
 
 ## Proposed schema (follows `AGENTS.md` / `SCHEMA.md` conventions)
 
@@ -69,15 +69,10 @@
 * Slider JS — clone `news-carousel` logic `home.blade.php:736` (`scrollBy`, `prev/next`, `setInterval 5s`, `touchstart` stop, `matchMedia prefers-reduced-motion` + `html.accessibility-pause-animations` pause). Also sync `hero-stats` below (remains static, not per-slide).
 * Admin partial `admin/partials/hero.blade.php` — `.data-table` / `.section-actions` / `.btn-add` + modal form (like `news.blade.php`), includes `urutan` drag handle + `is_active` toggle. Tab added to `admin/dashboard.blade.php:260` (8th tab, after `Insiden`).
 
-## Contrast — why interchangeable image+text breaks and how this design will mitigate (see §Contrast below)
+## Contrast — interchangeable image+text mitigation (shipped)
 
-Any image can be bright/dark/busy. With `0.82/0.68/0.32` wash the server racks now show, but white `JAKARTA PROV CSIRT` (as in your photo `Image 1`) will fail WCAG on light/busy patches. A slidable hero multiplies this: each slide has a different image + different text length, so a single fixed overlay cannot guarantee contrast.
-
-This doc does **not** build the mitigation yet — it is stashed. The mitigation checklist (§Contrast) must be implemented together with the slider.
-
-## Contrast
-
-See dedicated section below — the hero must ship with a scrim system, not just a lighter gradient.
+Each slide has different image + text length, so fixed overlay fails. Shipped mitigation:
+* Per-slide `linear-gradient 100deg rgba(0,32,96,0.82)→rgba(0,53,128,0.32)` (`home.blade.php:14` wash) + **scrim plate** `home.blade.php:57` `linear-gradient 90deg rgba(10,15,26,0.72)→0.00` behind `hero__scrim` + `text-shadow`, so white `hero__title` passes on bright/busy patches. Scrim lives inside each `.hero__slide`, not on wrapper. Tested via `/demo/hero-contrast`.
 
 ## Verification (when built)
 

@@ -241,19 +241,11 @@
 
         </div>
 
-        {{-- Bottom bar --}}
+        {{-- Bottom bar — legacy style: copyright only --}}
         <div class="footer-bottom">
             <p class="footer-copy">
                 &copy; {{ date('Y') }} JakartaProv-CSIRT — Pemerintah Provinsi DKI Jakarta. Seluruh hak dilindungi.
             </p>
-            <nav aria-label="Tautan legal">
-                <ul class="footer-legal">
-                    <li><a href="#">Kebijakan Privasi</a></li>
-                    <li><a href="#">Syarat Penggunaan</a></li>
-                    <li><a href="#">Status Website</a></li>
-                    <li><a href="#">Aksesibilitas</a></li>
-                </ul>
-            </nav>
         </div>
     </div>
 </footer>

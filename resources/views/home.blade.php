@@ -171,6 +171,109 @@
 }
 
 /* ============================================================
+   HERO SLIDER — slidable, admin-updatable
+   ============================================================ */
+.hero--slider{
+    overflow: hidden;
+    background: var(--ink);
+}
+.hero--slider .hero__track{
+    display: flex;
+    transition: transform 0.45s ease;
+    will-change: transform;
+}
+.hero__slide{
+    flex: 0 0 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 340px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.hero__slide .hero__title{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.hero__slide .hero__lead{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.hero__slide::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px,
+        transparent 1px, transparent 80px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+.hero__slide .hero__body{
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+.hero__nav{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background var(--ease), border-color var(--ease), color var(--ease);
+    backdrop-filter: blur(4px);
+}
+.hero__nav:hover{
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.45);
+    color: var(--white);
+}
+.hero__nav--prev{ left: 16px; }
+.hero__nav--next{ right: 16px; }
+.hero__nav i{ font-size: 18px; }
+.hero__dots{
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 3;
+}
+.hero__dot{
+    width: 10px;
+    height: 10px;
+    border: 1px solid rgba(255,255,255,0.55);
+    background: transparent;
+    cursor: pointer;
+    transition: background var(--ease), border-color var(--ease);
+    padding: 0;
+}
+.hero__dot.is-active{
+    background: var(--white);
+    border-color: var(--white);
+}
+@media (max-width: 640px){
+    .hero__nav{ display: none; }
+    .hero__slide{ min-height: 320px; }
+}
+
+/* ============================================================
    NEWS CAROUSEL — horizontal scroll with snap
    ============================================================ */
 .news-carousel {
@@ -196,14 +299,31 @@
     border-right: 1px solid var(--border);
     background: var(--white);
     transition: background var(--ease);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
 }
-
+.news-carousel__card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--navy);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+}
 .news-carousel__card:last-child {
     border-right: none;
 }
-
 .news-carousel__card:hover {
-    background: var(--mist);
+    background: var(--navy-tint);
+}
+.news-carousel__card:hover::after {
+    transform: scaleX(1);
 }
 
 .news-carousel__card:hover .news-card__title {
@@ -278,9 +398,9 @@
 .events-section .events-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
+    gap: 16px;
+    background: transparent;
+    border: none;
     margin-bottom: 0;
 }
 
@@ -293,12 +413,13 @@
     transition: background var(--ease);
     position: relative;
     overflow: hidden;
+    border: 1px solid var(--border);
 }
 
 .events-section .event-card::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
+    bottom: 0; left: 0; right: 0;
     height: 3px;
     background: var(--navy);
     transform: scaleX(0);
@@ -356,7 +477,7 @@
 }
 
 .events-section .event-card__body {
-    padding: 44px 20px 22px;
+    padding: 22px 20px 22px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -436,13 +557,13 @@
 .halftone-field{ position:absolute; width:560px; height:760px; pointer-events:none; z-index:0; overflow:hidden; --ht-dot:148,164,188; --ht-glow:148,164,188; transition: opacity 0.18s ease, transform 0.12s ease; will-change: transform, opacity; }
 .halftone-field.left{ left:-70px; top:4%; }
 .halftone-field.right{ right:-70px; top:30%; }
-.halftone-glow{ position:absolute; inset:-14%; background: radial-gradient(ellipse 72% 62% at 50% 50%, rgba(var(--ht-glow),0.18) 0%, rgba(var(--ht-glow),0.10) 28%, rgba(var(--ht-glow),0.04) 48%, transparent 70%); filter: blur(12px); }
-.halftone-dots{ position:absolute; inset:0; background-image: radial-gradient(circle, rgba(var(--ht-dot),0.82) 1.35px, transparent 1.75px); background-size:13px 13px; opacity:0.88; -webkit-mask-image: radial-gradient(ellipse 92% 70% at 50% 50%, black 52%, transparent 88%); mask-image: radial-gradient(ellipse 92% 70% at 50% 50%, black 52%, transparent 88%); }
+.halftone-glow{ position:absolute; inset:-14%; background: radial-gradient(ellipse 72% 62% at 50% 50%, rgba(var(--ht-glow),0.24) 0%, rgba(var(--ht-glow),0.13) 28%, rgba(var(--ht-glow),0.06) 48%, transparent 70%); filter: blur(12px); }
+.halftone-dots{ position:absolute; inset:0; background-image: radial-gradient(circle, rgba(var(--ht-dot),0.92) 1.40px, transparent 1.80px); background-size:13px 13px; opacity:0.96; -webkit-mask-image: radial-gradient(ellipse 92% 70% at 50% 50%, black 58%, transparent 88%); mask-image: radial-gradient(ellipse 92% 70% at 50% 50%, black 58%, transparent 88%); }
 /* Moved 40px toward center + softer top/bottom: shorter ellipse so vertical fades well before field edge — no straight top/bottom line */
 .halftone-field.left .halftone-dots{ -webkit-mask-image: radial-gradient(ellipse 108% 78% at 22% 50%, black 18%, transparent 72%); mask-image: radial-gradient(ellipse 108% 78% at 22% 50%, black 18%, transparent 72%); }
 .halftone-field.right .halftone-dots{ -webkit-mask-image: radial-gradient(ellipse 108% 78% at 78% 50%, black 18%, transparent 72%); mask-image: radial-gradient(ellipse 108% 78% at 78% 50%, black 18%, transparent 72%); }
-.halftone-field.left .halftone-glow{ background: radial-gradient(ellipse 74% 62% at 28% 50%, rgba(var(--ht-glow),0.14) 0%, rgba(var(--ht-glow),0.08) 32%, rgba(var(--ht-glow),0.02) 56%, transparent 76%); }
-.halftone-field.right .halftone-glow{ background: radial-gradient(ellipse 74% 62% at 72% 50%, rgba(var(--ht-glow),0.14) 0%, rgba(var(--ht-glow),0.08) 32%, rgba(var(--ht-glow),0.02) 56%, transparent 76%); }
+.halftone-field.left .halftone-glow{ background: radial-gradient(ellipse 74% 62% at 28% 50%, rgba(var(--ht-glow),0.19) 0%, rgba(var(--ht-glow),0.11) 32%, rgba(var(--ht-glow),0.04) 56%, transparent 76%); }
+.halftone-field.right .halftone-glow{ background: radial-gradient(ellipse 74% 62% at 72% 50%, rgba(var(--ht-glow),0.19) 0%, rgba(var(--ht-glow),0.11) 32%, rgba(var(--ht-glow),0.04) 56%, transparent 76%); }
 @media (max-width: 1200px){ .halftone-field{ width:420px; height:520px; } }
 @media (max-width: 960px){
     .events-section .events-grid { grid-template-columns: 1fr; }
@@ -452,33 +573,93 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
 </style>
 
 {{-- ================================================================
-     HERO
+     HERO SLIDER — admin-updatable, slidable
      ================================================================ --}}
-<section class="hero" aria-label="Beranda JakartaProv-CSIRT">
-
-    <div class="hero__body">
-        <div class="container">
-            <div class="hero__scrim">
-                <div class="hero__eyebrow">
-                    <i class="bi bi-shield-lock" aria-hidden="true"></i>
-                    Tim Tanggap Insiden Siber Resmi DKI Jakarta
+@php
+    $heroSlides = $slides ?? collect();
+    $hasSlider = $heroSlides->isNotEmpty();
+@endphp
+<section class="hero {{ $hasSlider ? 'hero--slider' : '' }}" aria-label="Beranda JakartaProv-CSIRT" id="heroSlider">
+    @if($hasSlider)
+        <div class="hero__track" id="heroTrack">
+            @foreach($heroSlides as $index => $slide)
+                @php
+                    $img = $slide->gambar;
+                    if ($img && !str_starts_with($img, 'http://') && !str_starts_with($img, 'https://')) {
+                        $img = \Illuminate\Support\Facades\Storage::url($img);
+                    }
+                    if (!$img) {
+                        $img = 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1920&q=80';
+                    }
+                    $link = $slide->tautan ?: route('bug-hunter.dashboard');
+                @endphp
+                <div class="hero__slide {{ $index === 0 ? 'is-active' : '' }}" data-index="{{ $index }}"
+                     style="background: linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%), url('{{ $img }}') center/cover no-repeat;">
+                    <div class="hero__body">
+                        <div class="container">
+                            <div class="hero__scrim">
+                                <div class="hero__eyebrow">
+                                    <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                                    Tim Tanggap Insiden Siber Resmi DKI Jakarta
+                                </div>
+                                <h1 class="hero__title">{{ $slide->judul }}</h1>
+                                @if($slide->subjudul)
+                                    <p class="hero__lead">{{ $slide->subjudul }}</p>
+                                @endif
+                                <div class="hero__actions">
+                                    <a href="{{ $link }}" class="btn-hero-primary">
+                                        <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
+                                        {{ $slide->teks_tautan ?: 'LAPOR INSIDEN SEKARANG' }}
+                                    </a>
+                                    <a href="{{ url('profile') }}" class="btn-hero-ghost">
+                                        Tentang Kami <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h1 class="hero__title">JakartaProvCSIRT</h1>
-                <p class="hero__lead">
-                    Pemerintah Provinsi DKI Jakarta — Computer Security Incident Response Team. Menjaga infrastruktur digital dan data kritis Jakarta dari ancaman siber, 24 jam sehari, 7 hari seminggu.
-                </p>
-                <div class="hero__actions">
-                    <a href="{{ route('bug-hunter.dashboard') }}" class="btn-hero-primary">
-                        <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
-                        Lapor Insiden Sekarang
-                    </a>
-                    <a href="{{ url('profile') }}" class="btn-hero-ghost">
-                        Tentang Kami <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                    </a>
+            @endforeach
+        </div>
+        @if($heroSlides->count() > 1)
+            <button class="hero__nav hero__nav--prev" aria-label="Sebelumnya" id="heroPrev">
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+            </button>
+            <button class="hero__nav hero__nav--next" aria-label="Selanjutnya" id="heroNext">
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </button>
+            <div class="hero__dots" role="tablist" aria-label="Navigasi slide" id="heroDots">
+                @foreach($heroSlides as $index => $slide)
+                    <button class="hero__dot {{ $index === 0 ? 'is-active' : '' }}" role="tab" aria-label="Slide {{ $index + 1 }}" data-index="{{ $index }}" aria-selected="{{ $index === 0 ? 'true' : 'false' }}"></button>
+                @endforeach
+            </div>
+        @endif
+    @else
+        {{-- Fallback: single static slide when no data --}}
+        <div class="hero__body">
+            <div class="container">
+                <div class="hero__scrim">
+                    <div class="hero__eyebrow">
+                        <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                        Tim Tanggap Insiden Siber Resmi DKI Jakarta
+                    </div>
+                    <h1 class="hero__title">JakartaProvCSIRT</h1>
+                    <p class="hero__lead">
+                        Pemerintah Provinsi DKI Jakarta — Computer Security Incident Response Team. Menjaga infrastruktur digital dan data kritis Jakarta dari ancaman siber, 24 jam sehari, 7 hari seminggu.
+                    </p>
+                    <div class="hero__actions">
+                        <a href="{{ route('bug-hunter.dashboard') }}" class="btn-hero-primary">
+                            <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
+                            Lapor Insiden Sekarang
+                        </a>
+                        <a href="{{ url('profile') }}" class="btn-hero-ghost">
+                            Tentang Kami <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 
     <div class="hero-stats" aria-label="Statistik JakartaProv-CSIRT">
         <div class="container">
@@ -556,7 +737,7 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
 
             <div class="news-carousel__track">
                 @forelse($recentNews as $article)
-                <article class="news-carousel__card">
+                <a href="{{ route('news.show', $article->id) }}" class="news-carousel__card">
                     <div class="news-card__img-wrap">
                         <img class="news-card__img"
                              src="{{ $article->thumbnail }}"
@@ -568,9 +749,7 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
                             {{ $article->date->format('d M Y') }}
                         </div>
                         <h3 class="news-card__title">
-                            <a href="{{ route('news.show', $article->id) }}">
-                                {{ $article->title }}
-                            </a>
+                            {{ $article->title }}
                         </h3>
                         <p class="news-card__excerpt">
                             {{ Str::limit($article->description, 130) }}
@@ -579,7 +758,7 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
                             Baca Selengkapnya <i class="bi bi-arrow-right" aria-hidden="true"></i>
                         </span>
                     </div>
-                </article>
+                </a>
                 @empty
                 <div style="flex:0 0 100%; padding:64px 24px; text-align:center;">
                     <i class="bi bi-newspaper" style="font-size:40px;color:var(--border);display:block;margin-bottom:12px;"></i>
@@ -754,6 +933,43 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         wrap.addEventListener('mouseleave', function(){ left.style.opacity=''; right.style.opacity=''; });
     })();
+});
+/* Hero slider — clone news-carousel logic, prefers-reduced-motion + pause-animations pause */
+document.addEventListener('DOMContentLoaded', function(){
+    var hero = document.getElementById('heroSlider');
+    var track = document.getElementById('heroTrack');
+    if(!hero || !track) return;
+    var slides = track.children;
+    var total = slides.length;
+    if(total <= 1) return;
+    var dots = document.querySelectorAll('#heroDots .hero__dot');
+    var prev = document.getElementById('heroPrev');
+    var next = document.getElementById('heroNext');
+    var idx = 0;
+    var timer = null;
+    var userInteracted = false;
+    function isPaused(){ return document.documentElement.classList.contains('accessibility-pause-animations') || document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+    function go(n){
+        idx = (n + total) % total;
+        track.style.transform = 'translateX(' + (-idx * 100) + '%)';
+        for(var i=0;i<dots.length;i++){ var active=i===idx; dots[i].classList.toggle('is-active', active); dots[i].setAttribute('aria-selected', active ? 'true' : 'false'); }
+        for(var j=0;j<slides.length;j++){ slides[j].classList.toggle('is-active', j===idx); }
+    }
+    function nextSlide(){ if(isPaused()) return; go(idx+1); }
+    function startAuto(){ clearInterval(timer); timer = setInterval(nextSlide, 5000); }
+    function stopAuto(){ userInteracted=true; clearInterval(timer); }
+    if(prev) prev.addEventListener('click', function(){ go(idx-1); stopAuto(); });
+    if(next) next.addEventListener('click', function(){ go(idx+1); stopAuto(); });
+    dots.forEach(function(d){ d.addEventListener('click', function(){ go(parseInt(d.dataset.index,10)); stopAuto(); }); });
+    track.addEventListener('touchstart', stopAuto, {once:true});
+    hero.addEventListener('mouseenter', function(){ clearInterval(timer); });
+    hero.addEventListener('mouseleave', function(){ if(!userInteracted) startAuto(); });
+    document.addEventListener('visibilitychange', function(){ if(document.hidden) clearInterval(timer); else if(!userInteracted) startAuto(); });
+    startAuto();
+    // touch swipe
+    var sx=0;
+    track.addEventListener('touchstart', function(e){ sx=e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend', function(e){ var dx=e.changedTouches[0].clientX - sx; if(Math.abs(dx)>50){ if(dx<0) {go(idx+1);} else {go(idx-1);} stopAuto(); } }, {passive:true});
 });
 document.addEventListener('DOMContentLoaded', function () {
     var track = document.querySelector('.news-carousel__track');

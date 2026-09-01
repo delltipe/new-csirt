@@ -329,23 +329,6 @@
 </style>
 
 {{-- ============================================================
-     GOVERNMENT IDENTITY STRIP
-     ============================================================ --}}
-<div class="nav-strip" role="banner">
-    <div class="container">
-        <div class="nav-strip__badge">
-            <i class="bi bi-shield-fill-check" aria-hidden="true"></i>
-            Situs Resmi Pemerintah Provinsi DKI Jakarta
-        </div>
-        <div class="nav-strip__links">
-            <a href="#">Bahasa Indonesia</a>
-            <a href="{{ route('publickey') }}">Enkripsi</a>
-            <a href="#">Aksesibilitas</a>
-        </div>
-    </div>
-</div>
-
-{{-- ============================================================
      MAIN NAVIGATION
      ============================================================ --}}
 <nav class="nav-main" aria-label="Navigasi utama">

@@ -43,7 +43,8 @@ class AdminController extends Controller
         $guides = \App\Models\CybersecurityGuide::orderByDesc('id')->paginate(15);
         $incidents = IncidentReport::orderByDesc('created_at')->paginate(15);
         $pendingIncidents = IncidentReport::where('status', IncidentReport::STATUS_PENDING)->count();
-        return view('admin.dashboard', compact('news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'incidents', 'pendingIncidents'));
+        $heroSlides = \App\Models\HeroSlide::ordered()->paginate(15);
+        return view('admin.dashboard', compact('news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'incidents', 'pendingIncidents', 'heroSlides'));
     }
 
     // Handle logout
@@ -439,5 +440,131 @@ class AdminController extends Controller
             return back()->withErrors(['status' => 'Gagal menghapus laporan. Silakan coba lagi.']);
         }
         return redirect()->route('admin.incidents.list')->with('success', 'Laporan insiden berhasil dihapus.');
+    }
+
+    // ============================================
+    // HERO SLIDER CRUD
+    // ============================================
+    public function heroStore(Request $request) {
+        $data = $request->validate([
+            'judul' => 'required|string|max:255',
+            'subjudul' => 'nullable|string|max:1000',
+            'gambar' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120',
+            'gambar_url' => 'nullable|string|max:2048',
+            'tautan' => 'nullable|string|max:2048',
+            'teks_tautan' => 'nullable|string|max:255',
+            'urutan' => 'nullable|integer',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        try {
+            $gambarPath = null;
+            if ($request->hasFile('gambar')) {
+                $gambarPath = $request->file('gambar')->store('hero', 'public');
+            } elseif (!empty($data['gambar_url'])) {
+                $gambarPath = $data['gambar_url'];
+            }
+
+            \App\Models\HeroSlide::create([
+                'judul' => $data['judul'],
+                'subjudul' => $data['subjudul'] ?? null,
+                'gambar' => $gambarPath,
+                'tautan' => $data['tautan'] ?? null,
+                'teks_tautan' => $data['teks_tautan'] ?? 'LAPOR INSIDEN SEKARANG',
+                'urutan' => $data['urutan'] ?? 0,
+                'is_active' => $request->has('is_active') ? (bool) $data['is_active'] : true,
+            ]);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['judul' => 'Gagal menyimpan slide. Silakan coba lagi.']);
+        }
+        return redirect()->route('admin.dashboard')->with('success', 'Slide hero ditambahkan!');
+    }
+
+    public function heroEdit($id) {
+        $slide = \App\Models\HeroSlide::findOrFail($id);
+        return view('admin.hero_edit', compact('slide'));
+    }
+
+    public function heroUpdate(Request $request, $id) {
+        $slide = \App\Models\HeroSlide::findOrFail($id);
+        $data = $request->validate([
+            'judul' => 'required|string|max:255',
+            'subjudul' => 'nullable|string|max:1000',
+            'gambar' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:5120',
+            'gambar_url' => 'nullable|string|max:2048',
+            'tautan' => 'nullable|string|max:2048',
+            'teks_tautan' => 'nullable|string|max:255',
+            'urutan' => 'nullable|integer',
+            'is_active' => 'nullable|boolean',
+        ]);
+        try {
+            $gambarPath = $slide->gambar;
+            if ($request->hasFile('gambar')) {
+                if ($slide->gambar && !str_starts_with($slide->gambar, 'http') && Storage::disk('public')->exists($slide->gambar)) {
+                    Storage::disk('public')->delete($slide->gambar);
+                }
+                $gambarPath = $request->file('gambar')->store('hero', 'public');
+            } elseif (!empty($data['gambar_url'])) {
+                if ($slide->gambar && !str_starts_with($slide->gambar, 'http') && Storage::disk('public')->exists($slide->gambar)) {
+                    Storage::disk('public')->delete($slide->gambar);
+                }
+                $gambarPath = $data['gambar_url'];
+            }
+
+            $slide->update([
+                'judul' => $data['judul'],
+                'subjudul' => $data['subjudul'] ?? null,
+                'gambar' => $gambarPath,
+                'tautan' => $data['tautan'] ?? null,
+                'teks_tautan' => $data['teks_tautan'] ?? 'LAPOR INSIDEN SEKARANG',
+                'urutan' => $data['urutan'] ?? $slide->urutan,
+                'is_active' => $request->has('is_active') ? (bool) $data['is_active'] : $slide->is_active,
+            ]);
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['judul' => 'Gagal memperbarui slide. Silakan coba lagi.']);
+        }
+        return redirect()->route('admin.dashboard')->with('success', 'Slide hero diperbarui!');
+    }
+
+    public function heroDelete($id) {
+        $slide = \App\Models\HeroSlide::findOrFail($id);
+        try {
+            if ($slide->gambar && !str_starts_with($slide->gambar, 'http') && Storage::disk('public')->exists($slide->gambar)) {
+                Storage::disk('public')->delete($slide->gambar);
+            }
+            $slide->delete();
+        } catch (\Exception $e) {
+            return back()->withErrors(['judul' => 'Gagal menghapus slide. Silakan coba lagi.']);
+        }
+        return redirect()->route('admin.dashboard')->with('success', 'Slide hero dihapus!');
+    }
+
+    public function heroReorder(Request $request) {
+        $request->validate([
+            'order' => 'required|string|max:2000',
+        ]);
+        $raw = $request->input('order');
+        $ids = array_filter(array_map('trim', explode(',', $raw)), fn($v) => $v !== '');
+        $ids = array_map('intval', $ids);
+        if (empty($ids)) {
+            return back()->withErrors(['judul' => 'Format urutan tidak valid. Contoh: 3,1,2']);
+        }
+        $unique = array_unique($ids);
+        if (count($unique) !== count($ids)) {
+            return back()->withErrors(['judul' => 'ID duplikat pada urutan.']);
+        }
+        $existing = \App\Models\HeroSlide::whereIn('id', $ids)->pluck('id')->all();
+        $missing = array_diff($ids, $existing);
+        if (!empty($missing)) {
+            return back()->withErrors(['judul' => 'ID slide tidak ditemukan: ' . implode(',', $missing)]);
+        }
+        try {
+            foreach ($ids as $index => $id) {
+                \App\Models\HeroSlide::where('id', $id)->update(['urutan' => $index]);
+            }
+        } catch (\Exception $e) {
+            return back()->withErrors(['judul' => 'Gagal mengurutkan slide. Silakan coba lagi.']);
+        }
+        return back()->with('success', 'Urutan slide diperbarui!');
     }
 }

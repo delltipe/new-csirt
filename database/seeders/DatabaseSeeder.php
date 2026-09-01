@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             InfographicSeeder::class,
             LawRulePostSeeder::class,
             CybersecurityGuideSeeder::class,
+            HeroSlideSeeder::class,
         ]);
     }
 }

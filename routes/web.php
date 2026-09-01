@@ -162,4 +162,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/infographics/{id}/edit', [AdminController::class, 'infographicEdit'])->name('admin.infographic.edit');
     Route::post('/admin/infographics/{id}/update', [AdminController::class, 'infographicUpdate'])->name('admin.infographic.update');
     Route::post('/admin/infographics/{id}/delete', [AdminController::class, 'infographicDelete'])->name('admin.infographic.delete');
+
+    // Hero slides CRUD
+    Route::post('/admin/hero', [AdminController::class, 'heroStore'])->name('admin.hero.store');
+    Route::get('/admin/hero/{id}/edit', [AdminController::class, 'heroEdit'])->name('admin.hero.edit');
+    Route::post('/admin/hero/{id}/update', [AdminController::class, 'heroUpdate'])->name('admin.hero.update');
+    Route::post('/admin/hero/{id}/delete', [AdminController::class, 'heroDelete'])->name('admin.hero.delete');
+    Route::post('/admin/hero/reorder', [AdminController::class, 'heroReorder'])->name('admin.hero.reorder');
 });

@@ -192,12 +192,13 @@
 .news-list-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    border: 1px solid var(--border);
+    gap: 16px;
+    background: transparent;
+    border: none;
     margin-bottom: 40px;
 }
 .news-list-card {
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    border: 1px solid var(--border);
     text-decoration: none;
     color: inherit;
     display: flex;
@@ -205,8 +206,9 @@
     transition: background var(--ease);
     position: relative;
     overflow: hidden;
+    background: var(--white);
 }
-/* Bottom 3px blue rule on hover — same as homepage */
+/* Bottom 3px blue rule on hover — same as service-card */
 .news-list-card::after {
     content: '';
     position: absolute;
@@ -217,11 +219,8 @@
     transform-origin: left;
     transition: transform 0.2s ease;
 }
-.news-list-card:hover { background: var(--mist); }
+.news-list-card:hover { background: var(--navy-tint); }
 .news-list-card:hover::after { transform: scaleX(1); }
-
-/* Remove right border on last in each row */
-.news-list-card:nth-child(3n) { border-right: none; }
 
 .news-list-card__img-wrap { overflow: hidden; }
 .news-list-card__img {

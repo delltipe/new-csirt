@@ -80,9 +80,9 @@
 .events-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border); /* gap color */
-    border: 1px solid var(--border);
+    gap: 16px;
+    background: transparent;
+    border: none;
     margin-bottom: 40px;
 }
 
@@ -95,11 +95,12 @@
     transition: background var(--ease);
     position: relative;
     overflow: hidden;
+    border: 1px solid var(--border);
 }
 .event-card::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
+    bottom: 0; left: 0; right: 0;
     height: 3px;
     background: var(--navy);
     transform: scaleX(0);
@@ -146,7 +147,7 @@
 
 /* Card body */
 .event-card__body {
-    padding: 44px 20px 22px; /* top padding clears the badge overlap */
+    padding: 22px 20px 22px;
     flex: 1;
     display: flex;
     flex-direction: column;

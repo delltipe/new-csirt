@@ -169,19 +169,18 @@
     transition: all var(--ease);
     position: relative;
     display: block;
+    overflow: hidden;
 }
 
-.guide-card::before {
+.guide-card::after {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
     background: var(--navy);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform var(--ease);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
 }
 
 .guide-card:hover {
@@ -189,8 +188,8 @@
     background: var(--navy-tint);
 }
 
-.guide-card:hover::before {
-    transform: scaleY(1);
+.guide-card:hover::after {
+    transform: scaleX(1);
 }
 
 .guide-card__header {

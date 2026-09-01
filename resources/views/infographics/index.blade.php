@@ -81,9 +81,9 @@
 .infographics-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
+    gap: 16px;
+    background: transparent;
+    border: none;
     margin-bottom: 40px;
 }
 
@@ -93,17 +93,18 @@
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    border: none;
+    border: 1px solid var(--border);
     padding: 0;
     text-align: left;
     position: relative;
     overflow: hidden;
     transition: background var(--ease);
+    width: 100%;
 }
 .infographic-card::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
+    bottom: 0; left: 0; right: 0;
     height: 3px;
     background: var(--navy);
     transform: scaleX(0);

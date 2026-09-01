@@ -485,9 +485,9 @@ button {
 .service-card__title {
     font-family: var(--font-display);
     font-size: 17px;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: none;
     color: var(--ink);
     margin-bottom: 8px;
     line-height: 1.2;
@@ -701,6 +701,56 @@ button {
     border: 1px solid var(--alert);
 }
 
+
+/* -------------------------------------------------------------
+   PAGINATION — boxy navy (vendor/pagination/tailwind.blade.php)
+   ------------------------------------------------------------- */
+nav[role="navigation"] ul {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+nav[role="navigation"] li a,
+nav[role="navigation"] li span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    border: 1px solid var(--border);
+    background: var(--white);
+    text-decoration: none;
+    transition: background var(--ease), border-color var(--ease), color var(--ease);
+}
+nav[role="navigation"] li a:hover {
+    background: var(--navy-tint);
+    border-color: var(--navy);
+    color: var(--navy);
+}
+nav[role="navigation"] li span[aria-current="page"] {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+    font-weight: 700;
+}
+nav[role="navigation"] li span[aria-disabled="true"] {
+    color: var(--mid);
+    background: var(--mist);
+    cursor: not-allowed;
+}
+.pagination-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
 
 /* -------------------------------------------------------------
    BOOTSTRAP UTILITIES — boxy corners (design-system consistency)
