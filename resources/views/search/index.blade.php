@@ -154,10 +154,10 @@
                     @foreach($results['news'] as $item)
                         <div class="search-result-item">
                             <h3 class="search-result-item__title">
-                                <a href="{{ route('news.show', $item->id) }}">{{ $item->title }}</a>
+                                <a href="{{ route('news.show', $item->id) }}">{!! $highlights['news'][$item->id]['title'] ?? e($item->title) !!}</a>
                             </h3>
                             @if($item->description)
-                                <p class="search-result-item__excerpt">{{ Str::limit(strip_tags($item->description), 180) }}</p>
+                                <p class="search-result-item__excerpt">{!! $highlights['news'][$item->id]['excerpt'] ?? e(Str::limit(strip_tags($item->description), 180)) !!}</p>
                             @endif
                         </div>
                     @endforeach
@@ -172,10 +172,10 @@
                     @foreach($results['warnings'] as $item)
                         <div class="search-result-item">
                             <h3 class="search-result-item__title">
-                                <a href="{{ route('warnings.show', $item->id) }}">{{ $item->title }}</a>
+                                <a href="{{ route('warnings.show', $item->id) }}">{!! $highlights['warnings'][$item->id]['title'] ?? e($item->title) !!}</a>
                             </h3>
                             @if($item->description)
-                                <p class="search-result-item__excerpt">{{ Str::limit(strip_tags($item->description), 180) }}</p>
+                                <p class="search-result-item__excerpt">{!! $highlights['warnings'][$item->id]['excerpt'] ?? e(Str::limit(strip_tags($item->description), 180)) !!}</p>
                             @endif
                         </div>
                     @endforeach
@@ -190,10 +190,10 @@
                     @foreach($results['events'] as $item)
                         <div class="search-result-item">
                             <h3 class="search-result-item__title">
-                                <a href="{{ route('events.show', $item->id) }}">{{ $item->title }}</a>
+                                <a href="{{ route('events.show', $item->id) }}">{!! $highlights['events'][$item->id]['title'] ?? e($item->title) !!}</a>
                             </h3>
                             @if($item->description)
-                                <p class="search-result-item__excerpt">{{ Str::limit(strip_tags($item->description), 180) }}</p>
+                                <p class="search-result-item__excerpt">{!! $highlights['events'][$item->id]['excerpt'] ?? e(Str::limit(strip_tags($item->description), 180)) !!}</p>
                             @endif
                         </div>
                     @endforeach
@@ -208,7 +208,7 @@
                     @foreach($results['infographics'] as $item)
                         <div class="search-result-item">
                             <h3 class="search-result-item__title">
-                                <a href="{{ route('infographics.show', $item->id) }}">{{ $item->title }}</a>
+                                <a href="{{ route('infographics.show', $item->id) }}">{!! $highlights['infographics'][$item->id]['title'] ?? e($item->title) !!}</a>
                             </h3>
                         </div>
                     @endforeach
@@ -223,10 +223,10 @@
                     @foreach($results['laws'] as $item)
                         <div class="search-result-item">
                             <h3 class="search-result-item__title">
-                                <a href="{{ route('laws.show', $item->id) }}">{{ $item->title }}</a>
+                                <a href="{{ route('laws.show', $item->id) }}">{!! $highlights['laws'][$item->id]['title'] ?? e($item->title) !!}</a>
                             </h3>
                             @if($item->description)
-                                <p class="search-result-item__excerpt">{{ Str::limit(strip_tags($item->description), 180) }}</p>
+                                <p class="search-result-item__excerpt">{!! $highlights['laws'][$item->id]['excerpt'] ?? e(Str::limit(strip_tags($item->description), 180)) !!}</p>
                             @endif
                         </div>
                     @endforeach
@@ -242,12 +242,12 @@
                         <div class="search-result-item">
                             <h3 class="search-result-item__title">
                                 @if($item->link)
-                                    <a href="{{ $item->link }}" target="_blank">{{ $item->title }}</a>
+                                    <a href="{{ $item->link }}" target="_blank">{!! $highlights['guides'][$item->id]['title'] ?? e($item->title) !!}</a>
                                 @else
-                                    {{ $item->title }}
+                                    {!! $highlights['guides'][$item->id]['title'] ?? e($item->title) !!}
                                 @endif
                             </h3>
-                            <p class="search-result-item__excerpt">Oleh: {{ $item->author }}</p>
+                            <p class="search-result-item__excerpt">Oleh: {!! $highlights['guides'][$item->id]['excerpt'] ?? e($item->author) !!}</p>
                         </div>
                     @endforeach
                 </div>

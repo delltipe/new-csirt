@@ -75,8 +75,8 @@ JakartaProv-CSIRT is a public-facing portal for the Computer Security Incident R
 ### Search (`/search?q=...`)
 - **Purpose:** Site-wide search across all content types
 - **Features:**
-  - Searches titles and descriptions across 6 content types
-  - Results grouped by type (news, warnings, events, infographics, laws, guides)
+  - Searches titles (+ `author` for guides) and descriptions across 6 content types, tokenized `>=2` chars up to 5 terms, `title 3`/`description 1`/`author 2` weighted ranking + exact `+2` + word-boundary `+1`, sorted `score desc, date/id`, `take 10` per type
+  - Results grouped by type with `<mark style="background:var(--navy-tint)">` highlight + `excerpt` snippet `…pos-60…` (180 chars)
   - Minimum 2 characters required
 - **Route:** `search` → `SearchController@index`
 
@@ -153,10 +153,18 @@ verification) and reach a Komdigi-style reporter portal under `/bug-hunter`.
 ### Contact Form (`/contact`)
 - **Purpose:** General inquiries, partnership requests
 - **Features:**
-  - Fields: name, email, phone, organization, subject, inquiry type, message
+  - Fields: name, email, phone, organization, subject, inquiry type, message + `MathCaptcha`
   - Rate limited: 60 requests/minute per IP
-  - Stored in `contact_us` table with `pending` status
+  - Stored in `contact_us` table with `pending` status + `admin_note`
 - **Routes:** `contact.create`, `contact.store`, `contact.thank-you`
+
+### Contact Admin Review (`/admin/contacts`)
+- **Purpose:** CSIRT triage for general inquiries
+- **Features:**
+  - List `GET /admin/contacts` filterable `?status=pending/diproses/selesai/ditolak` (15/page, boxy navy pagination)
+  - Detail `GET /admin/contacts/{id}` + update `POST /admin/contacts/{id}/update` `status` (`pending→diproses→selesai` + `ditolak` from `pending/diproses`, `canTransitionTo()` + `admin_note`) + delete `POST /admin/contacts/{id}/delete`
+  - Dashboard tab `Kontak` with `pendingContacts` badge (like `Insiden`)
+- **Routes:** `admin.contacts.list/show/update/delete` (`auth+admin`)
 
 ---
 

@@ -113,12 +113,10 @@ See **`docs/DEPLOYMENT.md`** for the full guide.
 
 ## Roadmap / Planned
 
-- **Admin contact review** workflow (list / detail / status transitions)
-- **Full-text search** over substring matching
 - **Legacy-feature port-in**: select features from the legacy portal, after the main
   data-input and content pages are finalized
 
-> **Done (2026-09-01):** hero slider admin-updatable `slide_hero` (scraped legacy banners `berita_siber 13/14`, same-tab, `min-height 340` `clamp 2`), card consistency (`service title none`, `news-carousel whole-box + bottom line`, `law/guide bottom line`, `event 44→22`, `gap 16px`), pagination boxy navy (`vendor/pagination/tailwind.blade.php`), nav `nav-strip` removal + footer legal removal + halftone `0.92/0.96` bump.
+> **Done (2026-09-01):** contact admin `ContactMessage pending/diproses/selesai/ditolak` `admin_note` `Kontak` tab + logout confirm modal all types + search full-text ranking (`title 3`/`author 2` + highlight `<mark>`) + hero slider admin-updatable `slide_hero` (scraped legacy banners `berita_siber 13/14`, same-tab, `min-height 340` `clamp 2`), card consistency (`service title none`, `news-carousel whole-box + bottom line`, `law/guide bottom line`, `event 44→22`, `gap 16px`), pagination boxy navy (`vendor/pagination/tailwind.blade.php`), nav `nav-strip` removal + footer legal removal + halftone `0.92/0.96` bump.
 > **Done (2026-08-31):** math captcha self-hosted `MathCaptcha` + `CaptchaController` refresh on incident/contact forms + hero scrim + halftone polish.
 > **Done (2026-08-18):** schema hardening — foreign keys enforced, timestamps on
 > the 6 content tables, `event` → `events` rename, and soft-delete on incident
