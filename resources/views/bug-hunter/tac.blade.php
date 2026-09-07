@@ -219,7 +219,7 @@
                 <span class="tac-version">Versi {{ $version }}</span>
             </div>
 
-            <div class="tac-terms" id="tac-terms">
+            <div class="tac-terms" id="tac-terms" tabindex="0" role="region" aria-label="Ketentuan program pelaporan insiden. Gulir hingga bawah untuk mengaktifkan persetujuan.">
                 <h3>1. Ruang Lingkup</h3>
                 <p>
                     Program ini terbuka untuk pelaporan insiden keamanan siber pada aset digital yang dikelola
@@ -260,6 +260,7 @@
 
                 <form method="POST" action="{{ route('bug-hunter.agree') }}">
                     @csrf
+                    <p style="font-size:12.5px;color:var(--mid);margin-bottom:12px;" id="tac-scroll-hint">Gulir ketentuan hingga bagian bawah, lalu centang persetujuan untuk melanjutkan.</p>
                     <label class="tac-check" for="agree">
                         <input type="checkbox" id="agree" name="agree" required>
                         <span>

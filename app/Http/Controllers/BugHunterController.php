@@ -83,10 +83,13 @@ class BugHunterController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kategori_insiden' => 'required|string|max:255',
+            'kategori_insiden' => 'required|string|in:' . implode(',', self::CATEGORIES),
             'waktu_kejadian' => 'required|date',
             'lokasi_url' => 'required|url|max:255',
             'down_time' => 'required|date_format:H:i',
+            // No max length on free-text: researchers may paste pentest payloads,
+            // stack traces, or PoC snippets. Stored via bound parameters and
+            // escaped with {{ }} on render — never blocked, never raw SQL.
             'deskripsi' => 'required|string',
             'tindakan_teknis' => 'required|string',
             'bukti' => 'nullable|array|max:3',
@@ -94,6 +97,25 @@ class BugHunterController extends Controller
             'bukti.*.file' => 'nullable|file|mimes:png,jpg,jpeg,gif,pdf|max:5120',
             'bukti.*.url' => 'nullable|url|max:255',
             'captcha_answer' => 'required|integer',
+        ], [
+            'kategori_insiden.required' => 'Pilih kategori insiden dari daftar yang tersedia.',
+            'kategori_insiden.in' => 'Pilih kategori insiden dari daftar yang tersedia.',
+            'waktu_kejadian.required' => 'Isi waktu kejadian menggunakan pemilih tanggal dan jam.',
+            'waktu_kejadian.date' => 'Format waktu kejadian tidak valid. Pilih ulang tanggal dan jam.',
+            'lokasi_url.required' => 'Isi URL lokasi insiden, diawali http:// atau https://.',
+            'lokasi_url.url' => 'URL tidak valid. Contoh yang benar: https://portal.jakarta.go.id/halaman/contoh.',
+            'lokasi_url.max' => 'URL terlalu panjang (maks. 255 karakter). Gunakan URL yang lebih pendek.',
+            'down_time.required' => 'Isi durasi down time dalam format jam:menit, mis. 02:15.',
+            'down_time.date_format' => 'Format down time harus jam:menit (24 jam), mis. 02:15.',
+            'deskripsi.required' => 'Isi deskripsi kejadian: kronologi, dampak, dan langkah reproduksi bila ada.',
+            'tindakan_teknis.required' => 'Isi tindakan teknis yang sudah dilakukan atau direkomendasikan.',
+            'bukti.max' => 'Maksimal 3 bukti. Hapus baris bukti yang berlebih.',
+            'bukti.*.jenis.in' => 'Jenis bukti harus File atau URL.',
+            'bukti.*.file.mimes' => 'Format file harus PNG, JPG, JPEG, GIF, atau PDF.',
+            'bukti.*.file.max' => 'Ukuran file maksimal 5MB. Kompres atau gunakan URL sebagai gantinya.',
+            'bukti.*.url.url' => 'URL bukti tidak valid. Awali dengan http:// atau https://.',
+            'captcha_answer.required' => 'Isi jawaban verifikasi matematika.',
+            'captcha_answer.integer' => 'Jawaban verifikasi harus berupa angka.',
         ]);
 
         if (! MathCaptcha::verify($validated['captcha_answer'])) {

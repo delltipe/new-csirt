@@ -50,8 +50,8 @@
 </style>
 
 <div class="form-field captcha-field">
-    <label class="lapor-label" for="captcha_answer">
-        Verifikasi <span class="req">*</span>
+    <label class="lapor-label" for="field-captcha-answer">
+        Verifikasi <span class="req" aria-hidden="true">*</span>
     </label>
     <div class="captcha-row">
         <div class="captcha-question" id="captchaQuestion" aria-live="polite" aria-label="Soal verifikasi">{{ $question }}</div>
@@ -59,18 +59,19 @@
             <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
         </button>
         <input type="number" inputmode="numeric" autocomplete="off"
-               id="captcha_answer" name="captcha_answer"
+               id="field-captcha-answer" name="captcha_answer"
                class="lapor-input @error('captcha_answer') is-invalid @enderror"
                value="{{ old('captcha_answer') }}"
                placeholder="Jawaban"
                required
-               aria-describedby="captchaHelp">
+               aria-describedby="captchaHelp @error('captcha_answer') err-captcha-answer @enderror"
+               @error('captcha_answer') aria-invalid="true" @enderror>
     </div>
     <div id="captchaHelp" class="field-hint" style="font-size:12px;color:var(--mid);margin-top:6px;">
         Selesaikan soal di atas. Klik tombol putar untuk soal baru.
     </div>
     @error('captcha_answer')
-    <div class="field-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+    <div class="field-error" id="err-captcha-answer" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
     @enderror
 </div>
 
@@ -78,7 +79,7 @@
 (function () {
     const btn = document.getElementById('captchaRefresh');
     const qEl = document.getElementById('captchaQuestion');
-    const input = document.getElementById('captcha_answer');
+    const input = document.getElementById('field-captcha-answer');
     if (!btn || !qEl) return;
     btn.addEventListener('click', function () {
         btn.disabled = true;

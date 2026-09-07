@@ -143,6 +143,129 @@ class IncidentPortalSmokeTest extends TestCase
         $this->get('/admin/incidents')->assertOk()->assertSee($report->tiket_no);
     }
 
+    public function test_incident_submission_accepts_pentest_payload_strings_without_error(): void
+    {
+        $this->post('/register', [
+            'name' => 'Pentest Researcher',
+            'email' => 'pentest@example.com',
+            'password' => 'rahasia123',
+            'password_confirmation' => 'rahasia123',
+        ])->assertRedirect(route('bug-hunter.tac'));
+
+        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
+        $captchaAnswer = session('captcha_answer');
+        $this->assertNotNull($captchaAnswer);
+
+        // Payload-like strings researchers legitimately paste into reports.
+        // Must be accepted (no 500/DB error), stored verbatim, escaped on render.
+        $payloadDeskripsi = "<script>alert(1)</script> ' OR '1'='1' -- <img src=x onerror=alert(2)> {{7*7}} \${7*7} ../../etc/passwd ; DROP TABLE lapor_insiden;--";
+        $payloadTindakan = 'Blocked <svg onload=alert(3)> & verified "quoted" \'single\'';
+
+        Storage::fake('public');
+        $this->post('/bug-hunter/laporan/simpan', [
+            'kategori_insiden' => 'SQL Injection / XSS',
+            'waktu_kejadian' => '2026-09-01T14:00',
+            'lokasi_url' => 'https://portal.jakarta.go.id/search?q=%3Cscript%3E',
+            'down_time' => '01:00',
+            'deskripsi' => $payloadDeskripsi,
+            'tindakan_teknis' => $payloadTindakan,
+            'captcha_answer' => $captchaAnswer,
+        ])->assertRedirect(route('bug-hunter.thank-you'));
+
+        $report = IncidentReport::where('kategori_insiden', 'SQL Injection / XSS')->first();
+        $this->assertNotNull($report);
+        $this->assertSame($payloadDeskripsi, $report->deskripsi);
+        $this->assertSame($payloadTindakan, $report->tindakan_teknis);
+
+        // Reporter detail page: payload visible as text, never executed as markup.
+        $detail = $this->get('/bug-hunter/laporan/' . $report->id)->assertStatus(200);
+        $detail->assertSee(e('<script>alert(1)</script>'), false);
+        $detail->assertDontSee('<script>alert(1)</script>', false);
+        $detail->assertDontSee('<img src=x onerror=alert(2)>', false);
+        $detail->assertDontSee('<svg onload=alert(3)>', false);
+
+        // Dashboard list renders without error too.
+        $this->get('/bug-hunter')->assertStatus(200)->assertSee($report->tiket_no);
+    }
+
+    public function test_incident_validation_errors_guide_the_user(): void
+    {
+        $this->post('/register', [
+            'name' => 'Validation Tester',
+            'email' => 'validation@example.com',
+            'password' => 'rahasia123',
+            'password_confirmation' => 'rahasia123',
+        ])->assertRedirect(route('bug-hunter.tac'));
+
+        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
+        $captchaAnswer = session('captcha_answer');
+        $this->assertNotNull($captchaAnswer);
+
+        // Invalid category + malformed URL + 4 bukti rows: back with fix guidance, no 500.
+        $response = $this->post('/bug-hunter/laporan/simpan', [
+            'kategori_insiden' => 'Not A Real Category',
+            'waktu_kejadian' => '2026-09-01T14:00',
+            'lokasi_url' => 'bukan-url',
+            'down_time' => '01:00',
+            'deskripsi' => 'Deskripsi valid untuk pengujian.',
+            'tindakan_teknis' => 'Tindakan valid.',
+            'captcha_answer' => $captchaAnswer,
+            'bukti' => [
+                ['jenis' => 'url', 'url' => 'https://example.com/1'],
+                ['jenis' => 'url', 'url' => 'https://example.com/2'],
+                ['jenis' => 'url', 'url' => 'https://example.com/3'],
+                ['jenis' => 'url', 'url' => 'https://example.com/4'],
+            ],
+        ]);
+        $response->assertSessionHasErrors(['kategori_insiden', 'lokasi_url', 'bukti']);
+        $this->assertDatabaseCount('lapor_insiden', 0);
+
+        // Form re-renders with summary + per-field messages (no exception).
+        $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
+    }
+
+    public function test_bukti_row_error_summary_links_to_the_exact_control(): void
+    {
+        $this->post('/register', [
+            'name' => 'Bukti Anchor Tester',
+            'email' => 'bukti-anchor@example.com',
+            'password' => 'rahasia123',
+            'password_confirmation' => 'rahasia123',
+        ])->assertRedirect(route('bug-hunter.tac'));
+
+        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
+        $captchaAnswer = session('captcha_answer');
+        $this->assertNotNull($captchaAnswer);
+
+        // Row 1 carries a malformed URL: error key is bukti.1.url.
+        $this->post('/bug-hunter/laporan/simpan', [
+            'kategori_insiden' => 'Phishing',
+            'waktu_kejadian' => '2026-09-01T14:00',
+            'lokasi_url' => 'https://portal.jakarta.go.id/halaman/abc',
+            'down_time' => '01:00',
+            'deskripsi' => 'Deskripsi valid untuk pengujian anchor.',
+            'tindakan_teknis' => 'Tindakan valid.',
+            'captcha_answer' => $captchaAnswer,
+            'bukti' => [
+                ['jenis' => 'url', 'url' => 'https://example.com/valid'],
+                ['jenis' => 'url', 'url' => 'bukan-url'],
+            ],
+        ])->assertSessionHasErrors(['bukti.1.url']);
+        $this->assertDatabaseCount('lapor_insiden', 0);
+
+        // Summary links to the exact row control. Row inputs themselves are
+        // rebuilt client-side from oldBukti, so assert the restore payload
+        // carries both rows (same sequential indexes → same control ids).
+        // Full anchor-to-control landing still needs a JS browser check.
+        $this->get('/bug-hunter/laporan/baru')->assertStatus(200)
+            ->assertSee('href="#bukti-1-url"', false)
+            ->assertSee('example.com\\/valid', false)
+            ->assertSee('bukan-url', false);
+    }
+
     public function test_math_captcha_on_incident_form(): void
     {
         $this->post('/register', [

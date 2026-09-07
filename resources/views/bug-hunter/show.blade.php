@@ -200,6 +200,29 @@
                 <h2 class="detail-card__title">Informasi Laporan</h2>
             </div>
 
+            <div style="padding:14px 32px;border-bottom:1px solid var(--border);font-size:12.5px;color:var(--mid);line-height:1.7;">
+                @switch($report->status)
+                    @case('menunggu_validasi')
+                        Laporan diterima dan antre untuk validasi CSIRT (maksimal 7 hari kerja).
+                        @break
+                    @case('divalidasi')
+                        Laporan dinyatakan valid dan tidak duplikat; menunggu tindak lanjut penanganan.
+                        @break
+                    @case('ditindaklanjuti')
+                        Tim CSIRT sedang menangani temuan Anda.
+                        @break
+                    @case('dipulihkan')
+                        Perbaikan layanan terdampak sedang dalam tahap pemulihan.
+                        @break
+                    @case('selesai')
+                        Penanganan selesai. Terima kasih atas laporan Anda.
+                        @break
+                    @case('ditolak')
+                        Laporan tidak dapat diproses (mis. duplikat atau di luar ruang lingkup). Hubungi CSIRT bila perlu klarifikasi.
+                        @break
+                @endswitch
+            </div>
+
             <div class="detail-list">
                 <div class="detail-item">
                     <div class="detail-item__label">No Tiket</div>

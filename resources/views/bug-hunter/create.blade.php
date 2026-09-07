@@ -169,6 +169,13 @@
     gap: 4px;
 }
 
+.field-hint {
+    font-size: 12.5px;
+    color: var(--mid);
+    margin-top: 6px;
+    line-height: 1.6;
+}
+
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -335,14 +342,25 @@
     <div class="container">
 
         @if ($errors->any())
-        <div class="validation-summary" role="alert">
-            <p><i class="bi bi-exclamation-circle-fill"></i> Harap perbaiki kesalahan berikut:</p>
+        <div class="validation-summary" role="alert" tabindex="-1" id="validation-summary" autofocus>
+            <p><i class="bi bi-exclamation-circle-fill"></i> Harap perbaiki {{ $errors->count() }} kesalahan berikut:</p>
             <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                @foreach ($errors->keys() as $field)
+                {{-- bukti.N.(jenis|file|url) rows are restored with identical 0-based
+                     indexes after a failed submit, so link straight to the control;
+                     anything else bukti-related falls back to the group anchor. --}}
+                @php
+                    if (preg_match('/^bukti\.(\d+)\.(jenis|file|url)$/', $field, $m)) {
+                        $anchor = "bukti-{$m[1]}-{$m[2]}";
+                    } else {
+                        $anchor = str_starts_with($field, 'bukti') ? 'field-bukti' : 'field-' . str_replace(['.', '_'], '-', $field);
+                    }
+                @endphp
+                <li><a href="#{{ $anchor }}" style="color:inherit;">{{ $errors->first($field) }}</a></li>
                 @endforeach
             </ul>
         </div>
+        <script>document.getElementById('validation-summary')?.focus();</script>
         @endif
 
         <form class="form-card" method="POST"
@@ -354,99 +372,123 @@
             <div class="form-step__divider"></div>
 
             <div class="form-field">
-                <label class="lapor-label" for="kategori_insiden">
-                    Kategori Insiden <span class="req">*</span>
+                <label class="lapor-label" for="field-kategori-insiden">
+                    Kategori Insiden <span class="req" aria-hidden="true">*</span>
                 </label>
-                <select id="kategori_insiden" name="kategori_insiden"
-                        class="lapor-select lapor-input @error('kategori_insiden') is-invalid @enderror">
+                <select id="field-kategori-insiden" name="kategori_insiden"
+                        class="lapor-select lapor-input @error('kategori_insiden') is-invalid @enderror"
+                        aria-describedby="hint-kategori-insiden @error('kategori_insiden') err-kategori-insiden @enderror"
+                        @error('kategori_insiden') aria-invalid="true" @enderror required>
                     <option value="" disabled {{ old('kategori_insiden') ? '' : 'selected' }}>Pilih kategori...</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category }}" {{ old('kategori_insiden') === $category ? 'selected' : '' }}>{{ $category }}</option>
                     @endforeach
                 </select>
+                <div class="field-hint" id="hint-kategori-insiden">Pilih jenis serangan yang paling mendekati temuan Anda.</div>
                 @error('kategori_insiden')
-                <div class="field-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                <div class="field-error" id="err-kategori-insiden" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-row">
                 <div class="form-field">
-                    <label class="lapor-label" for="waktu_kejadian">
-                        Waktu Kejadian <span class="req">*</span>
+                    <label class="lapor-label" for="field-waktu-kejadian">
+                        Waktu Kejadian <span class="req" aria-hidden="true">*</span>
                     </label>
-                    <input type="datetime-local" id="waktu_kejadian" name="waktu_kejadian"
+                    <input type="datetime-local" id="field-waktu-kejadian" name="waktu_kejadian"
                            class="lapor-input @error('waktu_kejadian') is-invalid @enderror"
-                           value="{{ old('waktu_kejadian') }}" required>
+                           value="{{ old('waktu_kejadian') }}" required
+                           aria-describedby="hint-waktu-kejadian @error('waktu_kejadian') err-waktu-kejadian @enderror"
+                           @error('waktu_kejadian') aria-invalid="true" @enderror>
+                    <div class="field-hint" id="hint-waktu-kejadian">Kapan kejadian pertama kali diketahui? Isi tanggal dan jam.</div>
                     @error('waktu_kejadian')
-                    <div class="field-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                    <div class="field-error" id="err-waktu-kejadian" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                     @enderror
                 </div>
                 <div class="form-field">
-                    <label class="lapor-label" for="down_time">
-                        Down Time <span class="req">*</span>
+                    <label class="lapor-label" for="field-down-time">
+                        Down Time <span class="req" aria-hidden="true">*</span>
                     </label>
-                    <input type="time" id="down_time" name="down_time"
+                    <input type="time" id="field-down-time" name="down_time"
                            class="lapor-input @error('down_time') is-invalid @enderror"
-                           value="{{ old('down_time') }}" required>
+                           value="{{ old('down_time') }}" required
+                           aria-describedby="hint-down-time @error('down_time') err-down-time @enderror"
+                           @error('down_time') aria-invalid="true" @enderror>
+                    <div class="field-hint" id="hint-down-time">Lama layanan tidak dapat diakses, format jam:menit. Isi 00:00 bila tidak ada gangguan layanan.</div>
                     @error('down_time')
-                    <div class="field-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                    <div class="field-error" id="err-down-time" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                     @enderror
                 </div>
             </div>
 
             <div class="form-field">
-                <label class="lapor-label" for="lokasi_url">
-                    Lokasi Insiden / URL Validasi <span class="req">*</span>
+                <label class="lapor-label" for="field-lokasi-url">
+                    Lokasi Insiden / URL Validasi <span class="req" aria-hidden="true">*</span>
                 </label>
-                <input type="url" id="lokasi_url" name="lokasi_url"
+                <input type="url" id="field-lokasi-url" name="lokasi_url"
                        class="lapor-input @error('lokasi_url') is-invalid @enderror"
                        value="{{ old('lokasi_url') }}" required
+                       aria-describedby="hint-lokasi-url @error('lokasi_url') err-lokasi-url @enderror"
+                       @error('lokasi_url') aria-invalid="true" @enderror
                        placeholder="https://portal.jakarta.go.id/halaman/...">
+                <div class="field-hint" id="hint-lokasi-url">Alamat halaman terdampak, diawali https://. Utamakan domain *.jakarta.go.id.</div>
                 @error('lokasi_url')
-                <div class="field-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                <div class="field-error" id="err-lokasi-url" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-field">
-                <label class="lapor-label" for="deskripsi">
-                    Deskripsi Kejadian <span class="req">*</span>
+                <label class="lapor-label" for="field-deskripsi">
+                    Deskripsi Kejadian <span class="req" aria-hidden="true">*</span>
                 </label>
-                <textarea id="deskripsi" name="deskripsi" rows="5"
+                <textarea id="field-deskripsi" name="deskripsi" rows="5"
                           class="lapor-textarea @error('deskripsi') is-invalid @enderror"
                           required
+                          aria-describedby="hint-deskripsi @error('deskripsi') err-deskripsi @enderror"
+                          @error('deskripsi') aria-invalid="true" @enderror
                           placeholder="Jelaskan kronologi kejadian secara detail...">{{ old('deskripsi') }}</textarea>
+                <div class="field-hint" id="hint-deskripsi">Ceritakan kronologi, dampak, dan langkah reproduksi. Cuplikan payload/teknis boleh disertakan apa adanya.</div>
                 @error('deskripsi')
-                <div class="field-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                <div class="field-error" id="err-deskripsi" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                 @enderror
             </div>
 
             <div class="form-field">
-                <label class="lapor-label" for="tindakan_teknis">
-                    Tindakan Teknis <span class="req">*</span>
+                <label class="lapor-label" for="field-tindakan-teknis">
+                    Tindakan Teknis <span class="req" aria-hidden="true">*</span>
                 </label>
-                <textarea id="tindakan_teknis" name="tindakan_teknis" rows="3"
+                <textarea id="field-tindakan-teknis" name="tindakan_teknis" rows="3"
                           class="lapor-textarea @error('tindakan_teknis') is-invalid @enderror"
                           required
+                          aria-describedby="hint-tindakan-teknis @error('tindakan_teknis') err-tindakan-teknis @enderror"
+                          @error('tindakan_teknis') aria-invalid="true" @enderror
                           placeholder="Langkah teknis yang telah Anda lakukan atau yang Anda rekomendasikan...">{{ old('tindakan_teknis') }}</textarea>
+                <div class="field-hint" id="hint-tindakan-teknis">Tulis langkah mitigasi yang sudah dilakukan atau disarankan (mis. blokir IP, rotasi kredensial).</div>
                 @error('tindakan_teknis')
-                <div class="field-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                <div class="field-error" id="err-tindakan-teknis" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                 @enderror
             </div>
 
-            <h2 class="form-step__title" style="font-size:20px; margin-top:8px;">Bukti Laporan</h2>
+            <fieldset style="border:none;padding:0;margin:0;">
+            <legend class="form-step__title" style="font-size:20px; margin-top:8px; padding:0;">Bukti Laporan</legend>
             <div class="form-step__divider"></div>
 
             <div class="evidence-head">
-                <span class="evidence-hint">Maksimal 3 bukti. Setiap bukti: <strong>File</strong> (PNG/JPG/GIF/PDF, maks. 5MB) <strong>atau</strong> <strong>URL</strong>.</span>
+                <span class="evidence-hint" id="hint-bukti">Maksimal 3 bukti. Setiap bukti: <strong>File</strong> (PNG/JPG/GIF/PDF, maks. 5MB) <strong>atau</strong> <strong>URL</strong> (diawali http:// atau https://). File tidak wajib bila sudah ada URL.</span>
             </div>
 
-            <div id="evidence-list"></div>
+            @if ($errors->has('bukti') || collect($errors->keys())->contains(fn ($k) => str_starts_with($k, 'bukti')))
+            <div class="field-error" id="err-bukti" role="alert" style="margin-bottom:12px;"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $errors->first('bukti') ?: $errors->first(collect($errors->keys())->first(fn ($k) => str_starts_with($k, 'bukti'))) }}</div>
+            @endif
+
+            <div id="field-bukti" role="group" aria-describedby="hint-bukti"></div>
 
             <div class="form-field">
-                <button type="button" class="btn-add-evidence" id="btn-add-evidence">
+                <button type="button" class="btn-add-evidence" id="btn-add-evidence" aria-describedby="hint-bukti">
                     <i class="bi bi-plus-circle" aria-hidden="true"></i> Tambah Bukti
                 </button>
             </div>
+            </fieldset>
 
             @include('components.captcha', ['question' => $captchaQuestion])
 
@@ -466,7 +508,7 @@
 <script>
 (function () {
     const MAX_EVIDENCE = 3;
-    const list = document.getElementById('evidence-list');
+    const list = document.getElementById('field-bukti');
     const addBtn = document.getElementById('btn-add-evidence');
     let count = 0;
 
@@ -477,24 +519,34 @@
         div.className = 'bukti-row';
         div.dataset.index = index;
         div.innerHTML =
-            '<select name="bukti[' + index + '][jenis]" class="lapor-select lapor-input bukti-jenis">' +
-                '<option value="file"' + (jenis === 'url' ? '' : ' selected') + '>File</option>' +
-                '<option value="url"' + (jenis === 'url' ? ' selected' : '') + '>URL</option>' +
-            '</select>' +
             '<div>' +
-                '<input type="file" name="bukti[' + index + '][file]" class="lapor-input bukti-file" accept=".png,.jpg,.jpeg,.gif,.pdf" style="' + (jenis === 'url' ? 'display:none;' : '') + '">' +
-                '<input type="url" name="bukti[' + index + '][url]" class="lapor-input bukti-url" placeholder="https://..." value="' + (urlValue || '') + '" style="' + (jenis === 'url' ? '' : 'display:none;') + '">' +
+                '<label class="lapor-label" for="bukti-' + index + '-jenis" style="font-size:11px;">Jenis Bukti ' + (index + 1) + '</label>' +
+                '<select id="bukti-' + index + '-jenis" name="bukti[' + index + '][jenis]" class="lapor-select lapor-input bukti-jenis">' +
+                    '<option value="file"' + (jenis === 'url' ? '' : ' selected') + '>File</option>' +
+                    '<option value="url"' + (jenis === 'url' ? ' selected' : '') + '>URL</option>' +
+                '</select>' +
             '</div>' +
-            '<button type="button" class="btn-remove-evidence" aria-label="Hapus bukti"><i class="bi bi-trash3"></i></button>';
+            '<div>' +
+                '<label class="lapor-label bukti-file-label" for="bukti-' + index + '-file" style="font-size:11px;' + (jenis === 'url' ? 'display:none;' : '') + '">File Bukti ' + (index + 1) + ' (maks. 5MB)</label>' +
+                '<input type="file" id="bukti-' + index + '-file" name="bukti[' + index + '][file]" class="lapor-input bukti-file" accept=".png,.jpg,.jpeg,.gif,.pdf" aria-describedby="hint-bukti" style="' + (jenis === 'url' ? 'display:none;' : '') + '">' +
+                '<label class="lapor-label bukti-url-label" for="bukti-' + index + '-url" style="font-size:11px;' + (jenis === 'url' ? '' : 'display:none;') + '">URL Bukti ' + (index + 1) + '</label>' +
+                '<input type="url" id="bukti-' + index + '-url" name="bukti[' + index + '][url]" class="lapor-input bukti-url" placeholder="https://..." value="' + (urlValue || '') + '" aria-describedby="hint-bukti" style="' + (jenis === 'url' ? '' : 'display:none;') + '">' +
+            '</div>' +
+            '<button type="button" class="btn-remove-evidence" aria-label="Hapus bukti ' + (index + 1) + '"><i class="bi bi-trash3" aria-hidden="true"></i></button>';
 
         const jenisSel = div.querySelector('.bukti-jenis');
         const fileInput = div.querySelector('.bukti-file');
         const urlInput = div.querySelector('.bukti-url');
+        const fileLabel = div.querySelector('.bukti-file-label');
+        const urlLabel = div.querySelector('.bukti-url-label');
 
         jenisSel.addEventListener('change', function () {
             const isUrl = this.value === 'url';
             fileInput.style.display = isUrl ? 'none' : '';
             urlInput.style.display = isUrl ? '' : 'none';
+            fileLabel.style.display = isUrl ? 'none' : '';
+            urlLabel.style.display = isUrl ? '' : 'none';
+            if (isUrl) { urlInput.focus(); } else { fileInput.focus(); }
         });
 
         div.querySelector('.btn-remove-evidence').addEventListener('click', function () {

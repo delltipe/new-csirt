@@ -194,6 +194,11 @@
                 </a>
             </div>
 
+            <div style="padding:14px 28px;border-bottom:1px solid var(--border);font-size:12.5px;color:var(--mid);line-height:1.7;">
+                Alur status laporan: <strong>Menunggu Validasi</strong> → <strong>Divalidasi</strong> → <strong>Ditindaklanjuti</strong> → <strong>Dipulihkan</strong> → <strong>Selesai</strong>.
+                Laporan yang tidak valid ditandai <strong>Ditolak</strong>. Validasi maksimal 7 hari kerja; buka halaman Detail untuk CWE, severity, dan bukti Anda.
+            </div>
+
             @if($reports->isEmpty())
                 <div class="empty-state">
                     <i class="bi bi-inbox" aria-hidden="true"></i>
