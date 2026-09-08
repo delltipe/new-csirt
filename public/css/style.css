@@ -5,11 +5,10 @@
    ============================================================= */
 
 /* -------------------------------------------------------------
-   GOOGLE FONTS IMPORT
-   Include this in your main layout <head> instead if preferred:
-   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+   GOOGLE FONTS — loaded via <link> in layouts/app.blade.php only.
+   @import removed to avoid duplicate fetch (audit 2026-09-08: saved 1 extra
+   fonts.css request + 8 font files chained). Keep single authoritative path.
    ------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 
 
 /* -------------------------------------------------------------

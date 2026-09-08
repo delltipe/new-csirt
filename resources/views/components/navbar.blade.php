@@ -334,31 +334,31 @@
 <nav class="nav-main" aria-label="Navigasi utama">
     <div class="container">
 
-        {{-- Logo --}}
+        {{-- Logo — optimized 224x80 (was 600x214) --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Beranda JakartaProv-CSIRT">
             <img src="{{ asset('jakarta-csirt-logo.png') }}"
                  alt="Jakarta CSIRT Logo"
+                 width="134" height="48"
+                 loading="eager" decoding="async" fetchpriority="high"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
             <span class="nav-logo__fallback">CSIRT</span>
         </a>
 
-        {{-- Partner logos with outbound links --}}
+        {{-- Partner logos with outbound links — optimized 120px (was 1500px), single-img swap avoids double fetch --}}
         <div class="nav-partners" role="group" aria-label="Logo instansi mitra">
             <a href="https://www.jakarta.go.id/" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya">
-                <img src="{{ asset('jaya_raya.png') }}" alt="Jaya Raya">
+                <img src="{{ asset('jaya_raya.png') }}" alt="Jaya Raya" width="68" height="72" loading="eager" decoding="async">
             </a>
             <a href="https://diskominfotik.jakarta.go.id/" target="_blank" rel="noopener" title="Diskominfo DKI Jakarta" aria-label="Logo Diskominfo DKI Jakarta">
-                <img src="{{ asset('logo_diskominfo.png') }}" alt="Diskominfo DKI Jakarta">
+                <img src="{{ asset('logo_diskominfo.png') }}" alt="Diskominfo DKI Jakarta" width="68" height="77" loading="eager" decoding="async">
             </a>
             <a href="https://jakarta500.id/" target="_blank" rel="noopener" title="5 Abad Jakarta" aria-label="Logo 5 Abad Jakarta">
                 <span class="nav-partner">
-                    <img class="partner-light" src="{{ asset('logo_5abad.png') }}" alt="5 Abad Jakarta">
-                    <img class="partner-dark" src="{{ asset('logo_5abad_white.svg') }}" alt="5 Abad Jakarta">
+                    <img id="partner-5abad" src="{{ asset('logo_5abad.png') }}" data-light="{{ asset('logo_5abad.png') }}" data-dark="{{ asset('logo_5abad_white.svg') }}" alt="5 Abad Jakarta" width="80" height="55" loading="eager" decoding="async" fetchpriority="low">
                 </span>
             </a>
             <span class="nav-partner">
-                <img class="partner-light" src="{{ asset('HUTRI81.png') }}" alt="HUT RI ke-81">
-                <img class="partner-dark" src="{{ asset('hutri81_white.png') }}" alt="HUT RI ke-81">
+                <img id="partner-hutri81" src="{{ asset('HUTRI81.png') }}" data-light="{{ asset('HUTRI81.png') }}" data-dark="{{ asset('hutri81_white.png') }}" alt="HUT RI ke-81" width="55" height="55" loading="eager" decoding="async" fetchpriority="low">
             </span>
         </div>
 

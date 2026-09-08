@@ -581,20 +581,27 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
 @endphp
 <section class="hero {{ $hasSlider ? 'hero--slider' : '' }}" aria-label="Beranda JakartaProv-CSIRT" id="heroSlider">
     @if($hasSlider)
+        {{-- Preload LCP hero image only (first slide eager, rest deferred via data-bg to avoid 4× download) --}}
+        @php $firstHeroImg = $heroSlides->first()->optimized_gambar ?? $heroSlides->first()->gambar; @endphp
+        @if($firstHeroImg)
+            <link rel="preload" as="image" href="{{ $firstHeroImg }}" fetchpriority="high">
+        @endif
         <div class="hero__track" id="heroTrack">
             @foreach($heroSlides as $index => $slide)
                 @php
-                    $img = $slide->gambar;
-                    if ($img && !str_starts_with($img, 'http://') && !str_starts_with($img, 'https://')) {
+                    $rawImg = $slide->optimized_gambar ?? $slide->gambar;
+                    $img = $rawImg;
+                    if ($img && !str_starts_with($img, 'http://') && !str_starts_with($img, 'https://') && !str_starts_with($img, '/')) {
                         $img = \Illuminate\Support\Facades\Storage::url($img);
                     }
                     if (!$img) {
-                        $img = 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1920&q=80';
+                        $img = asset('images/hero-optimized/1.webp');
                     }
                     $link = $slide->tautan ?: route('bug-hunter.dashboard');
+                    $isLcp = $index === 0;
                 @endphp
                 <div class="hero__slide {{ $index === 0 ? 'is-active' : '' }}" data-index="{{ $index }}"
-                     style="background: linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%), url('{{ $img }}') center/cover no-repeat;">
+                     @if($isLcp) style="background: linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%), url('{{ $img }}') center/cover no-repeat;" @else data-bg="{{ $img }}" style="background: linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%), var(--ink) center/cover no-repeat;" @endif>
                     <div class="hero__body">
                         <div class="container">
                             <div class="hero__scrim">
@@ -740,8 +747,10 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
                 <a href="{{ route('news.show', $article->id) }}" class="news-carousel__card">
                     <div class="news-card__img-wrap">
                         <img class="news-card__img"
-                             src="{{ $article->thumbnail }}"
+                             src="{{ $article->optimized_thumbnail ?? $article->thumbnail }}"
                              alt="{{ $article->title }}"
+                             width="600" height="340"
+                             loading="lazy" decoding="async" fetchpriority="low"
                              onerror="this.src='https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&q=80'">
                     </div>
                     <div class="news-card__body">
@@ -839,8 +848,10 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
             <a href="{{ route('events.show', $event) }}" class="event-card" aria-label="{{ $event->title }}">
                 <div class="event-card__thumb-wrap">
                     <img class="event-card__thumb"
-                         src="{{ $event->thumbnail ?? 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80' }}"
+                         src="{{ $event->optimized_thumbnail ?? $event->thumbnail ?? 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80' }}"
                          alt="{{ $event->title }}"
+                         width="600" height="600"
+                         loading="lazy" decoding="async" fetchpriority="low"
                          onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80'">
                 </div>
                 @if($event->event_date)
@@ -934,7 +945,7 @@ document.addEventListener('DOMContentLoaded', function () {
         wrap.addEventListener('mouseleave', function(){ left.style.opacity=''; right.style.opacity=''; });
     })();
 });
-/* Hero slider — clone news-carousel logic, prefers-reduced-motion + pause-animations pause */
+/* Hero slider — clone news-carousel logic, prefers-reduced-motion + pause-animations pause; defer non-LCP BGs via data-bg */
 document.addEventListener('DOMContentLoaded', function(){
     var hero = document.getElementById('heroSlider');
     var track = document.getElementById('heroTrack');
@@ -949,11 +960,23 @@ document.addEventListener('DOMContentLoaded', function(){
     var timer = null;
     var userInteracted = false;
     function isPaused(){ return document.documentElement.classList.contains('accessibility-pause-animations') || document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+    function loadHeroBg(el){
+        var bg = el.getAttribute('data-bg');
+        if(!bg) return;
+        var grad = 'linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%)';
+        el.style.background = grad + ", url('" + bg + "') center/cover no-repeat";
+        el.removeAttribute('data-bg');
+    }
     function go(n){
         idx = (n + total) % total;
+        // Ensure target slide BG loaded before transition (avoid flash)
+        loadHeroBg(slides[idx]);
         track.style.transform = 'translateX(' + (-idx * 100) + '%)';
         for(var i=0;i<dots.length;i++){ var active=i===idx; dots[i].classList.toggle('is-active', active); dots[i].setAttribute('aria-selected', active ? 'true' : 'false'); }
         for(var j=0;j<slides.length;j++){ slides[j].classList.toggle('is-active', j===idx); }
+        // Preload next slide for smooth swipe
+        var nextIdx = (idx + 1) % total;
+        loadHeroBg(slides[nextIdx]);
     }
     function nextSlide(){ if(isPaused()) return; go(idx+1); }
     function startAuto(){ clearInterval(timer); timer = setInterval(nextSlide, 5000); }
@@ -966,6 +989,15 @@ document.addEventListener('DOMContentLoaded', function(){
     hero.addEventListener('mouseleave', function(){ if(!userInteracted) startAuto(); });
     document.addEventListener('visibilitychange', function(){ if(document.hidden) clearInterval(timer); else if(!userInteracted) startAuto(); });
     startAuto();
+    // Defer non-LCP hero BGs until after window.load so they don't extend Load timing (audit fix)
+    function loadDeferredHeroes(){
+        for(var k=1;k<slides.length;k++) loadHeroBg(slides[k]);
+    }
+    if(document.readyState === 'complete'){
+        setTimeout(loadDeferredHeroes, 300);
+    } else {
+        window.addEventListener('load', function(){ setTimeout(loadDeferredHeroes, 300); });
+    }
     // touch swipe
     var sx=0;
     track.addEventListener('touchstart', function(e){ sx=e.touches[0].clientX; }, {passive:true});

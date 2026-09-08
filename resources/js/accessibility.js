@@ -317,6 +317,15 @@ class AccessibilityWidget {
     } else if (this.state.contrast === 3) {
       html.classList.add('accessibility-invert');
     }
+    this.updatePartnerLogos();
+  }
+
+  updatePartnerLogos() {
+    const isDark = document.documentElement.classList.contains('accessibility-contrast-dark');
+    document.querySelectorAll('img[data-light][data-dark]').forEach((img) => {
+      const target = isDark ? img.dataset.dark : img.dataset.light;
+      if (target && img.getAttribute('src') !== target) img.setAttribute('src', target);
+    });
   }
 
   // ----- Text alignment (Left → Center → Right → Justify) -----
