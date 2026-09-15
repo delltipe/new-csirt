@@ -437,21 +437,48 @@
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
         display: flex;
         flex-direction: column;
-        animation: a11ySlideIn 0.3s var(--ease);
+        transform-origin: bottom right;
     }
 
     .accessibility-panel[hidden] {
-        display: none;
+        display: none !important;
+    }
+
+    .accessibility-panel.is-opening {
+        animation: a11ySlideIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .accessibility-panel.is-closing {
+        animation: a11ySlideOut 0.2s cubic-bezier(0.4, 0, 1, 1) both;
+        pointer-events: none;
     }
 
     @keyframes a11ySlideIn {
         from {
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(12px);
         }
         to {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+
+    @keyframes a11ySlideOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .accessibility-panel.is-opening,
+        .accessibility-panel.is-closing {
+            animation: none !important;
         }
     }
 

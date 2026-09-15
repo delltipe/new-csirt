@@ -66,11 +66,13 @@ class AccessibilityWidget {
       langBtn.setAttribute('aria-expanded', hidden ? 'true' : 'false');
     });
 
-    // Keyboard shortcut (CTRL+U)
+    // Keyboard shortcut (CTRL+U / Escape)
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
         e.preventDefault();
         this.togglePanel();
+      } else if (e.key === 'Escape' && !this.panel.hasAttribute('hidden')) {
+        this.closePanel();
       }
     });
 
@@ -114,7 +116,7 @@ class AccessibilityWidget {
   }
 
   togglePanel() {
-    if (this.panel.hasAttribute('hidden')) {
+    if (this.panel.hasAttribute('hidden') || this.panel.classList.contains('is-closing')) {
       this.openPanel();
     } else {
       this.closePanel();
@@ -122,14 +124,62 @@ class AccessibilityWidget {
   }
 
   openPanel() {
+    if (!this.panel.hasAttribute('hidden') && !this.panel.classList.contains('is-closing')) return;
+
+    this.panel.classList.remove('is-closing');
     this.panel.removeAttribute('hidden');
     this.toggle.setAttribute('aria-expanded', 'true');
+
+    const isReducedMotion = document.documentElement.classList.contains('accessibility-pause-animations') ||
+      (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    if (isReducedMotion) {
+      this.panel.classList.remove('is-opening');
+      return;
+    }
+
+    this.panel.classList.add('is-opening');
+    const onAnimEnd = () => {
+      this.panel.classList.remove('is-opening');
+      this.panel.removeEventListener('animationend', onAnimEnd);
+    };
+    this.panel.addEventListener('animationend', onAnimEnd, { once: true });
   }
 
   closePanel() {
-    this.panel.setAttribute('hidden', '');
-    this.toggle.setAttribute('aria-expanded', 'false');
+    if (this.panel.hasAttribute('hidden') || this.panel.classList.contains('is-closing')) return;
+
     this.stopVoice();
+    this.toggle.setAttribute('aria-expanded', 'false');
+
+    const isReducedMotion = document.documentElement.classList.contains('accessibility-pause-animations') ||
+      (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    if (isReducedMotion) {
+      this.panel.classList.remove('is-opening');
+      this.panel.setAttribute('hidden', '');
+      return;
+    }
+
+    this.panel.classList.remove('is-opening');
+    this.panel.classList.add('is-closing');
+
+    const handleCloseEnd = () => {
+      if (this.panel.classList.contains('is-closing')) {
+        this.panel.classList.remove('is-closing');
+        this.panel.setAttribute('hidden', '');
+      }
+      this.panel.removeEventListener('animationend', handleCloseEnd);
+    };
+
+    this.panel.addEventListener('animationend', handleCloseEnd, { once: true });
+
+    setTimeout(() => {
+      if (this.panel.classList.contains('is-closing')) {
+        this.panel.classList.remove('is-closing');
+        this.panel.setAttribute('hidden', '');
+      }
+    }, 250);
   }
 
   // Collection helpers for updates
