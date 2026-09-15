@@ -98,6 +98,78 @@
     margin: 16px 0 28px;
 }
 
+.lapor-help-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    text-decoration: none;
+    transition: background var(--ease), border-color var(--ease), color var(--ease);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.lapor-help-link:hover {
+    background: var(--navy-tint);
+    border-color: var(--navy);
+    color: var(--navy);
+}
+.lapor-help-link:focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
+}
+.lapor-help-box {
+    margin-top: 10px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--navy);
+    padding: 14px 16px;
+}
+.lapor-help-box__title {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.lapor-help-box__title i { color: var(--navy); }
+.lapor-help-box ul {
+    padding-left: 16px;
+    margin: 0;
+    list-style: disc;
+}
+.lapor-help-box li {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 6px;
+}
+.lapor-help-box li:last-child { margin-bottom: 0; }
+.lapor-help-box li strong { color: var(--navy); }
+.lapor-help-box__foot {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--mid);
+    line-height: 1.6;
+}
+.lapor-help-box__foot a {
+    color: var(--navy);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
 /* ============================================================
    FORM ELEMENTS
    ============================================================ */
@@ -314,6 +386,13 @@
 }
 .btn-cancel:hover { color: var(--ink); border-color: var(--mid); }
 
+/* Dark/high-contrast keeps help box readable (token-based, avoids generic button flatten) */
+html.accessibility-contrast-dark .lapor-help-box { background: #1a1a1a; border-color: #333333; border-left-color: #4DA6FF; }
+html.accessibility-contrast-dark button.lapor-help-link { background: #1a1a1a; color: #4DA6FF; border-color: #333333; }
+html.accessibility-contrast-dark button.lapor-help-link:hover { background: #2a2a3e; border-color: #4DA6FF; color: #4DA6FF; }
+html.accessibility-contrast-high .lapor-help-box { background: #FFFFFF; border-color: #000000; border-left-color: #000080; }
+html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; color: #000080; border-color: #000000; }
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -372,19 +451,41 @@
             <div class="form-step__divider"></div>
 
             <div class="form-field">
-                <label class="lapor-label" for="field-kategori-insiden">
-                    Kategori Insiden <span class="req" aria-hidden="true">*</span>
-                </label>
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
+                    <label class="lapor-label" for="field-kategori-insiden" style="margin-bottom:0;">
+                        Kategori Insiden <span class="req" aria-hidden="true">*</span>
+                    </label>
+                    <button type="button" class="lapor-help-link" id="btn-bantuan-kategori"
+                            aria-expanded="false" aria-controls="bantuan-kategori">
+                        <i class="bi bi-question-circle" aria-hidden="true"></i> Panduan kategori
+                    </button>
+                </div>
                 <select id="field-kategori-insiden" name="kategori_insiden"
                         class="lapor-select lapor-input @error('kategori_insiden') is-invalid @enderror"
-                        aria-describedby="hint-kategori-insiden @error('kategori_insiden') err-kategori-insiden @enderror"
+                        aria-describedby="hint-kategori-insiden bantuan-kategori @error('kategori_insiden') err-kategori-insiden @enderror"
                         @error('kategori_insiden') aria-invalid="true" @enderror required>
                     <option value="" disabled {{ old('kategori_insiden') ? '' : 'selected' }}>Pilih kategori...</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category }}" {{ old('kategori_insiden') === $category ? 'selected' : '' }}>{{ $category }}</option>
                     @endforeach
                 </select>
-                <div class="field-hint" id="hint-kategori-insiden">Pilih jenis serangan yang paling mendekati temuan Anda.</div>
+                <div class="field-hint" id="hint-kategori-insiden">Pilih jenis serangan yang paling mendekati temuan Anda. Klik <em>Panduan kategori</em> untuk penjelasan singkat tiap pilihan.</div>
+                <div id="bantuan-kategori" class="lapor-help-box" hidden>
+                    <div class="lapor-help-box__title"><i class="bi bi-info-circle" aria-hidden="true"></i> Cara memilih kategori</div>
+                    <ul>
+                        <li><strong>Website Defacement</strong> — tampilan situs diubah tanpa izin (mis. pesan peretasan).</li>
+                        <li><strong>Phishing</strong> — halaman/login palsu yang meniru domain resmi untuk mencuri kredensial.</li>
+                        <li><strong>Malware / Ransomware</strong> — file/aplikasi berbahaya, enkripsi data, atau perilaku mencurigakan.</li>
+                        <li><strong>Kebocoran Data</strong> — data pribadi/rahasia terekspos atau dapat diakses tanpa otorisasi.</li>
+                        <li><strong>DDoS / Penolakan Layanan</strong> — layanan lambat/tidak dapat diakses akibat lonjakan trafik serangan.</li>
+                        <li><strong>SQL Injection / XSS</strong> — celah injeksi pada form/URL yang memungkinkan eksekusi kode atau pembacaan data.</li>
+                        <li><strong>Social Engineering</strong> — manipulasi pengguna (mis. telepon/email mengatasnamakan instansi).</li>
+                        <li><strong>Lainnya</strong> — tidak termasuk di atas; jelaskan detail pada kolom Deskripsi.</li>
+                    </ul>
+                    <div class="lapor-help-box__foot">
+                        Masih ragu? Pilih yang paling mendekati, lalu jelaskan detail di <em>Deskripsi Kejadian</em>. Lihat juga <a href="{{ route('guides.index') }}" target="_blank" rel="noopener">Panduan Teknis</a> untuk mitigasi umum.
+                    </div>
+                </div>
                 @error('kategori_insiden')
                 <div class="field-error" id="err-kategori-insiden" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                 @enderror
@@ -580,6 +681,19 @@
             if (val && val.jenis) addRow(val);
         });
     }
+
+    // Help toggle for Kategori (E) — unobtrusive, boxy, no modal
+    (function () {
+        var btn = document.getElementById('btn-bantuan-kategori');
+        var box = document.getElementById('bantuan-kategori');
+        if (!btn || !box) return;
+        btn.addEventListener('click', function () {
+            var hidden = box.hasAttribute('hidden');
+            if (hidden) box.removeAttribute('hidden'); else box.setAttribute('hidden', '');
+            btn.setAttribute('aria-expanded', hidden ? 'true' : 'false');
+            if (hidden) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    })();
 })();
 </script>
 
