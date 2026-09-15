@@ -1,3 +1,4 @@
+import os
 from docx import Document
 from docx.shared import Pt, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -172,7 +173,7 @@ toc = [
     "BAB 5 HASIL DAN PEMBAHASAN",
     "5.1 Perancangan Design System",
     "5.2 Redesain Antarmuka Publik",
-    "5.3 Alur Pelaporan Insiden (Multi-Step Wizard)",
+    "5.3 Sistem Pelaporan Insiden Siber (Portal Bug Hunter)",
     "5.4 Penerapan Aksesibilitas WCAG 2.1",
     "5.5 Penguatan Keamanan dan Stabilitas",
     "5.6 Fitur Pendukung",
@@ -216,7 +217,7 @@ body(
 sub("1.2 Tujuan Magang")
 bullet("Melakukan migrasi codebase portal dari framework Yii ke Laravel 12 agar lebih mudah dikembangkan dan dipelihara.")
 bullet("Merancang ulang antarmuka dan pengalaman pengguna (UI/UX) portal berdasarkan design system yang konsisten.")
-bullet("Menyederhanakan alur pelaporan insiden menjadi wizard multi-langkah yang intuitif bagi pengguna non-teknis.")
+bullet("Merancang sistem pelaporan insiden terstruktur (single-page form) yang intuitif dengan gerbang persetujuan TaC, manajemen bukti, dan pelacakan tiket status.")
 bullet("Menerapkan prinsip aksesibilitas WCAG 2.1, termasuk mode kontras tinggi dan mode gelap.")
 bullet("Memperkuat keamanan dan stabilitas aplikasi, meliputi validasi, penanganan error, dan rate limiting.")
 sub("1.3 Ruang Lingkup")
@@ -294,7 +295,7 @@ chap("BAB 4 METODOLOGI DAN PELAKSANAAN MAGANG")
 sub("4.1 Metodologi Pelaksanaan")
 body("Pelaksanaan magang dilakukan melalui lima tahap utama dengan pendekatan iteratif:")
 bullet("Analisis: studi terhadap sistem eksisting berbasis Yii, identifikasi kebutuhan pengguna, dan perumusan lingkup pekerjaan.")
-bullet("Perancangan: penyusunan design system berbasis token, perancangan alur wizard pelaporan insiden, dan wireframe antarmuka.")
+bullet("Perancangan: penyusunan design system berbasis token, perancangan sistem pelaporan insiden dan alur validasi, serta wireframe antarmuka.")
 bullet("Implementasi: migrasi dan pengembangan menggunakan Laravel 12, Blade, serta CSS custom properties.")
 bullet("Pengujian: pengujian fungsional, pemeriksaan kontras aksesibilitas, dan pengujian responsivitas lintas perangkat.")
 bullet("Dokumentasi: penulisan dokumentasi proyek secara paralel agar konteks pengembangan tetap terjaga.")
@@ -309,9 +310,9 @@ sub("4.3 Jadwal Pelaksanaan")
 jadwal = [
     ("Periode", "Kegiatan"),
     ("Februari – Maret", "Studi sistem eksisting (codebase Yii), persiapan lingkungan pengembangan Laravel, dan perumusan kebutuhan"),
-    ("April – Mei", "Perancangan design system, wireframe antarmuka, dan alur wizard pelaporan insiden"),
+    ("April – Mei", "Perancangan design system, wireframe antarmuka, dan arsitektur pelaporan insiden"),
     ("Juni", "Implementasi redesain antarmuka publik dan komponen halaman"),
-    ("Juli", "Implementasi aksesibilitas dan wizard pelaporan; pengujian serta perbaikan; penyusunan testimoni magang (27 Juli)"),
+    ("Juli", "Implementasi widget aksesibilitas dan portal pelaporan insiden; pengujian serta perbaikan; penyusunan testimoni magang (27 Juli)"),
     ("Agustus", "Finalisasi dokumentasi, penyempurnaan aplikasi, penyusunan laporan magang, dan proposal pre-thesis (22 Agustus)"),
 ]
 table = doc.add_table(rows=len(jadwal), cols=2)
@@ -356,48 +357,58 @@ body(
     "digunakan untuk konsistensi tampilan, sedangkan Bootstrap hanya dipakai untuk grid, formulir, "
     "dan tabel."
 )
-sub("5.3 Alur Pelaporan Insiden (Multi-Step Wizard)")
+sub("5.3 Sistem Pelaporan Insiden Siber (Portal Bug Hunter)")
 body(
-    "Formulir pelaporan insiden diubah dari satu halaman panjang menjadi wizard tiga langkah "
-    "tanpa berpindah halaman: langkah pertama mengisi data pelapor (nama, surel, telepon, tanggal "
-    "ditemukan), langkah kedua data situs (domain dan URL), serta langkah ketiga detail insiden "
-    "(deskripsi, jenis dan tingkat risiko, skor CVSS, bukti, dan rekomendasi). Kolom risiko "
-    "dibuat opsional agar ramah pengguna non-teknis, terdapat verifikasi CAPTCHA bertuliskan "
-    "\u201cJKT\u201d, serta unggah bukti berupa berkas PNG/JPG maksimal 2 MB. Setelah terkirim, "
-    "pengguna diarahkan ke halaman terima kasih."
+    "Formulir pelaporan insiden dirancang ulang menjadi formulir satu halaman (single-page form) "
+    "yang terstruktur rapi ke dalam dua seksi utama: Data Insiden (kategori serangan, waktu kejadian, "
+    "lokasi URL terdampak, estimasi down time, deskripsi kronologi, dan tindakan teknis/mitigasi) "
+    "serta Bukti Laporan (hingga 3 bukti dinamis berupa berkas PNG/JPG/GIF/PDF maksimal 5 MB atau tautan URL pembuktian). "
+    "Formulir dilengkapi panduan interaktif pemilihan kategori serangan bagi pengguna awam, "
+    "penanganan error yang mengarah langsung ke input bermasalah, serta verifikasi CAPTCHA matematika ringan."
+)
+body(
+    "Untuk menjamin kepatuhan hukum dan transparansi penanganan, pelaporan insiden diintegrasikan dengan portal akun Bug Hunter "
+    "yang mewajibkan persetujuan syarat dan ketentuan (Terms & Conditions gate) berversi (tac_agreements). "
+    "Setiap laporan yang dikirim otomatis memperoleh nomor tiket resmi berformat INS-YYYY-XXXX. "
+    "Pelapor dapat memantau progres penanganan secara langsung melalui dashboard pelapor dengan alur status "
+    "lima tahap: Menunggu Validasi, Divalidasi, Ditindaklanjuti, Dipulihkan, hingga Selesai (serta status Ditolak). "
+    "Di sisi pengelola CSIRT, panel admin menyediakan review triage untuk memverifikasi laporan, menetapkan taksonomi "
+    "CWE dan tingkat keparahan (Severity), serta mekanisme retensi bukti hukum melalui soft-delete."
 )
 sub("5.4 Penerapan Aksesibilitas WCAG 2.1")
 body(
-    "Widget aksesibilitas dipasang pada seluruh halaman dengan tiga mode: kontras tinggi, mode "
-    "gelap, dan mode default. Implementasinya memanfaatkan CSS custom properties yang ditimpa "
-    "melalui berkas khusus, dengan JavaScript yang mengalihkan kelas pada elemen root. Dengan "
-    "demikian, seluruh komponen yang menggunakan token akan menyesuaikan warnanya secara "
-    "otomatis, memenuhi prinsip kontras warna pada WCAG 2.1."
+    "Widget aksesibilitas modern (Versi 2.0 yang selaras dengan portal resmi jakarta.go.id) dipasang pada seluruh halaman. "
+    "Widget ini menyediakan ragam penyesuaian: pembaca teks bersuara (Web Speech API Text-to-Speech bahasa Indonesia), "
+    "skala ukuran font, skala abu-abu (grayscale), kontras tinggi, mode gelap, penyesuaian tinggi baris dan spasi teks, "
+    "font ramah disleksia, kursor besar, serta penghentian animasi. Seluruh pengaturan menggunakan token CSS custom properties "
+    "yang persisten di localStorage dengan skrip FOUC guard pada head dokumen agar tidak terjadi kedipan visual saat halaman dimuat."
 )
 sub("5.5 Penguatan Keamanan dan Stabilitas")
 body(
     "Seluruh pengiriman formulir dan operasi CRUD admin dibungkus dalam penanganan error "
     "(try/catch) sehingga kegagalan tidak menampilkan halaman error mentah, melainkan pesan "
     "berbahasa Indonesia yang informatif. Formulir publik dibatasi dengan rate limiting sebanyak "
-    "60 permintaan per menit per IP, dan validasi dilakukan di sisi server. Rute admin dilindungi "
-    "middleware autentikasi dan pemeriksaan status admin."
+    "60 permintaan per menit per IP, validasi sisi server yang tangguh terhadap payload pengujian penetrasi, "
+    "serta integritas referensial basis data dengan foreign key dan timestamp di seluruh entitas."
 )
 sub("5.6 Fitur Pendukung")
 body(
-    "Fitur pendukung yang turut dikerjakan antara lain pencarian site-wide yang mencakup enam "
-    "jenis konten (berita, peringatan, kegiatan, infografis, peraturan, panduan) dengan kata kunci "
-    "minimal dua karakter, panel admin dengan tab dan pagination 15 baris per tab beserta status "
-    "tab yang bertahan antar halaman, serta data seed untuk kebutuhan pengembangan dan pengujian."
+    "Fitur pendukung yang turut dikerjakan antara lain: (1) slider hero dinamis pada beranda dengan "
+    "pengelolaan spanduk aktif, pengurutan urutan tayang, dan optimasi gambar WebP melalui panel admin; (2) pencarian "
+    "global full-text dengan perangkingan relevansi mencakup enam jenis konten; (3) manajemen pesan "
+    "masuk masyarakat (kontak kami) dengan peta interaktif lokasi kantor Diskominfotik dan tautan hotline resmi "
+    "(WhatsApp dan surel csirt@jakarta.go.id); (4) panel admin terpadu dengan komponen tabel data kustom dan pagination; "
+    "serta (5) data seed realistis hasil kurasi konten riil untuk pengujian komprehensif."
 )
 sub("5.7 Pembahasan Umum")
 body(
     "Setelah modernisasi, portal CSIRT DKI Jakarta memiliki antarmuka yang modern, konsisten, dan "
-    "mudah diakses oleh beragam kalangan pengguna, termasuk penyandang disabilitas. Alur pelaporan "
-    "insiden menjadi lebih sederhana dan mengarahkan pengguna langkah demi langkah. Basis kode yang "
-    "berpindah ke Laravel 12 lebih terstruktur dan mudah dipelihara, didukung dokumentasi lengkap "
+    "mudah diakses oleh beragam kalangan pengguna, termasuk penyandang disabilitas. Sistem pelaporan "
+    "insiden menjadi terstruktur, transparan, dan akuntabel baik bagi pelapor maupun petugas penelaah. "
+    "Basis kode yang berpindah ke Laravel 12 lebih terstruktur dan mudah dipelihara, didukung dokumentasi lengkap "
     "sehingga pekerjaan dapat dilanjutkan oleh pengembang lain. Pekerjaan ini sekaligus menjadi "
-    "bahan kajian untuk proposal pre-thesis mengenai aksesibilitas, pengalaman pengguna "
-    "multi-langkah, dan migrasi framework."
+    "bahan kajian untuk proposal pre-thesis mengenai aksesibilitas web pemerintah, pengalaman pengguna "
+    "pelaporan insiden siber, dan migrasi framework aplikasi web."
 )
 page_break()
 
@@ -408,21 +419,22 @@ body(
     "Berdasarkan pelaksanaan magang di Diskominfotik DKI Jakarta, dapat disimpulkan beberapa hal "
     "berikut: (1) migrasi framework dari Yii ke Laravel 12 berhasil dilakukan sehingga portal lebih "
     "mudah dikembangkan dan dipelihara; (2) redesain UI/UX dengan design system berbasis token "
-    "menghasilkan antarmuka yang modern, konsisten, dan mudah digunakan; (3) alur pelaporan insiden "
-    "multi-langkah mempermudah pengguna non-teknis dalam menyampaikan laporan; (4) penerapan "
-    "aksesibilitas WCAG 2.1, termasuk mode kontras tinggi dan mode gelap, membuat portal lebih "
-    "inklusif; serta (5) penguatan keamanan melalui validasi, penanganan error, dan rate limiting "
-    "meningkatkan stabilitas dan kepercayaan pengguna."
+    "menghasilkan antarmuka yang modern, konsisten, dan mudah digunakan; (3) sistem pelaporan insiden siber "
+    "terintegrasi (single-page form, TaC gate, dan pelacakan tiket INS-YYYY-XXXX) meningkatkan akuntabilitas "
+    "dan efisiensi penanganan insiden; (4) penerapan aksesibilitas WCAG 2.1 (widget aksesibilitas multi-fitur, "
+    "kontras tinggi, dan mode gelap) membuat portal lebih inklusif bagi seluruh lapisan masyarakat; "
+    "serta (5) penguatan keamanan melalui validasi berlapis, penanganan error, rate limiting, dan retensi "
+    "bukti soft-delete meningkatkan stabilitas serta keandalan aplikasi."
 )
 sub("6.2 Saran")
 body(
     "Untuk pengembangan selanjutnya, disarankan agar instansi melakukan pengujian pengguna (user "
     "testing) dengan perwakilan masyarakat dan penyandang disabilitas, memberikan pelatihan "
     "pengelolaan konten bagi petugas admin, serta menyusun mekanisme pencadangan data. Pengembangan "
-    "lanjutan dapat mencakup notifikasi otomatis status penanganan laporan, integrasi dengan kanal "
-    "media sosial, dan penguatan keamanan infrastruktur."
+    "lanjutan dapat mencakup notifikasi otomatis status penanganan laporan via surel, integrasi dengan kanal "
+    "media sosial, dan penguatan keamanan infrastruktur produksi."
 )
 
-OUT = r"K:\GitHub\new-csirt\presentation\Laporan_Magang_CSIRT_DKI_Jakarta.docx"
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Laporan_Magang_CSIRT_DKI_Jakarta.docx")
 doc.save(OUT)
 print("saved:", OUT)
