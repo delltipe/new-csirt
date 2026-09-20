@@ -33,8 +33,8 @@
                             </a>
                             <form action="{{ route('admin.news.delete', $item->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this news?')">
-                                    <i class="bi bi-trash" aria-hidden="true"></i> Delete
+                                <button type="submit" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Hapus
                                 </button>
                             </form>
                         </td>
@@ -56,34 +56,34 @@
       <form method="POST" action="{{ route('admin.news.store') }}">
         @csrf
         <div class="modal-header">
-          <h5 class="modal-title" id="addNewsModalLabel">Add News</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="addNewsModalLabel">Tambah Berita</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
             <div class="mb-3">
-              <label for="news-title" class="form-label">Title</label>
+              <label for="news-title" class="form-label">Judul</label>
               <input type="text" class="form-control" id="news-title" name="title" required>
             </div>
             <div class="mb-3">
-              <label for="news-description" class="form-label">Description</label>
+              <label for="news-description" class="form-label">Deskripsi</label>
               <textarea class="form-control" id="news-description" name="description" rows="3" required></textarea>
             </div>
             <div class="mb-3">
-              <label for="news-thumbnail" class="form-label">Thumbnail URL</label>
+              <label for="news-thumbnail" class="form-label">URL Gambar / Sampul</label>
               <input type="text" class="form-control" id="news-thumbnail" name="thumbnail">
             </div>
             <div class="mb-3">
-              <label for="news-source" class="form-label">Source</label>
+              <label for="news-source" class="form-label">Sumber</label>
               <input type="text" class="form-control" id="news-source" name="source">
             </div>
             <div class="mb-3">
-              <label for="news-date" class="form-label">Date & Time</label>
+              <label for="news-date" class="form-label">Tanggal & Waktu</label>
               <input type="datetime-local" class="form-control" id="news-date" name="date" required>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
       </form>
     </div>

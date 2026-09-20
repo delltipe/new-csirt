@@ -4,7 +4,7 @@
 <div class="container py-5">
     <div class="card">
         <div class="card-header">
-            <h4 class="mb-0">Edit Warning</h4>
+            <h4 class="mb-0">Edit Peringatan</h4>
         </div>
         <div class="card-body">
             @if($errors->any())
@@ -21,7 +21,7 @@
                 @csrf
                 
                 <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
+                    <label for="title" class="form-label">Judul</label>
                     <input type="text" class="form-control @error('title') is-invalid @enderror" 
                            id="title" name="title" value="{{ old('title', $warning->title) }}" required>
                     @error('title')
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
+                    <label for="description" class="form-label">Deskripsi</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" 
                               id="description" name="description" rows="5" required>{{ old('description', $warning->description) }}</textarea>
                     @error('description')
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="thumbnail" class="form-label">Thumbnail URL</label>
+                    <label for="thumbnail" class="form-label">URL Gambar / Sampul</label>
                     <input type="text" class="form-control @error('thumbnail') is-invalid @enderror" 
                            id="thumbnail" name="thumbnail" value="{{ old('thumbnail', $warning->thumbnail) }}">
                     @error('thumbnail')
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="source" class="form-label">Source</label>
+                    <label for="source" class="form-label">Sumber</label>
                     <input type="text" class="form-control @error('source') is-invalid @enderror" 
                            id="source" name="source" value="{{ old('source', $warning->source) }}">
                     @error('source')
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="date" class="form-label">Date & Time</label>
+                    <label for="date" class="form-label">Tanggal & Waktu</label>
                     <input type="datetime-local" class="form-control @error('date') is-invalid @enderror" 
                            id="date" name="date" 
                            value="{{ old('date', $warning->date ? $warning->date->format('Y-m-d\TH:i') : '') }}" required>
@@ -67,8 +67,8 @@
                 </div>
 
                 <div>
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Update Warning</button>
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </form>
         </div>

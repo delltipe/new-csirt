@@ -1,0 +1,2716 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impeccable Design Audit & Visual Critique Report — JakartaProv CSIRT</title>
+    <!-- Fonts matching project -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Public+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --ink: #0A0F1A;
+            --navy: #003580;
+            --navy-mid: #004099;
+            --navy-dim: #002060;
+            --navy-tint: #E8EFF8;
+            --mist: #F4F5F7;
+            --border: #D8DCE3;
+            --mid: #5B6472;
+            --white: #FFFFFF;
+            --muted-on-dark: #93A2B7;
+            --faint-on-dark: #8A99AD;
+            --alert: #B91C1C;
+            --alert-bg: #FEF2F2;
+            --alert-dark: #991B1B;
+            --success: #059669;
+            --success-bg: #ECFDF5;
+            --amber: #D97706;
+            --amber-bg: #FFFBEB;
+            --purple: #7C3AED;
+            --purple-bg: #F5F3FF;
+            --cyan: #0284C7;
+            --cyan-bg: #F0F9FF;
+            --font-display: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-alt-display: 'Public Sans', sans-serif;
+            --ease: 0.16s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-body);
+            background: #F8FAFC;
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Banner */
+        .audit-header {
+            background: var(--ink);
+            color: var(--white);
+            padding: 48px 0 36px;
+            border-bottom: 4px solid var(--navy);
+            position: relative;
+        }
+        .container {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .audit-meta-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            border-radius: 2px;
+        }
+        .badge-method { background: rgba(255,255,255,0.12); color: #E2E8F0; border: 1px solid rgba(255,255,255,0.2); }
+        .badge-warning { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber); }
+        .badge-danger { background: var(--alert-bg); color: var(--alert); border: 1px solid var(--alert); }
+        .badge-detector { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple); }
+        .badge-critique { background: var(--cyan-bg); color: var(--cyan); border: 1px solid var(--cyan); }
+        .badge-success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+
+        .audit-title {
+            font-family: var(--font-display);
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            color: var(--white);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        .audit-sub {
+            color: var(--muted-on-dark);
+            font-size: 15px;
+            max-width: 900px;
+            line-height: 1.7;
+        }
+
+        /* Context Notice Box */
+        .context-callout {
+            margin-top: 24px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-left: 4px solid var(--cyan);
+            padding: 16px 20px;
+            font-size: 13.5px;
+            color: #CBD5E1;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .context-callout i { font-size: 20px; color: var(--cyan); flex-shrink: 0; margin-top: 2px; }
+        .context-callout strong { color: var(--white); }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 36px;
+            padding: 40px 0 80px;
+            align-items: start;
+        }
+        @media (max-width: 1024px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+        }
+
+        /* Sticky Sidebar Nav */
+        .sidebar {
+            position: sticky;
+            top: 24px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            padding: 20px 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        .sidebar-title {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--mid);
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .nav-item a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            text-decoration: none;
+            transition: all var(--ease);
+            border-radius: 2px;
+        }
+        .nav-item a:hover {
+            background: var(--navy-tint);
+            color: var(--navy);
+        }
+        .nav-count {
+            font-size: 11px;
+            padding: 2px 6px;
+            background: var(--mist);
+            color: var(--mid);
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* Section styles */
+        .section-wrap { margin-bottom: 56px; }
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-desc {
+            font-size: 14px;
+            color: var(--mid);
+            margin-top: 4px;
+        }
+
+        /* Top Dashboard Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        @media (max-width: 840px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .stat-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            padding: 20px;
+            position: relative;
+        }
+        .stat-box__val {
+            font-family: var(--font-display);
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--ink);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .stat-box__label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--mid);
+        }
+        .stat-box__sub {
+            font-size: 12px;
+            margin-top: 8px;
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        /* Generic AI Look Callout Box */
+        .ai-slop-alert {
+            background: #FFF7ED;
+            border: 2px solid #F97316;
+            padding: 28px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .ai-slop-alert__title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #C2410C;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .ai-slop-alert__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+        @media (max-width: 900px) {
+            .ai-slop-alert__grid { grid-template-columns: 1fr; }
+        }
+        .ai-slop-item {
+            background: #FFFFFF;
+            border: 1px solid #FDBA74;
+            padding: 16px;
+        }
+        .ai-slop-item strong {
+            display: block;
+            color: #9A3412;
+            font-size: 14px;
+            margin-bottom: 6px;
+            font-family: var(--font-display);
+        }
+        .ai-slop-item p {
+            font-size: 13px;
+            color: #431407;
+            line-height: 1.5;
+        }
+        .ai-slop-item .hit-count {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            background: #FFEDD5;
+            color: #9A3412;
+            border-radius: 3px;
+        }
+
+        /* Heuristics & Dimensions Tables */
+        .table-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            margin-bottom: 36px;
+            overflow: hidden;
+        }
+        .table-card__head {
+            padding: 16px 20px;
+            background: var(--mist);
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ink);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .audit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+        .audit-table th {
+            background: #F8FAFC;
+            padding: 12px 18px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--mid);
+            border-bottom: 1px solid var(--border);
+        }
+        .audit-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .audit-table tr:last-child td { border-bottom: none; }
+        .score-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 13px;
+            font-family: var(--font-display);
+        }
+        .score-0, .score-1 { background: var(--alert-bg); color: var(--alert); border: 1px solid var(--alert); }
+        .score-2 { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber); }
+        .score-3 { background: var(--cyan-bg); color: var(--cyan); border: 1px solid var(--cyan); }
+        .score-4 { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
+
+        /* FINDING CARD WITH BEFORE / AFTER VISUAL MOCKUP */
+        .finding-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: border-color var(--ease);
+        }
+        .finding-card:hover {
+            border-color: #94A3B8;
+        }
+        .finding-head {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            background: #FAFAFA;
+            flex-wrap: wrap;
+        }
+        .finding-title-group { flex: 1; }
+        .finding-rule {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+        .finding-loc {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--navy);
+            background: var(--navy-tint);
+            padding: 2px 8px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+        .finding-badges {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .finding-body {
+            padding: 24px;
+        }
+        .finding-desc {
+            font-size: 14px;
+            color: #334155;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .finding-impact {
+            background: var(--mist);
+            padding: 12px 16px;
+            font-size: 13px;
+            margin-bottom: 24px;
+            border-left: 3px solid var(--navy);
+        }
+
+        /* COMPARISON STAGE: BEFORE VS AFTER */
+        .comparison-stage {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+            align-items: stretch;
+        }
+        @media (max-width: 800px) {
+            .comparison-stage { grid-template-columns: 1fr; }
+        }
+        .stage-pane {
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            background: #F8FAFC;
+        }
+        .stage-pane--before {
+            border-top: 3px solid var(--alert);
+        }
+        .stage-pane--after {
+            border-top: 3px solid var(--success);
+        }
+        .stage-banner {
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .stage-banner--before {
+            background: #FEF2F2;
+            color: var(--alert);
+        }
+        .stage-banner--after {
+            background: #ECFDF5;
+            color: var(--success);
+        }
+        .stage-canvas {
+            padding: 28px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 160px;
+        }
+        .stage-canvas--dark {
+            background: var(--ink);
+            color: var(--white);
+        }
+        .stage-canvas--navy-dim {
+            background: var(--navy-dim);
+            color: var(--white);
+        }
+        .stage-canvas--mist {
+            background: var(--mist);
+        }
+        .stage-canvas--white {
+            background: var(--white);
+        }
+
+        /* Code Drawer */
+        .code-drawer {
+            margin-top: 16px;
+            border: 1px solid var(--border);
+            background: #0F172A;
+            color: #E2E8F0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .code-drawer-header {
+            padding: 8px 14px;
+            background: #1E293B;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: #94A3B8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code-snippet {
+            padding: 12px 16px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.5;
+            overflow-x: auto;
+            color: #F8FAFC;
+        }
+        .code-snippet .keyword { color: #38BDF8; }
+        .code-snippet .string { color: #4ADE80; }
+        .code-snippet .comment { color: #64748B; font-style: italic; }
+        .code-snippet .bad { color: #F87171; text-decoration: underline wavy; }
+        .code-snippet .good { color: #34D399; font-weight: bold; }
+
+        /* LIVE MOCKUP STYLES REPRODUCED EXACTLY FROM CODEBASE */
+
+        /* 1. Side Tab Border */
+        .mock-profile-card-before {
+            background: #FFFFFF;
+            border: 1px solid #D8DCE3;
+            border-left: 8px solid #003580; /* The exact offending 8px border */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 20px;
+            width: 100%;
+            max-width: 360px;
+        }
+        .mock-profile-card-after {
+            background: #FFFFFF;
+            border: 1px solid #D8DCE3;
+            /* Border-left removed per Impeccable rule; refined badge replaces it */
+            box-shadow: none;
+            padding: 20px;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        /* 2. Repeating linear gradient */
+        .mock-header-before {
+            background: #0A0F1A;
+            padding: 24px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .mock-header-before::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
+                transparent 1px, transparent 80px
+            );
+            pointer-events: none;
+        }
+        .mock-header-after {
+            background: #0A0F1A;
+            padding: 24px;
+            width: 100%;
+            position: relative;
+            /* Repeating gradient stripped; clean authoritative surface */
+        }
+
+        /* 3. Eyebrow pattern */
+        .mock-eyebrow-before {
+            font-size: 10.5px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35); /* Fails contrast 3.2:1 */
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .mock-eyebrow-before::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* 4. Undersized text */
+        .mock-date-before {
+            font-size: 10.5px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .mock-date-before::before {
+            content: '';
+            display: block;
+            width: 14px;
+            height: 2px;
+            background: var(--navy);
+        }
+        .mock-date-after {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 5. Gray on dark */
+        .mock-stats-before {
+            background: rgba(0,20,60,0.88);
+            padding: 14px 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 240px;
+        }
+        .mock-stats-before .num {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+        .mock-stats-before .lbl {
+            font-size: 10.5px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.4); /* Fails contrast 3.8:1 */
+        }
+        .mock-stats-after {
+            background: #001C54;
+            padding: 14px 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 240px;
+            border-bottom: 2px solid var(--cyan);
+        }
+        .mock-stats-after .num {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+        .mock-stats-after .lbl {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #D6E4F8; /* 7.4:1 contrast AAA */
+        }
+
+        /* 6. Touch targets */
+        .mock-page-btn-before {
+            align-items: center;
+            border: 1px solid var(--border);
+            color: var(--navy);
+            display: inline-flex;
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 700;
+            justify-content: center;
+            min-height: 40px;
+            min-width: 40px;
+            padding: 0 14px;
+            background: #FFFFFF;
+        }
+        .mock-page-btn-after {
+            align-items: center;
+            border: 1px solid var(--border);
+            color: var(--navy);
+            display: inline-flex;
+            font-family: var(--font-display);
+            font-size: 13.5px;
+            font-weight: 700;
+            justify-content: center;
+            min-height: 44px;
+            min-width: 44px;
+            padding: 0 16px;
+            background: #FFFFFF;
+        }
+
+        /* 7. Image hover transform */
+        .mock-thumb-box {
+            width: 220px;
+            height: 120px;
+            overflow: hidden;
+            position: relative;
+            background: #0F172A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+        }
+        .mock-thumb-img-before {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .mock-thumb-box:hover .mock-thumb-img-before {
+            transform: scale(1.08); /* Animated zoom */
+            filter: grayscale(0%);
+        }
+        .mock-thumb-img-after {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.2s ease;
+        }
+        .mock-thumb-box:hover .mock-thumb-img-after {
+            opacity: 0.92;
+        }
+
+        /* 8. Focus Ring */
+        .mock-btn-no-focus {
+            background: var(--navy);
+            color: #FFFFFF;
+            padding: 10px 20px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            border: none;
+            outline: none; /* Missing focus state */
+        }
+        .mock-btn-good-focus {
+            background: var(--navy);
+            color: #FFFFFF;
+            padding: 10px 20px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            border: none;
+            outline: 3px solid #2563EB;
+            outline-offset: 3px;
+        }
+
+        /* 9. Cookie-cutter service card */
+        .mock-service-before {
+            background: #FFFFFF;
+            padding: 20px;
+            border: 1px solid #D8DCE3;
+            width: 100%;
+            max-width: 260px;
+            position: relative;
+        }
+        .mock-service-before::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--navy);
+        }
+        .mock-service-before .icon {
+            font-size: 28px;
+            color: #D8DCE3; /* Ghost color 1.3:1 */
+            margin-bottom: 12px;
+        }
+        .mock-service-after {
+            background: #FFFFFF;
+            padding: 20px;
+            border: 1px solid #D8DCE3;
+            width: 100%;
+            max-width: 260px;
+        }
+        .mock-service-after .icon {
+            font-size: 24px;
+            color: var(--navy); /* Legible, intentional */
+            margin-bottom: 12px;
+        }
+
+        /* 10. Language inconsistency */
+        .mock-modal-head-before {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            padding: 16px;
+            width: 100%;
+            max-width: 320px;
+        }
+        .mock-modal-head-before h5 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+        .mock-modal-head-before label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--mid);
+            display: block;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audit Header -->
+    <header class="audit-header">
+        <div class="container">
+            <div class="audit-meta-bar">
+                <span class="badge badge-method"><i class="bi bi-shield-check"></i> Impeccable Audit v4.3.1</span>
+                <span class="badge badge-detector"><i class="bi bi-cpu"></i> 5 Deterministic Detector Rules (40+ sites)</span>
+                <span class="badge badge-critique"><i class="bi bi-eye"></i> 25 LLM Critique Judgments</span>
+                <span class="badge badge-danger"><i class="bi bi-exclamation-triangle-fill"></i> Total 30 Findings</span>
+            </div>
+
+            <h1 class="audit-title">JakartaProv CSIRT Portal — Impeccable Design Audit & Visual Demonstration</h1>
+            <p class="audit-sub">
+                A rigorous, code-level diagnostic scan and design critique of the Jakarta Provincial Cybersecurity Incident Response Team (CSIRT) portal. Every finding below is extracted directly from the committed source code and visually reproduced with side-by-side interactive mockups.
+            </p>
+
+            <!-- Context verification callout -->
+            <div class="context-callout">
+                <i class="bi bi-info-circle-fill"></i>
+                <div>
+                    <strong>Design Context File Audit:</strong> <code>PRODUCT.md</code> was <strong>NOT FOUND</strong>; <code>DESIGN.md</code> was <strong>NOT FOUND</strong>. Local reference <code>DESIGN_SYSTEM.md</code> was identified. As specified by Impeccable methodology (Step 2), all findings are audited directly against <strong>Impeccable's general anti-pattern rules and craft floor standards</strong> (<code>craft-floor.md</code>, <code>audit.md</code>, <code>critique.md</code>) in conjunction with the incumbent civic design tokens.
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container main-layout">
+        <!-- Sticky Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-title">Audit Navigation</div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#dashboard"><span>Executive Dashboard</span></a></li>
+                <li class="nav-item"><a href="#ai-look"><span>"Generic AI Look"</span> <span class="nav-count" style="background:#FED7AA; color:#9A3412;">6</span></a></li>
+                <li class="nav-item"><a href="#structural"><span>Structural Anti-Patterns</span> <span class="nav-count">6</span></a></li>
+                <li class="nav-item"><a href="#typography"><span>Typography</span> <span class="nav-count">4</span></a></li>
+                <li class="nav-item"><a href="#color"><span>Color & Contrast</span> <span class="nav-count">3</span></a></li>
+                <li class="nav-item"><a href="#spatial"><span>Spatial & Spacing</span> <span class="nav-count">3</span></a></li>
+                <li class="nav-item"><a href="#motion"><span>Motion & Easing</span> <span class="nav-count">3</span></a></li>
+                <li class="nav-item"><a href="#interaction"><span>Interaction & States</span> <span class="nav-count">2</span></a></li>
+                <li class="nav-item"><a href="#responsive"><span>Responsive Design</span> <span class="nav-count">2</span></a></li>
+                <li class="nav-item"><a href="#uxwriting"><span>UX Writing & Tone</span> <span class="nav-count">2</span></a></li>
+                <li class="nav-item"><a href="#accessibility"><span>Accessibility</span> <span class="nav-count">3</span></a></li>
+                <li class="nav-item"><a href="#performance"><span>Performance</span> <span class="nav-count">2</span></a></li>
+                <li class="nav-item"><a href="#action-plan"><span>Action Roadmap</span></a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main>
+
+            <!-- 1. Executive Summary & Health Dashboard -->
+            <section id="dashboard" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-speedometer2" style="color:var(--navy);"></i> Diagnostic Scan & Audit Health Score</h2>
+                        <p class="section-desc">Quantitative scoring across Impeccable's 5 core diagnostic dimensions and Nielsen's 10 usability heuristics.</p>
+                    </div>
+                </div>
+
+                <!-- Top Metrics -->
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-box__val" style="color:#D97706;">10 / 20</div>
+                        <div class="stat-box__label">Audit Health Score</div>
+                        <div class="stat-box__sub">Rating Band: Acceptable (50%)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box__val" style="color:#0284C7;">22 / 40</div>
+                        <div class="stat-box__label">Nielsen Usability Score</div>
+                        <div class="stat-box__sub">Rating Band: Acceptable (55%)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box__val" style="color:var(--alert);">12</div>
+                        <div class="stat-box__label">P1 Major Issues</div>
+                        <div class="stat-box__sub">Fix before production release</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box__val" style="color:var(--purple);">22</div>
+                        <div class="stat-box__label">Live Visual Mockups</div>
+                        <div class="stat-box__sub">+ 8 Tabular Non-Visual Findings</div>
+                    </div>
+                </div>
+
+                <!-- 5-Dimension Audit Health Score Table -->
+                <div class="table-card">
+                    <div class="table-card__head">
+                        <span>1. Impeccable Diagnostic Scan (0–4 Scale)</span>
+                        <span class="badge badge-warning">Overall: 10/20 (Acceptable)</span>
+                    </div>
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Score</th>
+                                <th style="width: 180px;">Dimension</th>
+                                <th>Diagnostic Evaluation</th>
+                                <th style="width: 120px;">Primary Risk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td><strong>Accessibility (A11y)</strong></td>
+                                <td>Contrast widget & speech synthesis present, but focus rings completely absent from global stylesheets, empty image tags in lightbox modals, and reduced motion relies on a destructive 0.001ms instantaneous kill.</td>
+                                <td><span class="badge badge-danger">P1 Major</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td><strong>Performance</strong></td>
+                                <td>Heavy uncompressed hero assets loaded directly from Unsplash CDN, legacy news thumbnails hotlinked without responsive srcset, and wildcard <code>*</code> grayscale/invert filters force full DOM compositor repaints on scroll.</td>
+                                <td><span class="badge badge-danger">P1 Major</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td><strong>Theming & Tokens</strong></td>
+                                <td>Strong CSS token foundation in <code>style.css</code>, but pervasive hardcoded hex values in admin and footer, low-contrast gray text on dark surfaces, and 17 instances of thick colored side-tab borders.</td>
+                                <td><span class="badge badge-warning">P2 Minor</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="score-pill score-3">3</span></td>
+                                <td><strong>Responsive Design</strong></td>
+                                <td>Solid fluid container and Bootstrap grid foundation, but institutional partner cluster abruptly vanishes below 1200px and pagination controls fail 44x44px touch target thresholds on mobile.</td>
+                                <td><span class="badge badge-warning">P2 Minor</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="score-pill score-1">1</span></td>
+                                <td><strong>Implementation Integrity</strong></td>
+                                <td>Pervasive structural AI anti-patterns: 19 views contain repeating-linear-gradient stripes, 17 files use colored side-tab borders, 12 views contain banned kicker/eyebrow headings, and 4 identical cookie-cutter cards form the service grid.</td>
+                                <td><span class="badge badge-danger">P1 Major</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Nielsen 10 Usability Heuristics Table -->
+                <div class="table-card">
+                    <div class="table-card__head">
+                        <span>2. Nielsen Usability Heuristics Critique (0–4 Scale)</span>
+                        <span class="badge badge-warning">Total: 22/40 (Acceptable)</span>
+                    </div>
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;">#</th>
+                                <th style="width: 220px;">Heuristic</th>
+                                <th style="width: 60px;">Score</th>
+                                <th>Key Finding & Usability Evidence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><strong>Visibility of System Status</strong></td>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td>Navbar top strip links have 0% visible color difference on hover; animation pause destroys status progress indicators.</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><strong>Match System & Real World</strong></td>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td>Admin CRUD modals switch abruptly into English jargon ("Add News", "Date & Time", "Delete") on an Indonesian civic portal.</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><strong>User Control & Freedom</strong></td>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td>Destructive deletion relies on unstyled native <code>window.confirm()</code> popups without soft-delete undo affordance.</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><strong>Consistency & Standards</strong></td>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td>Inconsistent card borders (1px, 3px, 4px, 8px) and competing button heights across admin and public pages.</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><strong>Error Prevention</strong></td>
+                                <td><span class="score-pill score-3">3</span></td>
+                                <td>Top validation error summary on bug hunter form with automatic focus and anchor jump links is well executed.</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><strong>Recognition Rather Than Recall</strong></td>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td>Service card icons are washed out in <code>#D8DCE3</code> at rest (1.3:1 contrast); incident downtime field requires strict "00:00" manual entry.</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td><strong>Flexibility & Efficiency</strong></td>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td>No keyboard accelerator shortcuts or bulk batch operations for administrative reviewers managing high ticket volume.</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td><strong>Aesthetic & Minimalist Design</strong></td>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td>Visual noise floor cluttered with faux decorative grid-stripes, giant 260px background watermarks, and redundant eyebrow labels.</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td><strong>Error Recovery</strong></td>
+                                <td><span class="score-pill score-3">3</span></td>
+                                <td>Form inputs preserve values via Laravel <code>old()</code> and error messages clearly indicate specific invalid fields.</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td><strong>Help & Documentation</strong></td>
+                                <td><span class="score-pill score-2">2</span></td>
+                                <td>Good inline field hints on incident reporter forms, but contextual tooltips are completely absent in admin triage.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 2. "The Generic AI Look" Specific Callout Section -->
+            <section id="ai-look" class="section-wrap">
+                <div class="ai-slop-alert">
+                    <div class="ai-slop-alert__title">
+                        <i class="bi bi-robot"></i> "The Generic AI Look" — Structural Anti-Pattern Hall of Fame
+                    </div>
+                    <p style="color: #7C2D12; font-size: 14.5px; line-height: 1.6;">
+                        Impeccable's design methodology specifically identifies a signature cluster of UI tropes popularized by LLM coding generators. These decorative crutches signal generic automated assembly rather than purposeful, bespoke civic design. The Jakarta CSIRT codebase has contracted 6 major structural anti-patterns:
+                    </p>
+
+                    <div class="ai-slop-alert__grid">
+                        <div class="ai-slop-item">
+                            <strong>1. Side-Tab Accent Borders</strong>
+                            <p>Thick 3px–8px colored borders plastered on the left or top edges of cards and alerts. The most pervasive AI signature.</p>
+                            <span class="hit-count"><i class="bi bi-pin-angle-fill"></i> Found in 17 project files</span>
+                        </div>
+                        <div class="ai-slop-item">
+                            <strong>2. Repeating Gradient Grid Stripes</strong>
+                            <p>Faux 80px hairline vertical stripes rendered in <code>::before</code> pseudo-elements to fake technical depth without content.</p>
+                            <span class="hit-count"><i class="bi bi-pin-angle-fill"></i> Found in 19 blade views</span>
+                        </div>
+                        <div class="ai-slop-item">
+                            <strong>3. Banned Kicker/Eyebrow Headings</strong>
+                            <p>10.5px faint uppercase labels with a 20px horizontal line above headings. Banned by Impeccable's craft floor.</p>
+                            <span class="hit-count"><i class="bi bi-pin-angle-fill"></i> Found in 12 blade views</span>
+                        </div>
+                        <div class="ai-slop-item">
+                            <strong>4. Cookie-Cutter Service Cards</strong>
+                            <p>4 identical columns of icon + title + excerpt used as the entire page scaffold. Cards as a lazy substitute for architecture.</p>
+                            <span class="hit-count"><i class="bi bi-pin-angle-fill"></i> Homepage Services Grid</span>
+                        </div>
+                        <div class="ai-slop-item">
+                            <strong>5. Ghost Cards (Hairline + Diffuse Shadow)</strong>
+                            <p>1px border combined with 30px blurry box-shadow. Failing Impeccable's rule: "Declare elevation once: border or shadow, never both."</p>
+                            <span class="hit-count"><i class="bi bi-pin-angle-fill"></i> Profile & Contact Cards</span>
+                        </div>
+                        <div class="ai-slop-item">
+                            <strong>6. Overused AI Font Stack</strong>
+                            <p>Default pairing of <em>Plus Jakarta Sans</em> and <em>Inter</em>. Flagged by Impeccable as hyper-saturated across AI-generated frontends.</p>
+                            <span class="hit-count"><i class="bi bi-pin-angle-fill"></i> Global tokens in style.css</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Category Sections with Live Before/After Mockups -->
+
+            <!-- CATEGORY 1: STRUCTURAL ANTI-PATTERNS -->
+            <section id="structural" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-layers-half" style="color:var(--purple);"></i> 1. Structural Anti-Patterns</h2>
+                        <p class="section-desc">Violations of page scaffolding, surface ornamentation, and structural composition rules from <code>craft-floor.md</code>.</p>
+                    </div>
+                    <span class="badge badge-detector">6 Findings</span>
+                </div>
+
+                <!-- Finding 1: Side-Tab Border -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Side-Tab Accent Border (Thick colored border on card side)</div>
+                            <span class="finding-loc">resources/views/profile.blade.php:46 (and 16 other files)</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-detector">Deterministic Detector Hit</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>side-tab</code> states: <em>"Thick colored border on one side of a card is the most recognizable tell of AI-generated UIs. Refuse a colored border-left or border-right above 1px on cards, list items, callouts, or alerts."</em> Here, <code>profile.blade.php</code> uses a heavy 8px navy border, while ticket boxes and alerts use 3px–4px left stripes across 17 files.
+                        </p>
+                        <div class="finding-impact">
+                            <strong>User Impact:</strong> Distorts visual hierarchy by shouting artificial importance on routine containers, while clashing with the crisp, boxy civic aesthetic of NYC.gov.
+                        </div>
+
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Actual Codebase Implementation</span>
+                                    <code>border-left: 8px solid var(--navy)</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div class="mock-profile-card-before">
+                                        <div style="font-size: 11px; font-weight: 800; color: #003580; text-transform: uppercase; margin-bottom: 6px;">Profil Organisasi</div>
+                                        <h3 style="font-size: 18px; font-weight: 800; color: #0A0F1A; margin-bottom: 8px;">JakartaProv-CSIRT</h3>
+                                        <p style="font-size: 13px; color: #5B6472; line-height: 1.5;">Tim Tanggap Insiden Siber Pemerintah Provinsi DKI Jakarta.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Uniform 1px architectural border + typographic badge</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div class="mock-profile-card-after">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid #E2E8F0;">
+                                            <span style="background:#003580; color:#FFFFFF; font-size:10px; font-weight:800; padding:2px 8px; text-transform:uppercase; letter-spacing:0.05em;">Resmi Pemprov</span>
+                                            <span style="font-size:11px; color:#64748B; font-weight:600;">RFC 2350</span>
+                                        </div>
+                                        <h3 style="font-size: 18px; font-weight: 800; color: #0A0F1A; margin-bottom: 8px;">JakartaProv-CSIRT</h3>
+                                        <p style="font-size: 13px; color: #5B6472; line-height: 1.5;">Tim Tanggap Insiden Siber Pemerintah Provinsi DKI Jakarta.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Drawer -->
+                        <div class="code-drawer">
+                            <div class="code-drawer-header">
+                                <span><i class="bi bi-code-slash"></i> Snippet Comparison</span>
+                                <span>CSS Extraction</span>
+                            </div>
+                            <div class="code-snippet">
+<span class="comment">/* OFFENDING (profile.blade.php:42-48) */</span>
+.profile-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    <span class="bad">border-left: 8px solid var(--navy, #003580); /* Heavy AI tell */</span>
+    <span class="bad">box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Ghost card */</span>
+}
+
+<span class="comment">/* IMPECCABLE FIX: Refined elevation & purposeful header */</span>
+.profile-card {
+    background: var(--white);
+    <span class="good">border: 1px solid var(--border); /* Commit to single clean border */</span>
+    <span class="good">box-shadow: none;</span>
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 2: Repeating Linear Gradient Grid -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Decorative Repeating Grid Stripes (Pseudo-element lines)</div>
+                            <span class="finding-loc">resources/views/contact/create.blade.php:19 (and 18 other blade views)</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-detector">Deterministic Slop Rule</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rules <code>repeating-stripes-gradient</code> and <code>codex-grid-background</code> state: <em>"Repeating-gradient stripes and hairline linear-gradient layers tiled by fixed pixel cells are recurring generated-UI signatures. Reserve grid overlays for actual canvas, map, blueprint, or measurement surfaces; elsewhere use product structure or a plain surface."</em>
+                        </p>
+                        <div class="finding-impact">
+                            <strong>User Impact:</strong> Adds visual noise that interferes with text rendering and contrast on high-DPI displays without conveying any meaningful civic or security data.
+                        </div>
+
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Faux 80px Repeating Grid Lines</span>
+                                    <code>repeating-linear-gradient(90deg, ...)</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--dark" style="background: #0A0F1A; min-height:140px;">
+                                    <div class="mock-header-before">
+                                        <h2 style="color:#FFFFFF; font-size:24px; font-weight:800; text-transform:uppercase;">Hubungi CSIRT</h2>
+                                        <p style="color:rgba(255,255,255,0.7); font-size:13px; margin-top:6px;">Layanan penanganan insiden siber DKI Jakarta.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Clean authoritative ink surface without artificial gridlines</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--dark" style="background: #0A0F1A; min-height:140px;">
+                                    <div class="mock-header-after">
+                                        <div style="display:inline-block; border-bottom:2px solid var(--navy); padding-bottom:4px; margin-bottom:8px;">
+                                            <span style="color:#93A2B7; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;">Kanal Resmi Komunikasi</span>
+                                        </div>
+                                        <h2 style="color:#FFFFFF; font-size:24px; font-weight:800; text-transform:uppercase;">Hubungi CSIRT</h2>
+                                        <p style="color:#CBD5E1; font-size:13px; margin-top:6px;">Layanan penanganan insiden siber DKI Jakarta.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Drawer -->
+                        <div class="code-drawer">
+                            <div class="code-drawer-header">
+                                <span><i class="bi bi-code-slash"></i> Snippet Comparison</span>
+                                <span>CSS Extraction</span>
+                            </div>
+                            <div class="code-snippet">
+<span class="comment">/* OFFENDING (.page-header::before across 19 views) */</span>
+.page-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    <span class="bad">background-image: repeating-linear-gradient(
+        90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
+        transparent 1px, transparent 80px
+    ); /* Decorative grid slop */</span>
+    pointer-events: none;
+}
+
+<span class="comment">/* IMPECCABLE FIX: Delete the pseudo-element entirely */</span>
+.page-header {
+    background: var(--ink);
+    <span class="good">/* Let the pure typographic authority lead without synthetic gridlines */</span>
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 3: Eyebrow/Kicker Ban -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Banned Kicker/Eyebrow Heading Pattern</div>
+                            <span class="finding-loc">resources/views/bug-hunter/create.blade.php:32-44 (and 11 other views)</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-critique">Craft Floor Absolute Ban</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable's <code>craft-floor.md</code> (line 27) establishes an unearned ban: <em>"A kicker or eyebrow above a heading. This one is a ban, not a default: no brief earns it back. The heading carries its own weight; delete the label and let the heading speak."</em> The codebase systematically pairs a 10.5px faint label and a 20px horizontal rule above H1 elements.
+                        </p>
+                        <div class="finding-impact">
+                            <strong>User Impact:</strong> Fractures natural reading flow by forcing users to read small, low-contrast meta text before reaching the actual primary page subject.
+                        </div>
+
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: 10.5px Faint Eyebrow + 20px Line</span>
+                                    <code>.lapor-header__eyebrow</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--dark" style="background: #0A0F1A;">
+                                    <div style="width:100%; text-align:left;">
+                                        <div class="mock-eyebrow-before">
+                                            <i class="bi bi-megaphone-fill"></i> Formulir Laporan
+                                        </div>
+                                        <h1 style="color:#FFFFFF; font-size:26px; font-weight:800; text-transform:uppercase;">Lapor Insiden Siber</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Direct, self-assured heading hierarchy</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--dark" style="background: #0A0F1A;">
+                                    <div style="width:100%; text-align:left;">
+                                        <h1 style="color:#FFFFFF; font-size:32px; font-weight:900; text-transform:uppercase; letter-spacing:-0.01em;">Lapor Insiden Siber</h1>
+                                        <p style="color:#93A2B7; font-size:14px; margin-top:4px;">Portal Pelaporan Kerentanan & Insiden Siber Pemprov DKI Jakarta</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Drawer -->
+                        <div class="code-drawer">
+                            <div class="code-drawer-header">
+                                <span><i class="bi bi-code-slash"></i> Snippet Comparison</span>
+                                <span>Blade Markup</span>
+                            </div>
+                            <div class="code-snippet">
+<span class="comment">&lt;!-- OFFENDING (bug-hunter/create.blade.php:330-334) --&gt;</span>
+<span class="bad">&lt;div class="lapor-header__eyebrow"&gt;
+    &lt;i class="bi bi-megaphone-fill"&gt;&lt;/i&gt; Formulir Laporan
+&lt;/div&gt;</span>
+&lt;h1&gt;Lapor Insiden Siber&lt;/h1&gt;
+
+<span class="comment">&lt;!-- IMPECCABLE FIX: Let the heading carry its own weight --&gt;</span>
+<span class="good">&lt;h1 class="page-title"&gt;Lapor Insiden Siber&lt;/h1&gt;
+&lt;p class="page-subtitle"&gt;Portal Pelaporan Kerentanan Siber Resmi DKI Jakarta&lt;/p&gt;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 4: Cookie Cutter Service Cards -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Cookie-Cutter Cards as Lazy Scaffold</div>
+                            <span class="finding-loc">public/css/style.css:427-485 & resources/views/home.blade.php</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">LLM Critique Judgment</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule: <em>"Same-size cards of icon plus heading plus text as the page structure. Cards are the lazy container; nested cards are always wrong."</em> The homepage services section creates a 4-column grid where each card has the exact same visual weight, faint icon, and 3px bottom hover stripe.
+                        </p>
+                        <div class="finding-impact">
+                            <strong>User Impact:</strong> Homogeneous card grids reduce information scannability; users struggle to differentiate high-priority emergency reporting from routine document downloads.
+                        </div>
+
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Uniform Icon + Box Template</span>
+                                    <code>.services-grid > .service-card</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div class="mock-service-before">
+                                        <div class="icon"><i class="bi bi-shield-exclamation"></i></div>
+                                        <h4 style="font-size:16px; font-weight:800; color:#0A0F1A; margin-bottom:8px;">Peringatan Keamanan</h4>
+                                        <p style="font-size:13px; color:#5B6472; line-height:1.5;">Informasi ancaman dan celah keamanan siber terkini.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>High-contrast icon, intentional hierarchy & action anchor</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div class="mock-service-after">
+                                        <div style="display:flex; justify-content:space-between; align-items:start;">
+                                            <div class="icon"><i class="bi bi-shield-exclamation"></i></div>
+                                            <span style="font-size:11px; font-weight:700; color:#003580; background:#E8EFF8; padding:2px 8px;">Advisory</span>
+                                        </div>
+                                        <h4 style="font-size:16px; font-weight:800; color:#0A0F1A; margin-bottom:6px;">Peringatan Keamanan</h4>
+                                        <p style="font-size:13px; color:#5B6472; line-height:1.5; margin-bottom:12px;">Informasi ancaman dan celah keamanan terkini.</p>
+                                        <span style="font-size:12px; font-weight:700; color:#003580; text-transform:uppercase;">Lihat Advisory &rarr;</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Drawer -->
+                        <div class="code-drawer">
+                            <div class="code-drawer-header">
+                                <span><i class="bi bi-code-slash"></i> Snippet Comparison</span>
+                                <span>CSS Extraction</span>
+                            </div>
+                            <div class="code-snippet">
+<span class="comment">/* OFFENDING (style.css:473-478) */</span>
+.service-card__icon {
+    font-size: 28px;
+    <span class="bad">color: var(--border); /* Gray ghost icon #D8DCE3 at rest! */</span>
+}
+.service-card::after {
+    <span class="bad">position: absolute; bottom: 0; height: 3px; /* AI accent stripe */</span>
+}
+
+<span class="comment">/* IMPECCABLE FIX: Purposeful icon contrast & architectural link */</span>
+.service-card__icon {
+    font-size: 24px;
+    <span class="good">color: var(--navy); /* Immediate recognition */</span>
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 5: Hairline Border + Wide Shadow -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Ghost Card (Hairline Border + Wide Diffuse Shadow)</div>
+                            <span class="finding-loc">resources/views/profile.blade.php:47 & contact/create.blade.php</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">Craft Floor Rule</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule: <em>"A hairline border paired with a wide, diffuse shadow is a recurring generated-UI signature. Commit to one: a defined edge or a soft elevation, rather than both at once."</em>
+                        </p>
+                        <div class="finding-impact">
+                            <strong>User Impact:</strong> Contradicts the NYC.gov boxy architectural design language by introducing muddy, non-committal elevation.
+                        </div>
+
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: 1px Border + 30px Blurry Shadow</span>
+                                    <code>box-shadow: 0 10px 30px rgba(0,0,0,0.05)</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div style="background:#FFFFFF; border:1px solid #D8DCE3; box-shadow:0 10px 30px rgba(0,0,0,0.08); padding:20px; width:100%; max-width:320px;">
+                                        <strong style="color:#0A0F1A; font-size:14px;">Kartu Profil</strong>
+                                        <p style="color:#5B6472; font-size:13px; margin-top:4px;">Elemen dengan border tipis dan bayangan blur mengambang.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Pure architectural boundary (0px shadow, crisp 1px border)</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div style="background:#FFFFFF; border:1px solid #D8DCE3; box-shadow:none; padding:20px; width:100%; max-width:320px;">
+                                        <strong style="color:#0A0F1A; font-size:14px;">Kartu Profil</strong>
+                                        <p style="color:#5B6472; font-size:13px; margin-top:4px;">Komitmen tegas pada batas fisik tanpa bayangan semu.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Drawer -->
+                        <div class="code-drawer">
+                            <div class="code-drawer-header">
+                                <span><i class="bi bi-code-slash"></i> Snippet Comparison</span>
+                                <span>CSS Extraction</span>
+                            </div>
+                            <div class="code-snippet">
+<span class="comment">/* OFFENDING (profile.blade.php:45-48) */</span>
+.profile-card {
+    <span class="bad">border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Redundant double elevation */</span>
+}
+
+<span class="comment">/* IMPECCABLE FIX: Single committed edge */</span>
+.profile-card {
+    <span class="good">border: 1px solid var(--border);
+    box-shadow: none;</span>
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 6: Hero Metric Template -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Hero Metric Template (Big Number + Faint Label)</div>
+                            <span class="finding-loc">resources/views/home.blade.php:132-162</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">Craft Floor Rule</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule: <em>"The hero-metric template: big number, small label, supporting stats, accent. Used as a generic placeholder for real content."</em> The 4-column counter under the homepage hero presents static numbers with faint 10.5px labels.
+                        </p>
+                        <div class="finding-impact">
+                            <strong>User Impact:</strong> Static uncalibrated metrics fail to convey whether the security posture is currently heightened, stable, or degraded.
+                        </div>
+
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Generic Big-Number Strip</span>
+                                    <code>.hero-stats__number + .hero-stats__label</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--navy-dim">
+                                    <div class="mock-stats-before">
+                                        <div class="num">100%</div>
+                                        <div class="lbl">Komitmen Respons</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Contextual status indicator with operational clarity</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--navy-dim">
+                                    <div class="mock-stats-after">
+                                        <div style="display:inline-flex; align-items:center; gap:6px; margin-bottom:4px;">
+                                            <span style="width:8px; height:8px; border-radius:50%; background:#10B981; display:inline-block;"></span>
+                                            <span style="font-size:11px; font-weight:800; color:#34D399; text-transform:uppercase;">Operasional Normal</span>
+                                        </div>
+                                        <div class="num">24 / 7</div>
+                                        <div class="lbl">Pemantauan & Triage Aktif</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Drawer -->
+                        <div class="code-drawer">
+                            <div class="code-drawer-header">
+                                <span><i class="bi bi-code-slash"></i> Snippet Comparison</span>
+                                <span>CSS Extraction</span>
+                            </div>
+                            <div class="code-snippet">
+<span class="comment">/* OFFENDING (home.blade.php:155-161) */</span>
+.hero-stats__label {
+    <span class="bad">font-size: 10.5px; /* Sub-11px legibility defect */</span>
+    <span class="bad">color: rgba(255,255,255,0.4); /* Fails contrast 3.8:1 */</span>
+}
+
+<span class="comment">/* IMPECCABLE FIX: High-contrast operative indicator */</span>
+.hero-stats__label {
+    <span class="good">font-size: 12px;</span>
+    <span class="good">color: #D6E4F8; /* 7.4:1 AAA contrast */</span>
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 2: TYPOGRAPHY -->
+            <section id="typography" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-fonts" style="color:var(--navy);"></i> 2. Typography</h2>
+                        <p class="section-desc">Typeface distinctiveness, font-scale ratios, tracking bounds, and micro-text legibility floors.</p>
+                    </div>
+                    <span class="badge badge-detector">4 Findings</span>
+                </div>
+
+                <!-- Finding 7: Overused Font Stack -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Overused Font Stack (Plus Jakarta Sans + Inter)</div>
+                            <span class="finding-loc">resources/views/layouts/app.blade.php:13 & public/css/style.css:38</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-detector">Deterministic Detector Hit</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>overused-font</code> states: <em>"Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality."</em> The project pairs Plus Jakarta Sans for headings with Inter for body copy.
+                        </p>
+                        <div class="finding-impact">
+                            <strong>User Impact:</strong> Diminishes institutional gravity; the portal looks like a generic SaaS boilerplate rather than an authoritative municipal cyber defense agency.
+                        </div>
+
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Generic Inter + Plus Jakarta Sans</span>
+                                    <code>'Plus Jakarta Sans', 'Inter'</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="font-family: 'Plus Jakarta Sans', sans-serif; text-align:left; width:100%;">
+                                        <h3 style="font-size:20px; font-weight:800; color:#0A0F1A; text-transform:uppercase;">PUSAT OPERASI KEAMANAN SIBER</h3>
+                                        <p style="font-family: 'Inter', sans-serif; font-size:14px; color:#5B6472; margin-top:6px;">
+                                            Sistem penanganan insiden teknologi informasi dan komunikasi Provinsi DKI Jakarta.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Public Sans / Authoritative Civic Typeface</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="font-family: 'Public Sans', sans-serif; text-align:left; width:100%;">
+                                        <h3 style="font-size:20px; font-weight:800; color:#0A0F1A; text-transform:uppercase; letter-spacing:0.02em;">PUSAT OPERASI KEAMANAN SIBER</h3>
+                                        <p style="font-family: 'Public Sans', sans-serif; font-size:14px; color:#334155; margin-top:6px; line-height:1.6;">
+                                            Sistem penanganan insiden teknologi informasi dan komunikasi Provinsi DKI Jakarta.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Drawer -->
+                        <div class="code-drawer">
+                            <div class="code-drawer-header">
+                                <span><i class="bi bi-code-slash"></i> Snippet Comparison</span>
+                                <span>CSS Extraction</span>
+                            </div>
+                            <div class="code-snippet">
+<span class="comment">/* OFFENDING (style.css:38-39) */</span>
+:root {
+    <span class="bad">--font-display: 'Plus Jakarta Sans', sans-serif; /* AI boilerplate font */</span>
+    <span class="bad">--font-body:    'Inter', system-ui, sans-serif;</span>
+}
+
+<span class="comment">/* IMPECCABLE RECOMMENDATION: Civic Security Face */</span>
+:root {
+    <span class="good">--font-display: 'Public Sans', -apple-system, sans-serif; /* Sturdy municipal sans */</span>
+    <span class="good">--font-body:    'Public Sans', sans-serif;</span>
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 8: Undersized Functional Text -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Undersized Functional Text (< 11px)</div>
+                            <span class="finding-loc">components/footer.blade.php:101 & style.css:365, 516, 560</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-critique">Craft Floor Legibility Floor</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>undersized-functional-text</code> states: <em>"Interactive and content-bearing UI text (links, buttons, nav items, labels, table cells, meta rows, timecodes) below 11px is a legibility failure, not a style choice. It fails on high-DPI and small viewports and degrades tap and read targets."</em> Multiple instances exist: 9px icons in footer, 10.5px dates in news cards, and 10px badges in guides.
+                        </p>
+                        <div class="finding-impact">
+                            <strong>User Impact:</strong> Microscopic text causes reading fatigue, mis-taps on mobile devices, and fails accessibility checks for users with mild visual impairment.
+                        </div>
+
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: 10.5px Sub-Threshold Text</span>
+                                    <code>font-size: 10.5px</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div class="mock-date-before">
+                                        20 September 2026 &bull; Berita Siber
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>12px Legible Floor with balanced tracking</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div class="mock-date-after">
+                                        <i class="bi bi-calendar3" style="font-size:12px;"></i> 20 September 2026 &bull; Berita Siber
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Drawer -->
+                        <div class="code-drawer">
+                            <div class="code-drawer-header">
+                                <span><i class="bi bi-code-slash"></i> Snippet Comparison</span>
+                                <span>CSS Extraction</span>
+                            </div>
+                            <div class="code-snippet">
+<span class="comment">/* OFFENDING (style.css:364-374) */</span>
+.news-card__date {
+    <span class="bad">font-size: 10.5px; /* Sub-11px legibility failure */</span>
+    font-weight: 600;
+    letter-spacing: 0.1em;
+}
+
+<span class="comment">/* IMPECCABLE FIX: Enforce 11px/12px floor sitewide */</span>
+.news-card__date {
+    <span class="good">font-size: 12px; /* Compliant with human visual resolution */</span>
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 9: Wide Letter Spacing on Body Text -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Excessive Letter Spacing on Text Elements</div>
+                            <span class="finding-loc">public/css/style.css:562 (.cta-section__eyebrow: 0.14em)</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">LLM Critique Judgment</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>wide-letter-spacing-body</code> states: <em>"Letter spacing above 0.05em disrupts natural character groupings and slows reading. Reserve wide tracking strictly for short uppercase labels under 10 characters."</em>
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: 0.14em Dispersed Tracking</span>
+                                    <code>letter-spacing: 0.14em</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--navy-dim">
+                                    <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#93A2B7;">
+                                        LAYANAN TANGGAP INSIDEN DARURAT 24 JAM
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>0.04em Natural Optical Grouping</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--navy-dim">
+                                    <div style="font-size:12px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:#E2E8F0;">
+                                        LAYANAN TANGGAP INSIDEN DARURAT 24 JAM
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 10: Flat Type Hierarchy -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Flat Type Hierarchy in Admin Triage</div>
+                            <span class="finding-loc">resources/views/admin/contacts/show.blade.php:24-27</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">LLM Critique Judgment</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>flat-type-hierarchy</code> states: <em>"Dominant heading and body roles are separated by less than 1.25x at every step, flattening hierarchy."</em> In admin detail cards, card titles are 16px while data values are 13.5px (only a 1.18x ratio), making labels and values visually blend together.
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: 1.18x Flat Scale</span>
+                                    <code>Title 16px / Value 13.5px</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="width:100%; border:1px solid #D8DCE3; padding:16px;">
+                                        <div style="font-size:16px; font-weight:800; text-transform:uppercase; color:#0A0F1A; margin-bottom:8px;">Detail Laporan Masuk</div>
+                                        <div style="font-size:13.5px; color:#0A0F1A;">Ditemukan celah SQL Injection pada portal perizinan daerah.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>1.4x Distinct Scale Step</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="width:100%; border:1px solid #D8DCE3; padding:16px;">
+                                        <div style="font-size:19px; font-weight:800; text-transform:uppercase; color:#0A0F1A; margin-bottom:8px;">Detail Laporan Masuk</div>
+                                        <div style="font-size:13.5px; color:#334155; line-height:1.6;">Ditemukan celah SQL Injection pada portal perizinan daerah.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 3: COLOR & CONTRAST -->
+            <section id="color" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-palette" style="color:var(--cyan);"></i> 3. Color & Contrast</h2>
+                        <p class="section-desc">WCAG AA 4.5:1 text contrast on dark grounds, design token consistency, and rest-state affordances.</p>
+                    </div>
+                    <span class="badge badge-detector">3 Findings</span>
+                </div>
+
+                <!-- Finding 11: Gray text on colored background -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Low Contrast Gray on Dark Color Grounds</div>
+                            <span class="finding-loc">resources/views/home.blade.php:160 & style.css:593</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-critique">WCAG AA Contrast Failure</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>gray-on-color</code> and <code>craft-floor.md</code> mandate: <em>"On colored surfaces tint secondary text from that hue or the foreground; never gray. Contrast: body text &ge; 4.5:1."</em> In <code>home.blade.php</code>, <code>.hero-stats__label</code> is set to <code>rgba(255,255,255, 0.4)</code> on dark navy, yielding a <strong>3.8:1 contrast ratio</strong> which fails WCAG AA standards.
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: rgba(255,255,255,0.4) (3.8:1 Fail)</span>
+                                    <code>color: rgba(255,255,255,0.4)</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--navy-dim">
+                                    <div style="font-size:13px; color:rgba(255,255,255,0.4); text-align:center;">
+                                        Sistem Keamanan Siber Pemprov DKI Jakarta
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Tinted Foreground #D6E4F8 (7.4:1 AAA Pass)</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--navy-dim">
+                                    <div style="font-size:13px; color:#D6E4F8; font-weight:500; text-align:center;">
+                                        Sistem Keamanan Siber Pemprov DKI Jakarta
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 12: Hardcoded Colors outside design tokens -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Hardcoded Hex Colors Outside Tokens</div>
+                            <span class="finding-loc">resources/views/admin/dashboard.blade.php:229-231 & footer.blade.php:49</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">Design Token Drift</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>hard-coded-colors</code> flags colors bypassing the defined token system. <code>admin/dashboard.blade.php</code> injects raw emerald greens (<code>#ECFDF5</code>, <code>#10B981</code>, <code>#065F46</code>), while <code>footer.blade.php</code> uses arbitrary borders (<code>#1E2D42</code>, <code>#131D2B</code>).
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Arbitrary Emerald Palette</span>
+                                    <code>#ECFDF5 / #10B981</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="background:#ECFDF5; border-left:4px solid #10B981; color:#065F46; padding:12px 18px; font-size:13.5px; width:100%; max-width:320px;">
+                                        Data berhasil diperbarui ke server.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Tokenized Civic Success Palette</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="background:var(--navy-tint); border:1px solid var(--navy); color:var(--navy-dim); padding:12px 18px; font-size:13.5px; width:100%; max-width:320px; font-weight:500;">
+                                        <i class="bi bi-check-circle-fill" style="color:var(--navy); margin-right:6px;"></i> Data berhasil diperbarui ke server.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 13: Ghost Icon Color at Rest -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Low Contrast Icon at Rest (1.3:1)</div>
+                            <span class="finding-loc">public/css/style.css:475 (.service-card__icon)</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">LLM Critique Judgment</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> The icon color on service cards is assigned to <code>var(--border)</code> (<code>#D8DCE3</code>). On a white card background, this yields a near-invisible <strong>1.3:1 contrast ratio</strong> until the user hovers!
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Ghost Icon at Rest (#D8DCE3)</span>
+                                    <code>color: var(--border)</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <i class="bi bi-shield-lock" style="font-size:36px; color:#D8DCE3;"></i>
+                                    <span style="font-size:11px; color:#94A3B8; margin-top:6px;">Nyaris tidak terlihat (1.3:1)</span>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>High-Contrast Brand Blue (8.6:1)</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <i class="bi bi-shield-lock" style="font-size:36px; color:#003580;"></i>
+                                    <span style="font-size:11px; color:#003580; margin-top:6px; font-weight:600;">Jelas terbaca seketika</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 4: SPATIAL & LAYOUT -->
+            <section id="spatial" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-aspect-ratio" style="color:var(--navy);"></i> 4. Spatial & Layout</h2>
+                        <p class="section-desc">Touch target minimums (&ge;44x44px), visual rhythm, and reading measure constraints.</p>
+                    </div>
+                    <span class="badge badge-detector">3 Findings</span>
+                </div>
+
+                <!-- Finding 14: Cramped Touch Target -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Undersized Touch Target on Pagination (< 44px)</div>
+                            <span class="finding-loc">resources/views/statistics.blade.php:50 (.statistics-pagination a)</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-critique">WCAG 2.5.5 Touch Target</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule: <em>"Touch targets: Interactive elements &lt; 44x44px fail mobile accessibility."</em> The pagination buttons in <code>statistics.blade.php</code> specify <code>min-height: 40px; min-width: 40px;</code>.
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: 40x40px Target</span>
+                                    <code>min-height: 40px; min-width: 40px;</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="display:flex; gap:6px;">
+                                        <span class="mock-page-btn-before">1</span>
+                                        <span class="mock-page-btn-before" style="background:#003580; color:#FFFFFF;">2</span>
+                                        <span class="mock-page-btn-before">3</span>
+                                    </div>
+                                    <span style="font-size:11px; color:#EF4444; margin-top:8px;">40px &times; 40px (Fails WCAG 44px)</span>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Compliant 44x44px Touch Target</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="display:flex; gap:8px;">
+                                        <span class="mock-page-btn-after">1</span>
+                                        <span class="mock-page-btn-after" style="background:#003580; color:#FFFFFF;">2</span>
+                                        <span class="mock-page-btn-after">3</span>
+                                    </div>
+                                    <span style="font-size:11px; color:#059669; margin-top:8px;">44px &times; 44px (Meets WCAG 2.5.5)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 15: Heading Rhythm -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Inverted Heading Vertical Rhythm</div>
+                            <span class="finding-loc">resources/views/rfc2350.blade.php:91-95</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">LLM Critique Judgment</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>heading-rhythm</code>: <em>"A heading binds to the content it introduces, so the rendered space above it should exceed the space below it (e.g. 2x). When headings sit as close or closer to the block above than to their own content, every section reads as if it captions the previous one."</em>
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Crowded Top Margin (36px above / 20px below)</span>
+                                    <code>margin-top: 36px</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="text-align:left; width:100%; border:1px solid #E2E8F0; padding:12px;">
+                                        <p style="color:#64748B; font-size:12px;">Paragraf penutup dari seksi sebelumnya...</p>
+                                        <h4 style="font-size:15px; font-weight:800; color:#0A0F1A; margin-top:16px; margin-bottom:14px;">4. Kebijakan Operasional</h4>
+                                        <p style="color:#0A0F1A; font-size:13px;">Isi kebijakan baru yang terikat pada heading di atas.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Generous Separation (48px above / 16px below)</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="text-align:left; width:100%; border:1px solid #E2E8F0; padding:12px;">
+                                        <p style="color:#64748B; font-size:12px;">Paragraf penutup dari seksi sebelumnya...</p>
+                                        <h4 style="font-size:15px; font-weight:800; color:#0A0F1A; margin-top:32px; margin-bottom:12px; border-bottom:1px solid #E2E8F0; padding-bottom:6px;">4. Kebijakan Operasional</h4>
+                                        <p style="color:#0A0F1A; font-size:13px;">Isi kebijakan baru yang terikat pada heading di atas.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Non-Visual Spatial Table -->
+                <div class="table-card">
+                    <div class="table-card__head">Non-Visual Spatial Findings</div>
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th>Severity</th>
+                                <th>Rule</th>
+                                <th>Location</th>
+                                <th>Diagnostic Impact & Recommendation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-warning">P3 Polish</span></td>
+                                <td><code>line-length</code></td>
+                                <td><code>news/show.blade.php:120</code></td>
+                                <td>Article content container expands to full 100% column width on 1440px displays, reaching 95–110 characters per line. Constrain body measure to <code>max-width: 72ch</code> for optimal reading retention.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CATEGORY 5: MOTION & EASING -->
+            <section id="motion" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-play-circle" style="color:var(--purple);"></i> 5. Motion & Easing</h2>
+                        <p class="section-desc">Intentional motion alternatives, composite-only animations, and reduced-motion safety.</p>
+                    </div>
+                    <span class="badge badge-detector">3 Findings</span>
+                </div>
+
+                <!-- Finding 16: Image Hover Transform -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Image Hover Zoom (scale(1.03) Slop Tic)</div>
+                            <span class="finding-loc">public/css/style.css:356 & events/index.blade.php:125</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-detector">Deterministic Slop Rule</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>image-hover-transform</code> states: <em>"Scaling or rotating an image on hover is a recurring generated-UI signature. Let imagery sit still, or use a subtler, purposeful interaction (e.g. border tint, surface elevation, or title underline)."</em>
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: transform: scale(1.03) on hover</span>
+                                    <code>Hover card below to see zoom</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div class="mock-thumb-box">
+                                        <div class="mock-thumb-img-before" style="background:#1E293B; display:flex; align-items:center; justify-content:center; color:#94A3B8; font-size:12px;">
+                                            <i class="bi bi-zoom-in" style="font-size:24px; margin-right:8px;"></i> Hover: Zoom
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Still imagery with calm title interaction</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div class="mock-thumb-box">
+                                        <div class="mock-thumb-img-after" style="background:#0F172A; display:flex; align-items:center; justify-content:center; color:#F8FAFC; font-size:12px;">
+                                            <i class="bi bi-image" style="font-size:24px; margin-right:8px;"></i> Hover: Still
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 17: Brutal 0.001ms Motion Kill -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Brutal 0.001ms Animation Kill (Feedback Destroyed)</div>
+                            <span class="finding-loc">public/css/accessibility-contrast.css:949-955</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-critique">Audit Motion Safety Rule</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable's <code>audit.md</code> explicitly forbids: <em>"prefers-reduced-motion needs an intentional alternative that preserves state change and hierarchy; flag a global 0.01ms kill that destroys useful feedback, flashing above threshold, and motion that blocks task completion."</em> The portal uses <code>0.001ms !important</code> applied globally to all DOM elements when pausing animation.
+                        </p>
+                        <div class="finding-impact">
+                            <strong>User Impact:</strong> Eliminates gradual visual feedback on accordion disclosures, dropdown menus, and tabs, causing disorienting instantaneous UI snapping.
+                        </div>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: 0.001ms Global Kill</span>
+                                    <code>animation-duration: 0.001ms !important</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div style="background:#FFFFFF; border:1px solid #D8DCE3; padding:12px; font-size:13px; color:#EF4444;">
+                                        <i class="bi bi-slash-circle"></i> State transits instantly with zero cognitive transition buffer.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Gentle crossfade preserving hierarchy</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div style="background:#FFFFFF; border:1px solid #D8DCE3; padding:12px; font-size:13px; color:#059669;">
+                                        <i class="bi bi-check2-circle"></i> Respects reduced motion via opacity crossfade without layout jumps.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Non-Visual Motion Table -->
+                <div class="table-card">
+                    <div class="table-card__head">Non-Visual Motion Findings</div>
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th>Severity</th>
+                                <th>Rule</th>
+                                <th>Location</th>
+                                <th>Diagnostic Impact & Recommendation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-warning">P2 Minor</span></td>
+                                <td><code>layout-transition</code></td>
+                                <td><code>admin/dashboard.blade.php:219</code></td>
+                                <td><code>.btn-logout</code> uses <code>transition: all var(--ease)</code>. Animating <code>all</code> forces browser style recalculations and layout thrashing across all properties. Replace with targeted <code>transition: background-color var(--ease), color var(--ease)</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CATEGORY 6: INTERACTION & STATES -->
+            <section id="interaction" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-cursor" style="color:var(--navy);"></i> 6. Interaction & States</h2>
+                        <p class="section-desc">Interactive feedback loops, destructive confirmations, and state persistence.</p>
+                    </div>
+                    <span class="badge badge-detector">2 Findings</span>
+                </div>
+
+                <!-- Finding 18: Phantom Hover State -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Phantom Hover State (0% Visual Change)</div>
+                            <span class="finding-loc">resources/views/components/navbar.blade.php:48-60</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">LLM Critique Judgment</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> In <code>navbar.blade.php</code>, <code>.nav-strip__links a</code> is styled with <code>color: var(--muted-on-dark);</code>. The hover rule is declared as <code>.nav-strip__links a:hover { color: var(--muted-on-dark); }</code>. The hover color is the exact same token as the rest state, providing zero visual confirmation to the user.
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Hover color matches rest color</span>
+                                    <code>color: var(--muted-on-dark) on :hover</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--dark">
+                                    <span style="color:#93A2B7; font-size:12px; font-weight:600; text-transform:uppercase;">Hubungi Kami</span>
+                                    <span style="font-size:11px; color:#EF4444; margin-top:8px;">Hovering produces 0 change</span>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Crisp white illumination on hover</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--dark">
+                                    <span style="color:#FFFFFF; font-size:12px; font-weight:600; text-transform:uppercase; border-bottom:1px solid #FFFFFF;">Hubungi Kami</span>
+                                    <span style="font-size:11px; color:#10B981; margin-top:8px;">Instant, unmistakable feedback</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 19: Native browser confirm on delete -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Native Browser Confirm for Destructive Actions</div>
+                            <span class="finding-loc">resources/views/admin/partials/news.blade.php:36 (and 5 other admin partials)</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">Nielsen #3 & #5 Violation</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Destructive deletion relies on unstyled, blocking browser <code>window.confirm('Delete this news?')</code> in English. Fails Nielsen usability heuristics for error prevention and user freedom.
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Blocking Native alert()</span>
+                                    <code>onclick="return confirm('Delete this news?')"</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div style="background:#FFFFFF; border:1px solid #D8DCE3; padding:12px; border-radius:4px; font-size:12px; color:#334155; width:100%; max-width:280px; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                                        <strong>csirt.jakarta.go.id says:</strong><br>Delete this news?
+                                        <div style="text-align:right; margin-top:10px;"><button style="background:#E2E8F0; padding:2px 8px; font-size:11px; margin-right:4px;">OK</button><button style="background:#E2E8F0; padding:2px 8px; font-size:11px;">Cancel</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Accessible Confirmation Card in Indonesian</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div style="background:#FFFFFF; border:1px solid var(--border); padding:16px; width:100%; max-width:280px;">
+                                        <div style="font-size:13px; font-weight:800; color:#B91C1C; margin-bottom:6px;"><i class="bi bi-exclamation-triangle-fill"></i> Hapus Berita?</div>
+                                        <p style="font-size:12px; color:#5B6472; margin-bottom:12px;">Tindakan ini akan memindahkan artikel ke arsip terhapus.</p>
+                                        <div style="display:flex; gap:8px;">
+                                            <button style="background:#B91C1C; color:#FFF; font-size:11px; font-weight:700; padding:6px 10px;">Ya, Hapus</button>
+                                            <button style="background:#E8EFF8; color:#003580; font-size:11px; font-weight:700; padding:6px 10px;">Batal</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 7: RESPONSIVE DESIGN -->
+            <section id="responsive" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-phone" style="color:var(--navy);"></i> 7. Responsive Design</h2>
+                        <p class="section-desc">Fluid column scaling, breakpoint adaptation, and multi-device affordances.</p>
+                    </div>
+                    <span class="badge badge-detector">2 Findings</span>
+                </div>
+
+                <!-- Finding 20: Abrupt Partner Collapse -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Institutional Partner Cluster Collapse below 1200px</div>
+                            <span class="finding-loc">resources/views/components/navbar.blade.php:104 & AGENTS.md</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">LLM Critique Judgment</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Because the navbar container is over-packed, the institutional partner cluster (Jaya Raya, Diskominfotik, 5 Abad Jakarta, HUT RI 81) is completely hidden below 1200px via <code>display: none</code>, stripping official government identity on 13-inch laptops and tablets.
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Abrupt display:none below 1200px</span>
+                                    <code>@media (max-width: 1200px) { .nav-partners { display:none } }</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="font-size:12px; color:#94A3B8; text-align:center;">
+                                        <i class="bi bi-eye-slash-fill" style="font-size:24px; color:#EF4444; display:block; margin-bottom:6px;"></i>
+                                        Partner logos vanish completely on laptop viewports.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Compact scaling & secondary header integration</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="display:flex; align-items:center; gap:8px; border:1px solid #E2E8F0; padding:6px 12px;">
+                                        <span style="font-size:11px; font-weight:800; color:#003580;">PEMPROV DKI</span>
+                                        <span style="height:14px; width:1px; background:#CBD5E1;"></span>
+                                        <span style="font-size:11px; font-weight:600; color:#64748B;">Diskominfotik</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 21: Fixed 170px Grid Column Break -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-triangle-fill" style="color:var(--amber);"></i> Fixed 170px Column Break on Mobile Admin Triage</div>
+                            <span class="finding-loc">resources/views/admin/contacts/show.blade.php:25</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-warning">P2 Minor</span>
+                            <span class="badge badge-critique">LLM Critique Judgment</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> <code>.detail-item</code> uses <code>grid-template-columns: 170px 1fr</code> without a mobile media query. On viewports under 400px, this cramps data values and forces horizontal overflow.
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Fixed 170px column cramps small screens</span>
+                                    <code>grid-template-columns: 170px 1fr</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="display:grid; grid-template-columns:170px 1fr; gap:8px; font-size:12px; width:260px; border:1px solid #E2E8F0; padding:8px;">
+                                        <span style="color:#64748B; font-weight:700;">ALAMAT IP PENGIRIM:</span>
+                                        <span style="word-break:break-all; color:#EF4444;">192.168.1.1 (Crowded)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Stacked layout below 640px</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div style="display:flex; flex-direction:column; gap:4px; font-size:12px; width:260px; border:1px solid #E2E8F0; padding:8px;">
+                                        <span style="color:#64748B; font-weight:700; font-size:10.5px; text-transform:uppercase;">Alamat IP Pengirim</span>
+                                        <span style="color:#0A0F1A; font-family:var(--font-mono); font-size:13px;">192.168.1.1</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 8: UX WRITING & TONE -->
+            <section id="uxwriting" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-chat-quote" style="color:var(--cyan);"></i> 8. UX Writing & Tone</h2>
+                        <p class="section-desc">Language consistency, localized terminology, and institutional clarity.</p>
+                    </div>
+                    <span class="badge badge-detector">2 Findings</span>
+                </div>
+
+                <!-- Finding 22: Language Fragmentation -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Administrative Language Fragmentation (Mixed EN / ID)</div>
+                            <span class="finding-loc">resources/views/admin/partials/news.blade.php:59-80 & laws.blade.php</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-critique">Nielsen #4 Consistency Violation</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> The administration views arbitrarily intermix Indonesian and English within the same form: the section header announces "Kelola Berita", the action button says "Tambah Berita", but the modal title pops up as "Add News", form inputs are labeled "Title" and "Date & Time", and delete buttons execute "Delete this news?".
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Arbitrary Language Switching</span>
+                                    <code>"Tambah Berita" &rarr; "Add News" &rarr; "Title"</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div class="mock-modal-head-before">
+                                        <h5 style="color:#EF4444;">Add News (EN)</h5>
+                                        <label>Title (EN)</label>
+                                        <div style="font-size:11px; color:#64748B;">Tombol aksi tabel: "Tambah Berita" (ID)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Unified Standardized Indonesian</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--white">
+                                    <div class="mock-modal-head-before">
+                                        <h5 style="color:#003580;">Tambah Berita Baru</h5>
+                                        <label>Judul Berita</label>
+                                        <div style="font-size:11px; color:#10B981;">Seluruh terminologi konsisten Bahasa Indonesia</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Non-Visual UX Writing Table -->
+                <div class="table-card">
+                    <div class="table-card__head">Non-Visual UX Writing Findings</div>
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th>Severity</th>
+                                <th>Rule</th>
+                                <th>Location</th>
+                                <th>Diagnostic Impact & Recommendation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-warning">P2 Minor</span></td>
+                                <td><code>cryptic-field-requirements</code></td>
+                                <td><code>bug-hunter/create.blade.php:410-417</code></td>
+                                <td>The "Down Time" field requires users to manually input <code>00:00</code> if no downtime occurred, failing recognition over recall (Nielsen #6). Introduce a simple toggle "Tidak ada gangguan layanan (Zero Downtime)" that auto-populates <code>00:00</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CATEGORY 9: ACCESSIBILITY -->
+            <section id="accessibility" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-universal-access" style="color:var(--alert);"></i> 9. Accessibility (A11y)</h2>
+                        <p class="section-desc">WCAG AA conformance, focus rings, semantic tags, and assistive technology integrity.</p>
+                    </div>
+                    <span class="badge badge-detector">3 Findings</span>
+                </div>
+
+                <!-- Finding 23: Broken/Placeholder Image in Lightbox -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Broken Image Tag (Empty src in Lightbox Modal)</div>
+                            <span class="finding-loc">resources/views/infographics/index.blade.php:470</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-detector">Deterministic Detector Hit</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> Impeccable rule <code>broken-image</code> flags <code>&lt;img src=""&gt;</code> tags. An empty <code>src</code> attribute triggers invalid browser requests to the current page path and renders broken image placeholder icons in assistive tools and certain browser engines.
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Empty src="" on initial load</span>
+                                    <code>&lt;img id="lb-img" src="" alt=""&gt;</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div style="border:1px dashed #EF4444; padding:20px; text-align:center; color:#EF4444; font-size:12px;">
+                                        <i class="bi bi-image" style="font-size:24px; display:block; margin-bottom:4px;"></i>
+                                        Broken image icon rendered before JS execution
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>Hidden template until hydrated via JavaScript</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <div style="border:1px solid #10B981; padding:20px; text-align:center; color:#059669; font-size:12px;">
+                                        <i class="bi bi-shield-check" style="font-size:24px; display:block; margin-bottom:4px;"></i>
+                                        Lazy hydrated element created in memory on click
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finding 24: Missing Focus Rings Sitewide -->
+                <div class="finding-card">
+                    <div class="finding-head">
+                        <div class="finding-title-group">
+                            <div class="finding-rule"><i class="bi bi-exclamation-octagon-fill" style="color:var(--alert);"></i> Missing Themed Focus Rings Sitewide</div>
+                            <span class="finding-loc">public/css/style.css:83-88</span>
+                        </div>
+                        <div class="finding-badges">
+                            <span class="badge badge-danger">P1 Major</span>
+                            <span class="badge badge-critique">WCAG 2.4.7 Focus Visible</span>
+                        </div>
+                    </div>
+                    <div class="finding-body">
+                        <p class="finding-desc">
+                            <strong>Why Flagged:</strong> <code>style.css</code> applies a blanket reset (<code>button { border: none; background: none; }</code>) without declaring global <code>:focus-visible</code> indicators for keyboard navigation. Keyboard users cannot track active element focus.
+                        </p>
+                        <!-- Live Comparison -->
+                        <div class="comparison-stage">
+                            <div class="stage-pane stage-pane--before">
+                                <div class="stage-banner stage-banner--before">
+                                    <span><i class="bi bi-x-circle"></i> BEFORE: Keyboard focus has no indicator</span>
+                                    <code>outline: none / browser invisible</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <button class="mock-btn-no-focus">Tombol Masuk</button>
+                                </div>
+                            </div>
+                            <div class="stage-pane stage-pane--after">
+                                <div class="stage-banner stage-banner--after">
+                                    <span><i class="bi bi-check-circle"></i> AFTER: Impeccable Recommendation</span>
+                                    <code>3px offset high-contrast focus ring</code>
+                                </div>
+                                <div class="stage-canvas stage-canvas--mist">
+                                    <button class="mock-btn-good-focus">Tombol Masuk</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Non-Visual A11y Table -->
+                <div class="table-card">
+                    <div class="table-card__head">Non-Visual Accessibility Findings</div>
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th>Severity</th>
+                                <th>Rule</th>
+                                <th>Location</th>
+                                <th>Diagnostic Impact & Recommendation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-warning">P2 Minor</span></td>
+                                <td><code>semantic-landmarks</code></td>
+                                <td><code>admin/dashboard.blade.php:250</code></td>
+                                <td>Admin views wrap the entire working pane in generic <code>&lt;div class="admin-container"&gt;</code> without <code>&lt;main&gt;</code> tags or a skip-to-content anchor. Fails WCAG 2.4.1 (Bypass Blocks). Wrap main view in <code>&lt;main id="main-content"&gt;</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CATEGORY 10: PERFORMANCE -->
+            <section id="performance" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-lightning-charge" style="color:var(--amber);"></i> 10. Performance</h2>
+                        <p class="section-desc">LCP assets, client-side rendering bottlenecks, and stylesheet efficiency.</p>
+                    </div>
+                    <span class="badge badge-detector">2 Findings</span>
+                </div>
+
+                <!-- Non-Visual Performance Table -->
+                <div class="table-card">
+                    <div class="table-card__head">Performance & Asset Optimization Findings (Non-Visual)</div>
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th>Severity</th>
+                                <th>Rule</th>
+                                <th>Location</th>
+                                <th>Diagnostic Impact & Recommendation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-danger">P1 Major</span></td>
+                                <td><code>unoptimized-remote-hotlinks</code></td>
+                                <td><code>home.blade.php:15 & legacy seeders</code></td>
+                                <td>The primary hero background downloads an uncompressed 1920px image directly from Unsplash CDN (<code>photo-1558494949-ef010cbdcc31</code>) blocking Largest Contentful Paint (LCP). Additionally, seeders hotlink directly to the legacy server without WebP compression or local caching. Self-host hero assets in AVIF/WebP under <code>public/images/</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-warning">P2 Minor</span></td>
+                                <td><code>unbounded-filter-blur-heavy-repaints</code></td>
+                                <td><code>accessibility-contrast.css:925</code></td>
+                                <td>Grayscale and inversion modes apply <code>filter: grayscale(1)</code> across all elements (<code>body *:not(...)</code>). This creates unbounded compositor layers and causes significant frame drops on low-power mobile devices. Move the filter to a dedicated wrapper element or apply via SVG color matrices.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 4. Action Roadmap & Next Steps -->
+            <section id="action-plan" class="section-wrap">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title"><i class="bi bi-signpost-split" style="color:var(--success);"></i> Prioritized Impeccable Action Roadmap</h2>
+                        <p class="section-desc">Sequenced command execution plan to resolve all 30 audit findings systematically.</p>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-card__head">Execution Sequence (Prioritized P1 &rarr; P2 &rarr; P3)</div>
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Step</th>
+                                <th style="width: 180px;">Impeccable Command</th>
+                                <th style="width: 100px;">Priority</th>
+                                <th>Target Areas & Scope of Work</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><code>impeccable distill</code></td>
+                                <td><span class="badge badge-danger">P1 Major</span></td>
+                                <td>Strip the 19 instances of repeating-linear-gradient pseudo-element stripes, delete banned kickers/eyebrows across 12 views, and remove side-tab accent borders from 17 files.</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><code>impeccable clarify</code></td>
+                                <td><span class="badge badge-danger">P1 Major</span></td>
+                                <td>Localize all admin CRUD views and modals into consistent official Indonesian, replacing raw English dialogs and labels.</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><code>impeccable typeset</code></td>
+                                <td><span class="badge badge-danger">P1 Major</span></td>
+                                <td>Enforce the 11px/12px micro-text legibility floor across dates, badges, and footer links; restore hierarchical scale ratios in admin triage.</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><code>impeccable colorize</code></td>
+                                <td><span class="badge badge-danger">P1 Major</span></td>
+                                <td>Replace low-contrast muted grays on dark grounds with tinted foregrounds (<code>#D6E4F8</code>); restore rest-state icon visibility on service cards.</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><code>impeccable adapt</code></td>
+                                <td><span class="badge badge-warning">P2 Minor</span></td>
+                                <td>Enforce 44x44px touch targets on pagination; fix fixed 170px mobile grid break in contact detail views.</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><code>impeccable harden</code></td>
+                                <td><span class="badge badge-danger">P1 Major</span></td>
+                                <td>Inject global high-visibility <code>:focus-visible</code> rings; fix empty <code>&lt;img src=""&gt;</code> in lightbox modals; replace raw <code>window.confirm()</code> with accessible modals.</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td><code>impeccable polish</code></td>
+                                <td><span class="badge badge-warning">P2 Minor</span></td>
+                                <td>Perform final micro-alignment, replace <code>scale(1.03)</code> image zoom with still imagery, and verify all 5 diagnostic dimensions.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>

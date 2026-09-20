@@ -30,7 +30,7 @@
                             <small style="color:var(--mid);">{{ $contact->email }}</small>
                         </td>
                         <td>{{ Str::limit($contact->subject, 40) }}</td>
-                        <td><span class="status-badge status-menunggu_validasi" style="font-size:10px;">{{ $contact->inquiry_type }}</span></td>
+                        <td><span class="status-badge status-menunggu_validasi" style="font-size:11.5px;">{{ $contact->inquiry_type }}</span></td>
                         <td>
                             @php
                                 $badgeClass = match($contact->status) {
@@ -41,7 +41,7 @@
                                     default => 'status-menunggu_validasi',
                                 };
                             @endphp
-                            <span class="status-badge {{ $badgeClass }}" style="font-size:10px;">{{ $contact->statusLabel() }}</span>
+                            <span class="status-badge {{ $badgeClass }}" style="font-size:11.5px;">{{ $contact->statusLabel() }}</span>
                         </td>
                         <td>{{ $contact->created_at->format('d M Y') }}</td>
                         <td>

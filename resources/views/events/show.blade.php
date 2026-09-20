@@ -20,15 +20,7 @@
     overflow: hidden;
 }
 .event-detail-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-        transparent 1px, transparent 80px
-    );
-    pointer-events: none;
+    display: none;
 }
 .event-detail-header .container { position: relative; z-index: 1; }
 
@@ -297,7 +289,7 @@
     filter: grayscale(15%);
     transition: filter 0.3s ease, transform 0.3s ease;
 }
-.event-card:hover .event-card__thumb { filter: grayscale(0%); transform: scale(1.03); }
+.event-card:hover .event-card__thumb { filter: grayscale(0%); opacity: 0.95; }
 .event-card__date-badge {
     position: absolute;
     top: 148px;

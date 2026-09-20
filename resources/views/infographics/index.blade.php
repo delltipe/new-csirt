@@ -20,35 +20,15 @@
     position: relative;
     overflow: hidden;
 }
-.infographics-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-        transparent 1px, transparent 80px
-    );
-    pointer-events: none;
-}
 .infographics-header .container { position: relative; z-index: 1; }
 
 .infographics-header__eyebrow {
-    font-size: 10.5px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted-on-dark);
+    color: #D6E4F8;
     margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.infographics-header__eyebrow::before {
-    content: '';
-    display: block;
-    width: 20px; height: 1px;
-    background: rgba(255,255,255,0.2);
 }
 .infographics-header h1 {
     font-family: var(--font-display);
@@ -129,10 +109,9 @@
     object-fit: cover;
     display: block;
     filter: grayscale(10%);
-    transition: transform 0.3s ease, filter 0.3s ease;
+    transition: filter 0.3s ease;
 }
 .infographic-card:hover .infographic-card__img {
-    transform: scale(1.04);
     filter: grayscale(0%);
 }
 
@@ -467,7 +446,7 @@ nav[role="navigation"] li span.cursor-default {
             <i class="bi bi-chevron-left" aria-hidden="true"></i>
         </button>
 
-        <img class="lightbox-img" id="lb-img" src="" alt="">
+        <img class="lightbox-img" id="lb-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Pratinjau Infografis">
 
         <div class="lightbox-caption" id="lb-caption"></div>
 

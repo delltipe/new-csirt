@@ -8,35 +8,15 @@
     position: relative;
     overflow: hidden;
 }
-.detail-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-        transparent 1px, transparent 80px
-    );
-    pointer-events: none;
-}
 .detail-header .container { position: relative; z-index: 1; }
 .detail-header__eyebrow {
     font-family: var(--font-body);
-    font-size: 10.5px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted-on-dark);
+    color: #D6E4F8;
     margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.detail-header__eyebrow::before {
-    content: '';
-    display: block;
-    width: 20px; height: 1px;
-    background: rgba(255,255,255,0.2);
 }
 .detail-header__title {
     font-family: var(--font-display);

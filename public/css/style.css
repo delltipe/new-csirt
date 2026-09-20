@@ -87,6 +87,20 @@ button {
     background: none;
 }
 
+:focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.15s !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 
 /* -------------------------------------------------------------
    LAYOUT UTILITY
@@ -349,12 +363,12 @@ button {
     object-fit: cover;
     display: block;
     filter: grayscale(20%);
-    transition: transform 0.3s ease, filter 0.3s ease;
+    transition: opacity 0.2s ease, filter 0.2s ease;
 }
 
 .news-card:hover .news-card__img {
-    transform: scale(1.03);
     filter: grayscale(0%);
+    opacity: 0.95;
 }
 
 .news-card__body {
@@ -362,9 +376,9 @@ button {
 }
 
 .news-card__date {
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--navy);
     margin-bottom: 10px;
@@ -444,41 +458,26 @@ button {
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    transition: background var(--ease);
+    transition: background var(--ease), border-color var(--ease);
     text-decoration: none;
     color: inherit;
-}
-
-.service-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--navy);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.2s ease;
+    border: 1px solid transparent;
 }
 
 .service-card:hover {
     background: var(--navy-tint);
-}
-
-.service-card:hover::after {
-    transform: scaleX(1);
+    border-color: var(--navy);
 }
 
 .service-card__icon {
     font-size: 28px;
-    color: var(--border);
+    color: var(--navy);
     margin-bottom: 18px;
     transition: color var(--ease);
 }
 
 .service-card:hover .service-card__icon {
-    color: var(--navy);
+    color: var(--navy-mid);
 }
 
 .service-card__title {
@@ -513,7 +512,7 @@ button {
 }
 
 .service-card__link i {
-    font-size: 10px;
+    font-size: 11px;
 }
 
 
@@ -525,23 +524,6 @@ button {
     padding: 88px 0;
     position: relative;
     overflow: hidden;
-}
-
-/* Large faint watermark — adds depth without color */
-.cta-section::before {
-    content: '24/7';
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-display);
-    font-size: 260px;
-    font-weight: 800;
-    color: rgba(255, 255, 255, 0.03);
-    letter-spacing: -8px;
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
 }
 
 .cta-section .container {
@@ -557,23 +539,15 @@ button {
 
 .cta-section__eyebrow {
     font-family: var(--font-body);
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--muted-on-dark);
+    color: #CBD5E1;
     margin-bottom: 16px;
     display: flex;
     align-items: center;
     gap: 8px;
-}
-
-.cta-section__eyebrow::before {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.25);
 }
 
 .cta-section__title {
@@ -589,8 +563,8 @@ button {
 
 .cta-section__desc {
     font-size: 15px;
-    font-weight: 300;
-    color: rgba(255, 255, 255, 0.55);
+    font-weight: 400;
+    color: #CBD5E1;
     line-height: 1.75;
     max-width: 420px;
 }
@@ -604,8 +578,8 @@ button {
 
 .cta-section__note {
     text-align: center;
-    font-size: 11px;
-    color: var(--faint-on-dark);
+    font-size: 12px;
+    color: #CBD5E1;
     letter-spacing: 0.04em;
 }
 

@@ -42,9 +42,9 @@
                         <td>{{ $slide->urutan }}</td>
                         <td>
                             @if($slide->is_active)
-                                <span class="status-badge status-selesai" style="font-size:10px;">Aktif</span>
+                                <span class="status-badge status-selesai" style="font-size:11.5px;">Aktif</span>
                             @else
-                                <span class="status-badge status-menunggu_validasi" style="font-size:10px;">Nonaktif</span>
+                                <span class="status-badge status-menunggu_validasi" style="font-size:11.5px;">Nonaktif</span>
                             @endif
                         </td>
                         <td>
@@ -87,7 +87,7 @@
         @csrf
         <div class="modal-header">
           <h5 class="modal-title" id="addHeroModalLabel">Tambah Slide Hero</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
             <div class="mb-3">

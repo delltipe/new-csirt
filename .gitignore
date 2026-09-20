@@ -38,3 +38,5 @@ auth.json
 
 # Stale artifact paths from Windows cross-mount
 /public/D:*/**
+.playwright-mcp/
+design-system-audit-report.html

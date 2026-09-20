@@ -182,7 +182,7 @@
                         <td><span class="status-badge status-{{ $incident->status }}">{{ $incident->statusLabel() }}</span></td>
                         <td>
                             <a href="{{ route('admin.incidents.show', $incident->id) }}" class="btn-edit">
-                                <i class="bi bi-eye" aria-hidden="true"></i> Review
+                                <i class="bi bi-eye" aria-hidden="true"></i> Tinjau
                             </a>
                         </td>
                     </tr>

@@ -1455,7 +1455,7 @@ html.accessibility-contrast-dark .placeholder-header {
   background: #0F1B33;
 }
 html.accessibility-contrast-dark .rfc-page-header::before {
-  background-image: repeating-linear-gradient(90deg, #0F1B33 0, #0F1B33 79px, #1a2b4d 80px);
+  display: none !important;
 }
 html.accessibility-contrast-dark .event-back,
 html.accessibility-contrast-dark .event-hero__meta,
@@ -1734,13 +1734,13 @@ html.accessibility-readable-font body {
   letter-spacing: 0.02em;
 }
 
-/* Pause animations & transitions */
+/* Pause animations & transitions: intentional alternative preserving feedback */
 html.accessibility-pause-animations *,
 html.accessibility-pause-animations *::before,
 html.accessibility-pause-animations *::after {
-  animation-duration: 0.001ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.001ms !important;
+  animation: none !important;
+  transition-duration: 0.1s !important;
+  scroll-behavior: auto !important;
 }
 
 /* Large cursor (32px navy arrow with white outline) */

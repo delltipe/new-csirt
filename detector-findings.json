@@ -1,0 +1,192 @@
+﻿[
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\admin\\contacts\\show.blade.php",
+    "line": 19,
+    "snippet": "border-left:4px solid var(--navy)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\admin\\contacts\\show.blade.php",
+    "line": 20,
+    "snippet": "border-left:4px solid var(--alert)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\admin\\dashboard.blade.php",
+    "line": 230,
+    "snippet": "border-left: 4px solid #10B981"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\admin\\incidents\\show.blade.php",
+    "line": 81,
+    "snippet": "border-left: 4px solid var(--navy)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\admin\\incidents\\show.blade.php",
+    "line": 91,
+    "snippet": "border-left: 4px solid var(--alert)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\admin\\login.blade.php",
+    "line": 46,
+    "snippet": "border-left: 4px solid var(--alert)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\auth\\login.blade.php",
+    "line": 53,
+    "snippet": "border-left: 4px solid var(--alert)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\auth\\register.blade.php",
+    "line": 53,
+    "snippet": "border-left: 4px solid var(--alert)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\bug-hunter\\create.blade.php",
+    "line": 249,
+    "snippet": "border-left: 3px solid var(--alert)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\bug-hunter\\thank-you.blade.php",
+    "line": 87,
+    "snippet": "border-left: 4px solid var(--navy)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\demo\\hero-contrast.blade.php",
+    "line": 58,
+    "snippet": "border-left: 3px solid var(--navy)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\demo\\hero-contrast.blade.php",
+    "line": 182,
+    "snippet": "border-left:3px solid var(--navy)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\home.blade.php",
+    "line": 63,
+    "snippet": "border-left: 3px solid var(--navy)"
+  },
+  {
+    "antipattern": "broken-image",
+    "name": "Broken or placeholder image",
+    "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\infographics\\index.blade.php",
+    "line": 470,
+    "snippet": "<img class=\"lightbox-img\" id=\"lb-img\" src=\"\""
+  },
+  {
+    "antipattern": "overused-font",
+    "name": "Overused font",
+    "description": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\layouts\\app.blade.php",
+    "line": 13,
+    "snippet": "Google Fonts: inter"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\profile.blade.php",
+    "line": 46,
+    "snippet": "border-left: 8px solid var(--navy, #003580)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\rfc2350.blade.php",
+    "line": 108,
+    "snippet": "border-left: 4px solid var(--navy)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\resources\\views\\statistics.blade.php",
+    "line": 43,
+    "snippet": "border-left: 4px solid var(--navy)"
+  },
+  {
+    "antipattern": "side-tab",
+    "name": "Side-tab accent border",
+    "description": "Thick colored border on one side of a card ΓÇö the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "K:\\GitHub\\new-csirt\\public\\css\\style.css",
+    "line": 452,
+    "snippet": ".service-card::after ΓÇö absolute 3px pseudo-element stripe (bottom: 0)"
+  }
+]

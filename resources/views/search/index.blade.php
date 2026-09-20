@@ -7,17 +7,6 @@
     padding: 52px 0 44px;
     position: relative;
 }
-.search-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-        transparent 1px, transparent 80px
-    );
-    pointer-events: none;
-}
 .search-header .container { position: relative; z-index: 1; }
 .search-header__title {
     font-family: var(--font-display);

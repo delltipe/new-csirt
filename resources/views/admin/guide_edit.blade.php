@@ -4,7 +4,7 @@
 <div class="container py-5">
     <div class="card">
         <div class="card-header">
-            <h4 class="mb-0">Edit Guide</h4>
+            <h4 class="mb-0">Edit Panduan</h4>
         </div>
         <div class="card-body">
             @if($errors->any())
@@ -21,7 +21,7 @@
                 @csrf
                 
                 <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
+                    <label for="title" class="form-label">Judul</label>
                     <input type="text" class="form-control @error('title') is-invalid @enderror" 
                            id="title" name="title" value="{{ old('title', $guide->title) }}" required>
                     @error('title')
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="author" class="form-label">Author</label>
+                    <label for="author" class="form-label">Penulis</label>
                     <input type="text" class="form-control @error('author') is-invalid @enderror" 
                            id="author" name="author" value="{{ old('author', $guide->author) }}" required>
                     @error('author')
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="link" class="form-label">Link/URL</label>
+                    <label for="link" class="form-label">Tautan / URL Dokumen</label>
                     <input type="text" class="form-control @error('link') is-invalid @enderror" 
                            id="link" name="link" value="{{ old('link', $guide->link) }}" required>
                     @error('link')
@@ -48,8 +48,8 @@
                 </div>
 
                 <div>
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Update Guide</button>
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </form>
         </div>

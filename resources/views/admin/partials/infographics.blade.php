@@ -18,7 +18,7 @@
                 <thead>
                     <tr>
                         <th>Judul</th>
-                        <th>Thumbnail</th>
+                        <th>Gambar / Sampul</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -26,15 +26,15 @@
                     @foreach($infographics as $item)
                     <tr>
                         <td>{{ $item->title }}</td>
-                        <td><a href="{{ $item->thumbnail }}" target="_blank">View Image</a></td>
+                        <td><a href="{{ $item->thumbnail }}" target="_blank" rel="noopener">Lihat Gambar</a></td>
                         <td>
                             <a href="{{ route('admin.infographic.edit', $item->id) }}" class="btn-edit">
                                 <i class="bi bi-pencil" aria-hidden="true"></i> Edit
                             </a>
                             <form action="{{ route('admin.infographic.delete', $item->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this infographic?')">
-                                    <i class="bi bi-trash" aria-hidden="true"></i> Delete
+                                <button type="submit" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus infografis ini?')">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Hapus
                                 </button>
                             </form>
                         </td>
@@ -56,22 +56,22 @@
       <form method="POST" action="{{ route('admin.infographic.store') }}">
         @csrf
         <div class="modal-header">
-          <h5 class="modal-title" id="addInfographicModalLabel">Add Infographic</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="addInfographicModalLabel">Tambah Infografis</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
             <div class="mb-3">
-              <label for="infographic-title" class="form-label">Title</label>
+              <label for="infographic-title" class="form-label">Judul</label>
               <input type="text" class="form-control" id="infographic-title" name="title" required>
             </div>
             <div class="mb-3">
-              <label for="infographic-thumbnail" class="form-label">Thumbnail URL</label>
+              <label for="infographic-thumbnail" class="form-label">URL Gambar / Sampul</label>
               <input type="text" class="form-control" id="infographic-thumbnail" name="thumbnail" required>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
       </form>
     </div>
