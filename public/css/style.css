@@ -307,7 +307,7 @@ button {
 }
 
 .alert-strip__cta:hover {
-    background: #991b1b;
+    background: var(--alert-dark);
     color: var(--white);
 }
 
@@ -336,7 +336,7 @@ button {
 }
 
 .news-card:hover {
-    background: var(--mist);
+    background: var(--navy-tint);
 }
 
 .news-card__img-wrap {
@@ -628,7 +628,7 @@ button {
     text-decoration: none;
 }
 .btn-cta-main:hover {
-    background: #dde7f5;
+    background: var(--navy-tint);
     color: var(--navy-dim);
 }
 

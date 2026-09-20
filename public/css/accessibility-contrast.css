@@ -204,6 +204,795 @@ html.accessibility-contrast-high .icon_persegi_riset {
   color: #000000;
 }
 
+/* ============================================================
+   HIGH CONTRAST MODE — FULL-THEME OVERRIDES
+   High-specificity rules to guarantee WCAG AAA readability,
+   fix dark-surface text & link contrast, anchor buttons,
+   cards, tables, and chrome.
+   ============================================================ */
+
+/* ---- Global Typography & Base Elements ---- */
+html.accessibility-contrast-high h1,
+html.accessibility-contrast-high h2,
+html.accessibility-contrast-high h3,
+html.accessibility-contrast-high h4,
+html.accessibility-contrast-high h5,
+html.accessibility-contrast-high h6 {
+  color: #000000;
+}
+
+html.accessibility-contrast-high p,
+html.accessibility-contrast-high span:not([class*="badge"]):not([class*="strip"]),
+html.accessibility-contrast-high li {
+  color: inherit;
+}
+
+html.accessibility-contrast-high .text-muted,
+html.accessibility-contrast-high .text-secondary {
+  color: #000000 !important;
+}
+
+html.accessibility-contrast-high .bg-light {
+  background: #F0F0F0 !important;
+  color: #000000 !important;
+}
+
+/* ---- Cards, Grids & Content Panels ---- */
+html.accessibility-contrast-high .card {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .card-header {
+  background: #F0F0F0;
+  border-bottom: 2px solid #000000;
+  color: #000000;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .card-body {
+  color: #000000;
+}
+
+html.accessibility-contrast-high .card-footer {
+  background: #F0F0F0;
+  border-top: 2px solid #000000;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .news-card {
+  background: #FFFFFF;
+  border-right: 2px solid #000000;
+  border-bottom: 2px solid #000000;
+}
+
+html.accessibility-contrast-high .news-grid {
+  border: 2px solid #000000;
+}
+
+html.accessibility-contrast-high .news-card:hover {
+  background: #F0F0F0;
+}
+
+html.accessibility-contrast-high .news-card__title,
+html.accessibility-contrast-high .news-card__title a {
+  color: #000000 !important;
+  font-weight: 800;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .news-card:hover .news-card__title,
+html.accessibility-contrast-high .news-card__title a:hover {
+  color: #000080 !important;
+  text-decoration: underline !important;
+}
+
+html.accessibility-contrast-high .news-card__date {
+  color: #000080;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .news-card__date::before {
+  background: #000080;
+}
+
+html.accessibility-contrast-high .news-card__excerpt {
+  color: #000000;
+  font-weight: 500;
+}
+
+html.accessibility-contrast-high .news-card__more {
+  color: #000080 !important;
+  font-weight: 800;
+  text-decoration: underline !important;
+}
+
+html.accessibility-contrast-high .service-card {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .service-card__title {
+  color: #000000;
+  font-weight: 800;
+}
+
+html.accessibility-contrast-high .service-card__desc {
+  color: #000000;
+}
+
+/* ---- Top Nav Strip: High Contrast on Dark Strip ---- */
+html.accessibility-contrast-high .nav-strip {
+  background: #000000;
+  border-bottom: 2px solid #FFFFFF;
+}
+
+html.accessibility-contrast-high .nav-strip__badge,
+html.accessibility-contrast-high .nav-strip__links a {
+  color: #FFFFFF !important;
+  text-decoration: underline !important;
+}
+
+html.accessibility-contrast-high .nav-strip__badge i {
+  color: #FFFF00 !important;
+}
+
+html.accessibility-contrast-high .nav-strip__links a:hover {
+  color: #FFFF00 !important;
+}
+
+/* ---- Navbar buttons & links ---- */
+html.accessibility-contrast-high .nav-search button {
+  background: #000000;
+  color: #FFFFFF;
+  border: 2px solid #000000;
+}
+
+html.accessibility-contrast-high .nav-search button:hover {
+  background: #000080;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-high .nav-logout button {
+  background: #FFFFFF;
+  color: #CC0000;
+  border: 2px solid #CC0000;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .nav-logout button:hover {
+  background: #CC0000;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-high .btn-navy,
+html.accessibility-contrast-high a.btn-navy {
+  background: #000080;
+  color: #FFFFFF !important;
+  border: 2px solid #000000;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .btn-navy:hover,
+html.accessibility-contrast-high a.btn-navy:hover {
+  background: #000040;
+  color: #FFFFFF !important;
+}
+
+/* ---- Alert Strip & Warnings: Maximum Warning Visibility ---- */
+html.accessibility-contrast-high .alert-strip {
+  background: #FFFF00;
+  border-bottom: 3px solid #000000;
+}
+
+html.accessibility-contrast-high .alert-strip__badge {
+  background: #000000;
+  color: #FFFFFF;
+  font-weight: 800;
+  border: 2px solid #000000;
+}
+
+html.accessibility-contrast-high .alert-strip__text,
+html.accessibility-contrast-high .alert-strip__text a {
+  color: #000000 !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .alert-strip__cta,
+html.accessibility-contrast-high .warning-detail-cta {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  font-weight: 800;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .alert-strip__cta:hover,
+html.accessibility-contrast-high .warning-detail-cta:hover {
+  background: #333333 !important;
+  color: #FFFF00 !important;
+}
+
+/* ---- Hero Section: Full Legibility & Solid Text on Image Overlay ---- */
+html.accessibility-contrast-high .hero {
+  background: #000040 !important;
+  border-bottom: 3px solid #000000;
+}
+
+html.accessibility-contrast-high .hero__scrim {
+  background: rgba(0, 0, 0, 0.9) !important;
+  border-left: 4px solid #FFFF00 !important;
+}
+
+html.accessibility-contrast-high .hero__eyebrow {
+  color: #FFFFFF !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .hero__eyebrow::before {
+  background: #FFFF00;
+}
+
+html.accessibility-contrast-high .hero__title {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 4px #000000;
+}
+
+html.accessibility-contrast-high .hero__lead {
+  color: #FFFFFF !important;
+  font-weight: 500;
+  text-shadow: 0 1px 2px #000000;
+}
+
+html.accessibility-contrast-high .btn-hero-primary,
+html.accessibility-contrast-high a.btn-hero-primary {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .btn-hero-primary:hover,
+html.accessibility-contrast-high a.btn-hero-primary:hover {
+  background: #FFFF00 !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+html.accessibility-contrast-high .btn-hero-ghost,
+html.accessibility-contrast-high a.btn-hero-ghost {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FFFFFF !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .btn-hero-ghost:hover,
+html.accessibility-contrast-high a.btn-hero-ghost:hover {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .hero-stats {
+  background: #000000 !important;
+  border-top: 2px solid #FFFFFF;
+}
+
+html.accessibility-contrast-high .hero-stats__item {
+  border-right-color: #444444;
+}
+
+html.accessibility-contrast-high .hero-stats__number {
+  color: #FFFFFF !important;
+  font-weight: 800;
+}
+
+html.accessibility-contrast-high .hero-stats__label {
+  color: #FFFFFF !important;
+  font-weight: 700;
+}
+
+/* ---- CTA Section: Maximum Contrast on Dark Navy ---- */
+html.accessibility-contrast-high .cta-section {
+  background: #000000 !important;
+  border-top: 3px solid #000000;
+  border-bottom: 3px solid #000000;
+}
+
+html.accessibility-contrast-high .cta-section__eyebrow {
+  color: #FFFFFF !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .cta-section__eyebrow::before {
+  background: #FFFF00;
+}
+
+html.accessibility-contrast-high .cta-section__title {
+  color: #FFFFFF !important;
+  font-weight: 800;
+}
+
+html.accessibility-contrast-high .cta-section__desc {
+  color: #FFFFFF !important;
+  font-weight: 500;
+}
+
+html.accessibility-contrast-high .cta-section__note {
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .btn-cta-main,
+html.accessibility-contrast-high a.btn-cta-main {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .btn-cta-main:hover,
+html.accessibility-contrast-high a.btn-cta-main:hover {
+  background: #FFFF00 !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+html.accessibility-contrast-high .btn-cta-ghost,
+html.accessibility-contrast-high a.btn-cta-ghost {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FFFFFF !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .btn-cta-ghost:hover,
+html.accessibility-contrast-high a.btn-cta-ghost:hover {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #FFFFFF !important;
+}
+
+/* ---- Dark Page Headers (News, Events, Warnings, RFC, etc.) ---- */
+html.accessibility-contrast-high .news-header,
+html.accessibility-contrast-high .news-detail-header,
+html.accessibility-contrast-high .events-header,
+html.accessibility-contrast-high .event-detail-header,
+html.accessibility-contrast-high .warnings-header,
+html.accessibility-contrast-high .warning-detail-header,
+html.accessibility-contrast-high .laws-header,
+html.accessibility-contrast-high .law-detail-header,
+html.accessibility-contrast-high .guides-header,
+html.accessibility-contrast-high .guide-detail-header,
+html.accessibility-contrast-high .infographics-header,
+html.accessibility-contrast-high .infographic-show-header,
+html.accessibility-contrast-high .search-header,
+html.accessibility-contrast-high .rfc-page-header,
+html.accessibility-contrast-high .statistics-header,
+html.accessibility-contrast-high .lapor-header,
+html.accessibility-contrast-high .thankyou-header,
+html.accessibility-contrast-high .tac-header,
+html.accessibility-contrast-high .dash-header,
+html.accessibility-contrast-high .detail-header,
+html.accessibility-contrast-high .login-header,
+html.accessibility-contrast-high .placeholder-header {
+  background: #000040 !important;
+  border-bottom: 3px solid #000000;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .news-header h1,
+html.accessibility-contrast-high .news-detail-header h1,
+html.accessibility-contrast-high .events-header h1,
+html.accessibility-contrast-high .event-detail-header h1,
+html.accessibility-contrast-high .warnings-header h1,
+html.accessibility-contrast-high .warning-detail-header h1,
+html.accessibility-contrast-high .laws-header h1,
+html.accessibility-contrast-high .law-detail-header h1,
+html.accessibility-contrast-high .guides-header h1,
+html.accessibility-contrast-high .guide-detail-header h1,
+html.accessibility-contrast-high .infographics-header h1,
+html.accessibility-contrast-high .infographic-show-header h1,
+html.accessibility-contrast-high .search-header h1,
+html.accessibility-contrast-high .rfc-page-header h1,
+html.accessibility-contrast-high .statistics-header h1,
+html.accessibility-contrast-high .lapor-header h1,
+html.accessibility-contrast-high .login-title {
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .event-back,
+html.accessibility-contrast-high .event-hero__meta,
+html.accessibility-contrast-high .event-hero__meta-item,
+html.accessibility-contrast-high .event-hero__meta-item i,
+html.accessibility-contrast-high .event-hero__meta-item strong,
+html.accessibility-contrast-high .login-sub {
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .event-back a,
+html.accessibility-contrast-high a.event-back {
+  color: #FFFFFF !important;
+  text-decoration: underline !important;
+}
+
+html.accessibility-contrast-high .event-back a:hover,
+html.accessibility-contrast-high a.event-back:hover {
+  color: #FFFF00 !important;
+}
+
+/* ---- Footer: High Contrast on Pure Black Background ---- */
+html.accessibility-contrast-high .site-footer {
+  background: #000000 !important;
+  border-top: 4px solid #000000;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-high .footer-logo {
+  filter: brightness(0) invert(1) opacity(1) !important;
+}
+
+html.accessibility-contrast-high .footer-heading {
+  color: #FFFFFF !important;
+  font-weight: 800;
+}
+
+html.accessibility-contrast-high .footer-desc,
+html.accessibility-contrast-high .footer-contact__item,
+html.accessibility-contrast-high .footer-contact__item i {
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .footer-links a {
+  color: #FFFFFF !important;
+  text-decoration: underline !important;
+  font-weight: 600;
+}
+
+html.accessibility-contrast-high .footer-links a:hover {
+  color: #FFFF00 !important;
+}
+
+html.accessibility-contrast-high .footer-bottom {
+  border-top: 2px solid #444444;
+}
+
+html.accessibility-contrast-high .footer-copy,
+html.accessibility-contrast-high .footer-legal a {
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .footer-legal a {
+  text-decoration: underline !important;
+}
+
+html.accessibility-contrast-high .footer-legal a:hover {
+  color: #FFFF00 !important;
+}
+
+html.accessibility-contrast-high .footer-social a {
+  border: 2px solid #FFFFFF !important;
+  color: #FFFFFF !important;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .footer-social a:hover {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #FFFFFF !important;
+}
+
+/* ---- Tables & Data (Public & Admin) ---- */
+html.accessibility-contrast-high table {
+  color: #000000;
+  border: 2px solid #000000;
+}
+
+html.accessibility-contrast-high thead,
+html.accessibility-contrast-high th {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #000000;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high tbody td {
+  border: 1px solid #000000;
+  color: #000000;
+  font-weight: 500;
+}
+
+html.accessibility-contrast-high tbody tr:nth-child(even) {
+  background: #F5F5F5;
+}
+
+/* ---- Admin Modals ---- */
+html.accessibility-contrast-high .modal-content {
+  background: #FFFFFF;
+  color: #000000;
+  border: 3px solid #000000;
+}
+
+html.accessibility-contrast-high .modal-header {
+  border-bottom: 2px solid #000000;
+  background: #F0F0F0;
+}
+
+html.accessibility-contrast-high .modal-footer {
+  border-top: 2px solid #000000;
+  background: #F0F0F0;
+}
+
+html.accessibility-contrast-high .modal-title,
+html.accessibility-contrast-high .modal-body label,
+html.accessibility-contrast-high .modal-body .form-label {
+  color: #000000 !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .btn-close {
+  opacity: 1;
+  filter: contrast(200%);
+}
+
+/* ---- Bootstrap Solid Buttons used as <a> or <button> ---- */
+html.accessibility-contrast-high a.btn-primary,
+html.accessibility-contrast-high button.btn-primary {
+  background: #000080 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high a.btn-primary:hover,
+html.accessibility-contrast-high button.btn-primary:hover {
+  background: #000040 !important;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high a.btn-success,
+html.accessibility-contrast-high button.btn-success {
+  background: #006600 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high a.btn-success:hover,
+html.accessibility-contrast-high button.btn-success:hover {
+  background: #004d00 !important;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high a.btn-danger,
+html.accessibility-contrast-high button.btn-danger {
+  background: #CC0000 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high a.btn-danger:hover,
+html.accessibility-contrast-high button.btn-danger:hover {
+  background: #990000 !important;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high a.btn-secondary,
+html.accessibility-contrast-high button.btn-secondary {
+  background: #444444 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high a.btn-secondary:hover,
+html.accessibility-contrast-high button.btn-secondary:hover {
+  background: #222222 !important;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high a.btn-warning,
+html.accessibility-contrast-high button.btn-warning {
+  background: #FFFF00 !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high a.btn-warning:hover,
+html.accessibility-contrast-high button.btn-warning:hover {
+  background: #e6e600 !important;
+  color: #000000 !important;
+}
+
+html.accessibility-contrast-high a.btn-add,
+html.accessibility-contrast-high a.btn-edit {
+  background: #000080 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high a.btn-add:hover,
+html.accessibility-contrast-high a.btn-edit:hover {
+  background: #000040 !important;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high button.btn-delete {
+  background: #CC0000 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high button.btn-delete:hover {
+  background: #990000 !important;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .btn-logout {
+  background: #FFFFFF !important;
+  color: #CC0000 !important;
+  border: 2px solid #CC0000 !important;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .btn-logout:hover {
+  background: #CC0000 !important;
+  color: #FFFFFF !important;
+}
+
+/* ---- Admin Tabs ---- */
+html.accessibility-contrast-high .admin-tab,
+html.accessibility-contrast-high button.admin-tab {
+  background: #FFFFFF;
+  color: #000000;
+  border: 2px solid #000000;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .admin-tab:hover,
+html.accessibility-contrast-high button.admin-tab:hover {
+  background: #F0F0F0;
+  color: #000080;
+}
+
+html.accessibility-contrast-high .admin-tab.active,
+html.accessibility-contrast-high button.admin-tab.active {
+  background: #000080 !important;
+  color: #FFFFFF !important;
+  border-color: #000000;
+}
+
+html.accessibility-contrast-high .tab-badge {
+  color: inherit;
+}
+
+/* ---- Profile Page ---- */
+html.accessibility-contrast-high .profile-card {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  border-left: 6px solid #000080;
+}
+
+html.accessibility-contrast-high .profile-card .text-dark,
+html.accessibility-contrast-high .profile-card .text-secondary,
+html.accessibility-contrast-high .profile-card .text-muted {
+  color: #000000 !important;
+}
+
+html.accessibility-contrast-high .profile-card .section-title {
+  color: #000000 !important;
+  font-weight: 800;
+}
+
+html.accessibility-contrast-high .cta-footer {
+  background: #000000 !important;
+  border-top: 3px solid #000000;
+}
+
+html.accessibility-contrast-high .cta-footer .btn-outline-light {
+  color: #FFFFFF !important;
+  border: 2px solid #FFFFFF !important;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .cta-footer .btn-outline-light:hover {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+}
+
+html.accessibility-contrast-high .cta-footer .btn-navy-bold {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+  font-weight: 800;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .cta-footer .btn-navy-bold:hover {
+  background: #FFFF00 !important;
+  color: #000000 !important;
+}
+
+/* ---- Thank-you card header ---- */
+html.accessibility-contrast-high .thankyou-card__header {
+  background: #000040;
+  border-bottom: 2px solid #000000;
+}
+
+html.accessibility-contrast-high .thankyou-badge {
+  background: #000000;
+  color: #FFFFFF;
+  border: 1px solid #FFFFFF;
+}
+
+html.accessibility-contrast-high .thankyou-card__header p {
+  color: #FFFFFF !important;
+}
+
+/* ---- Status Badges ---- */
+html.accessibility-contrast-high .status-badge {
+  border: 2px solid #000000;
+  font-weight: 700;
+}
+
+html.accessibility-contrast-high .status-diajukan {
+  background: #F0F0F0;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .status-diproses {
+  background: #FFFF00;
+  color: #000000;
+}
+
+html.accessibility-contrast-high .status-selesai {
+  background: #000080;
+  color: #FFFFFF;
+}
+
+html.accessibility-contrast-high .status-ditolak {
+  background: #CC0000;
+  color: #FFFFFF;
+}
+
+/* ---- Pagination ---- */
+html.accessibility-contrast-high nav[role="navigation"] li a {
+  border: 2px solid #000000;
+  color: #000080 !important;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high nav[role="navigation"] li a:hover {
+  background: #000080 !important;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high nav[role="navigation"] li span[aria-current="page"] {
+  background: #000000;
+  color: #FFFFFF;
+  border: 2px solid #000000;
+  font-weight: 800;
+}
+
 /* DARK CONTRAST MODE */
 html.accessibility-contrast-dark {
   --ink: #FFFFFF;

@@ -162,11 +162,11 @@
 
 .guide-card {
     background: var(--white);
-    border: 2px solid var(--border);
+    border: 1px solid var(--border);
     padding: 28px 32px;
     text-decoration: none;
     color: inherit;
-    transition: all var(--ease);
+    transition: background var(--ease), border-color var(--ease);
     position: relative;
     display: block;
     overflow: hidden;

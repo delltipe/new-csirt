@@ -1,4 +1,5 @@
 import sys
+import os
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
@@ -179,13 +180,15 @@ rx = lx + cw + 0.35
 cy = 2.1
 ch = 3.85
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 for cx, logo, title, items in [
-    (lx, r"K:\GitHub\new-csirt\presentation\logo_diskominfo.png", "Diskominfotik DKI Jakarta", [
+    (lx, os.path.join(BASE_DIR, "logo_diskominfo.png"), "Diskominfotik DKI Jakarta", [
         "Perangkat Daerah urusan Komunikasi & Informatika, Statistik, dan Persandian di wilayah DKI Jakarta",
         "Dipimpin Kepala Dinas — bertanggung jawab kepada Gubernur melalui Sekretaris Daerah",
         "Menaungi Bidang Siber, Sandi & Aplikasi — rumah bagi JakartaProv-CSIRT",
     ]),
-    (rx, r"K:\GitHub\new-csirt\presentation\csirt-main-logo.png", "JakartaProv-CSIRT", [
+    (rx, os.path.join(BASE_DIR, "csirt-main-logo.png"), "JakartaProv-CSIRT", [
         "Tim Tanggap Insiden Siber Pemprov DKI Jakarta — ditetapkan SK Sekda (Pj.) No. 41 Tahun 2020",
         "Mitigasi, koordinasi, penanggulangan & pemulihan insiden siber sektor Pemda DKI Jakarta",
         "Layanan: lapor insiden, peringatan keamanan, berita & panduan keamanan siber",
@@ -290,7 +293,7 @@ card(s, rx, 3.35, cw, 3.1, NAVY, "Jawaban Melalui Redesain",
         "Design system navy #003580 yang konsisten",
         "Widget aksesibilitas: teks 80–150%, kontras tinggi",
         "Struktur layout dipetakan ulang (UI audit)",
-        "Wizard 3 langkah + penanganan error + rate limit",
+        "Form insiden terstruktur + proteksi TaC + rate limit",
      ])
 
 # ------------------------------------------------------------------ SLIDE 5
@@ -312,7 +315,7 @@ cards = [
         "accent": ALERT,
         "body": [
             {"kind": "bullet", "text": "Portal expert-centric, penuh istilah teknis"},
-            {"kind": "bullet", "text": "Form laporan 1 halaman panjang, kotak kosong & skor CVSS"},
+            {"kind": "bullet", "text": "Form lama rumit, penuh input teknis kosong & skor CVSS"},
             {"kind": "bullet", "text": "Tidak ramah gangguan penglihatan / buta warna"},
             {"kind": "bullet", "text": "Konten hanya bisa diubah lewat kode program"},
         ],
@@ -322,7 +325,7 @@ cards = [
         "accent": NAVY_MID,
         "body": [
             {"kind": "bullet", "text": "Melapor insiden mudah bagi masyarakat umum"},
-            {"kind": "bullet", "text": "Wizard 3 langkah yang menuntun pengguna"},
+            {"kind": "bullet", "text": "Form terstruktur ringkas + pelacakan status tiket INS"},
             {"kind": "bullet", "text": "Aksesibilitas standar layanan publik (WCAG 2.1)"},
             {"kind": "bullet", "text": "Staf mengelola konten tanpa menyentuh kode"},
         ],
@@ -354,7 +357,7 @@ header(s, "TAHAPAN PENGERJAAN", "Progress Pengerjaan", "6 / 12")
 
 steps = [
     ("1", "Maret", "Struktur & Database", "Struktur dasar Laravel + tabel laporan insiden & berita", NAVY),
-    ("2", "Mar – Apr", "Form Laporan", "Wizard 3 langkah + halaman Terima Kasih", NAVY),
+    ("2", "Mar – Apr", "Form Laporan", "Form terstruktur + pelacakan tiket INS-YYYY", NAVY),
     ("3", "Apr – Mei", "Admin & Konten", "Login & dashboard aman untuk staf internal", NAVY),
     ("4", "Mei – sekarang", "Desain & Aksesibilitas", "Galeri infografis + widget aksesibilitas", NAVY),
     ("5", "Berikutnya", "Usability Testing", "Bandingkan lama vs baru, ukur error & waktu", NAVY_MID),
@@ -411,11 +414,11 @@ card(s, lx, 2.1, cw, 4.45, ALERT, "SEBELUM — Portal Lama (Yii)", [
 ], sub=None, item_size=12.5, title_size=15, bullets_from=3.1)
 
 card(s, rx, 2.1, cw, 4.45, NAVY, "SESUDAH — Portal Baru (Laravel)", [
-    "Wizard 3 langkah yang menuntun pengguna:",
-    "Langkah 1 — Siapa yang melapor?",
-    "Langkah 2 — Website apa yang diserang?",
-    "Langkah 3 — Apa yang terjadi?",
-    "Istilah teknis dibuat opsional — melapor cepat & mudah",
+    "Formulir satu halaman yang terstruktur rapi:",
+    "Bagian 1 — Data Insiden (kategori, waktu, URL, deskripsi)",
+    "Bagian 2 — Bukti Laporan (file maks 5MB atau URL)",
+    "Panduan interaktif kategori serangan & proteksi TaC gate",
+    "Tiket resmi INS-YYYY-XXXX & dashboard pelacakan status",
 ], sub=None, item_size=12.5, title_size=15, bullets_from=3.1)
 
 arrow = s.shapes.add_shape(MSO_SHAPE.RIGHT_ARROW, Inches(lx + cw - 0.05), Inches(3.4), Inches(0.45), Inches(0.55))
@@ -512,7 +515,7 @@ cols = [
         "title": "Teknis",
         "accent": NAVY,
         "items": [
-            "Wizard 3 langkah mengalahkan form flat — pengguna menyerah pada halaman panjang",
+            "Form terstruktur & berpanduan mengalahkan form rumit — pengguna awam butuh kejelasan",
             "Aksesibilitas (WCAG 2.1) bukan pelengkap — layanan publik wajib inklusif",
             "Struktur database yang benar sejak awal mempercepat fitur berikutnya",
             "Dokumentasi paralel menjaga konteks bagi pengembang berikutnya",
@@ -585,7 +588,7 @@ write(textbox(s, 0.7, 3.5, 11.9, 0.6), [{
 rect(s, 4.22, 4.15, 4.9, 0.55, fill=NAVY_TINT, radius=0.18, shape=MSO_SHAPE.ROUNDED_RECTANGLE)
 write(textbox(s, 4.22, 4.15, 4.9, 0.55, anchor=MSO_ANCHOR.MIDDLE), [{
     "align": PP_ALIGN.CENTER,
-    "runs": [{"text": "Demo: screenshot portal — menyusul saat live di Render", "size": 11, "bold": True, "color": NAVY}],
+    "runs": [{"text": "Demo: live demo melalui Cloudflare Tunnel / secure HTTPS", "size": 11, "bold": True, "color": NAVY}],
 }])
 write(textbox(s, 0.7, 5.05, 11.9, 0.6), [{
     "align": PP_ALIGN.CENTER,
@@ -596,6 +599,6 @@ write(textbox(s, 0.7, 6.7, 11.9, 0.7, anchor=MSO_ANCHOR.MIDDLE), [{
     "runs": [{"text": "Abdul Latif · BINUS University — csirt.jakarta.go.id", "size": 11, "color": NAVY_TINT}],
 }])
 
-OUT = r"K:\GitHub\new-csirt\presentation\Presentasi_Magang_CSIRT_DKI_Jakarta.pptx"
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Presentasi_Magang_CSIRT_DKI_Jakarta.pptx")
 prs.save(OUT)
 print("saved:", OUT, "| slides:", len(prs.slides._sldIdLst))
