@@ -55,7 +55,7 @@
     display:inline-block; max-width: 640px;
     background: linear-gradient(90deg, rgba(10,15,26,0.72) 0%, rgba(10,15,26,0.58) 68%, rgba(10,15,26,0.00) 100%);
     padding: 18px 22px 16px; margin: -18px -22px -16px;
-    border-left: 3px solid var(--navy);
+    border: 1px solid var(--navy);
 }
 .variant--b .demo-hero__title, .variant--b .demo-hero__lead{ text-shadow: 0 1px 10px rgba(0,0,0,0.35); }
 
@@ -179,7 +179,7 @@
   </div>
 
   <div class="demo-head" style="margin-top:8px;">
-    <p style="font-size:13px; background:var(--white); border:1px solid var(--border); padding:14px 16px; border-left:3px solid var(--navy);">
+    <p style="font-size:13px; background:var(--white); border:1px solid var(--border); padding:14px 16px;">
       <strong>How to pick:</strong> <strong>B</strong> is the safest for interchangeable slides (interchangeable text+image) — it guarantees contrast on any image without darkening the whole hero (like <strong>C</strong>). <strong>D</strong> alone fails WCAG on very bright/busy patches. <strong>E</strong> is needed only if you also have bright images where dark text reads better (then the CMS needs a <code>scrim</code> toggle per slide). Tell me which letter(s) you want live and I’ll promote that CSS to <code>home.blade.php</code>.
     </p>
   </div>

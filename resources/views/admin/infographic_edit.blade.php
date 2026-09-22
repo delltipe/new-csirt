@@ -4,7 +4,7 @@
 <div class="container py-5">
     <div class="card">
         <div class="card-header">
-            <h4 class="mb-0">Edit Infographic</h4>
+            <h4 class="mb-0">Edit Infografis</h4>
         </div>
         <div class="card-body">
             @if($errors->any())
@@ -21,7 +21,7 @@
                 @csrf
                 
                 <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
+                    <label for="title" class="form-label">Judul</label>
                     <input type="text" class="form-control @error('title') is-invalid @enderror" 
                            id="title" name="title" value="{{ old('title', $infographic->title) }}" required>
                     @error('title')
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="thumbnail" class="form-label">Thumbnail URL</label>
+                    <label for="thumbnail" class="form-label">URL Gambar / Sampul</label>
                     <input type="text" class="form-control @error('thumbnail') is-invalid @enderror" 
                            id="thumbnail" name="thumbnail" value="{{ old('thumbnail', $infographic->thumbnail) }}" required>
                     @error('thumbnail')
@@ -39,12 +39,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <img src="{{ $infographic->thumbnail }}" alt="Preview" style="max-width: 200px; max-height: 200px;">
+                    <img src="{{ $infographic->thumbnail }}" alt="Pratinjau" style="max-width: 200px; max-height: 200px;">
                 </div>
 
                 <div>
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Update Infographic</button>
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </form>
         </div>

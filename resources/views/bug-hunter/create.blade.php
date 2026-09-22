@@ -17,35 +17,15 @@
     position: relative;
     overflow: hidden;
 }
-.lapor-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-        transparent 1px, transparent 80px
-    );
-    pointer-events: none;
-}
 .lapor-header .container { position: relative; z-index: 1; }
 .lapor-header__eyebrow {
     font-family: var(--font-body);
-    font-size: 10.5px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted-on-dark);
+    color: #D6E4F8;
     margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.lapor-header__eyebrow::before {
-    content: '';
-    display: block;
-    width: 20px; height: 1px;
-    background: rgba(255,255,255,0.2);
 }
 .lapor-header h1 {
     font-family: var(--font-display);
@@ -127,7 +107,6 @@
     margin-top: 10px;
     background: var(--white);
     border: 1px solid var(--border);
-    border-left: 3px solid var(--navy);
     padding: 14px 16px;
 }
 .lapor-help-box__title {
@@ -318,7 +297,6 @@
 .validation-summary {
     background: var(--alert-bg);
     border: 1px solid var(--alert);
-    border-left: 3px solid var(--alert);
     padding: 16px 20px;
     margin-bottom: 24px;
 }
@@ -387,10 +365,10 @@
 .btn-cancel:hover { color: var(--ink); border-color: var(--mid); }
 
 /* Dark/high-contrast keeps help box readable (token-based, avoids generic button flatten) */
-html.accessibility-contrast-dark .lapor-help-box { background: #1a1a1a; border-color: #333333; border-left-color: #4DA6FF; }
+html.accessibility-contrast-dark .lapor-help-box { background: #1a1a1a; border-color: #333333; }
 html.accessibility-contrast-dark button.lapor-help-link { background: #1a1a1a; color: #4DA6FF; border-color: #333333; }
 html.accessibility-contrast-dark button.lapor-help-link:hover { background: #2a2a3e; border-color: #4DA6FF; color: #4DA6FF; }
-html.accessibility-contrast-high .lapor-help-box { background: #FFFFFF; border-color: #000000; border-left-color: #000080; }
+html.accessibility-contrast-high .lapor-help-box { background: #FFFFFF; border-color: #000000; }
 html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; color: #000080; border-color: #000000; }
 
 /* ============================================================
@@ -508,14 +486,14 @@ html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; c
                 </div>
                 <div class="form-field">
                     <label class="lapor-label" for="field-down-time">
-                        Down Time <span class="req" aria-hidden="true">*</span>
+                        Durasi Gangguan (Down Time) <span class="req" aria-hidden="true">*</span>
                     </label>
                     <input type="time" id="field-down-time" name="down_time"
                            class="lapor-input @error('down_time') is-invalid @enderror"
                            value="{{ old('down_time') }}" required
                            aria-describedby="hint-down-time @error('down_time') err-down-time @enderror"
                            @error('down_time') aria-invalid="true" @enderror>
-                    <div class="field-hint" id="hint-down-time">Lama layanan tidak dapat diakses, format jam:menit. Isi 00:00 bila tidak ada gangguan layanan.</div>
+                    <div class="field-hint" id="hint-down-time">Perkiraan durasi layanan tidak dapat diakses (format jam:menit). Isi 00:00 bila tidak ada gangguan layanan.</div>
                     @error('down_time')
                     <div class="field-error" id="err-down-time" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                     @enderror

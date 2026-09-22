@@ -10,16 +10,6 @@
         position: relative;
         overflow: hidden;
     }
-    .lapor-header::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-image: repeating-linear-gradient(
-            90deg,
-            rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-            transparent 1px, transparent 80px
-        );
-    }
     .lapor-header__title {
         font-family: var(--font-display);
         font-weight: 800;
@@ -30,11 +20,11 @@
     }
     .lapor-header__eyebrow {
         font-family: var(--font-body);
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
-        color: rgba(255,255,255,0.4);
+        color: #D6E4F8;
         margin-bottom: 8px;
     }
 
@@ -43,8 +33,7 @@
         background: var(--white);
         border-radius: 0; /* Kaku/Kotak sesuai NYC.gov */
         border: 1px solid var(--border);
-        border-left: 8px solid var(--navy, #003580); /* Aksen Biru Navy Utama */
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        box-shadow: none;
     }
 
     .profile-logo-container {
@@ -76,7 +65,7 @@
     .cta-footer {
         background: var(--navy-dim, #002060);
         padding: 64px 0;
-        border-top: 8px solid var(--navy, #003580); /* Red accent removed */
+        border-top: 1px solid rgba(255,255,255,0.12);
     }
 
     .section-title {

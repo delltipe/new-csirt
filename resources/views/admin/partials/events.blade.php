@@ -35,8 +35,8 @@
                             </a>
                             <form action="{{ route('admin.event.delete', $item->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this event?')">
-                                    <i class="bi bi-trash" aria-hidden="true"></i> Delete
+                                <button type="submit" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus acara ini?')">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Hapus
                                 </button>
                             </form>
                         </td>
@@ -58,46 +58,46 @@
       <form method="POST" action="{{ route('admin.event.store') }}">
         @csrf
         <div class="modal-header">
-          <h5 class="modal-title" id="addEventModalLabel">Add Event</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="addEventModalLabel">Tambah Acara</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
             <div class="mb-3">
-              <label for="event-title" class="form-label">Title</label>
+              <label for="event-title" class="form-label">Judul</label>
               <input type="text" class="form-control" id="event-title" name="title" required>
             </div>
             <div class="mb-3">
-              <label for="event-description" class="form-label">Description</label>
+              <label for="event-description" class="form-label">Deskripsi</label>
               <textarea class="form-control" id="event-description" name="description" rows="3"></textarea>
             </div>
             <div class="mb-3">
-              <label for="event-thumbnail" class="form-label">Thumbnail URL</label>
+              <label for="event-thumbnail" class="form-label">URL Gambar / Sampul</label>
               <input type="text" class="form-control" id="event-thumbnail" name="thumbnail">
             </div>
             <div class="mb-3">
-              <label for="event-date" class="form-label">Event Date & Time</label>
+              <label for="event-date" class="form-label">Tanggal & Waktu Acara</label>
               <input type="datetime-local" class="form-control" id="event-date" name="event_date" required>
             </div>
             <div class="mb-3">
-              <label for="event-location" class="form-label">Location</label>
+              <label for="event-location" class="form-label">Lokasi</label>
               <input type="text" class="form-control" id="event-location" name="location">
             </div>
             <div class="mb-3">
-              <label for="event-type" class="form-label">Event Type</label>
-              <input type="text" class="form-control" id="event-type" name="event_type" placeholder="e.g., Webinar, Sosialisasi">
+              <label for="event-type" class="form-label">Jenis Acara</label>
+              <input type="text" class="form-control" id="event-type" name="event_type" placeholder="Contoh: Webinar, Sosialisasi">
             </div>
             <div class="mb-3">
-              <label for="event-registration" class="form-label">Registration URL</label>
+              <label for="event-registration" class="form-label">URL Pendaftaran</label>
               <input type="text" class="form-control" id="event-registration" name="registration_url">
             </div>
             <div class="mb-3">
-              <label for="event-capacity" class="form-label">Capacity</label>
+              <label for="event-capacity" class="form-label">Kapasitas</label>
               <input type="number" class="form-control" id="event-capacity" name="capacity">
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
       </form>
     </div>

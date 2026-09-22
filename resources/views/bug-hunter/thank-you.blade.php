@@ -50,7 +50,7 @@
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.15);
     color: rgba(255,255,255,0.6);
-    font-size: 10.5px;
+    font-size: 11.5px;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -60,13 +60,13 @@
 
 .thankyou-card__header h1 {
     font-family: var(--font-display);
-    font-size: clamp(28px, 4vw, 44px);
+    font-size: clamp(24px, 3.5vw, 36px);
     font-weight: 800;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     text-transform: uppercase;
     color: var(--white);
-    line-height: 1;
-    margin-bottom: 10px;
+    line-height: 1.1;
+    margin-bottom: 8px;
 }
 
 .thankyou-card__header p {
@@ -84,7 +84,6 @@
 .ticket-box {
     background: var(--navy-tint);
     border: 1px solid var(--navy);
-    border-left: 4px solid var(--navy);
     padding: 18px 24px;
     margin-bottom: 28px;
     display: flex;

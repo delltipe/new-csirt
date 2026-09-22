@@ -47,16 +47,16 @@
 
     .nav-strip__links a {
         color: var(--muted-on-dark);
-        font-size: 10.5px;
-        font-weight: 500;
-        letter-spacing: 0.07em;
+        font-size: 11.5px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
         transition: color var(--ease);
         text-decoration: none;
     }
 
     .nav-strip__links a:hover {
-        color: var(--muted-on-dark);
+        color: var(--white);
     }
 
     /* --- Main navigation bar --- */
@@ -189,8 +189,8 @@
     }
 
     .nav-links > li > a i {
-        font-size: 10px;
-        opacity: 0.5;
+        font-size: 11px;
+        opacity: 0.7;
     }
 
     .nav-links > li > a:hover,

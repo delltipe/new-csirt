@@ -78,7 +78,7 @@
 
 .alert-success {
     background: var(--navy-tint);
-    border-left: 4px solid var(--navy);
+    border: 1px solid var(--navy);
     color: var(--navy-dim);
     padding: 16px 20px;
     margin-bottom: 24px;
@@ -88,7 +88,7 @@
 
 .alert-error {
     background: var(--alert-bg);
-    border-left: 4px solid var(--alert);
+    border: 1px solid var(--alert);
     color: var(--alert-dark);
     padding: 16px 20px;
     margin-bottom: 24px;
@@ -390,7 +390,7 @@
                     </select>
 
                     <button type="submit" class="btn-review-submit">
-                        <i class="bi bi-check2-circle" aria-hidden="true"></i> Simpan Review
+                        <i class="bi bi-check2-circle" aria-hidden="true"></i> Simpan Tinjauan
                     </button>
                 </form>
 

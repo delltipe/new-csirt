@@ -13,34 +13,20 @@
     overflow: hidden;
 }
 .lapor-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-        transparent 1px, transparent 80px
-    );
-    pointer-events: none;
+    display: none;
 }
 .lapor-header .container { position: relative; z-index: 1; }
 .lapor-header__eyebrow {
     font-family: var(--font-body);
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--muted-on-dark);
+    color: #D6E4F8;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 8px;
-}
-.lapor-header__eyebrow::before {
-    content: '';
-    display: block;
-    width: 20px; height: 1px;
-    background: rgba(255,255,255,0.2);
 }
 .lapor-header h1 {
     font-family: var(--font-display);

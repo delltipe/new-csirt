@@ -13,37 +13,15 @@
     overflow: hidden;
 }
 
-.warnings-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-        transparent 1px, transparent 80px
-    );
-    pointer-events: none;
-}
-
 .warnings-header .container { position: relative; z-index: 1; }
 
 .warnings-header__eyebrow {
-    font-size: 10.5px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted-on-dark);
+    color: #D6E4F8;
     margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.warnings-header__eyebrow::before {
-    content: '';
-    display: block;
-    width: 20px; height: 1px;
-    background: rgba(255,255,255,0.2);
 }
 
 .warnings-header h1 {
@@ -176,7 +154,7 @@
 
 .warning-card__cta {
     font-family: var(--font-display);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;

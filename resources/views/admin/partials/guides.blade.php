@@ -33,8 +33,8 @@
                             </a>
                             <form action="{{ route('admin.guide.delete', $item->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this guide?')">
-                                    <i class="bi bi-trash" aria-hidden="true"></i> Delete
+                                <button type="submit" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus panduan ini?')">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Hapus
                                 </button>
                             </form>
                         </td>
@@ -56,26 +56,26 @@
       <form method="POST" action="{{ route('admin.guide.store') }}">
         @csrf
         <div class="modal-header">
-          <h5 class="modal-title" id="addGuideModalLabel">Add Guide</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="addGuideModalLabel">Tambah Panduan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
             <div class="mb-3">
-              <label for="guide-title" class="form-label">Title</label>
+              <label for="guide-title" class="form-label">Judul</label>
               <input type="text" class="form-control" id="guide-title" name="title" required>
             </div>
             <div class="mb-3">
-              <label for="guide-author" class="form-label">Author</label>
+              <label for="guide-author" class="form-label">Penulis</label>
               <input type="text" class="form-control" id="guide-author" name="author" required>
             </div>
             <div class="mb-3">
-              <label for="guide-link" class="form-label">Link/URL</label>
+              <label for="guide-link" class="form-label">Tautan / URL Dokumen</label>
               <input type="text" class="form-control" id="guide-link" name="link" required>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
       </form>
     </div>

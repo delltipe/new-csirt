@@ -46,7 +46,7 @@
     .footer-social a {
         width: 34px;
         height: 34px;
-        border: 1px solid #1E2D42;
+        border: 1px solid rgba(255, 255, 255, 0.15);
         color: var(--faint-on-dark);
         display: flex;
         align-items: center;
@@ -98,7 +98,7 @@
     }
 
     .footer-links a i {
-        font-size: 9px;
+        font-size: 11px;
     }
 
     /* Contact items */
@@ -120,7 +120,7 @@
 
     /* Bottom bar */
     .footer-bottom {
-        border-top: 1px solid #131D2B;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
         padding: 20px 0;
         display: flex;
         justify-content: space-between;

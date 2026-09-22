@@ -8,15 +8,7 @@
     position: relative;
 }
 .thankyou-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-        transparent 1px, transparent 80px
-    );
-    pointer-events: none;
+    display: none;
 }
 .thankyou-header .container { position: relative; z-index: 1; }
 .thankyou-header__title {

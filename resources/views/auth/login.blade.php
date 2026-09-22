@@ -50,7 +50,7 @@
 
 .alert-error {
     background: var(--alert-bg);
-    border-left: 4px solid var(--alert);
+    border: 1px solid var(--alert);
     color: var(--alert-dark);
     padding: 14px 16px;
     margin-bottom: 24px;

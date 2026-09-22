@@ -33,8 +33,8 @@
                             </a>
                             <form action="{{ route('admin.warning.delete', $item->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this warning?')">
-                                    <i class="bi bi-trash" aria-hidden="true"></i> Delete
+                                <button type="submit" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus peringatan ini?')">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Hapus
                                 </button>
                             </form>
                         </td>
@@ -56,34 +56,34 @@
       <form method="POST" action="{{ route('admin.warning.store') }}">
         @csrf
         <div class="modal-header">
-          <h5 class="modal-title" id="addWarningModalLabel">Add Warning</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="addWarningModalLabel">Tambah Peringatan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
             <div class="mb-3">
-              <label for="warning-title" class="form-label">Title</label>
+              <label for="warning-title" class="form-label">Judul</label>
               <input type="text" class="form-control" id="warning-title" name="title" required>
             </div>
             <div class="mb-3">
-              <label for="warning-description" class="form-label">Description</label>
+              <label for="warning-description" class="form-label">Deskripsi</label>
               <textarea class="form-control" id="warning-description" name="description" rows="3" required></textarea>
             </div>
             <div class="mb-3">
-              <label for="warning-thumbnail" class="form-label">Thumbnail URL</label>
+              <label for="warning-thumbnail" class="form-label">URL Gambar / Sampul</label>
               <input type="text" class="form-control" id="warning-thumbnail" name="thumbnail">
             </div>
             <div class="mb-3">
-              <label for="warning-source" class="form-label">Source</label>
+              <label for="warning-source" class="form-label">Sumber</label>
               <input type="text" class="form-control" id="warning-source" name="source">
             </div>
             <div class="mb-3">
-              <label for="warning-date" class="form-label">Date & Time</label>
+              <label for="warning-date" class="form-label">Tanggal & Waktu</label>
               <input type="datetime-local" class="form-control" id="warning-date" name="date" required>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
       </form>
     </div>

@@ -216,7 +216,7 @@
     text-transform: uppercase;
     padding: 12px 28px;
     cursor: pointer;
-    transition: all var(--ease);
+    transition: background var(--ease), color var(--ease);
     margin-top: 40px;
 }
 
@@ -226,9 +226,9 @@
 }
 
 .alert-success {
-    background: #ECFDF5;
-    border-left: 4px solid #10B981;
-    color: #065F46;
+    background: var(--navy-tint);
+    border: 1px solid var(--navy);
+    color: var(--navy-dim);
     padding: 16px 20px;
     margin-bottom: 24px;
     font-size: 14px;

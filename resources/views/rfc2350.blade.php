@@ -8,24 +8,15 @@
         position: relative;
     }
 
-    .rfc-page-header::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-image: repeating-linear-gradient(90deg, var(--ink) 0, var(--ink) 79px, var(--navy-dim) 80px);
-        opacity: 0.28;
-        pointer-events: none;
-    }
-
     .rfc-page-header .container,
     .rfc-layout { position: relative; z-index: 1; }
 
     .rfc-eyebrow {
-        color: var(--muted-on-dark);
+        color: #D6E4F8;
         font-family: var(--font-display);
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.08em;
         margin-bottom: 10px;
         text-transform: uppercase;
     }
@@ -105,7 +96,7 @@
     .rfc-document li + li { margin-top: 8px; }
 
     .rfc-meta {
-        border-left: 4px solid var(--navy);
+        border: 1px solid var(--navy);
         display: grid;
         gap: 16px;
         grid-template-columns: repeat(2, minmax(0, 1fr));

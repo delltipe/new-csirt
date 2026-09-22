@@ -35,8 +35,8 @@
                             </a>
                             <form action="{{ route('admin.law.delete', $item->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
-                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this law?')">
-                                    <i class="bi bi-trash" aria-hidden="true"></i> Delete
+                                <button type="submit" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus peraturan ini?')">
+                                    <i class="bi bi-trash" aria-hidden="true"></i> Hapus
                                 </button>
                             </form>
                         </td>
@@ -58,44 +58,44 @@
       <form method="POST" action="{{ route('admin.law.store') }}">
         @csrf
         <div class="modal-header">
-          <h5 class="modal-title" id="addLawModalLabel">Add Law/Regulation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="addLawModalLabel">Tambah Peraturan & Kebijakan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body">
             <div class="mb-3">
-              <label for="law-title" class="form-label">Title</label>
+              <label for="law-title" class="form-label">Judul</label>
               <input type="text" class="form-control" id="law-title" name="title" required>
             </div>
             <div class="mb-3">
-              <label for="law-description" class="form-label">Description</label>
+              <label for="law-description" class="form-label">Deskripsi</label>
               <textarea class="form-control" id="law-description" name="description" rows="3" required></textarea>
             </div>
             <div class="mb-3">
-              <label for="law-link" class="form-label">Document URL</label>
+              <label for="law-link" class="form-label">URL Dokumen</label>
               <input type="text" class="form-control" id="law-link" name="link">
             </div>
             <div class="row">
               <div class="col-md-6">
                 <div class="mb-3">
-                  <label for="law-date" class="form-label">Date</label>
+                  <label for="law-date" class="form-label">Tanggal</label>
                   <input type="date" class="form-control" id="law-date" name="date" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
-                  <label for="law-time" class="form-label">Time</label>
+                  <label for="law-time" class="form-label">Waktu</label>
                   <input type="time" class="form-control" id="law-time" name="time">
                 </div>
               </div>
             </div>
             <div class="mb-3">
-              <label for="law-download" class="form-label">Download Count</label>
+              <label for="law-download" class="form-label">Jumlah Unduhan</label>
               <input type="number" class="form-control" id="law-download" name="downloadAmount" value="0">
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
       </form>
     </div>

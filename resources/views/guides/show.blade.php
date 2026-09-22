@@ -13,18 +13,6 @@
     overflow: hidden;
 }
 
-.guide-detail-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px,
-        transparent 1px, transparent 80px
-    );
-    pointer-events: none;
-}
-
 .guide-detail-header .container {
     position: relative;
     z-index: 1;
@@ -50,7 +38,7 @@
 }
 
 .guide-detail-breadcrumb i {
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .guide-detail-header h1 {
@@ -66,7 +54,7 @@
 .guide-detail-type-badge {
     display: inline-block;
     font-family: var(--font-display);
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;

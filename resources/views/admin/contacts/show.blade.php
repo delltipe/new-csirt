@@ -16,14 +16,14 @@
 .admin-sub { font-size:14px; color:var(--mid); margin-top:6px; }
 .admin-back { display:inline-flex; align-items:center; gap:6px; background:transparent; color:var(--navy); border:1px solid var(--navy); font-size:13px; font-weight:600; padding:9px 18px; text-decoration:none; transition:background var(--ease); }
 .admin-back:hover{ background:var(--navy-tint); }
-.alert-success{ background:var(--navy-tint); border-left:4px solid var(--navy); color:var(--navy-dim); padding:16px 20px; margin-bottom:24px; }
-.alert-error{ background:var(--alert-bg); border-left:4px solid var(--alert); color:var(--alert-dark); padding:16px 20px; margin-bottom:24px; }
+.alert-success{ background:var(--navy-tint); border:1px solid var(--navy); color:var(--navy-dim); padding:16px 20px; margin-bottom:24px; }
+.alert-error{ background:var(--alert-bg); border:1px solid var(--alert); color:var(--alert-dark); padding:16px 20px; margin-bottom:24px; }
 .review-grid{ display:grid; grid-template-columns:1.6fr 1fr; gap:32px; align-items:start; }
 .detail-card{ background:var(--white); border:1px solid var(--border); }
 .detail-card__head{ padding:20px 28px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
 .detail-card__title{ font-family:var(--font-display); font-size:16px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink); margin:0; }
 .detail-item{ display:grid; grid-template-columns:170px 1fr; gap:16px; padding:13px 28px; border-bottom:1px solid var(--border); }
-.detail-item__label{ font-size:11px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--mid); }
+.detail-item__label{ font-size:11.5px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--mid); }
 .detail-item__value{ font-size:13.5px; color:var(--ink); line-height:1.65; word-break:break-word; }
 .detail-item__value a{ color:var(--navy); }
 .review-card{ background:var(--white); border:1px solid var(--border); border-top:3px solid var(--navy); position:sticky; top:96px; }
