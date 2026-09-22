@@ -105,7 +105,7 @@
                         </p>
 
                         <p class="fs-5 lh-lg text-secondary">
-                            Ketua JakartaProv-CSIRT adalah Kepala Dinas Komunikasi, Informatika dan Statistik Provinsi DKI Jakarta. Anggota Tim JakartaProv-CSIRT adalah staf fungsional dan/atau pengelola teknologi informasi di lingkungan Dinas Komunikasi, Informatika dan Statistik Provinsi DKI Jakarta.
+                            Ketua JakartaProv-CSIRT adalah Kepala Dinas Komunikasi, Informatika dan Statistik Provinsi DKI Jakarta. Anggota Tim JakartaProv-CSIRT adalah staf fungsional dan/atau pengelola teknologi informasi di lingkungan Dinas Komunikasi, Informatika dan Statistik Provinsi DKI Jakarta, dengan fungsi teknis dan operasional harian penanganan insiden siber dikoordinasikan oleh <span class="fw-bold text-dark">Bidang Siber dan Sandi (BSSA)</span> Diskominfotik DKI Jakarta.
                         </p>
                     </div>
 

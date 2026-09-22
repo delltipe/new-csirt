@@ -303,3 +303,9 @@ Evolved from mesh `52 dots α0.18` + clamp fix (`home.blade.php:736` `if(x<0){x=
 - **Vercel:** feasible but requires a real architecture port, NOT a drop-in: Vercel has no PHP/Docker and no persistent filesystem → must switch SQLite→**Neon Postgres** (free), add `vercel-php@0.9.0` runtime + `api/index.php` + `vercel.json` rewrites, move sessions/cache off `file`, and move incident proof-pic uploads to **Supabase Storage** (free) since uploads can't persist on Vercel's disk. User chose "just exploring" — not pursuing. Hobby is free, no card, personal-use only, ~300s function ceiling, cold starts.
 - **Koyeb:** abandoned — console shows "Koyeb is joining Mistral" banner, API/token page broken, CLI login fails.
 - **Zeabur:** signup done (GitHub auth). Chose the free server path: New Project → Bind External Server → **Wonder Mesh**. A server card was created and an install script generated (`curl ... api.zeabur.com/mesh-server/install.sh?token=... | sudo bash`) but **NOT run** — it installs Tailscale, creates a `zeabur` sudo user (passwordless sudo), enables SSH password auth, and installs K3s. Invasive to the dev machine; user was cautious. Status: "Server not connected yet."
+
+## Impeccable Design Skill (Installed for this project)
+
+Installed locally via `impeccable install --project` under `.agents/skills/impeccable/` (along with `.agent/` and `.gemini/`).
+Provides 25 design and UI workflow commands (`/impeccable init`, `/polish`, `/audit`, `/critique`, `/typeset`, etc.).
+**Scope Policy**: This skill is installed strictly for `new-csirt`. If another project or workspace wants to use Impeccable, the agent must ask the user for confirmation first before doing so (enforced globally in `~/.gemini/GEMINI.md`).

@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BugHunterController;
 use App\Http\Controllers\CaptchaController;
+use App\Http\Controllers\IncidentTrackingController;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -92,6 +93,9 @@ Route::middleware(['auth', 'bug_hunter'])->group(function () {
     // Reporter detail (dynamic — must be declared last)
     Route::get('/bug-hunter/laporan/{id}', [BugHunterController::class, 'show'])->name('bug-hunter.show');
 });
+
+// Public Incident Ticket Tracking (accessible without login)
+Route::get('/lacak-laporan', [IncidentTrackingController::class, 'index'])->name('ticket.track');
 
 // ---------------------------------------------------------------
 // Contact Routes

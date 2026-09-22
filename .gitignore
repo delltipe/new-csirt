@@ -40,3 +40,11 @@ auth.json
 /public/D:*/**
 .playwright-mcp/
 design-system-audit-report.html
+
+# Impeccable binary cache & assistant metadata
+**/scripts/bin/**
+.impeccable/
+.agent/
+.agents/
+.codex/
+.gemini/

@@ -264,12 +264,12 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: transparent;
+    background: var(--white);
     color: var(--navy);
-    border: 1px solid var(--navy);
+    border: 2px solid var(--navy);
     font-family: var(--font-body);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     padding: 9px 18px;
     cursor: pointer;
     transition: background var(--ease), color var(--ease);
@@ -283,13 +283,90 @@
     justify-content: center;
     width: 38px;
     height: 44px;
-    background: transparent;
+    background: var(--white);
     color: var(--alert);
     border: 1px solid var(--alert);
     cursor: pointer;
     transition: background var(--ease), color var(--ease);
 }
 .btn-remove-evidence:hover { background: var(--alert); color: var(--white); }
+
+/* Progress Stepper */
+.lapor-progress-track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+.lapor-progress-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: var(--mist);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--mid);
+}
+.lapor-progress-step.is-complete {
+    background: var(--white);
+    border-color: var(--navy);
+    color: var(--navy);
+}
+.lapor-progress-step.is-active {
+    background: var(--navy-tint);
+    border-color: var(--navy);
+    color: var(--navy);
+    font-weight: 700;
+}
+.lapor-progress-step__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: var(--border);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 800;
+}
+.lapor-progress-step.is-complete .lapor-progress-step__num,
+.lapor-progress-step.is-active .lapor-progress-step__num {
+    background: var(--navy);
+    color: var(--white);
+}
+
+/* Downtime Quick Presets */
+.downtime-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+.btn-downtime-preset {
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 11px;
+    cursor: pointer;
+    transition: background var(--ease), border-color var(--ease), color var(--ease);
+}
+.btn-downtime-preset:hover {
+    background: var(--navy-tint);
+    border-color: var(--navy);
+    color: var(--navy);
+}
+.btn-downtime-preset.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+}
 
 /* ============================================================
    VALIDATION SUMMARY
@@ -352,22 +429,32 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: transparent;
-    color: var(--mid);
+    background: var(--white);
+    color: var(--ink);
     border: 1px solid var(--border);
     font-family: var(--font-body);
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     padding: 12px 24px;
     text-decoration: none;
-    transition: color var(--ease), border-color var(--ease);
+    transition: color var(--ease), border-color var(--ease), background var(--ease);
 }
-.btn-cancel:hover { color: var(--ink); border-color: var(--mid); }
+.btn-cancel:hover { color: var(--navy); border-color: var(--navy); background: var(--mist); }
 
 /* Dark/high-contrast keeps help box readable (token-based, avoids generic button flatten) */
 html.accessibility-contrast-dark .lapor-help-box { background: #1a1a1a; border-color: #333333; }
 html.accessibility-contrast-dark button.lapor-help-link { background: #1a1a1a; color: #4DA6FF; border-color: #333333; }
 html.accessibility-contrast-dark button.lapor-help-link:hover { background: #2a2a3e; border-color: #4DA6FF; color: #4DA6FF; }
+html.accessibility-contrast-dark .btn-downtime-preset { background: #1a1a1a; color: #FFFFFF; border-color: #444444; }
+html.accessibility-contrast-dark .btn-downtime-preset:hover,
+html.accessibility-contrast-dark .btn-downtime-preset.active { background: #4DA6FF; color: #0A0F1A; border-color: #66B3FF; }
+html.accessibility-contrast-dark .lapor-progress-step { background: #1a1a1a; border-color: #333333; color: #AAAAAA; }
+html.accessibility-contrast-dark .lapor-progress-step.is-complete,
+html.accessibility-contrast-dark .lapor-progress-step.is-active { background: #1A2333; border-color: #4DA6FF; color: #4DA6FF; }
+html.accessibility-contrast-dark button.btn-add-evidence { background: #1A2333; color: #4DA6FF; border-color: #4DA6FF; }
+html.accessibility-contrast-dark button.btn-add-evidence:hover { background: #4DA6FF; color: #0A0F1A; }
+html.accessibility-contrast-dark button.btn-remove-evidence { background: #1A2333; color: #FF6666; border-color: #FF6666; }
+html.accessibility-contrast-dark a.btn-cancel { background: #1A2333; color: #FFFFFF; border-color: #444444; }
 html.accessibility-contrast-high .lapor-help-box { background: #FFFFFF; border-color: #000000; }
 html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; color: #000080; border-color: #000000; }
 
@@ -424,6 +511,22 @@ html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; c
               action="{{ route('bug-hunter.store') }}"
               enctype="multipart/form-data" novalidate>
             @csrf
+
+            {{-- Reporting Progress Stepper --}}
+            <div class="lapor-progress-track" aria-label="Tahapan Pelaporan Insiden">
+                <div class="lapor-progress-step is-complete">
+                    <span class="lapor-progress-step__num"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
+                    <span class="lapor-progress-step__text">1. Akun &amp; TaC Terverifikasi</span>
+                </div>
+                <div class="lapor-progress-step is-active">
+                    <span class="lapor-progress-step__num">2</span>
+                    <span class="lapor-progress-step__text">2. Pengisian Detail Insiden</span>
+                </div>
+                <div class="lapor-progress-step">
+                    <span class="lapor-progress-step__num">3</span>
+                    <span class="lapor-progress-step__text">3. Tiket &amp; Pelacakan</span>
+                </div>
+            </div>
 
             <h2 class="form-step__title">Data Insiden</h2>
             <div class="form-step__divider"></div>
@@ -488,12 +591,21 @@ html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; c
                     <label class="lapor-label" for="field-down-time">
                         Durasi Gangguan (Down Time) <span class="req" aria-hidden="true">*</span>
                     </label>
+                    <div class="downtime-presets" role="group" aria-label="Preset durasi gangguan layanan">
+                        <button type="button" class="btn-downtime-preset {{ old('down_time', '00:00') === '00:00' ? 'active' : '' }}" data-value="00:00">Tidak Ada (00:00)</button>
+                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '00:30' ? 'active' : '' }}" data-value="00:30">&lt; 1 Jam (00:30)</button>
+                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '01:30' ? 'active' : '' }}" data-value="01:30">1-2 Jam (01:30)</button>
+                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '04:00' ? 'active' : '' }}" data-value="04:00">2-6 Jam (04:00)</button>
+                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '08:00' ? 'active' : '' }}" data-value="08:00">&gt; 6 Jam (08:00)</button>
+                    </div>
                     <input type="time" id="field-down-time" name="down_time"
                            class="lapor-input @error('down_time') is-invalid @enderror"
-                           value="{{ old('down_time') }}" required
+                           value="{{ old('down_time', '00:00') }}" required
                            aria-describedby="hint-down-time @error('down_time') err-down-time @enderror"
                            @error('down_time') aria-invalid="true" @enderror>
-                    <div class="field-hint" id="hint-down-time">Perkiraan durasi layanan tidak dapat diakses (format jam:menit). Isi 00:00 bila tidak ada gangguan layanan.</div>
+                    <div class="field-hint" id="hint-down-time">
+                        Durasi total layanan down/lumpuh (format jam:menit). <strong>Klik preset 'Tidak Ada (00:00)'</strong> jika temuan tidak menghentikan operasional layanan (misal: vulnerability disclosure, XSS, phishing, data leakage).
+                    </div>
                     @error('down_time')
                     <div class="field-error" id="err-down-time" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                     @enderror
@@ -670,6 +782,31 @@ html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; c
             if (hidden) box.removeAttribute('hidden'); else box.setAttribute('hidden', '');
             btn.setAttribute('aria-expanded', hidden ? 'true' : 'false');
             if (hidden) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    })();
+
+    // Downtime Quick Preset Chips
+    (function () {
+        var presetBtns = document.querySelectorAll('.btn-downtime-preset');
+        var downTimeInput = document.getElementById('field-down-time');
+        if (!presetBtns.length || !downTimeInput) return;
+        presetBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var val = this.getAttribute('data-value');
+                downTimeInput.value = val;
+                presetBtns.forEach(function (b) { b.classList.remove('active'); });
+                this.classList.add('active');
+            });
+        });
+        downTimeInput.addEventListener('input', function () {
+            var curr = this.value;
+            presetBtns.forEach(function (b) {
+                if (b.getAttribute('data-value') === curr) {
+                    b.classList.add('active');
+                } else {
+                    b.classList.remove('active');
+                }
+            });
         });
     })();
 })();

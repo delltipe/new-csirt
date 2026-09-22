@@ -249,6 +249,11 @@
                         <i class="bi bi-clipboard" aria-hidden="true"></i> Salin
                     </button>
                 </div>
+                <p style="font-size:12.5px; color:var(--mid); margin-top:-16px; margin-bottom:24px; line-height:1.6;">
+                    <i class="bi bi-info-circle-fill" style="color:var(--navy);" aria-hidden="true"></i>
+                    Simpan nomor tiket ini. Anda juga dapat memeriksa status penanganan secara publik tanpa perlu masuk melalui tautan
+                    <a href="{{ route('ticket.track', ['tiket' => $tiketNo]) }}" style="color:var(--navy); font-weight:700; text-decoration:underline;">Lacak Tiket {{ $tiketNo }}</a>.
+                </p>
                 @endif
 
                 <p class="next-steps-title">Alur Penanganan Laporan</p>

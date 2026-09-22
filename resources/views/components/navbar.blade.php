@@ -12,7 +12,7 @@
     /* --- Government identity strip --- */
     .nav-strip {
         background: var(--ink);
-        height: 38px;
+        min-height: 38px;
         display: flex;
         align-items: center;
         font-family: var(--font-body);
@@ -20,12 +20,17 @@
         font-weight: 500;
         letter-spacing: 0.04em;
         color: var(--muted-on-dark);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .nav-strip .container {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding-top: 4px;
+        padding-bottom: 4px;
     }
 
     .nav-strip__badge {
@@ -42,21 +47,33 @@
 
     .nav-strip__links {
         display: flex;
-        gap: 22px;
+        align-items: center;
+        gap: 18px;
     }
 
     .nav-strip__links a {
         color: var(--muted-on-dark);
         font-size: 11.5px;
         font-weight: 600;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
         transition: color var(--ease);
         text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
     }
 
     .nav-strip__links a:hover {
         color: var(--white);
+    }
+
+    .nav-strip__links a.track-link {
+        color: #93C5FD;
+    }
+    .nav-strip__links a.track-link:hover {
+        color: var(--white);
+        text-decoration: underline;
     }
 
     /* --- Main navigation bar --- */
@@ -72,7 +89,8 @@
     .nav-main .container {
         display: flex;
         align-items: center;
-        height: 68px;
+        min-height: 68px;
+        position: relative;
     }
 
     /* Logo */
@@ -81,7 +99,7 @@
         align-items: center;
         gap: 11px;
         flex-shrink: 0;
-        margin-right: 24px;
+        margin-right: 20px;
         text-decoration: none;
     }
 
@@ -106,7 +124,7 @@
         align-items: center;
         gap: 10px;
         padding-left: 16px;
-        margin-right: 24px;
+        margin-right: 20px;
         border-left: 1px solid var(--border);
         flex-shrink: 0;
     }
@@ -124,8 +142,6 @@
         opacity: 1;
     }
 
-    /* Partner logo dual-image stack: light variant default,
-       dark variant swapped in via accessibility-contrast.css */
     .nav-partner {
         display: flex;
         align-items: center;
@@ -141,6 +157,39 @@
         width: auto;
         max-width: 80px;
         object-fit: contain;
+    }
+
+    /* Mobile toggle button (hamburger) */
+    .nav-toggle {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--navy);
+        font-size: 24px;
+        cursor: pointer;
+        margin-left: auto;
+        padding: 0;
+        transition: background var(--ease), color var(--ease);
+    }
+    .nav-toggle:hover {
+        background: var(--navy-tint);
+    }
+    .nav-toggle:focus-visible {
+        outline: 2px solid var(--navy);
+        outline-offset: 2px;
+    }
+
+    /* Nav Collapse Container (desktop vs mobile) */
+    .nav-collapse {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        justify-content: flex-end;
+        height: 100%;
     }
 
     /* Nav links list */
@@ -322,11 +371,131 @@
     @media (max-width: 1200px) {
         .nav-partners { display: none; }
     }
+
+    @media (max-width: 992px) {
+        .nav-toggle {
+            display: flex;
+        }
+
+        .nav-collapse {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-bottom: 4px solid var(--navy);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            padding: 20px 24px 28px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+            z-index: 150;
+        }
+
+        .nav-collapse.is-open {
+            display: flex;
+        }
+
+        .nav-links {
+            flex-direction: column;
+            align-items: stretch;
+            height: auto;
+            margin: 0;
+            width: 100%;
+        }
+
+        .nav-links > li {
+            width: 100%;
+            border-bottom: 1px solid var(--border);
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .nav-links > li > a {
+            padding: 13px 0;
+            height: auto;
+            font-size: 14.5px;
+            border-bottom: none;
+            margin-bottom: 0;
+            justify-content: space-between;
+        }
+
+        .nav-dropdown {
+            position: static;
+            transform: none;
+            opacity: 1;
+            pointer-events: all;
+            box-shadow: none;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--navy);
+            background: var(--mist);
+            margin: 0 0 10px 0;
+            padding: 4px 0;
+            display: none;
+        }
+
+        .nav-links > li.dropdown-open .nav-dropdown,
+        .nav-links > li:hover .nav-dropdown,
+        .nav-links > li:focus-within .nav-dropdown {
+            display: block;
+        }
+
+        .nav-right {
+            margin-left: 0;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            width: 100%;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-search {
+            width: 100%;
+        }
+        .nav-search input {
+            flex: 1;
+            width: 100%;
+        }
+    }
+
     @media (max-width: 640px) {
-        .nav-search { display: none; }
-        .nav-links > li > a { padding: 0 10px; font-size: 12.5px; }
+        .nav-strip .container {
+            justify-content: center;
+            text-align: center;
+        }
+        .nav-strip__links {
+            width: 100%;
+            justify-content: center;
+        }
+        .nav-right .btn-navy {
+            flex: 1;
+            text-align: center;
+            justify-content: center;
+        }
     }
 </style>
+
+{{-- ============================================================
+     GOVERNMENT IDENTITY STRIP (BSSA DKI & Public Ticket Tracking)
+     ============================================================ --}}
+<div class="nav-strip">
+    <div class="container">
+        <div class="nav-strip__badge">
+            <i class="bi bi-shield-check" aria-hidden="true"></i>
+            <span>Portal Resmi JakartaProv-CSIRT · Bidang Siber dan Sandi (BSSA) Diskominfotik DKI</span>
+        </div>
+        <div class="nav-strip__links">
+            <a href="{{ route('ticket.track') }}" class="track-link">
+                <i class="bi bi-search" aria-hidden="true"></i> Lacak Status Tiket
+            </a>
+            <a href="https://diskominfotik.jakarta.go.id" target="_blank" rel="noopener">
+                Diskominfotik DKI <i class="bi bi-box-arrow-up-right" style="font-size:10px;" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+</div>
 
 {{-- ============================================================
      MAIN NAVIGATION
@@ -334,7 +503,7 @@
 <nav class="nav-main" aria-label="Navigasi utama">
     <div class="container">
 
-        {{-- Logo — optimized 224x80 (was 600x214) --}}
+        {{-- Logo — optimized 224x80 --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Beranda JakartaProv-CSIRT">
             <img src="{{ asset('jakarta-csirt-logo.png') }}"
                  alt="Jakarta CSIRT Logo"
@@ -344,7 +513,7 @@
             <span class="nav-logo__fallback">CSIRT</span>
         </a>
 
-        {{-- Partner logos with outbound links — optimized 120px (was 1500px), single-img swap avoids double fetch --}}
+        {{-- Partner logos with outbound links --}}
         <div class="nav-partners" role="group" aria-label="Logo instansi mitra">
             <a href="https://www.jakarta.go.id/" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya">
                 <img src="{{ asset('jaya_raya.png') }}" alt="Jaya Raya" width="68" height="72" loading="eager" decoding="async">
@@ -362,80 +531,142 @@
             </span>
         </div>
 
-        {{-- Nav links --}}
-        <ul class="nav-links">
-            <li>
-                <a href="{{ route('home') }}"
-                   class="{{ request()->routeIs('home') ? 'active' : '' }}">
-                    Beranda
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'active' : '' }}">
-                    Profil
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-haspopup="true" aria-expanded="false">
-                    Publikasi <i class="bi bi-chevron-down" aria-hidden="true"></i>
-                </a>
-                <ul class="nav-dropdown" aria-label="Submenu Publikasi">
-                    <li><a href="{{ route('warnings.index') }}">Peringatan Keamanan</a></li>
-                    <li><a href="{{ route('news.index') }}">Berita Siber</a></li>
-                    <li><a href="{{ route('infographics.index') }}">Infografis Keamanan</a></li>
-                    <li><a href="{{ route('laws.index') }}">Peraturan & Kebijakan</a></li>
-                    <li><a href="{{ route('guides.index') }}">Panduan Teknis</a></li>
-                    <li><div class="nav-dropdown__divider"></div></li>
-                    <li><a href="{{ url('statistics') }}">Statistik Honeypot</a></li>
-                    <li><a href="{{ url('rfc2350') }}">RFC 2350</a></li>
-                    <li><a href="{{ route('publickey') }}">Public Key</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="{{ route('events.index') }}"
-                   class="{{ request()->routeIs('events.*') ? 'active' : '' }}">
-                    Event
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('contact.create') }}"
-                   class="{{ request()->routeIs('contact.*') ? 'active' : '' }}">
-                    Hubungi Kami
-                </a>
-            </li>
-        </ul>
+        {{-- Mobile Hamburger Toggle Button --}}
+        <button class="nav-toggle" id="nav-toggle" type="button"
+                aria-expanded="false" aria-label="Buka menu navigasi" aria-controls="nav-collapse">
+            <i class="bi bi-list" id="nav-toggle-icon" aria-hidden="true"></i>
+        </button>
 
-        {{-- Search + CTA --}}
-        <div class="nav-right">
-            <form class="nav-search" role="search" action="{{ url('/search') }}" method="GET">
-                <input type="search" name="q" placeholder="Cari..." aria-label="Cari konten situs">
-                <button type="submit" aria-label="Kirim pencarian">
-                    <i class="bi bi-search" aria-hidden="true"></i>
-                </button>
-            </form>
+        {{-- Collapsible Nav Container --}}
+        <div class="nav-collapse" id="nav-collapse">
+            {{-- Nav links --}}
+            <ul class="nav-links">
+                <li>
+                    <a href="{{ route('home') }}"
+                       class="{{ request()->routeIs('home') ? 'active' : '' }}">
+                        Beranda
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'active' : '' }}">
+                        Profil
+                    </a>
+                </li>
+                <li id="nav-dropdown-parent">
+                    <a href="#" aria-haspopup="true" aria-expanded="false" id="btn-nav-dropdown">
+                        Publikasi <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                    </a>
+                    <ul class="nav-dropdown" aria-label="Submenu Publikasi">
+                        <li><a href="{{ route('warnings.index') }}">Peringatan Keamanan</a></li>
+                        <li><a href="{{ route('news.index') }}">Berita Siber</a></li>
+                        <li><a href="{{ route('infographics.index') }}">Infografis Keamanan</a></li>
+                        <li><a href="{{ route('laws.index') }}">Peraturan & Kebijakan</a></li>
+                        <li><a href="{{ route('guides.index') }}">Panduan Teknis</a></li>
+                        <li><div class="nav-dropdown__divider"></div></li>
+                        <li><a href="{{ route('ticket.track') }}"><strong><i class="bi bi-search" aria-hidden="true"></i> Lacak Status Tiket</strong></a></li>
+                        <li><a href="{{ url('statistics') }}">Statistik Honeypot</a></li>
+                        <li><a href="{{ url('rfc2350') }}">RFC 2350</a></li>
+                        <li><a href="{{ route('publickey') }}">Public Key</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ route('events.index') }}"
+                       class="{{ request()->routeIs('events.*') ? 'active' : '' }}">
+                        Event
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('contact.create') }}"
+                       class="{{ request()->routeIs('contact.*') ? 'active' : '' }}">
+                        Hubungi Kami
+                    </a>
+                </li>
+            </ul>
 
-            @auth
-                @if (auth()->user()->is_admin)
-                    <a href="{{ route('admin.dashboard') }}" class="btn-navy">
-                        Admin <i class="bi bi-speedometer2" aria-hidden="true"></i>
-                    </a>
-                @else
-                    <a href="{{ route('bug-hunter.dashboard') }}" class="btn-navy">
-                        Lapor Insiden <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
-                    </a>
-                @endif
-                <form class="nav-logout" method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" aria-label="Keluar" title="Keluar">
-                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+            {{-- Search + CTA --}}
+            <div class="nav-right">
+                <form class="nav-search" role="search" action="{{ url('/search') }}" method="GET">
+                    <input type="search" name="q" placeholder="Cari..." aria-label="Cari konten situs">
+                    <button type="submit" aria-label="Kirim pencarian">
+                        <i class="bi bi-search" aria-hidden="true"></i>
                     </button>
                 </form>
-            @else
-                <a href="{{ route('login') }}" class="btn-navy">
-                    Masuk <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
-                </a>
-            @endauth
+
+                @auth
+                    @if (auth()->user()->is_admin)
+                        <a href="{{ route('admin.dashboard') }}" class="btn-navy">
+                            Admin <i class="bi bi-speedometer2" aria-hidden="true"></i>
+                        </a>
+                    @else
+                        <a href="{{ route('bug-hunter.dashboard') }}" class="btn-navy">
+                            Lapor Insiden <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
+                        </a>
+                    @endif
+                    <form class="nav-logout" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" aria-label="Keluar" title="Keluar">
+                            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="btn-navy">
+                        Masuk <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                    </a>
+                @endauth
+            </div>
         </div>
 
     </div>
 </nav>
+
+<script>
+(function() {
+    const navToggle = document.getElementById('nav-toggle');
+    const navCollapse = document.getElementById('nav-collapse');
+    const toggleIcon = document.getElementById('nav-toggle-icon');
+    const dropdownParent = document.getElementById('nav-dropdown-parent');
+    const btnNavDropdown = document.getElementById('btn-nav-dropdown');
+
+    if (navToggle && navCollapse) {
+        navToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = navCollapse.classList.toggle('is-open');
+            navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            if (toggleIcon) {
+                toggleIcon.className = isOpen ? 'bi bi-x-lg' : 'bi bi-list';
+            }
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', function(e) {
+            if (navCollapse.classList.contains('is-open') && !navCollapse.contains(e.target) && !navToggle.contains(e.target)) {
+                navCollapse.classList.remove('is-open');
+                navToggle.setAttribute('aria-expanded', 'false');
+                if (toggleIcon) toggleIcon.className = 'bi bi-list';
+            }
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navCollapse.classList.contains('is-open')) {
+                navCollapse.classList.remove('is-open');
+                navToggle.setAttribute('aria-expanded', 'false');
+                if (toggleIcon) toggleIcon.className = 'bi bi-list';
+                navToggle.focus();
+            }
+        });
+    }
+
+    // Mobile dropdown toggle on tap
+    if (btnNavDropdown && dropdownParent) {
+        btnNavDropdown.addEventListener('click', function(e) {
+            if (window.innerWidth <= 992) {
+                e.preventDefault();
+                dropdownParent.classList.toggle('dropdown-open');
+                const isExpanded = dropdownParent.classList.contains('dropdown-open');
+                btnNavDropdown.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+            }
+        });
+    }
+})();
+</script>

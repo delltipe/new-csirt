@@ -1767,3 +1767,123 @@ html.accessibility-align-right :is(p, li, blockquote, td, th, dd, figcaption, h1
 html.accessibility-align-justify :is(p, li, blockquote, td, th, dd, figcaption, h1, h2, h3, h4, h5, h6) {
   text-align: justify !important;
 }
+
+/* ============================================================
+   CONTRAST OVERRIDES: NAVBAR MOBILE & TICKET TRACKING
+   ============================================================ */
+
+/* High Contrast Mode */
+html.accessibility-contrast-high .nav-strip {
+  background: #000000;
+  border-bottom: 2px solid #FFFFFF;
+}
+html.accessibility-contrast-high .nav-toggle {
+  background: #FFFFFF;
+  color: #000000;
+  border: 2px solid #000000;
+}
+html.accessibility-contrast-high .nav-collapse {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  border-top: 4px solid #000000;
+}
+html.accessibility-contrast-high .track-search-card,
+html.accessibility-contrast-high .track-result-card,
+html.accessibility-contrast-high .track-guide-card,
+html.accessibility-contrast-high .track-callout-card,
+html.accessibility-contrast-high .workflow-card {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  color: #000000;
+}
+html.accessibility-contrast-high .step-node {
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  color: #000000;
+}
+html.accessibility-contrast-high .step-node.is-active,
+html.accessibility-contrast-high .step-node.is-done {
+  background: #000080;
+  color: #FFFFFF;
+}
+html.accessibility-contrast-high .step-node.is-active .step-node__title,
+html.accessibility-contrast-high .step-node.is-done .step-node__title {
+  color: #FFFFFF;
+}
+
+/* Dark Mode */
+html.accessibility-contrast-dark .nav-strip {
+  background: #0A0F1A;
+  border-bottom: 1px solid #222E42;
+}
+html.accessibility-contrast-dark .nav-toggle {
+  background: #141C2B;
+  color: #4DA6FF;
+  border: 1px solid #2A3B53;
+}
+html.accessibility-contrast-dark .nav-collapse {
+  background: #0F1724;
+  border-color: #2A3B53;
+  border-bottom: 4px solid #4DA6FF;
+}
+html.accessibility-contrast-dark .nav-collapse .nav-dropdown {
+  background: #162032;
+  border-color: #2A3B53;
+}
+html.accessibility-contrast-dark .track-search-card,
+html.accessibility-contrast-dark .track-result-card,
+html.accessibility-contrast-dark .track-guide-card,
+html.accessibility-contrast-dark .track-callout-card,
+html.accessibility-contrast-dark .workflow-card {
+  background: #141C2B;
+  border-color: #2A3B53;
+  color: #FFFFFF;
+}
+html.accessibility-contrast-dark .track-search-input {
+  background: #0F1724;
+  color: #FFFFFF;
+  border-color: #2A3B53;
+}
+html.accessibility-contrast-dark .track-search-btn {
+  background: #4DA6FF;
+  color: #0A0F1A;
+}
+html.accessibility-contrast-dark .track-search-btn:hover {
+  background: #66B3FF;
+}
+html.accessibility-contrast-dark .track-info-grid,
+html.accessibility-contrast-dark .track-guide-item {
+  background: #0F1724;
+  border-color: #2A3B53;
+}
+html.accessibility-contrast-dark .track-disclosure-box {
+  background: #0F1724;
+  border-color: #4DA6FF;
+  color: #D6E4F8;
+}
+html.accessibility-contrast-dark .step-node {
+  background: #0F1724;
+  border-color: #2A3B53;
+  color: #FFFFFF;
+}
+html.accessibility-contrast-dark .step-node.is-active {
+  background: #1A2840;
+  border-color: #4DA6FF;
+}
+html.accessibility-contrast-dark .step-node.is-active .step-node__title {
+  color: #4DA6FF;
+}
+html.accessibility-contrast-dark .step-node.is-done {
+  background: #141C2B;
+  border-color: #3B82F6;
+}
+html.accessibility-contrast-dark .btn-track-public {
+  background: #141C2B;
+  color: #4DA6FF;
+  border-color: #4DA6FF;
+}
+html.accessibility-contrast-dark .btn-track-public:hover {
+  background: #4DA6FF;
+  color: #0A0F1A;
+}
+
