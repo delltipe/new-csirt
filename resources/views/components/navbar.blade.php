@@ -346,6 +346,10 @@
             align-items: stretch;
         }
 
+        .nav-links > li:last-child {
+            border-bottom: none;
+        }
+
         .nav-links > li > a {
             padding: 13px 0;
             height: auto;

@@ -1789,11 +1789,6 @@ html.accessibility-contrast-high .nav-toggle {
   color: #000000;
   border: 2px solid #000000;
 }
-html.accessibility-contrast-high .nav-collapse {
-  background: #FFFFFF;
-  border: 2px solid #000000;
-  border-top: 4px solid #000000;
-}
 html.accessibility-contrast-high .track-search-card,
 html.accessibility-contrast-high .track-result-card,
 html.accessibility-contrast-high .track-guide-card,
@@ -1824,14 +1819,26 @@ html.accessibility-contrast-dark .nav-toggle {
   color: #4DA6FF;
   border: 1px solid #2A3B53;
 }
-html.accessibility-contrast-dark .nav-collapse {
-  background: #0F1724;
-  border-color: #2A3B53;
-  border-bottom: 4px solid #4DA6FF;
-}
-html.accessibility-contrast-dark .nav-collapse .nav-dropdown {
-  background: #162032;
-  border-color: #2A3B53;
+@media (max-width: 992px) {
+  html.accessibility-contrast-high .nav-collapse {
+    background: #FFFFFF;
+    border: none;
+    border-bottom: 4px solid #000000;
+  }
+  html.accessibility-contrast-dark .nav-collapse {
+    background: #1a1a1a;
+    border: none;
+    border-bottom: 4px solid #4DA6FF;
+  }
+  html.accessibility-contrast-high .nav-links > li > a,
+  html.accessibility-contrast-dark .nav-links > li > a {
+    border-bottom: none;
+  }
+  html.accessibility-contrast-dark .nav-collapse .nav-dropdown {
+    background: #162032;
+    border: 1px solid #2A3B53;
+    border-left: 3px solid #4DA6FF;
+  }
 }
 html.accessibility-contrast-dark .track-search-card,
 html.accessibility-contrast-dark .track-result-card,
