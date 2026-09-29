@@ -9,73 +9,6 @@
      (global tokens live in style.css)
      ============================================================ --}}
 <style>
-    /* --- Government identity strip --- */
-    .nav-strip {
-        background: var(--ink);
-        min-height: 38px;
-        display: flex;
-        align-items: center;
-        font-family: var(--font-body);
-        font-size: 11px;
-        font-weight: 500;
-        letter-spacing: 0.04em;
-        color: var(--muted-on-dark);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .nav-strip .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 8px;
-        padding-top: 4px;
-        padding-bottom: 4px;
-    }
-
-    .nav-strip__badge {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        color: var(--muted-on-dark);
-    }
-
-    .nav-strip__badge i {
-        font-size: 12px;
-        color: var(--navy-mid);
-    }
-
-    .nav-strip__links {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-    }
-
-    .nav-strip__links a {
-        color: var(--muted-on-dark);
-        font-size: 11.5px;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        transition: color var(--ease);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .nav-strip__links a:hover {
-        color: var(--white);
-    }
-
-    .nav-strip__links a.track-link {
-        color: #93C5FD;
-    }
-    .nav-strip__links a.track-link:hover {
-        color: var(--white);
-        text-decoration: underline;
-    }
-
     /* --- Main navigation bar --- */
     .nav-main {
         background: var(--white);
@@ -461,14 +394,6 @@
     }
 
     @media (max-width: 640px) {
-        .nav-strip .container {
-            justify-content: center;
-            text-align: center;
-        }
-        .nav-strip__links {
-            width: 100%;
-            justify-content: center;
-        }
         .nav-right .btn-navy {
             flex: 1;
             text-align: center;
@@ -476,26 +401,6 @@
         }
     }
 </style>
-
-{{-- ============================================================
-     GOVERNMENT IDENTITY STRIP (BSSA DKI & Public Ticket Tracking)
-     ============================================================ --}}
-<div class="nav-strip">
-    <div class="container">
-        <div class="nav-strip__badge">
-            <i class="bi bi-shield-check" aria-hidden="true"></i>
-            <span>Portal Resmi JakartaProv-CSIRT · Bidang Siber dan Sandi (BSSA) Diskominfotik DKI</span>
-        </div>
-        <div class="nav-strip__links">
-            <a href="{{ route('ticket.track') }}" class="track-link">
-                <i class="bi bi-search" aria-hidden="true"></i> Lacak Status Tiket
-            </a>
-            <a href="https://diskominfotik.jakarta.go.id" target="_blank" rel="noopener">
-                Diskominfotik DKI <i class="bi bi-box-arrow-up-right" style="font-size:10px;" aria-hidden="true"></i>
-            </a>
-        </div>
-    </div>
-</div>
 
 {{-- ============================================================
      MAIN NAVIGATION
