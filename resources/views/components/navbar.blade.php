@@ -22,7 +22,7 @@
     .nav-main .container {
         display: flex;
         align-items: center;
-        min-height: 68px;
+        height: 68px;
         position: relative;
     }
 
@@ -316,6 +316,7 @@
             top: 100%;
             left: 0;
             right: 0;
+            height: auto;
             background: var(--white);
             border-bottom: 4px solid var(--navy);
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
