@@ -21,7 +21,7 @@ All tokens are defined in `public/css/style.css` under `:root`. **Never hardcode
 
 | Token | Value | Usage |
 |---|---|---|
-| `--ink` | `#0A0F1A` | Primary text, headings, nav strip |
+| `--ink` | `#0A0F1A` | Primary text, headings, dark chrome |
 | `--navy` | `#003580` | Primary brand blue: buttons, borders, links |
 | `--navy-mid` | `#004099` | Hover / active states |
 | `--navy-dim` | `#002060` | Dark sections: CTA backgrounds, pressed states |

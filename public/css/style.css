@@ -16,7 +16,7 @@
    Palette: 4 core values + alert red (warning content only)
    ------------------------------------------------------------- */
 :root {
-    --ink:        #0A0F1A;   /* Near-black: text, chrome, nav strip */
+    --ink:        #0A0F1A;   /* Near-black: text, chrome */
     --navy:       #003580;   /* Primary DKI blue: buttons, borders, links */
     --navy-mid:   #004099;   /* Hover / active states */
     --navy-dim:   #002060;   /* Dark sections: CTA, pressed states */

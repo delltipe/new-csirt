@@ -346,26 +346,6 @@ html.accessibility-contrast-high .service-card__desc {
   color: #000000;
 }
 
-/* ---- Top Nav Strip: High Contrast on Dark Strip ---- */
-html.accessibility-contrast-high .nav-strip {
-  background: #000000;
-  border-bottom: 2px solid #FFFFFF;
-}
-
-html.accessibility-contrast-high .nav-strip__badge,
-html.accessibility-contrast-high .nav-strip__links a {
-  color: #FFFFFF !important;
-  text-decoration: underline !important;
-}
-
-html.accessibility-contrast-high .nav-strip__badge i {
-  color: #FFFF00 !important;
-}
-
-html.accessibility-contrast-high .nav-strip__links a:hover {
-  color: #FFFF00 !important;
-}
-
 /* ---- Navbar buttons & links ---- */
 html.accessibility-contrast-high .nav-search button {
   background: #000000;
@@ -1106,11 +1086,6 @@ html.accessibility-contrast-dark .nav-main {
 html.accessibility-contrast-dark .nav-partner img.partner-light { display: none; }
 html.accessibility-contrast-dark .nav-partner img.partner-dark  { display: inline-block; }
 
-html.accessibility-contrast-dark .nav-strip {
-  background: #0a0a0a;
-  color: #CCCCCC;
-}
-
 html.accessibility-contrast-dark .nav-links > li > a {
   color: #FFFFFF;
   border-bottom: 4px solid transparent;
@@ -1397,16 +1372,6 @@ html.accessibility-contrast-dark .footer-social a:hover {
   background: #4DA6FF;
   border-color: #4DA6FF;
   color: #0A0F1A;
-}
-
-/* ---- Nav strip: light text on dark strip ---- */
-html.accessibility-contrast-dark .nav-strip__badge,
-html.accessibility-contrast-dark .nav-strip__links a {
-  color: #B0BCC9;
-}
-html.accessibility-contrast-dark .nav-strip__badge i,
-html.accessibility-contrast-dark .nav-strip__links a:hover {
-  color: #66B3FF;
 }
 
 /* ---- Alert-strip CTA + warning-detail CTA: readable on the alert token ---- */
@@ -1819,10 +1784,6 @@ html.accessibility-align-justify :is(p, li, blockquote, td, th, dd, figcaption, 
    ============================================================ */
 
 /* High Contrast Mode */
-html.accessibility-contrast-high .nav-strip {
-  background: #000000;
-  border-bottom: 2px solid #FFFFFF;
-}
 html.accessibility-contrast-high .nav-toggle {
   background: #FFFFFF;
   color: #000000;
@@ -1858,10 +1819,6 @@ html.accessibility-contrast-high .step-node.is-done .step-node__title {
 }
 
 /* Dark Mode */
-html.accessibility-contrast-dark .nav-strip {
-  background: #0A0F1A;
-  border-bottom: 1px solid #222E42;
-}
 html.accessibility-contrast-dark .nav-toggle {
   background: #141C2B;
   color: #4DA6FF;
