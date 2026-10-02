@@ -259,6 +259,29 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Dark Mode Overrides (D3-04: Boundary Contrast >= 3:1) */
+html.accessibility-contrast-dark .login-page .form-input {
+    background: #0F0F0F !important;
+    border-color: #666666 !important;
+    color: #FFFFFF !important;
+}
+html.accessibility-contrast-dark .login-page .form-input:focus {
+    border-color: #4DA6FF !important;
+}
+
+/* High-Contrast Mode Overrides (D3-05: Visible Focus Ring >= 3:1) */
+html.accessibility-contrast-high .login-page .form-input {
+    border: 2px solid #000000 !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+}
+html.accessibility-contrast-high .login-page .form-input:focus {
+    outline: 3px solid #000000 !important;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #FFFFFF !important;
+    border-color: #000000 !important;
+}
 </style>
 
 <div class="login-page">
@@ -280,19 +303,23 @@
                 <form method="POST" action="{{ route('login.submit') }}">
                     @csrf
                     <div class="form-group">
-                        <label for="email" class="form-label">Alamat Email <span class="req">*</span></label>
+                        <label for="email" class="form-label">Alamat Email <span class="req" aria-hidden="true">*</span></label>
                         <input type="email" class="form-input @error('email') is-invalid @enderror"
-                               id="email" name="email" value="{{ old('email') }}" required autofocus>
+                               id="email" name="email" value="{{ old('email') }}" required autofocus
+                               aria-describedby="@error('email') err-email @enderror"
+                               @error('email') aria-invalid="true" @enderror>
                         @error('email')
-                        <div class="field-error"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
+                        <div class="field-error" id="err-email" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="password" class="form-label">Kata Sandi <span class="req">*</span></label>
+                        <label for="password" class="form-label">Kata Sandi <span class="req" aria-hidden="true">*</span></label>
                         <input type="password" class="form-input @error('password') is-invalid @enderror"
-                               id="password" name="password" required>
+                               id="password" name="password" required
+                               aria-describedby="@error('password') err-password @enderror"
+                               @error('password') aria-invalid="true" @enderror>
                         @error('password')
-                        <div class="field-error"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
+                        <div class="field-error" id="err-password" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                         @enderror
                     </div>
                     <button type="submit" class="btn-submit">Masuk ke Portal</button>

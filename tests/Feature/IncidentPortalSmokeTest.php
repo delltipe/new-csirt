@@ -28,7 +28,7 @@ class IncidentPortalSmokeTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'budi@example.com', 'is_bug_hunter' => true]);
 
         $this->get('/bug-hunter/laporan')->assertStatus(200);
-        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->post('/bug-hunter/laporan/agree', ['agree' => '1'])->assertRedirect(route('bug-hunter.create'));
         $this->assertDatabaseHas('tac_agreements', ['version' => '2026.08']);
 
         // Agreed users skip TaC straight to the form
@@ -152,7 +152,7 @@ class IncidentPortalSmokeTest extends TestCase
             'password_confirmation' => 'rahasia123',
         ])->assertRedirect(route('bug-hunter.tac'));
 
-        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->post('/bug-hunter/laporan/agree', ['agree' => '1'])->assertRedirect(route('bug-hunter.create'));
         $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
         $captchaAnswer = session('captcha_answer');
         $this->assertNotNull($captchaAnswer);
@@ -198,7 +198,7 @@ class IncidentPortalSmokeTest extends TestCase
             'password_confirmation' => 'rahasia123',
         ])->assertRedirect(route('bug-hunter.tac'));
 
-        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->post('/bug-hunter/laporan/agree', ['agree' => '1'])->assertRedirect(route('bug-hunter.create'));
         $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
         $captchaAnswer = session('captcha_answer');
         $this->assertNotNull($captchaAnswer);
@@ -235,7 +235,7 @@ class IncidentPortalSmokeTest extends TestCase
             'password_confirmation' => 'rahasia123',
         ])->assertRedirect(route('bug-hunter.tac'));
 
-        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->post('/bug-hunter/laporan/agree', ['agree' => '1'])->assertRedirect(route('bug-hunter.create'));
         $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
         $captchaAnswer = session('captcha_answer');
         $this->assertNotNull($captchaAnswer);
@@ -275,7 +275,7 @@ class IncidentPortalSmokeTest extends TestCase
             'password_confirmation' => 'rahasia123',
         ])->assertRedirect(route('bug-hunter.tac'));
 
-        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->post('/bug-hunter/laporan/agree', ['agree' => '1'])->assertRedirect(route('bug-hunter.create'));
 
         $this->get('/bug-hunter/laporan/baru')->assertStatus(200)->assertSee('Verifikasi');
         $correct = session('captcha_answer');
@@ -364,7 +364,7 @@ class IncidentPortalSmokeTest extends TestCase
             'password_confirmation' => 'rahasia123',
         ])->assertRedirect(route('bug-hunter.tac'));
 
-        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->post('/bug-hunter/laporan/agree', ['agree' => '1'])->assertRedirect(route('bug-hunter.create'));
         $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
         $captchaAnswer = session('captcha_answer');
         $this->assertNotNull($captchaAnswer);
@@ -396,5 +396,114 @@ class IncidentPortalSmokeTest extends TestCase
             'kategori_insiden' => 'Website Defacement',
             'down_time' => '00:00',
         ]);
+    }
+
+    public function test_registration_validation_errors_in_indonesian(): void
+    {
+        // 1. Missing required fields
+        $res = $this->post('/register', []);
+        $res->assertSessionHasErrors([
+            'name' => 'Nama lengkap wajib diisi.',
+            'email' => 'Alamat email wajib diisi.',
+            'password' => 'Kata sandi wajib diisi.',
+        ]);
+
+        // 2. Invalid email format
+        $resFormat = $this->post('/register', [
+            'name' => 'Tester',
+            'email' => 'bukan-email-valid',
+            'password' => 'rahasia123',
+            'password_confirmation' => 'rahasia123',
+        ]);
+        $resFormat->assertSessionHasErrors([
+            'email' => 'Format alamat email tidak valid.',
+        ]);
+
+        // 3. Minimum password length (< 8 chars)
+        $resMin = $this->post('/register', [
+            'name' => 'Tester',
+            'email' => 'valid@example.com',
+            'password' => 'pendek1',
+            'password_confirmation' => 'pendek1',
+        ]);
+        $resMin->assertSessionHasErrors([
+            'password' => 'Kata sandi minimal 8 karakter.',
+        ]);
+
+        // 4. Password confirmation mismatch
+        $resMismatch = $this->post('/register', [
+            'name' => 'Tester',
+            'email' => 'valid2@example.com',
+            'password' => 'rahasia123',
+            'password_confirmation' => 'berbeda123',
+        ]);
+        $resMismatch->assertSessionHasErrors([
+            'password' => 'Konfirmasi kata sandi tidak cocok.',
+        ]);
+
+        // 5. Duplicate email rejection
+        User::create([
+            'name' => 'Existing User',
+            'email' => 'existing@example.com',
+            'password' => 'password123',
+            'is_bug_hunter' => true,
+        ]);
+        $resDup = $this->post('/register', [
+            'name' => 'Another User',
+            'email' => 'existing@example.com',
+            'password' => 'rahasia123',
+            'password_confirmation' => 'rahasia123',
+        ]);
+        $resDup->assertSessionHasErrors([
+            'email' => 'Alamat email sudah terdaftar. Silakan masuk atau gunakan email lain.',
+        ]);
+    }
+
+    public function test_login_validation_errors_in_indonesian(): void
+    {
+        // Missing fields
+        $resEmpty = $this->post('/login', []);
+        $resEmpty->assertSessionHasErrors([
+            'email' => 'Alamat email wajib diisi.',
+            'password' => 'Kata sandi wajib diisi.',
+        ]);
+
+        // Invalid credentials
+        $resInvalid = $this->post('/login', [
+            'email' => 'nonexistent@example.com',
+            'password' => 'wrongpassword',
+        ]);
+        $resInvalid->assertSessionHasErrors([
+            'email' => 'Email atau kata sandi salah.',
+        ]);
+    }
+
+    public function test_tac_agreement_validation_requires_agree_checkbox(): void
+    {
+        $this->post('/register', [
+            'name' => 'TaC Gate Tester',
+            'email' => 'tacgate@example.com',
+            'password' => 'rahasia123',
+            'password_confirmation' => 'rahasia123',
+        ])->assertRedirect(route('bug-hunter.tac'));
+
+        // 1. Direct POST without agree fails and does NOT record agreement
+        $resMissing = $this->post('/bug-hunter/laporan/agree');
+        $resMissing->assertSessionHasErrors([
+            'agree' => 'Anda harus menyetujui Syarat & Ketentuan untuk melanjutkan.',
+        ]);
+        $this->assertDatabaseMissing('tac_agreements', ['version' => '2026.08']);
+
+        // 2. Direct POST with unaccepted agree (e.g. 0) fails
+        $resUnchecked = $this->post('/bug-hunter/laporan/agree', ['agree' => '0']);
+        $resUnchecked->assertSessionHasErrors([
+            'agree' => 'Anda harus menyetujui Syarat & Ketentuan untuk melanjutkan.',
+        ]);
+        $this->assertDatabaseMissing('tac_agreements', ['version' => '2026.08']);
+
+        // 3. POST with accepted agree (1) succeeds and records agreement
+        $resAccepted = $this->post('/bug-hunter/laporan/agree', ['agree' => '1']);
+        $resAccepted->assertRedirect(route('bug-hunter.create'));
+        $this->assertDatabaseHas('tac_agreements', ['version' => '2026.08']);
     }
 }

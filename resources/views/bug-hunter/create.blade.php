@@ -836,13 +836,72 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
 
     const oldBukti = @json(old('bukti', []));
 
+    function updateAddBtn() {
+        if (addBtn) {
+            addBtn.disabled = count >= MAX_EVIDENCE;
+        }
+    }
+
+    function renumberRows() {
+        if (!list) return;
+        const rows = list.querySelectorAll('.bukti-row');
+        rows.forEach(function (row, idx) {
+            row.dataset.index = idx;
+
+            // Jenis Bukti
+            const jenisLabel = row.querySelector('.bukti-jenis-label');
+            const jenisSel = row.querySelector('.bukti-jenis');
+            if (jenisLabel) {
+                jenisLabel.setAttribute('for', 'bukti-' + idx + '-jenis');
+                jenisLabel.textContent = 'Jenis Bukti ' + (idx + 1);
+            }
+            if (jenisSel) {
+                jenisSel.id = 'bukti-' + idx + '-jenis';
+                jenisSel.name = 'bukti[' + idx + '][jenis]';
+            }
+
+            // File Bukti
+            const fileLabel = row.querySelector('.bukti-file-label');
+            const fileInput = row.querySelector('.bukti-file');
+            if (fileLabel) {
+                fileLabel.setAttribute('for', 'bukti-' + idx + '-file');
+                fileLabel.textContent = 'File Bukti ' + (idx + 1) + ' (maks. 5MB)';
+            }
+            if (fileInput) {
+                fileInput.id = 'bukti-' + idx + '-file';
+                fileInput.name = 'bukti[' + idx + '][file]';
+            }
+
+            // URL Bukti
+            const urlLabel = row.querySelector('.bukti-url-label');
+            const urlInput = row.querySelector('.bukti-url');
+            if (urlLabel) {
+                urlLabel.setAttribute('for', 'bukti-' + idx + '-url');
+                urlLabel.textContent = 'URL Bukti ' + (idx + 1);
+            }
+            if (urlInput) {
+                urlInput.id = 'bukti-' + idx + '-url';
+                urlInput.name = 'bukti[' + idx + '][url]';
+            }
+
+            // Remove button
+            const removeBtn = row.querySelector('.btn-remove-evidence');
+            if (removeBtn) {
+                removeBtn.setAttribute('aria-label', 'Hapus bukti ' + (idx + 1));
+            }
+        });
+
+        count = rows.length;
+        updateAddBtn();
+    }
+
     function template(index, jenis, urlValue) {
         const div = document.createElement('div');
         div.className = 'bukti-row';
         div.dataset.index = index;
         div.innerHTML =
             '<div>' +
-                '<label class="lapor-label" for="bukti-' + index + '-jenis" style="font-size:11px;">Jenis Bukti ' + (index + 1) + '</label>' +
+                '<label class="lapor-label bukti-jenis-label" for="bukti-' + index + '-jenis" style="font-size:11px;">Jenis Bukti ' + (index + 1) + '</label>' +
                 '<select id="bukti-' + index + '-jenis" name="bukti[' + index + '][jenis]" class="lapor-select lapor-input bukti-jenis">' +
                     '<option value="file"' + (jenis === 'url' ? '' : ' selected') + '>File</option>' +
                     '<option value="url"' + (jenis === 'url' ? ' selected' : '') + '>URL</option>' +
@@ -872,34 +931,46 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
         });
 
         div.querySelector('.btn-remove-evidence').addEventListener('click', function () {
+            const nextRow = div.nextElementSibling;
+            const prevRow = div.previousElementSibling;
+
             div.remove();
-            count--;
-            updateAddBtn();
+            renumberRows();
+
+            // Focus management: move to next, previous, or Add button
+            if (nextRow && nextRow.querySelector('.btn-remove-evidence')) {
+                nextRow.querySelector('.btn-remove-evidence').focus();
+            } else if (prevRow && prevRow.querySelector('.btn-remove-evidence')) {
+                prevRow.querySelector('.btn-remove-evidence').focus();
+            } else if (addBtn) {
+                addBtn.focus();
+            }
         });
 
         return div;
     }
 
-    function updateAddBtn() {
-        addBtn.disabled = count >= MAX_EVIDENCE;
-    }
-
-    function addRow(prefill) {
+    function addRow(prefill, shiftFocus) {
         if (count >= MAX_EVIDENCE) return;
-        const index = count;
-        const row = template(index, prefill ? (prefill.jenis || 'file') : 'file', prefill ? (prefill.url || '') : '');
+        const row = template(count, prefill ? (prefill.jenis || 'file') : 'file', prefill ? (prefill.url || '') : '');
         list.appendChild(row);
-        count++;
-        updateAddBtn();
+        renumberRows();
+
+        if (shiftFocus) {
+            const focusTarget = row.querySelector('.bukti-jenis');
+            if (focusTarget) focusTarget.focus();
+        }
     }
 
-    addBtn.addEventListener('click', function () { addRow(); });
+    if (addBtn) {
+        addBtn.addEventListener('click', function () { addRow(null, true); });
+    }
 
     // Restore any rows from a failed submission
     if (typeof oldBukti === 'object' && Object.keys(oldBukti).length) {
         Object.keys(oldBukti).forEach(function (key) {
             const val = oldBukti[key];
-            if (val && val.jenis) addRow(val);
+            if (val && val.jenis) addRow(val, false);
         });
     }
 

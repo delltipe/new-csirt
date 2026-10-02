@@ -56,6 +56,12 @@ class BugHunterController extends Controller
 
     public function agreeTac(Request $request)
     {
+        $request->validate([
+            'agree' => 'accepted',
+        ], [
+            'agree.accepted' => 'Anda harus menyetujui Syarat & Ketentuan untuk melanjutkan.',
+        ]);
+
         try {
             TacAgreement::updateOrCreate(
                 ['user_id' => auth()->id(), 'version' => self::TAC_VERSION],

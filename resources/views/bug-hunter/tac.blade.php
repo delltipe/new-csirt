@@ -176,6 +176,49 @@
     transition: color var(--ease), border-color var(--ease);
 }
 .btn-tac-cancel:hover { color: var(--ink); border-color: var(--mid); }
+
+/* Responsive Mobile */
+@media (max-width: 640px) {
+    .tac-card__head, .tac-terms, .tac-agree {
+        padding: 24px 20px;
+    }
+    .tac-actions {
+        flex-direction: column;
+    }
+    .btn-tac-submit, .btn-tac-cancel {
+        justify-content: center;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* High-Contrast Mode Overrides (D3-03: Visible Distinguishable Disabled Button) */
+html.accessibility-contrast-high .btn-tac-submit {
+    background: #000080 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+}
+html.accessibility-contrast-high .btn-tac-submit:hover {
+    background: #000040 !important;
+    color: #FFFFFF !important;
+}
+html.accessibility-contrast-high .btn-tac-submit:disabled {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px dashed #000000 !important;
+    cursor: not-allowed !important;
+    opacity: 0.8 !important;
+}
+html.accessibility-contrast-high a.btn-tac-cancel {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    text-decoration: none !important;
+}
+html.accessibility-contrast-high a.btn-tac-cancel:hover {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+}
 </style>
 
 <div class="tac-header">
@@ -235,19 +278,27 @@
 
             <div class="tac-agree">
                 @if($errors->any())
-                    <div class="alert alert-danger">{{ $errors->first() }}</div>
+                    <div class="alert alert-danger" role="alert">{{ $errors->first() }}</div>
                 @endif
 
                 <form method="POST" action="{{ route('bug-hunter.agree') }}">
                     @csrf
                     <p style="font-size:12.5px;color:var(--mid);margin-bottom:12px;" id="tac-scroll-hint">Gulir ketentuan hingga bagian bawah, lalu centang persetujuan untuk melanjutkan.</p>
                     <label class="tac-check" for="agree">
-                        <input type="checkbox" id="agree" name="agree" required>
+                        <input type="checkbox" id="agree" name="agree" value="1" required
+                               aria-describedby="tac-scroll-hint @error('agree') err-agree @enderror"
+                               @error('agree') aria-invalid="true" @enderror>
                         <span>
                             Saya telah membaca dan menyetujui seluruh <strong>Syarat & Ketentuan</strong> di atas
                             (Versi {{ $version }}).
                         </span>
                     </label>
+
+                    @error('agree')
+                    <div class="field-error" id="err-agree" role="alert" style="color:var(--alert);font-size:13px;margin-bottom:14px;">
+                        <i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}
+                    </div>
+                    @enderror
 
                     <div class="tac-actions">
                         <button type="submit" class="btn-tac-submit" id="btn-agree" disabled>
@@ -268,15 +319,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const terms = document.getElementById('tac-terms');
     const agree = document.getElementById('agree');
     const btn = document.getElementById('btn-agree');
+    let hasReachedEnd = false;
 
-    const checkState = function () {
-        const scrolled = terms.scrollTop + terms.clientHeight >= terms.scrollHeight - 4;
-        btn.disabled = !(scrolled && agree.checked);
+    if (!terms || !agree || !btn) return;
+
+    const checkScrollEnd = function () {
+        // Tolerant difference of 20px, plus auto-complete if content fits without scrolling
+        if ((terms.scrollHeight - terms.scrollTop - terms.clientHeight <= 20) || (terms.scrollHeight <= terms.clientHeight + 20)) {
+            hasReachedEnd = true;
+        }
     };
 
-    terms.addEventListener('scroll', checkState);
-    agree.addEventListener('change', checkState);
-    checkState();
+    const updateButtonState = function () {
+        checkScrollEnd();
+        btn.disabled = !(hasReachedEnd && agree.checked);
+    };
+
+    terms.addEventListener('scroll', updateButtonState);
+    agree.addEventListener('change', updateButtonState);
+
+    // Initial check (in case content already fits or starts at bottom)
+    updateButtonState();
 });
 </script>
 @endsection
