@@ -168,7 +168,8 @@
 .lapor-select,
 .lapor-textarea {
     width: 100%;
-    height: 44px;
+    min-height: 44px;
+    height: auto;
     border: 1px solid var(--border);
     background: var(--white);
     color: var(--ink);
@@ -231,13 +232,21 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    margin-bottom: 20px;
 }
+.form-row .form-field { margin-bottom: 0; }
 .form-field { margin-bottom: 20px; }
 .form-field:last-child { margin-bottom: 0; }
 
 /* ============================================================
    EVIDENCE ROWS
    ============================================================ */
+.bukti-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 24px;
+}
+
 .evidence-head {
     display: flex;
     justify-content: space-between;
@@ -260,6 +269,11 @@
     margin-bottom: 12px;
 }
 
+.bukti-actions {
+    margin-top: 4px;
+    margin-bottom: 0;
+}
+
 .btn-add-evidence {
     display: inline-flex;
     align-items: center;
@@ -271,6 +285,8 @@
     font-size: 13px;
     font-weight: 700;
     padding: 9px 18px;
+    min-height: 44px;
+    border-radius: 0;
     cursor: pointer;
     transition: background var(--ease), color var(--ease);
 }
@@ -281,11 +297,17 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 44px;
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    height: auto;
+    padding: 0;
+    align-self: end;
     background: var(--white);
     color: var(--alert);
     border: 1px solid var(--alert);
+    border-radius: 0;
+    font-size: 16px;
     cursor: pointer;
     transition: background var(--ease), color var(--ease);
 }
@@ -296,9 +318,21 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    margin-bottom: 28px;
-    padding-bottom: 20px;
+    margin: 0 0 28px;
+    padding: 0 0 20px;
     border-bottom: 1px solid var(--border);
+    list-style: none;
+}
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
 }
 .lapor-progress-step {
     display: flex;
@@ -458,14 +492,111 @@ html.accessibility-contrast-dark a.btn-cancel { background: #1A2333; color: #FFF
 html.accessibility-contrast-high .lapor-help-box { background: #FFFFFF; border-color: #000000; }
 html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; color: #000080; border-color: #000000; }
 
+/* High-Contrast Mode Overrides */
+html.accessibility-contrast-high .btn-downtime-preset {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+}
+
+html.accessibility-contrast-high .btn-downtime-preset:hover {
+    background: #FFFF00 !important;
+    color: #000000 !important;
+}
+
+html.accessibility-contrast-high .btn-downtime-preset.active {
+    background: #000080 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+    outline: 2px solid #000000 !important;
+    outline-offset: 1px;
+}
+
+html.accessibility-contrast-high .btn-add-evidence {
+    background: #FFFFFF !important;
+    color: #000080 !important;
+    border: 2px solid #000080 !important;
+}
+
+html.accessibility-contrast-high .btn-add-evidence:hover {
+    background: #000080 !important;
+    color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .btn-remove-evidence {
+    background: #FFFFFF !important;
+    color: #CC0000 !important;
+    border: 2px solid #CC0000 !important;
+}
+
+html.accessibility-contrast-high .btn-remove-evidence:hover {
+    background: #CC0000 !important;
+    color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .btn-submit {
+    background: #000080 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+}
+
+html.accessibility-contrast-high .btn-submit:hover {
+    background: #000040 !important;
+    color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high a.btn-cancel {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    text-decoration: none !important;
+}
+
+html.accessibility-contrast-high a.btn-cancel:hover {
+    background: #FFFF00 !important;
+    color: #000000 !important;
+}
+
+html.accessibility-contrast-high .lapor-progress-step {
+    background: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+    color: #000000 !important;
+}
+
+html.accessibility-contrast-high .lapor-progress-step.is-complete,
+html.accessibility-contrast-high .lapor-progress-step.is-active {
+    background: #FFFFFF !important;
+    border: 2px solid #000080 !important;
+    color: #000080 !important;
+}
+
+html.accessibility-contrast-high .lapor-progress-step__num {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high .lapor-progress-step.is-complete .lapor-progress-step__num,
+html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-step__num {
+    background: #000080 !important;
+    color: #FFFFFF !important;
+}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 700px) {
     .form-row, .bukti-row { grid-template-columns: 1fr; }
+    .btn-remove-evidence { justify-self: end; }
     .form-card { padding: 24px 18px; }
     .submit-nav { flex-direction: column-reverse; align-items: stretch; }
     .btn-submit, .btn-cancel { justify-content: center; }
+}
+
+@media (max-width: 640px) {
+    .lapor-progress-track {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
 }
 </style>
 
@@ -513,20 +644,20 @@ html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; c
             @csrf
 
             {{-- Reporting Progress Stepper --}}
-            <div class="lapor-progress-track" aria-label="Tahapan Pelaporan Insiden">
-                <div class="lapor-progress-step is-complete">
-                    <span class="lapor-progress-step__num"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
-                    <span class="lapor-progress-step__text">1. Akun &amp; TaC Terverifikasi</span>
-                </div>
-                <div class="lapor-progress-step is-active">
-                    <span class="lapor-progress-step__num">2</span>
-                    <span class="lapor-progress-step__text">2. Pengisian Detail Insiden</span>
-                </div>
-                <div class="lapor-progress-step">
-                    <span class="lapor-progress-step__num">3</span>
+            <ol class="lapor-progress-track" aria-label="Tahapan Pelaporan Insiden">
+                <li class="lapor-progress-step is-complete">
+                    <span class="lapor-progress-step__num" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                    <span class="lapor-progress-step__text"><span class="visually-hidden">Langkah 1 selesai: </span>1. Akun &amp; TaC Terverifikasi</span>
+                </li>
+                <li class="lapor-progress-step is-active" aria-current="step">
+                    <span class="lapor-progress-step__num" aria-hidden="true">2</span>
+                    <span class="lapor-progress-step__text"><span class="visually-hidden">Langkah 2 aktif: </span>2. Pengisian Detail Insiden</span>
+                </li>
+                <li class="lapor-progress-step">
+                    <span class="lapor-progress-step__num" aria-hidden="true">3</span>
                     <span class="lapor-progress-step__text">3. Tiket &amp; Pelacakan</span>
-                </div>
-            </div>
+                </li>
+            </ol>
 
             <h2 class="form-step__title">Data Insiden</h2>
             <div class="form-step__divider"></div>
@@ -592,11 +723,11 @@ html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; c
                         Durasi Gangguan (Down Time) <span class="req" aria-hidden="true">*</span>
                     </label>
                     <div class="downtime-presets" role="group" aria-label="Preset durasi gangguan layanan">
-                        <button type="button" class="btn-downtime-preset {{ old('down_time', '00:00') === '00:00' ? 'active' : '' }}" data-value="00:00">Tidak Ada (00:00)</button>
-                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '00:30' ? 'active' : '' }}" data-value="00:30">&lt; 1 Jam (00:30)</button>
-                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '01:30' ? 'active' : '' }}" data-value="01:30">1-2 Jam (01:30)</button>
-                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '04:00' ? 'active' : '' }}" data-value="04:00">2-6 Jam (04:00)</button>
-                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '08:00' ? 'active' : '' }}" data-value="08:00">&gt; 6 Jam (08:00)</button>
+                        <button type="button" class="btn-downtime-preset {{ old('down_time', '00:00') === '00:00' ? 'active' : '' }}" data-value="00:00" aria-pressed="{{ old('down_time', '00:00') === '00:00' ? 'true' : 'false' }}">Tidak Ada (00:00)</button>
+                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '00:30' ? 'active' : '' }}" data-value="00:30" aria-pressed="{{ old('down_time') === '00:30' ? 'true' : 'false' }}">&lt; 1 Jam (00:30)</button>
+                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '01:30' ? 'active' : '' }}" data-value="01:30" aria-pressed="{{ old('down_time') === '01:30' ? 'true' : 'false' }}">1-2 Jam (01:30)</button>
+                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '04:00' ? 'active' : '' }}" data-value="04:00" aria-pressed="{{ old('down_time') === '04:00' ? 'true' : 'false' }}">2-6 Jam (04:00)</button>
+                        <button type="button" class="btn-downtime-preset {{ old('down_time') === '08:00' ? 'active' : '' }}" data-value="08:00" aria-pressed="{{ old('down_time') === '08:00' ? 'true' : 'false' }}">&gt; 6 Jam (08:00)</button>
                     </div>
                     <input type="time" id="field-down-time" name="down_time"
                            class="lapor-input @error('down_time') is-invalid @enderror"
@@ -660,7 +791,7 @@ html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; c
                 @enderror
             </div>
 
-            <fieldset style="border:none;padding:0;margin:0;">
+            <fieldset class="bukti-fieldset">
             <legend class="form-step__title" style="font-size:20px; margin-top:8px; padding:0;">Bukti Laporan</legend>
             <div class="form-step__divider"></div>
 
@@ -674,7 +805,7 @@ html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; c
 
             <div id="field-bukti" role="group" aria-describedby="hint-bukti"></div>
 
-            <div class="form-field">
+            <div class="form-field bukti-actions">
                 <button type="button" class="btn-add-evidence" id="btn-add-evidence" aria-describedby="hint-bukti">
                     <i class="bi bi-plus-circle" aria-hidden="true"></i> Tambah Bukti
                 </button>
@@ -790,23 +921,26 @@ html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; c
         var presetBtns = document.querySelectorAll('.btn-downtime-preset');
         var downTimeInput = document.getElementById('field-down-time');
         if (!presetBtns.length || !downTimeInput) return;
+
+        function syncPresets(val) {
+            presetBtns.forEach(function (button) {
+                var isMatch = button.getAttribute('data-value') === val;
+                button.classList.toggle('active', isMatch);
+                button.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+            });
+        }
+
         presetBtns.forEach(function (btn) {
             btn.addEventListener('click', function () {
                 var val = this.getAttribute('data-value');
                 downTimeInput.value = val;
-                presetBtns.forEach(function (b) { b.classList.remove('active'); });
-                this.classList.add('active');
+                syncPresets(val);
+                downTimeInput.dispatchEvent(new Event('input', { bubbles: true }));
             });
         });
+
         downTimeInput.addEventListener('input', function () {
-            var curr = this.value;
-            presetBtns.forEach(function (b) {
-                if (b.getAttribute('data-value') === curr) {
-                    b.classList.add('active');
-                } else {
-                    b.classList.remove('active');
-                }
-            });
+            syncPresets(this.value);
         });
     })();
 })();

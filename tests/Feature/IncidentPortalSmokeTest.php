@@ -354,4 +354,47 @@ class IncidentPortalSmokeTest extends TestCase
         ])->assertRedirect(route('contact.thank-you'));
         $this->assertDatabaseHas('contact_us', ['email' => 'budi2@example.com', 'subject' => 'Test OK']);
     }
+
+    public function test_downtime_validation_and_zero_outage_submission(): void
+    {
+        $this->post('/register', [
+            'name' => 'Downtime Tester',
+            'email' => 'downtime@example.com',
+            'password' => 'rahasia123',
+            'password_confirmation' => 'rahasia123',
+        ])->assertRedirect(route('bug-hunter.tac'));
+
+        $this->post('/bug-hunter/laporan/agree')->assertRedirect(route('bug-hunter.create'));
+        $this->get('/bug-hunter/laporan/baru')->assertStatus(200);
+        $captchaAnswer = session('captcha_answer');
+        $this->assertNotNull($captchaAnswer);
+
+        // 1. Invalid downtime: out of bounds or malformed (e.g. 25:00)
+        $resInvalid = $this->post('/bug-hunter/laporan/simpan', [
+            'kategori_insiden' => 'Website Defacement',
+            'waktu_kejadian' => '2026-09-01T14:00',
+            'lokasi_url' => 'https://portal.jakarta.go.id/test',
+            'down_time' => '25:00',
+            'deskripsi' => 'Deskripsi valid.',
+            'tindakan_teknis' => 'Tindakan valid.',
+            'captcha_answer' => $captchaAnswer,
+        ]);
+        $resInvalid->assertSessionHasErrors(['down_time']);
+
+        // 2. Successful zero downtime (00:00)
+        $resZero = $this->post('/bug-hunter/laporan/simpan', [
+            'kategori_insiden' => 'Website Defacement',
+            'waktu_kejadian' => '2026-09-01T14:00',
+            'lokasi_url' => 'https://portal.jakarta.go.id/test',
+            'down_time' => '00:00',
+            'deskripsi' => 'Deskripsi valid untuk pengujian downtime nol.',
+            'tindakan_teknis' => 'Tindakan valid.',
+            'captcha_answer' => $captchaAnswer,
+        ]);
+        $resZero->assertRedirect(route('bug-hunter.thank-you'));
+        $this->assertDatabaseHas('lapor_insiden', [
+            'kategori_insiden' => 'Website Defacement',
+            'down_time' => '00:00',
+        ]);
+    }
 }

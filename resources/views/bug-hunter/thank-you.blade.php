@@ -221,6 +221,31 @@
     .btn-back-home, .btn-report-another { justify-content: center; }
     .flow-steps { grid-template-columns: 1fr; }
 }
+
+/* High-Contrast Mode Overrides */
+html.accessibility-contrast-high a.btn-back-home {
+    background: #000080 !important;
+    color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+    text-decoration: none !important;
+}
+
+html.accessibility-contrast-high a.btn-back-home:hover {
+    background: #000040 !important;
+    color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-high a.btn-report-another {
+    background: #FFFFFF !important;
+    color: #000080 !important;
+    border: 2px solid #000080 !important;
+    text-decoration: none !important;
+}
+
+html.accessibility-contrast-high a.btn-report-another:hover {
+    background: #000080 !important;
+    color: #FFFFFF !important;
+}
 </style>
 
 <div class="thankyou-page">
@@ -245,7 +270,7 @@
                         <div class="ticket-box__label">No Tiket Laporan</div>
                         <div class="ticket-box__value">{{ $tiketNo }}</div>
                     </div>
-                    <button type="button" class="ticket-box__copy" id="btn-copy-ticket">
+                    <button type="button" class="ticket-box__copy" id="btn-copy-ticket" aria-live="polite">
                         <i class="bi bi-clipboard" aria-hidden="true"></i> Salin
                     </button>
                 </div>
