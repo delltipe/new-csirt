@@ -157,24 +157,17 @@
     color: var(--mid);
 }
 
-/* Status Badges */
-.status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+/* Rejected Alert */
+.track-rejected-alert {
+    background: var(--alert-bg);
+    border: 1px solid var(--alert);
+    border-left: 4px solid var(--alert);
+    padding: 16px 20px;
+    color: var(--alert-dark);
+    margin-bottom: 24px;
+    font-size: 13.5px;
+    line-height: 1.6;
 }
-.status-menunggu_validasi { background: #FEF3C7; color: #92400E; border: 1px solid #F59E0B; }
-.status-divalidasi        { background: #DBEAFE; color: #1E40AF; border: 1px solid #3B82F6; }
-.status-ditindaklanjuti   { background: #E0E7FF; color: #3730A3; border: 1px solid #6366F1; }
-.status-dipulihkan       { background: #D1FAE5; color: #065F46; border: 1px solid #10B981; }
-.status-selesai           { background: #DEF7EC; color: #03543F; border: 1px solid #31C48D; }
-.status-ditolak           { background: #FEE2E2; color: #991B1B; border: 1px solid #EF4444; }
 
 /* Stepper Progress Bar */
 .track-stepper {
@@ -182,6 +175,8 @@
     grid-template-columns: repeat(5, 1fr);
     gap: 8px;
     margin: 32px 0 36px;
+    padding: 0;
+    list-style: none;
     position: relative;
 }
 .step-node {
@@ -403,27 +398,27 @@
                     <h2 class="track-result-head__tiket">{{ $report->tiket_no }}</h2>
                 </div>
                 <div>
-                    <span class="status-pill status-{{ $report->status }}">
+                    <span class="status-badge status-{{ $report->status }}">
                         <i class="bi bi-dot" aria-hidden="true"></i> {{ $report->statusLabel() }}
                     </span>
                 </div>
             </div>
 
             @if ($isRejected)
-            <div style="background:#FEE2E2; border:1px solid #EF4444; padding:16px 20px; color:#991B1B; margin-bottom:24px; font-size:13.5px;">
-                <strong><i class="bi bi-x-circle-fill"></i> Laporan Ditolak:</strong>
+            <div class="track-rejected-alert">
+                <strong><i class="bi bi-x-circle-fill" aria-hidden="true"></i> Laporan Ditolak:</strong>
                 Laporan ini dinyatakan tidak valid setelah verifikasi teknis awal oleh tim triage CSIRT. Jika Anda memiliki bukti temuan tambahan, Anda dapat mengajukan laporan baru melalui portal pelapor.
             </div>
             @else
             {{-- Stepper for Normal 5-stage Lifecycle --}}
-            <div class="track-stepper" aria-label="Tahapan Penanganan">
+            <ol class="track-stepper" aria-label="Tahapan Penanganan">
                 @foreach ($stages as $key => $meta)
                 @php
                     $isDone = $currentNum > $meta['num'];
                     $isActive = ($report->status === $key);
                     $cls = $isActive ? 'is-active' : ($isDone ? 'is-done' : '');
                 @endphp
-                <div class="step-node {{ $cls }}">
+                <li class="step-node {{ $cls }}"@if ($isActive) aria-current="step"@endif>
                     <div class="step-node__num">
                         @if ($isDone)
                             <i class="bi bi-check-lg" aria-hidden="true"></i>
@@ -432,9 +427,9 @@
                         @endif
                     </div>
                     <div class="step-node__title">{{ $meta['label'] }}</div>
-                </div>
+                </li>
                 @endforeach
-            </div>
+            </ol>
             @endif
 
             {{-- Metadata Grid --}}

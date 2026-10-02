@@ -888,6 +888,10 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
             <a href="{{ route('contact.create') }}" class="btn-cta-ghost">
                 <i class="bi bi-telephone" aria-hidden="true"></i> Hubungi Tim Kami
             </a>
+            <a href="{{ route('ticket.track') }}" class="btn-cta-ghost">
+                <i class="bi bi-search" aria-hidden="true"></i>
+                Lacak Status Tiket
+            </a>
             <div class="cta-section__note">
                 <i class="bi bi-clock" aria-hidden="true"></i>&nbsp; Rata-rata respons &lt; 2 jam
             </div>

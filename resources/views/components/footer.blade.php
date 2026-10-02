@@ -200,6 +200,7 @@
                     <li><a href="{{ route('profile') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Profil</a></li>
                     <li><a href="{{ route('events.index') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Event</a></li>
                     <li><a href="{{ route('contact.create') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Hubungi Kami</a></li>
+                    <li><a href="{{ route('ticket.track') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Lacak Status Tiket</a></li>
                     <li><a href="{{ route('rfc2350') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>RFC 2350</a></li>
                     <li><a href="{{ route('publickey') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Public Key</a></li>
                 </ul>

@@ -467,28 +467,22 @@
                         Publikasi <i class="bi bi-chevron-down" aria-hidden="true"></i>
                     </a>
                     <ul class="nav-dropdown" aria-label="Submenu Publikasi">
+                        <li><a href="{{ route('events.index') }}">Event</a></li>
                         <li><a href="{{ route('warnings.index') }}">Peringatan Keamanan</a></li>
                         <li><a href="{{ route('news.index') }}">Berita Siber</a></li>
                         <li><a href="{{ route('infographics.index') }}">Infografis Keamanan</a></li>
                         <li><a href="{{ route('laws.index') }}">Peraturan & Kebijakan</a></li>
                         <li><a href="{{ route('guides.index') }}">Panduan Teknis</a></li>
                         <li><div class="nav-dropdown__divider"></div></li>
-                        <li><a href="{{ route('ticket.track') }}"><strong><i class="bi bi-search" aria-hidden="true"></i> Lacak Status Tiket</strong></a></li>
                         <li><a href="{{ url('statistics') }}">Statistik Honeypot</a></li>
                         <li><a href="{{ url('rfc2350') }}">RFC 2350</a></li>
                         <li><a href="{{ route('publickey') }}">Public Key</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="{{ route('events.index') }}"
-                       class="{{ request()->routeIs('events.*') ? 'active' : '' }}">
-                        Event
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('contact.create') }}"
-                       class="{{ request()->routeIs('contact.*') ? 'active' : '' }}">
-                        Hubungi Kami
+                    <a href="{{ route('ticket.track') }}"
+                       class="{{ request()->routeIs('ticket.track') ? 'active' : '' }}">
+                        Lacak Status Tiket
                     </a>
                 </li>
             </ul>
@@ -520,7 +514,7 @@
                     </form>
                 @else
                     <a href="{{ route('login') }}" class="btn-navy">
-                        Masuk <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                        <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Lapor Insiden Siber
                     </a>
                 @endauth
             </div>

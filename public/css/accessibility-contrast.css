@@ -585,7 +585,8 @@ html.accessibility-contrast-high .tac-header,
 html.accessibility-contrast-high .dash-header,
 html.accessibility-contrast-high .detail-header,
 html.accessibility-contrast-high .login-header,
-html.accessibility-contrast-high .placeholder-header {
+html.accessibility-contrast-high .placeholder-header,
+html.accessibility-contrast-high .track-header {
   background: #000040 !important;
   border-bottom: 3px solid #000000;
   color: #FFFFFF !important;
@@ -607,7 +608,8 @@ html.accessibility-contrast-high .search-header h1,
 html.accessibility-contrast-high .rfc-page-header h1,
 html.accessibility-contrast-high .statistics-header h1,
 html.accessibility-contrast-high .lapor-header h1,
-html.accessibility-contrast-high .login-title {
+html.accessibility-contrast-high .login-title,
+html.accessibility-contrast-high .track-header h1 {
   color: #FFFFFF !important;
 }
 
@@ -616,7 +618,9 @@ html.accessibility-contrast-high .event-hero__meta,
 html.accessibility-contrast-high .event-hero__meta-item,
 html.accessibility-contrast-high .event-hero__meta-item i,
 html.accessibility-contrast-high .event-hero__meta-item strong,
-html.accessibility-contrast-high .login-sub {
+html.accessibility-contrast-high .login-sub,
+html.accessibility-contrast-high .track-header__sub,
+html.accessibility-contrast-high .track-header__eyebrow {
   color: #FFFFFF !important;
 }
 
@@ -1462,7 +1466,8 @@ html.accessibility-contrast-dark .tac-header,
 html.accessibility-contrast-dark .dash-header,
 html.accessibility-contrast-dark .detail-header,
 html.accessibility-contrast-dark .login-header,
-html.accessibility-contrast-dark .placeholder-header {
+html.accessibility-contrast-dark .placeholder-header,
+html.accessibility-contrast-dark .track-header {
   background: #0F1B33;
 }
 html.accessibility-contrast-dark .rfc-page-header::before {
@@ -1476,8 +1481,13 @@ html.accessibility-contrast-dark .event-hero__meta-item strong {
   color: #B0BCC9;
 }
 html.accessibility-contrast-dark .login-title,
-html.accessibility-contrast-dark .login-sub {
+html.accessibility-contrast-dark .login-sub,
+html.accessibility-contrast-dark .track-header h1,
+html.accessibility-contrast-dark .track-header__sub {
   color: #FFFFFF;
+}
+html.accessibility-contrast-dark .track-header__eyebrow {
+  color: #D6E4F8;
 }
 
 /* ---- Profile page: card text + cta-footer readable in dark ---- */
