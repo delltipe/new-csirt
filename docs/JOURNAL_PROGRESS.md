@@ -88,7 +88,7 @@ Both portals score firmly above the industry average ($68.0$, "Grade B / Good Us
 | 2 | **Mobile Navbar Truncation** | Patrick (#26), BC (#9), Nazario (#15) | Implemented accessible mobile toggle button (`.nav-toggle`) and collapsible drawer (`.nav-collapse`) with keyboard accessibility (`Esc` to close) and touch targets $\ge 44\text{px}$. | `resources/views/components/navbar.blade.php`<br>`public/css/accessibility-contrast.css` |
 | 3 | **Ambiguous Downtime Input** | Haqim (#22: *"durasi downtimenya belum sesuai"*) | Added quick-select preset buttons (`00:00`, `00:30`, `01:30`, `04:00`, `08:00`) and explanatory copy distinguishing outage duration from time of day. Preserves DB `H:i` format. | `resources/views/bug-hunter/create.blade.php` |
 | 4 | **Unexplained Login Barrier** | FA (#20: *"belum bisa explore karena tidak bersedia login"*) | Added 4-step workflow onboarding explaining the responsible disclosure rationale, alongside a direct callout card for public ticket tracking without login. | `resources/views/auth/login.blade.php` |
-| 5 | **BSSA Institutional Omission** | Azmi (#4 - BSSA Diskominfotik) | Addressed BSSA institutional attribution by updating the operational profile text (`profile.blade.php`) alongside the canonical footer attribution (`footer.blade.php`). A top government strip (`.nav-strip`) was initially added in `navbar.blade.php` during this intervention pass, then removed to preserve the single-bar legacy header architecture (`nav-main` only); public ticket tracking (`Lacak Status Tiket`, Intervention #1) is an independent feature accessed via the `Publikasi` dropdown and `/login` callout without relying on `.nav-strip`. | `resources/views/profile.blade.php`<br>`resources/views/components/footer.blade.php`<br>`resources/views/components/navbar.blade.php` |
+| 5 | **BSSA Institutional Omission** | Azmi (#4 - BSSA Diskominfotik) | Implemented evidence-based BSSA institutional attribution directly beside the Diskominfotik logo in `.nav-partners` (`navbar.blade.php`) via a verified text badge (`.nav-partner-bssa`) and accessible labeling (`title`, `aria-label`), alongside unified canonical naming `Bidang Siber, Sandi dan Aplikasi (BSSA)` in operational profile (`profile.blade.php`) and official footer (`footer.blade.php`). This fulfills respondent Azmi's institutional attribution request without reintroducing the removed `.nav-strip` regression and preserving the single-bar 68px header architecture across light, dark, and high-contrast modes. | `resources/views/components/navbar.blade.php`<br>`public/css/accessibility-contrast.css`<br>`resources/views/profile.blade.php`<br>`resources/views/components/footer.blade.php` |
 | 6 | **Button Action Contrast** | BC (#9: *"pemberian warna button sebaiknya berbeda"*) | Provided explicit tokenized styling for primary submit, secondary add-evidence, and destructive delete buttons across light, dark, and high-contrast modes. | `resources/views/bug-hunter/create.blade.php`<br>`public/css/accessibility-contrast.css` |
 
 ---
@@ -96,11 +96,12 @@ Both portals score firmly above the industry average ($68.0$, "Grade B / Good Us
 ## 4. Validation & Technical Quality Assurance
 
 ### 4.1 Automated Test Suite Execution
-All 18 tests pass with 145 assertions (`php artisan test`):
+All 25 tests pass with 200 assertions (`php artisan test`):
 * `Tests\Unit\ExampleTest`: PASS (1 assertion)
 * `Tests\Feature\ExampleTest`: PASS (1 assertion)
-* `Tests\Feature\IncidentPortalSmokeTest`: PASS (10 tests, 119 assertions covering auth, TaC gate, single-page submit, proof uploads, admin review, soft delete, math captcha, payload security)
+* `Tests\Feature\IncidentPortalSmokeTest`: PASS (12 tests, 158 assertions covering auth, TaC gate, single-page submit, proof uploads, admin review, soft delete, pentest payload security, Indonesian validation, downtime presets, and math captcha)
 * `Tests\Feature\IncidentTrackingTest`: PASS (8 tests, 24 assertions covering public tracking view, valid ticket lookup, case insensitivity, nonexistent ticket handling, format validation, data privacy leak prevention, rejected ticket display, and soft-delete exclusion)
+* `Tests\Feature\InstitutionalAttributionTest`: PASS (3 tests, 16 assertions covering navbar BSSA textual attribution without nav-strip, profile canonical naming, and footer canonical naming)
 
 ### 4.2 Template Integrity
 Every modified Blade view has zero unclosed/stray tags:

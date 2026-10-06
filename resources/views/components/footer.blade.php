@@ -224,7 +224,7 @@
                 <h3 class="footer-heading">Hubungi Kami</h3>
                 <div class="footer-contact__item">
                     <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
-                    <span>Bidang Siber, Sandi dan Aplikasi Diskominfotik DKI Jakarta — Balaikota Blok H Lt. 13, Jl. Merdeka Selatan 8–9, Jakarta Pusat 10110</span>
+                    <span>Bidang Siber, Sandi dan Aplikasi (BSSA) Diskominfotik DKI Jakarta — Balaikota Blok H Lt. 13, Jl. Merdeka Selatan 8–9, Jakarta Pusat 10110</span>
                 </div>
                 <div class="footer-contact__item">
                     <i class="bi bi-telephone-fill" aria-hidden="true"></i>
