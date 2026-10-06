@@ -21,9 +21,9 @@ class InstitutionalAttributionTest extends TestCase
         // Verify .nav-strip regression is absent
         $response->assertDontSee('nav-strip');
 
-        // Verify BSSA badge and institutional labeling exist beside Diskominfotik logo
-        $response->assertSee('nav-partner-bssa');
-        $response->assertSee('BSSA');
+        // Verify BSSA logo asset and institutional labeling exist beside Diskominfotik logo
+        $response->assertSee('bssa-logo.jpeg');
+        $response->assertSee('BSSA — Bidang Siber, Sandi dan Aplikasi');
         $response->assertSee('Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)');
 
         // Verify existing essential navbar structures remain intact

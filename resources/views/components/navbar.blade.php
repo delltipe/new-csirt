@@ -65,6 +65,7 @@
     .nav-partners a {
         display: flex;
         align-items: center;
+        gap: 6px;
         line-height: 0;
         text-decoration: none;
         opacity: 0.9;
@@ -73,32 +74,6 @@
 
     .nav-partners a:hover {
         opacity: 1;
-    }
-
-    .nav-partner-bssa {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-family: var(--font-display);
-        font-size: 10.5px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: var(--navy);
-        background: var(--navy-tint);
-        border: 1px solid var(--navy);
-        padding: 2px 6px;
-        line-height: 1.2;
-        margin-left: 6px;
-        white-space: nowrap;
-        border-radius: 0;
-        text-decoration: none;
-        transition: background var(--ease), color var(--ease), border-color var(--ease);
-    }
-
-    .nav-partners a:hover .nav-partner-bssa {
-        background: var(--navy);
-        color: var(--white);
     }
 
     .nav-partner {
@@ -455,8 +430,8 @@
                 <img src="{{ asset('jaya_raya.png') }}" alt="Jaya Raya" width="68" height="72" loading="eager" decoding="async">
             </a>
             <a href="https://diskominfotik.jakarta.go.id/" target="_blank" rel="noopener" title="Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)" aria-label="Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)">
-                <img src="{{ asset('logo_diskominfo.png') }}" alt="Logo Diskominfotik DKI Jakarta" width="68" height="77" loading="eager" decoding="async">
-                <span class="nav-partner-bssa" aria-hidden="true">BSSA</span>
+                <img src="{{ asset('logo_diskominfo.png') }}" alt="Diskominfotik DKI Jakarta" width="68" height="77" loading="eager" decoding="async">
+                <img src="{{ asset('bssa-logo.jpeg') }}" alt="BSSA — Bidang Siber, Sandi dan Aplikasi" width="68" height="68" loading="eager" decoding="async">
             </a>
             <a href="https://jakarta500.id/" target="_blank" rel="noopener" title="5 Abad Jakarta" aria-label="Logo 5 Abad Jakarta">
                 <span class="nav-partner">
