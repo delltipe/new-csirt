@@ -1729,18 +1729,61 @@ html.accessibility-contrast-dark .profile-logo-container img {
    Tokens: --ink / --navy / --navy-mid / --white
    ============================================================ */
 
+/* ---- Accessibility font size scaling (P1-A single scaling mechanism) ---- */
+:root {
+  --accessibility-font-scale: 1;
+}
+
+body {
+  font-size: calc(1rem * var(--accessibility-font-scale, 1));
+}
+
+.nav-links > li > a {
+  font-size: calc(13.5px * var(--accessibility-font-scale, 1));
+}
+.nav-search input,
+.nav-search button {
+  font-size: calc(13px * var(--accessibility-font-scale, 1));
+}
+.btn-navy,
+a.btn-navy,
+button.btn-navy {
+  font-size: calc(13px * var(--accessibility-font-scale, 1));
+}
+.news-card__title {
+  font-size: calc(16px * var(--accessibility-font-scale, 1));
+}
+.news-card__excerpt {
+  font-size: calc(13.5px * var(--accessibility-font-scale, 1));
+}
+.footer-desc,
+.footer-heading,
+.footer-links a,
+.footer-contact__item {
+  font-size: calc(13px * var(--accessibility-font-scale, 1));
+}
+
+.accessibility-widget,
+.accessibility-widget * {
+  --accessibility-font-scale: 1;
+}
+.accessibility-widget {
+  font-size: 16px;
+}
+
 /* Grayscale — per-element so the fixed/absolute layout (incl. the widget
    itself) is never inside a filtered ancestor. */
 html.accessibility-grayscale body *:not(.accessibility-widget):not(.accessibility-widget *) {
   filter: grayscale(1);
 }
 
-/* Invert colors (Kontras+ level 3) — same per-element approach. Body gets a
-   dark fill so transparent gaps read as the inverse of the light theme. */
+/* Invert colors (Kontras+ level 3) — top-level application containers inverted once (P1-B).
+   Applies filter once to top-level body children rather than recursively per descendant.
+   Accessibility widget is excluded so its controls remain readable and functional. */
 html.accessibility-invert body {
   background: var(--ink, #0A0F1A);
 }
-html.accessibility-invert body *:not(.accessibility-widget):not(.accessibility-widget *) {
+html.accessibility-invert body > :not(.accessibility-widget):not(script):not(style) {
   filter: invert(1) hue-rotate(180deg);
 }
 

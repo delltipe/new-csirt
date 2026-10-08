@@ -260,7 +260,9 @@ class AccessibilityWidget {
 
   // ----- Font size -----
   adjustFontSize(delta) {
-    this.state.fontSizeLevel = Math.max(0, Math.min(3, this.state.fontSizeLevel + delta));
+    const next = Math.max(0, Math.min(3, this.state.fontSizeLevel + delta));
+    if (next === this.state.fontSizeLevel) return;
+    this.state.fontSizeLevel = next;
     this.updateFontUI();
     this.applyFontSize();
     this.savePreferences();
@@ -268,29 +270,35 @@ class AccessibilityWidget {
 
   updateFontUI() {
     const lvl = this.state.fontSizeLevel;
+    const displayLevel = lvl + 1; // Level 1 (100%), Level 2 (115%), Level 3 (130%), Level 4 (145%)
     const a = 'Ukuran teks';
-    this.updateStrip('list_strip_loading_perbesar_text', lvl, 4, a);
-    this.updateStrip('list_strip_loading_perkecil_text', lvl, 4, a);
+    this.updateStrip('list_strip_loading_perbesar_text', displayLevel, 4, a);
+    this.updateStrip('list_strip_loading_perkecil_text', displayLevel, 4, a);
     this.setTileActive('action_perbesar_text', lvl > 0);
+    this.setTileActive('action_perkecil_text', lvl > 0);
   }
 
   applyFontSize() {
-    const pct = this.FONT_SIZES[this.state.fontSizeLevel] / 100;
-    const targets = [];
-    document.querySelectorAll('body, body *').forEach((el) => {
-      if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
-      if (el.closest && el.closest('.accessibility-widget')) return;
-      targets.push(el);
-    });
-    // Clear previous inline sizes, then rescale from the CSS base so each
-    // level is idempotent (e.g. 145% is always 145% of the original size).
-    targets.forEach((el) => { el.style.fontSize = ''; });
-    targets.forEach((el) => {
-      const cur = parseFloat(window.getComputedStyle(el).fontSize);
-      if (cur > 0 && Number.isFinite(cur)) {
-        el.style.fontSize = Math.round(cur * pct * 100) / 100 + 'px';
-      }
-    });
+    const pct = this.FONT_SIZES[this.state.fontSizeLevel];
+    const scale = pct / 100;
+
+    // Single scaling mechanism: set CSS custom property and root font-size multiplier
+    document.documentElement.style.setProperty('--accessibility-font-scale', scale);
+    if (this.state.fontSizeLevel === 0) {
+      document.documentElement.style.fontSize = '';
+    } else {
+      document.documentElement.style.fontSize = pct + '%';
+    }
+
+    // Reflect class-based state on <html>
+    document.documentElement.classList.remove(
+      'accessibility-font-scale-2',
+      'accessibility-font-scale-3',
+      'accessibility-font-scale-4'
+    );
+    if (this.state.fontSizeLevel > 0) {
+      document.documentElement.classList.add('accessibility-font-scale-' + (this.state.fontSizeLevel + 1));
+    }
   }
 
   // ----- Line height -----
@@ -540,6 +548,7 @@ class AccessibilityWidget {
       const raw = JSON.parse(saved);
       if (raw.fontSizeLevel !== undefined) {
         this.state = Object.assign({}, this.state, raw);
+        this.state.fontSizeLevel = Math.max(0, Math.min(3, parseInt(this.state.fontSizeLevel, 10) || 0));
         return;
       }
       // Old v1 format migration

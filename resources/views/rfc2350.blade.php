@@ -132,7 +132,7 @@
         overflow-wrap: anywhere;
     }
 
-    .rfc-sidebar { align-self: start; display: grid; gap: 16px; position: sticky; top: 20px; }
+    .rfc-sidebar { align-self: start; display: grid; gap: 16px; position: sticky; top: calc(68px + 20px); }
     .rfc-sidebar__card { padding: 22px; }
 
     .rfc-sidebar h2 {

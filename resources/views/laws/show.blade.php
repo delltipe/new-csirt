@@ -114,7 +114,7 @@
     flex-direction: column;
     gap: 20px;
     position: sticky;
-    top: 20px;
+    top: calc(68px + 20px);
 }
 
 .law-detail-card {

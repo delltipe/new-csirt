@@ -60,7 +60,7 @@
     border: 2px solid var(--border);
     padding: 32px;
     position: sticky;
-    top: 20px;
+    top: calc(68px + 20px);
 }
 
 .filter-sidebar__title {
