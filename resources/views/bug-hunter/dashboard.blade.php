@@ -133,7 +133,7 @@
     color: var(--mid);
 }
 
-.empty-state i {
+.empty-state > i:first-child {
     font-size: 40px;
     color: var(--border);
     display: block;

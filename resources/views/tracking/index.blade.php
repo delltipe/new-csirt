@@ -41,6 +41,20 @@
     max-width: 620px;
     line-height: 1.6;
 }
+.track-header__sub code,
+.track-callout-card code {
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #D6E4F8;
+    background: rgba(214, 228, 248, 0.12);
+    border: 1px solid rgba(214, 228, 248, 0.28);
+    padding: 2px 7px;
+    border-radius: 0;
+    display: inline-block;
+    vertical-align: baseline;
+}
 
 /* ============================================================
    LAYOUT & SEARCH CARD

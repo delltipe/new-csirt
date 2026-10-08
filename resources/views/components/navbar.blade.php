@@ -431,7 +431,7 @@
             </a>
             <a href="https://diskominfotik.jakarta.go.id/" target="_blank" rel="noopener" title="Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)" aria-label="Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)">
                 <img src="{{ asset('logo_diskominfo.png') }}" alt="Diskominfotik DKI Jakarta" width="68" height="77" loading="eager" decoding="async">
-                <img src="{{ asset('bssa-logo.jpeg') }}" alt="BSSA — Bidang Siber, Sandi dan Aplikasi" width="68" height="68" loading="eager" decoding="async">
+                <img src="{{ asset('bssa-logo.png') }}" alt="BSSA — Bidang Siber, Sandi dan Aplikasi" width="68" height="68" loading="eager" decoding="async">
             </a>
             <a href="https://jakarta500.id/" target="_blank" rel="noopener" title="5 Abad Jakarta" aria-label="Logo 5 Abad Jakarta">
                 <span class="nav-partner">

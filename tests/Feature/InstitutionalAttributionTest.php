@@ -22,7 +22,7 @@ class InstitutionalAttributionTest extends TestCase
         $response->assertDontSee('nav-strip');
 
         // Verify BSSA logo asset and institutional labeling exist beside Diskominfotik logo
-        $response->assertSee('bssa-logo.jpeg');
+        $response->assertSee('bssa-logo.png');
         $response->assertSee('BSSA — Bidang Siber, Sandi dan Aplikasi');
         $response->assertSee('Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)');
 
