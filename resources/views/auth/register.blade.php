@@ -226,9 +226,9 @@
     font-size: 13.5px;
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: #D6E4F8;
-    background: rgba(214, 228, 248, 0.12);
-    border: 1px solid rgba(214, 228, 248, 0.28);
+    color: var(--navy);
+    background: var(--navy-tint);
+    border: 1px solid var(--navy);
     padding: 2px 7px;
     border-radius: 0;
     display: inline-block;
