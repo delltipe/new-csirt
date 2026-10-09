@@ -355,10 +355,6 @@ nav[role="navigation"] li span.cursor-default {
 {{-- PAGE HEADER --}}
 <div class="guides-header">
     <div class="container">
-        <div class="guides-header__eyebrow">
-            <i class="bi bi-book" aria-hidden="true"></i>
-            Panduan & Sumber Daya
-        </div>
         <h1>Panduan Teknis Keamanan Siber</h1>
         <p class="guides-header__sub">
             Panduan komprehensif dan sumber daya teknis untuk meningkatkan keamanan siber di organisasi Anda.

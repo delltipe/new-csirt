@@ -210,10 +210,6 @@
 {{-- PAGE HEADER --}}
 <div class="warnings-header">
     <div class="container">
-        <div class="warnings-header__eyebrow">
-            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
-            Alert & Notifikasi
-        </div>
         <h1>Peringatan Keamanan</h1>
         <p class="warnings-header__sub">
             Notifikasi ancaman siber terbaru sesuai standar teknis Jakarta CSIRT. Tetap waspada terhadap ancaman keamanan cyber.

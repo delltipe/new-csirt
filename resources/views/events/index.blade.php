@@ -269,10 +269,6 @@ nav[role="navigation"] li span.cursor-default {
 {{-- PAGE HEADER --}}
 <div class="events-header">
     <div class="container">
-        <div class="events-header__eyebrow">
-            <i class="bi bi-calendar-event" aria-hidden="true"></i>
-            JakartaProv-CSIRT
-        </div>
         <h1>Event &amp; Webinar</h1>
         <p class="events-header__sub">
             Bergabunglah dalam berbagai kegiatan edukasi dan sosialisasi keamanan siber bersama JakartaProv-CSIRT.
