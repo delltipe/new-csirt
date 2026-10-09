@@ -202,7 +202,7 @@
                     <li><a href="{{ route('contact.create') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Hubungi Kami</a></li>
                     <li><a href="{{ route('ticket.track') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Lacak Status Tiket</a></li>
                     <li><a href="{{ route('rfc2350') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>RFC 2350</a></li>
-                    <li><a href="{{ route('publickey') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Public Key</a></li>
+                    <li><a href="{{ route('publickey') }}" aria-label="Public Key (Unduh ASC)"><i class="bi bi-chevron-right" aria-hidden="true"></i>Public Key <i class="bi bi-download" aria-hidden="true" style="font-size: 11px; opacity: 0.85;"></i></a></li>
                 </ul>
             </div>
 

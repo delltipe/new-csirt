@@ -478,7 +478,7 @@
                         <li><div class="nav-dropdown__divider"></div></li>
                         <li><a href="{{ url('statistics') }}">Statistik Honeypot</a></li>
                         <li><a href="{{ url('rfc2350') }}">RFC 2350</a></li>
-                        <li><a href="{{ route('publickey') }}">Public Key</a></li>
+                        <li><a href="{{ route('publickey') }}" aria-label="Public Key (Unduh ASC)">Public Key <i class="bi bi-download" aria-hidden="true" style="font-size: 11px; margin-left: 4px; opacity: 0.85;"></i></a></li>
                     </ul>
                 </li>
                 <li>
