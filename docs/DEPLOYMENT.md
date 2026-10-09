@@ -35,12 +35,13 @@ auto-detects the `Dockerfile` and auto-fills the repo, branch, and fields.
 
 ### Dockerfile overview
 
-- Base image `php:8.2-cli` with `pdo_sqlite`, `mbstring`, `zip`, `bcmath` extensions
+- Base image `php:8.2-cli` with `pdo_sqlite`, `mbstring`, `zip`, `bcmath`, and `gd` (JPEG/WebP/FreeType) extensions
 - `composer install --no-dev --optimize-autoloader` at build
 - **`cp .env.example .env`** at build — required, because `php artisan key:generate`
   fails at boot if no `.env` exists (`.env` is git-ignored, so `COPY . .` omits it)
 - No npm/Vite — the layout loads assets from `public/` directly
 - On container start: `key:generate`, `migrate --force --seed`, `storage:link`,
+  `publications:optimize-images` (safe publication image WebP derivation),
   then `php artisan serve --host=0.0.0.0 --port=$PORT`
 
 ### Steps
