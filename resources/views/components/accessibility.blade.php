@@ -145,7 +145,7 @@
                         </button>
 
                         {{-- Kontras+ (4-level gauge, 4 swapped icons) --}}
-                        <button type="button" class="box_group_disabilitas" id="action_kontras">
+                        <button type="button" class="box_group_disabilitas" id="action_kontras" aria-label="Kontras+ — Mode saat ini: Normal">
                             <span class="box_icon_disabilitas">
                                 <svg id="svg_kontras_multi" width="60px" height="60px" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <path class="circle_multi" d="M27,15.1c1.2,1.5,2,3.4,2,5.4c0,4.7-3.8,8.5-8.5,8.5S12,25.2,12,20.5s3.8-8.5,8.5-8.5c0.5,0,1,0,1.4,0.1"></path>
@@ -170,6 +170,7 @@
                                 </svg>
                             </span>
                             <span class="box_text_bottom_disabilitas" id="text_name_kontras">Kontras+</span>
+                            <span class="box_state_disabilitas" id="text_state_kontras">Mode saat ini: Normal</span>
                             <span class="box_column_action_strip">
                                 <span class="box_row_action_strip" id="list_strip_loading_action_kontras" role="img" aria-label="Level kontras: 0 dari 4">
                                     <span class="strip_loading_unprocess_v4" id="strip_loading_1"></span>
@@ -792,8 +793,24 @@
         transition: color var(--ease);
     }
 
+    .box_state_disabilitas {
+        font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+        font-size: 9.5px;
+        font-weight: 500;
+        line-height: 1.25;
+        color: var(--mid, #6B7280);
+        margin-top: -4px;
+        display: block;
+        text-align: center;
+        transition: color var(--ease);
+    }
+
     .box_group_disabilitas.active_box_menu_disabilitas .box_text_bottom_disabilitas {
         color: var(--white, #FFFFFF);
+    }
+
+    .box_group_disabilitas.active_box_menu_disabilitas .box_state_disabilitas {
+        color: rgba(255, 255, 255, 0.9);
     }
 
     /* Voice reading pulse */

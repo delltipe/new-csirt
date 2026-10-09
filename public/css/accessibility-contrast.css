@@ -137,7 +137,8 @@ html.accessibility-contrast-high .box_selected_bahasa {
   border: 2px solid #000000;
 }
 
-html.accessibility-contrast-high .box_text_bottom_disabilitas {
+html.accessibility-contrast-high .box_text_bottom_disabilitas,
+html.accessibility-contrast-high .box_state_disabilitas {
   color: #000000;
 }
 
@@ -153,7 +154,8 @@ html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabili
   color: #FFFFFF;
 }
 
-html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .box_text_bottom_disabilitas {
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .box_text_bottom_disabilitas,
+html.accessibility-contrast-high .box_group_disabilitas.active_box_menu_disabilitas .box_state_disabilitas {
   color: #FFFFFF;
 }
 
@@ -1174,7 +1176,8 @@ html.accessibility-contrast-dark .box_selected_bahasa {
   color: #FFFFFF;
 }
 
-html.accessibility-contrast-dark .box_text_bottom_disabilitas {
+html.accessibility-contrast-dark .box_text_bottom_disabilitas,
+html.accessibility-contrast-dark .box_state_disabilitas {
   color: #FFFFFF;
 }
 
@@ -1195,7 +1198,8 @@ html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabili
   color: #0A0F1A;
 }
 
-html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .box_text_bottom_disabilitas {
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .box_text_bottom_disabilitas,
+html.accessibility-contrast-dark .box_group_disabilitas.active_box_menu_disabilitas .box_state_disabilitas {
   color: #0A0F1A;
 }
 

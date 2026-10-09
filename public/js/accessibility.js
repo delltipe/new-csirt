@@ -363,6 +363,19 @@ class AccessibilityWidget {
     this.setVisible(icons, lvl);
     this.updateStrip('list_strip_loading_action_kontras', lvl, 4, 'Level kontras');
     this.setTileActive('action_kontras', lvl > 0);
+
+    const modeNames = ['Normal', 'Kontras Tinggi', 'Mode Gelap', 'Balikkan Warna'];
+    const modeName = modeNames[lvl] || 'Normal';
+
+    const btn = document.getElementById('action_kontras');
+    if (btn) {
+      btn.setAttribute('aria-label', 'Kontras+ — Mode saat ini: ' + modeName);
+    }
+
+    const stateEl = document.getElementById('text_state_kontras');
+    if (stateEl) {
+      stateEl.textContent = 'Mode saat ini: ' + modeName;
+    }
   }
 
   applyContrast() {
