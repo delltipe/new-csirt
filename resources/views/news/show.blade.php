@@ -300,7 +300,11 @@
 
                 {{-- Thumbnail --}}
                 @if($news->thumbnail)
-                <img src="{{ $news->thumbnail }}" alt="{{ $news->title }}" class="news-detail-content__img">
+                <img src="{{ $news->optimized_detail ?? $news->thumbnail }}"
+                     alt="{{ $news->title }}"
+                     class="news-detail-content__img"
+                     decoding="async"
+                     fetchpriority="high">
                 @endif
 
                 {{-- Content --}}

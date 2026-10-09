@@ -394,8 +394,10 @@
             {{-- Right: thumbnail --}}
             <div class="event-hero__thumb-wrap">
                 <img class="event-hero__thumb"
-                     src="{{ $event->thumbnail ?? 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80' }}"
+                     src="{{ $event->optimized_detail ?? $event->thumbnail ?? 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80' }}"
                      alt="{{ $event->title }}"
+                     decoding="async"
+                     fetchpriority="high"
                      onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80'">
             </div>
         </div>
@@ -456,8 +458,10 @@
                         <a href="{{ route('events.show', $related) }}" class="event-card">
                             <div class="event-card__thumb-wrap">
                                 <img class="event-card__thumb"
-                                     src="{{ $related->thumbnail ?? 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80' }}"
+                                     src="{{ $related->optimized_thumbnail ?? $related->thumbnail ?? 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80' }}"
                                      alt="{{ $related->title }}"
+                                     loading="lazy"
+                                     decoding="async"
                                      onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80'">
                             </div>
                             @if($related->event_date)

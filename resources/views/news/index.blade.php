@@ -528,9 +528,12 @@ nav[role="navigation"] li span.cursor-default {
                 @if($article->thumbnail)
                 <div class="news-list-card__img-wrap">
                     <img class="news-list-card__img"
-                         src="{{ $article->thumbnail }}"
+                         src="{{ $article->optimized_thumbnail ?? $article->thumbnail }}"
                          alt="{{ $article->title }}"
-                         loading="lazy"
+                         width="600"
+                         height="334"
+                         {{ $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' }}
+                         decoding="async"
                          onerror="this.closest('.news-list-card__img-wrap').innerHTML='<div class=\'news-list-card__no-img\'><i class=\'bi bi-image\'></i></div>'">
                 </div>
                 @else

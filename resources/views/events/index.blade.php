@@ -288,8 +288,12 @@ nav[role="navigation"] li span.cursor-default {
                 {{-- Thumbnail --}}
                 <div class="event-card__thumb-wrap">
                     <img class="event-card__thumb"
-                         src="{{ $event->thumbnail ?? 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80' }}"
+                         src="{{ $event->optimized_thumbnail ?? $event->thumbnail ?? 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80' }}"
                          alt="{{ $event->title }}"
+                         width="600"
+                         height="334"
+                         {{ $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' }}
+                         decoding="async"
                          onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80'">
                 </div>
 

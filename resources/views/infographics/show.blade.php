@@ -160,8 +160,10 @@
 
             {{-- Full-size image --}}
             <img class="infographic-show-img"
-                 src="{{ $infographic->thumbnail }}"
+                 src="{{ $infographic->optimized_detail ?? $infographic->thumbnail }}"
                  alt="{{ $infographic->title }}"
+                 decoding="async"
+                 fetchpriority="high"
                  onerror="this.style.minHeight='200px';this.style.background='var(--mist)'">
 
             {{-- Footer: title + actions --}}

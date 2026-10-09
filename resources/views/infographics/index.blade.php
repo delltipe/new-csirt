@@ -387,16 +387,19 @@ nav[role="navigation"] li span.cursor-default {
             {{-- Each card is a <button> for accessibility; JS handles the click --}}
             <button class="infographic-card"
                     type="button"
-                    data-img="{{ $infographic->thumbnail }}"
+                    data-img="{{ $infographic->optimized_detail ?? $infographic->thumbnail }}"
                     data-title="{{ $infographic->title }}"
                     data-index="{{ $loop->index }}"
                     aria-label="Lihat infografis: {{ $infographic->title }}">
 
                 <div class="infographic-card__img-wrap">
                     <img class="infographic-card__img"
-                         src="{{ $infographic->thumbnail }}"
+                         src="{{ $infographic->optimized_thumbnail ?? $infographic->thumbnail }}"
                          alt="{{ $infographic->title }}"
-                         loading="lazy"
+                         width="600"
+                         height="334"
+                         {{ $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' }}
+                         decoding="async"
                          onerror="this.closest('.infographic-card__img-wrap').style.background='var(--mist)';this.style.display='none'">
                     <div class="infographic-card__overlay" aria-hidden="true">
                         <div class="infographic-card__zoom">

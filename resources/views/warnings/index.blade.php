@@ -232,7 +232,13 @@
             <a href="{{ route('warnings.show', $warning->id) }}" class="warning-card">
                 {{-- Image --}}
                 @if($warning->thumbnail)
-                <img src="{{ $warning->thumbnail }}" alt="{{ $warning->title }}" class="warning-card__image" loading="lazy">
+                <img src="{{ $warning->optimized_thumbnail ?? $warning->thumbnail }}"
+                     alt="{{ $warning->title }}"
+                     class="warning-card__image"
+                     width="600"
+                     height="334"
+                     {{ $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' }}
+                     decoding="async">
                 @else
                 <div class="warning-card__no-image">
                     <i class="bi bi-image" aria-hidden="true"></i>

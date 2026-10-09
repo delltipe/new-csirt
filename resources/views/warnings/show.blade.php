@@ -296,7 +296,11 @@
 
                 {{-- Thumbnail --}}
                 @if($warning->thumbnail)
-                <img src="{{ $warning->thumbnail }}" alt="{{ $warning->title }}" class="warning-detail-content__img">
+                <img src="{{ $warning->optimized_detail ?? $warning->thumbnail }}"
+                     alt="{{ $warning->title }}"
+                     class="warning-detail-content__img"
+                     decoding="async"
+                     fetchpriority="high">
                 @endif
 
                 {{-- Content --}}
