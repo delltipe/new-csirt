@@ -58,13 +58,15 @@ class PublicationViewsImageTest extends TestCase
 
     public function test_warnings_index_and_show_use_optimized_images_when_available(): void
     {
-        $warning = WarningPost::create([
+        $warning = new WarningPost([
             'title'       => 'Peringatan Uji Coba Optimasi',
             'description' => 'Deskripsi peringatan uji coba',
             'thumbnail'   => 'https://csirt.jakarta.go.id/images/berita/sample-warning.png',
             'source'      => 'https://example.com',
             'date'        => now(),
         ]);
+        $warning->id = 999;
+        $warning->save();
 
         // Fallback check
         $response = $this->get(route('warnings.index'));
@@ -95,10 +97,12 @@ class PublicationViewsImageTest extends TestCase
 
     public function test_infographics_index_and_show_use_optimized_variants_and_preserve_download(): void
     {
-        $info = Infographic::create([
+        $info = new Infographic([
             'title'     => 'Infografis Uji Coba Optimasi',
             'thumbnail' => 'https://csirt.jakarta.go.id/images/gallery/sample-infographic.jpg',
         ]);
+        $info->id = 999;
+        $info->save();
 
         // Without derivative: fallback to original
         $response = $this->get(route('infographics.index'));
