@@ -145,7 +145,7 @@
         text-transform: uppercase;
     }
 
-    .rfc-sidebar ol { list-style: decimal; margin-left: 20px; }
+    .rfc-sidebar ol { list-style: decimal; padding-left: 18px; margin: 0; }
     .rfc-sidebar li + li { margin-top: 8px; }
     .rfc-sidebar a { color: var(--navy); font-size: 13px; line-height: 1.4; }
     .rfc-sidebar a:hover { text-decoration: underline; }
