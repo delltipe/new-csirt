@@ -15,7 +15,7 @@
    ============================================================ */
 .event-detail-header {
     background: var(--ink);
-    padding: 36px 0 0;
+    padding: 36px 0;
     position: relative;
     overflow: hidden;
 }
@@ -46,8 +46,7 @@
     display: grid;
     grid-template-columns: 1fr 360px;
     gap: 40px;
-    align-items: end;
-    padding-bottom: 0;
+    align-items: center;
 }
 .event-hero__title {
     font-family: var(--font-display);
@@ -63,7 +62,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    padding-bottom: 28px;
 }
 .event-hero__meta-item {
     display: flex;
@@ -82,9 +80,9 @@
     font-weight: 600;
 }
 
-/* Thumbnail in header — slides up from bottom */
+/* Thumbnail in header */
 .event-hero__thumb-wrap {
-    align-self: flex-end;
+    display: block;
 }
 .event-hero__thumb {
     width: 100%;
@@ -341,13 +339,16 @@
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
-    .event-hero-grid { grid-template-columns: 1fr; }
-    .event-hero__thumb-wrap { display: none; } /* hide thumb in header on mobile, it shows in body */
+    .event-detail-header { padding: 28px 0 32px; }
+    .event-hero-grid { grid-template-columns: 1fr; gap: 24px; }
+    .event-hero__thumb-wrap { display: block; width: 100%; max-width: 480px; }
+    .event-hero__thumb { height: 220px; }
     .event-body-grid { grid-template-columns: 1fr; }
     .event-sidebar-card { position: static; }
     .related-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 600px) {
+    .event-hero__thumb { height: 200px; }
     .related-grid { grid-template-columns: 1fr; }
     .event-desc-card { padding: 24px 18px; }
 }
