@@ -421,6 +421,13 @@ html.accessibility-contrast-high .warning-detail-cta:hover {
   color: #FFFF00 !important;
 }
 
+/* ---- Warning Detail Severity Badge: high contrast alert classification ---- */
+html.accessibility-contrast-high .warning-detail-type-badge {
+  background: #CC0000 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #FFFFFF;
+}
+
 /* ---- Hero Section: Full Legibility & Solid Text on Image Overlay ---- */
 html.accessibility-contrast-high .hero {
   background: #000040 !important;

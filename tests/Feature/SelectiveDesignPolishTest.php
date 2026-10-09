@@ -89,6 +89,11 @@ class SelectiveDesignPolishTest extends TestCase
         $detailResp->assertSee('background: var(--navy);', false);
         $detailResp->assertSee('background: var(--navy-mid);', false);
         $detailResp->assertDontSee('.warning-detail-cta { background: var(--alert);', false);
+
+        // 3. High-contrast mode override guarantees WCAG 2.2 SC 1.4.3 AA contrast (>= 4.5:1 via #CC0000)
+        $contrastCss = file_get_contents(public_path('css/accessibility-contrast.css'));
+        $this->assertStringContainsString('html.accessibility-contrast-high .warning-detail-type-badge', $contrastCss);
+        $this->assertStringContainsString('background: #CC0000 !important;', $contrastCss);
     }
 
     /**
