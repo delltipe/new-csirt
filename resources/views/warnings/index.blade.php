@@ -237,7 +237,7 @@
                      class="warning-card__image"
                      width="600"
                      height="334"
-                     {{ $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' }}
+                     {!! $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' !!}
                      decoding="async">
                 @else
                 <div class="warning-card__no-image">

@@ -398,7 +398,7 @@ nav[role="navigation"] li span.cursor-default {
                          alt="{{ $infographic->title }}"
                          width="600"
                          height="334"
-                         {{ $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' }}
+                         {!! $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' !!}
                          decoding="async"
                          onerror="this.closest('.infographic-card__img-wrap').style.background='var(--mist)';this.style.display='none'">
                     <div class="infographic-card__overlay" aria-hidden="true">

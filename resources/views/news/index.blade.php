@@ -532,7 +532,7 @@ nav[role="navigation"] li span.cursor-default {
                          alt="{{ $article->title }}"
                          width="600"
                          height="334"
-                         {{ $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' }}
+                         {!! $loop->first ? 'fetchpriority="high"' : 'loading="lazy"' !!}
                          decoding="async"
                          onerror="this.closest('.news-list-card__img-wrap').innerHTML='<div class=\'news-list-card__no-img\'><i class=\'bi bi-image\'></i></div>'">
                 </div>
