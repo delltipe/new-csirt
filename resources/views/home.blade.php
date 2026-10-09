@@ -571,6 +571,7 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
                     }
                     $link = $slide->tautan ?: route('bug-hunter.dashboard');
                     $isLcp = $index === 0;
+                    $isIntroSlide = ($index === 0 || $slide->urutan === 0) && empty($slide->tautan);
                 @endphp
                 <div class="hero__slide {{ $index === 0 ? 'is-active' : '' }}" data-index="{{ $index }}"
                      @if($isLcp) style="background: linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%), url('{{ $img }}') center/cover no-repeat;" @else data-bg="{{ $img }}" style="background: linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%), var(--ink) center/cover no-repeat;" @endif>
@@ -590,9 +591,11 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
                                         <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
                                         {{ $slide->teks_tautan ?: 'LAPOR INSIDEN SEKARANG' }}
                                     </a>
-                                    <a href="{{ url('profile') }}" class="btn-hero-ghost">
-                                        Tentang Kami <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                                    </a>
+                                    @if($isIntroSlide)
+                                        <a href="{{ url('profile') }}" class="btn-hero-ghost">
+                                            Tentang Kami <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
