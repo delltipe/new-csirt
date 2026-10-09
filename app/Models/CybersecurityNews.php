@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasOptimizedImages;
 use Illuminate\Database\Eloquent\Model;
 
 class CybersecurityNews extends Model
 {
+    use HasOptimizedImages;
+
     protected $table = 'berita_siber';
     
     // Disable timestamps because they aren't in your migration

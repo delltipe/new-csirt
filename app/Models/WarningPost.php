@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasOptimizedImages;
 use Illuminate\Database\Eloquent\Model;
 
 class WarningPost extends Model
 {
+    use HasOptimizedImages;
+
     protected $table = 'peringatan_keamanan';
     
     // Disable timestamps since they aren't in your migration

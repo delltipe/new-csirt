@@ -41,6 +41,10 @@ auth.json
 .playwright-mcp/
 design-system-audit-report.html
 
+# Optimized publication derivatives (generated cache artifacts)
+/public/images/optimized/*
+!/public/images/optimized/.gitkeep
+
 # Impeccable binary cache & assistant metadata
 **/scripts/bin/**
 .impeccable/
