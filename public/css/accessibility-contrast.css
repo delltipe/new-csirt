@@ -1382,16 +1382,24 @@ html.accessibility-contrast-dark .footer-social a:hover {
   color: #0A0F1A;
 }
 
-/* ---- Alert-strip CTA + warning-detail CTA: readable on the alert token ---- */
-html.accessibility-contrast-dark .alert-strip__cta,
-html.accessibility-contrast-dark .warning-detail-cta {
+/* ---- Alert-strip CTA: readable on the alert token ---- */
+html.accessibility-contrast-dark .alert-strip__cta {
   background: #FF6B6B;
   color: #1a1a1a;
 }
-html.accessibility-contrast-dark .alert-strip__cta:hover,
-html.accessibility-contrast-dark .warning-detail-cta:hover {
+html.accessibility-contrast-dark .alert-strip__cta:hover {
   background: #FF9999;
   color: #1a1a1a;
+}
+
+/* ---- Warning-detail CTA: dark mode primary action ---- */
+html.accessibility-contrast-dark .warning-detail-cta {
+  background: #4DA6FF;
+  color: #0A0F1A;
+}
+html.accessibility-contrast-dark .warning-detail-cta:hover {
+  background: #66B3FF;
+  color: #0A0F1A;
 }
 
 /* ---- CTA section: dark navy bg + light text ---- */

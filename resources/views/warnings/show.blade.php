@@ -131,7 +131,7 @@
 
 .warning-detail-meta-item i {
     font-size: 14px;
-    color: var(--alert);
+    color: var(--navy);
 }
 
 .warning-detail-source {
@@ -144,13 +144,13 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--alert);
+    color: var(--navy);
     text-decoration: none;
     transition: color var(--ease);
 }
 
 .warning-detail-source:hover {
-    color: var(--alert-light);
+    color: var(--navy-mid);
 }
 
 /* ============================================================
@@ -204,7 +204,7 @@
 }
 
 .warning-detail-card__item-title:hover {
-    color: var(--alert);
+    color: var(--navy);
 }
 
 .warning-detail-card__item-date {
@@ -213,7 +213,7 @@
 }
 
 .warning-detail-cta {
-    background: var(--alert);
+    background: var(--navy);
     color: var(--white);
     font-family: var(--font-display);
     font-size: 13px;
@@ -230,7 +230,7 @@
 }
 
 .warning-detail-cta:hover {
-    background: var(--alert-light);
+    background: var(--navy-mid);
     color: var(--white);
 }
 

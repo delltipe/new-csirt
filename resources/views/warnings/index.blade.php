@@ -77,7 +77,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--alert), var(--alert-light));
+    background: var(--navy);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform var(--ease);
@@ -85,7 +85,7 @@
 }
 
 .warning-card:hover {
-    border-color: var(--alert);
+    border-color: var(--navy);
 }
 
 .warning-card:hover::before {
@@ -133,7 +133,7 @@
 }
 
 .warning-card:hover .warning-card__title {
-    color: var(--alert);
+    color: var(--navy);
 }
 
 .warning-card__excerpt {
@@ -158,12 +158,12 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--alert);
+    color: var(--navy);
     transition: color var(--ease);
 }
 
 .warning-card:hover .warning-card__cta {
-    color: var(--alert-light);
+    color: var(--navy-mid);
 }
 
 .warning-card__date {
