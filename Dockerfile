@@ -16,9 +16,10 @@ RUN composer install --no-dev --optimize-autoloader \
     && cp .env.example .env \
     && php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');" \
     && mkdir -p public/images/optimized \
-    && chmod -R 777 storage bootstrap/cache public/images/optimized
+    && chown -R www-data:www-data storage bootstrap/cache database public/images/optimized \
+    && chmod -R u+rwX,g+rwX,o=rX storage bootstrap/cache database public/images/optimized
 
 ENV PORT=8000
 EXPOSE 8000
 
-CMD ["sh", "-c", "php artisan key:generate --force --quiet && php artisan migrate --force --seed && php artisan storage:link && (php artisan publications:optimize-images || true) && php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["sh", "-c", "php artisan key:generate --force --quiet && php artisan migrate --force --seed && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT"]

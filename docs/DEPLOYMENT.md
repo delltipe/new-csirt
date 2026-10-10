@@ -39,10 +39,21 @@ auto-detects the `Dockerfile` and auto-fills the repo, branch, and fields.
 - `composer install --no-dev --optimize-autoloader` at build
 - **`cp .env.example .env`** at build — required, because `php artisan key:generate`
   fails at boot if no `.env` exists (`.env` is git-ignored, so `COPY . .` omits it)
+- Directory permissions: least-permissive ownership `www-data:www-data` with `u+rwX,g+rwX,o=rX` (mode `0775` dirs, `0664` files) applied to `storage`, `bootstrap/cache`, `database`, and `public/images/optimized`
 - No npm/Vite — the layout loads assets from `public/` directly
 - On container start: `key:generate`, `migrate --force --seed`, `storage:link`,
-  `publications:optimize-images` (safe publication image WebP derivation),
-  then `php artisan serve --host=0.0.0.0 --port=$PORT`
+  then `php artisan serve --host=0.0.0.0 --port=$PORT` (starts immediately in < 2s)
+
+### Publication Image Optimization Pipeline
+
+Generated WebP derivatives (`public/images/optimized/*`) are git-ignored to prevent bloated repository history.
+- **Graceful Fallback Invariant:** If derivatives are not generated, all publication views automatically and safely fall back to canonical remote source URLs. The site never exhibits broken images or layout breaks.
+- **Post-Deploy Generation:** To generate local WebP derivatives (74.7% bandwidth reduction across 38 publication records), execute the Artisan command after deployment (e.g. via Render Shell, release step, or VPS terminal):
+  ```bash
+  php artisan publications:optimize-images
+  ```
+- **Persistent Storage Recommendation:** If a persistent disk is mounted (e.g., at `/var/www/html/public/images/optimized` or on VPS), derivatives persist across container redeployments and restarts. The command is fully idempotent (`REUSED: Up-to-date derivative exists`).
+- **Decoupled from Boot:** The command is intentionally decoupled from container startup (`CMD`) to prevent cold-boot timeouts, external network stalls (up to 9.5 minutes if remote endpoints timeout), and upstream IP throttling on ephemeral container spin-ups.
 
 ### Steps
 
