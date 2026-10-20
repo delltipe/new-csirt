@@ -202,7 +202,7 @@
                     <li><a href="{{ route('contact.create') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Hubungi Kami</a></li>
                     <li><a href="{{ route('ticket.track') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Lacak Status Tiket</a></li>
                     <li><a href="{{ route('rfc2350') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>RFC 2350</a></li>
-                    <li><a href="{{ route('publickey') }}" aria-label="Public Key (Unduh ASC)"><i class="bi bi-chevron-right" aria-hidden="true"></i>Public Key <i class="bi bi-download" aria-hidden="true" style="font-size: 11px; opacity: 0.85;"></i></a></li>
+                    <li><a href="{{ route('publickey') }}" aria-label="Public Key (Unduh ASC)" data-goatcounter-click="download-publickey-link-click" data-goatcounter-title="Unduh Public Key ASC (Footer)"><i class="bi bi-chevron-right" aria-hidden="true"></i>Public Key <i class="bi bi-download" aria-hidden="true" style="font-size: 11px; opacity: 0.85;"></i></a></li>
                 </ul>
             </div>
 
@@ -242,11 +242,17 @@
 
         </div>
 
-        {{-- Bottom bar — legacy style: copyright only --}}
+        {{-- Bottom bar — legacy style: copyright only + privacy notice when telemetry active --}}
         <div class="footer-bottom">
             <p class="footer-copy">
                 &copy; {{ date('Y') }} JakartaProv-CSIRT — Pemerintah Provinsi DKI Jakarta. Seluruh hak dilindungi.
             </p>
+            @if (!empty(config('services.goatcounter.endpoint')))
+                <p class="footer-privacy-note" style="font-size: 11px; color: var(--faint-on-dark); margin: 0; line-height: 1.55; max-width: 680px;">
+                    <i class="bi bi-shield-check" aria-hidden="true" style="margin-right: 4px;"></i>
+                    <strong>Privasi Pratinjau:</strong> Situs ini menggunakan analitik web tanpa kuki (cookieless) untuk pelaporan statistik agregat. Untuk menghitung kunjungan unik, sistem (GoatCounter) memproses alamat IP dan informasi peramban (user-agent) secara sementara di memori server hingga maksimal 8 jam sebelum dihapus, tanpa penyimpanan persisten atau pelacakan lintas situs. Pengumpulan data dibatasi pada metrik agregat halaman publik dan tunduk pada prinsip perlindungan privasi serta etika penelitian yang berlaku.
+                </p>
+            @endif
         </div>
     </div>
 </footer>

@@ -299,9 +299,11 @@
                     @if($post->file_path || $post->link)
                         <a href="{{ $post->file_path ? asset('storage/' . $post->file_path) : $post->link }}" 
                            target="_blank" 
-                           class="law-detail-download">
-                            <i class="bi bi-download"></i>
-                            Unduh Dokumen
+                           class="law-detail-download"
+                           data-goatcounter-click="{{ $post->file_path ? 'download-law-link-click' : 'external-law-resource-link-click' }}"
+                           data-goatcounter-title="{{ $post->file_path ? 'Unduh Dokumen Peraturan' : 'Buka Sumber Daya Peraturan Eksternal' }}">
+                            <i class="{{ $post->file_path ? 'bi bi-download' : 'bi bi-box-arrow-up-right' }}"></i>
+                            {{ $post->file_path ? 'Unduh Dokumen' : 'Buka Sumber Daya' }}
                         </a>
                     @endif
                 </div>

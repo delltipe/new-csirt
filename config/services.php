@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'goatcounter' => [
+        'endpoint' => env('GOATCOUNTER_ENDPOINT'),
+    ],
+
 ];

@@ -342,10 +342,12 @@
             </div>
             <div class="rfc-sidebar__card">
                 <h2>Dokumen Asli</h2>
-                <a class="rfc-download" href="{{ asset('documents/rfc-2350-jakartaprov-csirt-v1.2.pdf') }}" download>
+                <a class="rfc-download" href="{{ asset('documents/rfc-2350-jakartaprov-csirt-v1.2.pdf') }}" download
+                   data-goatcounter-click="download-rfc2350-pdf-link-click" data-goatcounter-title="Unduh Dokumen RFC 2350 PDF">
                     <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> Unduh PDF
                 </a>
-                <a class="rfc-download" href="{{ route('publickey') }}" style="margin-top: 10px;">
+                <a class="rfc-download" href="{{ route('publickey') }}" style="margin-top: 10px;"
+                   data-goatcounter-click="download-publickey-link-click" data-goatcounter-title="Unduh Public Key ASC (RFC 2350)">
                     <i class="bi bi-key" aria-hidden="true"></i> Unduh Public Key
                 </a>
                 <p class="rfc-sidebar__note">PDF bertanda tangan tersedia sebagai dokumen resmi yang menjadi rujukan halaman ini.</p>

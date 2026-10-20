@@ -104,5 +104,61 @@
         modalEl.addEventListener('hidden.bs.modal', function () { pendingForm = null; });
     });
     </script>
+
+    {{-- Privacy-Preserving Analytics (GoatCounter) --}}
+    @php
+        $isExcludedRoute = request()->is('login*', 'register*', 'logout*', 'bug-hunter*', 'lacak-laporan*', 'admin*');
+    @endphp
+    @if (!empty(config('services.goatcounter.endpoint')) && !$isExcludedRoute)
+        <script>
+            window.goatcounter = {
+                // Strip query strings, retain custom event names, and cancel tracking on excluded routes
+                path: function(p) {
+                    // Custom GoatCounter event paths do not start with '/'
+                    if (typeof p === 'string' && p.length > 0 && p.charAt(0) !== '/') {
+                        return p;
+                    }
+                    var raw = (typeof p === 'string' && p.length > 0) ? p : (window.location.pathname || '/');
+                    var clean = raw.split('?')[0].split('#')[0] || '/';
+                    var excludedPrefixes = ['/login', '/register', '/logout', '/bug-hunter', '/lacak-laporan', '/admin'];
+                    for (var i = 0; i < excludedPrefixes.length; i++) {
+                        var prefix = excludedPrefixes[i];
+                        if (clean === prefix || clean.indexOf(prefix + '/') === 0) {
+                            return null;
+                        }
+                    }
+                    return clean;
+                },
+                // Collect referrer origin only (e.g. https://example.com) to prevent leaking query terms or sensitive paths
+                referrer: function() {
+                    if (!document.referrer) return '';
+                    try {
+                        var ref = new URL(document.referrer);
+                        return ref.origin;
+                    } catch (e) {
+                        return '';
+                    }
+                }
+            };
+
+            // Intercept all search forms for search-submit event (button click or Enter key)
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('form[action*="/search"], form.nav-search').forEach(function (form) {
+                    form.addEventListener('submit', function () {
+                        if (window.goatcounter && typeof window.goatcounter.count === 'function') {
+                            window.goatcounter.count({
+                                path: 'search-submit',
+                                title: 'Pencarian Diajukan',
+                                event: true
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+        <script data-goatcounter="{{ config('services.goatcounter.endpoint') }}"
+                data-goatcounter-settings='{"allow_local": false}'
+                async src="https://gc.zgo.at/count.js"></script>
+    @endif
 </body>
 </html>

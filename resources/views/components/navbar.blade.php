@@ -426,14 +426,17 @@
 
         {{-- Partner logos with outbound links --}}
         <div class="nav-partners" role="group" aria-label="Logo instansi mitra">
-            <a href="https://www.jakarta.go.id/" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya">
+            <a href="https://www.jakarta.go.id/" target="_blank" rel="noopener" title="Jaya Raya" aria-label="Logo Jaya Raya"
+               data-goatcounter-click="nav-partner-jayaraya-click" data-goatcounter-title="Logo Mitra Jaya Raya">
                 <img src="{{ asset('jaya_raya.png') }}" alt="Jaya Raya" width="68" height="72" loading="eager" decoding="async">
             </a>
-            <a href="https://diskominfotik.jakarta.go.id/" target="_blank" rel="noopener" title="Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)" aria-label="Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)">
+            <a href="https://diskominfotik.jakarta.go.id/" target="_blank" rel="noopener" title="Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)" aria-label="Diskominfotik DKI Jakarta — Bidang Siber, Sandi dan Aplikasi (BSSA)"
+               data-goatcounter-click="nav-partner-diskominfo-click" data-goatcounter-title="Logo Mitra Diskominfotik BSSA">
                 <img src="{{ asset('logo_diskominfo.png') }}" alt="Diskominfotik DKI Jakarta" width="68" height="77" loading="eager" decoding="async">
                 <img src="{{ asset('bssa-logo.png') }}" alt="BSSA — Bidang Siber, Sandi dan Aplikasi" width="68" height="68" loading="eager" decoding="async">
             </a>
-            <a href="https://jakarta500.id/" target="_blank" rel="noopener" title="5 Abad Jakarta" aria-label="Logo 5 Abad Jakarta">
+            <a href="https://jakarta500.id/" target="_blank" rel="noopener" title="5 Abad Jakarta" aria-label="Logo 5 Abad Jakarta"
+               data-goatcounter-click="nav-partner-5abad-click" data-goatcounter-title="Logo Mitra 5 Abad Jakarta">
                 <span class="nav-partner">
                     <img id="partner-5abad" src="{{ asset('logo_5abad.png') }}" data-light="{{ asset('logo_5abad.png') }}" data-dark="{{ asset('logo_5abad_white.svg') }}" alt="5 Abad Jakarta" width="80" height="55" loading="eager" decoding="async" fetchpriority="low">
                 </span>
@@ -460,7 +463,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'active' : '' }}">
+                    <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'active' : '' }}"
+                       data-goatcounter-click="nav-profile-click" data-goatcounter-title="Menu Navigasi Profil">
                         Profil
                     </a>
                 </li>
@@ -476,9 +480,9 @@
                         <li><a href="{{ route('laws.index') }}">Peraturan & Kebijakan</a></li>
                         <li><a href="{{ route('guides.index') }}">Panduan Teknis</a></li>
                         <li><div class="nav-dropdown__divider"></div></li>
-                        <li><a href="{{ url('statistics') }}">Statistik Honeypot</a></li>
-                        <li><a href="{{ url('rfc2350') }}">RFC 2350</a></li>
-                        <li><a href="{{ route('publickey') }}" aria-label="Public Key (Unduh ASC)">Public Key <i class="bi bi-download" aria-hidden="true" style="font-size: 11px; margin-left: 4px; opacity: 0.85;"></i></a></li>
+                        <li><a href="{{ url('statistics') }}" data-goatcounter-click="nav-statistics-click" data-goatcounter-title="Menu Navigasi Statistik Honeypot">Statistik Honeypot</a></li>
+                        <li><a href="{{ url('rfc2350') }}" data-goatcounter-click="nav-rfc2350-click" data-goatcounter-title="Menu Navigasi RFC 2350">RFC 2350</a></li>
+                        <li><a href="{{ route('publickey') }}" aria-label="Public Key (Unduh ASC)" data-goatcounter-click="download-publickey-link-click" data-goatcounter-title="Unduh Public Key ASC (Navbar)">Public Key <i class="bi bi-download" aria-hidden="true" style="font-size: 11px; margin-left: 4px; opacity: 0.85;"></i></a></li>
                     </ul>
                 </li>
                 <li>

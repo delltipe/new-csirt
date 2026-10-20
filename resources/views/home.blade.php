@@ -572,6 +572,12 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
                     $link = $slide->tautan ?: route('bug-hunter.dashboard');
                     $isLcp = $index === 0;
                     $isIntroSlide = ($index === 0 || $slide->urutan === 0) && empty($slide->tautan);
+                    $isExcludedLink = empty($slide->tautan) ||
+                        str_contains($link, '/bug-hunter') ||
+                        str_contains($link, '/lacak-laporan') ||
+                        str_contains($link, '/login') ||
+                        str_contains($link, '/register') ||
+                        str_contains($link, '/admin');
                 @endphp
                 <div class="hero__slide {{ $index === 0 ? 'is-active' : '' }}" data-index="{{ $index }}"
                      @if($isLcp) style="background: linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%), url('{{ $img }}') center/cover no-repeat;" @else data-bg="{{ $img }}" style="background: linear-gradient(100deg, rgba(0,32,96,0.82) 0%, rgba(0,53,128,0.68) 52%, rgba(0,53,128,0.32) 100%), var(--ink) center/cover no-repeat;" @endif>
@@ -587,12 +593,14 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
                                     <p class="hero__lead">{{ $slide->subjudul }}</p>
                                 @endif
                                 <div class="hero__actions">
-                                    <a href="{{ $link }}" class="btn-hero-primary">
+                                    <a href="{{ $link }}" class="btn-hero-primary"
+                                       @if(!$isExcludedLink) data-goatcounter-click="home-hero-primary-link-click" data-goatcounter-title="Aksi Utama Hero Slider" @endif>
                                         <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
                                         {{ $slide->teks_tautan ?: 'LAPOR INSIDEN SEKARANG' }}
                                     </a>
                                     @if($isIntroSlide)
-                                        <a href="{{ url('profile') }}" class="btn-hero-ghost">
+                                        <a href="{{ url('profile') }}" class="btn-hero-ghost"
+                                           data-goatcounter-click="home-hero-profile-link-click" data-goatcounter-title="Tentang Kami (Hero Slider)">
                                             Tentang Kami <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                         </a>
                                     @endif
@@ -634,7 +642,8 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
                             <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
                             Lapor Insiden Sekarang
                         </a>
-                        <a href="{{ url('profile') }}" class="btn-hero-ghost">
+                        <a href="{{ url('profile') }}" class="btn-hero-ghost"
+                           data-goatcounter-click="home-hero-profile-link-click" data-goatcounter-title="Tentang Kami (Hero Statis)">
                             Tentang Kami <i class="bi bi-arrow-right" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -690,7 +699,8 @@ html.accessibility-pause-animations .halftone-field{ animation-play-state: pause
                 Kerentanan kritis pada Apache HTTP Server (CVE-2024-38476) — segera perbarui ke versi 2.4.62 atau lebih tinggi.
             </div>
         </div>
-        <a href="{{ route('warnings.index') }}" class="alert-strip__cta">
+        <a href="{{ route('warnings.index') }}" class="alert-strip__cta"
+           data-goatcounter-click="home-alert-warning-link-click" data-goatcounter-title="Lihat Detail Peringatan (Beranda)">
             Lihat Detail <i class="bi bi-arrow-right" aria-hidden="true"></i>
         </a>
     </div>

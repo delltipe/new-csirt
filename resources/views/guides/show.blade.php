@@ -301,7 +301,9 @@
                         <a href="{{ $guide->file_path }}" 
                            class="guide-detail-btn"
                            download
-                           aria-label="Unduh panduan">
+                           aria-label="Unduh panduan"
+                           data-goatcounter-click="download-guide-link-click"
+                           data-goatcounter-title="Unduh Panduan Teknis">
                             <i class="bi bi-download" aria-hidden="true"></i>
                             Unduh Panduan
                         </a>
@@ -312,6 +314,8 @@
                            target="_blank" 
                            rel="noopener noreferrer"
                            class="guide-detail-btn {{ $guide->file_path ? 'guide-detail-btn--secondary' : '' }}"
+                           data-goatcounter-click="external-guide-resource-link-click"
+                           data-goatcounter-title="Buka Sumber Daya Eksternal Panduan"
                            aria-label="Buka sumber daya eksternal">
                             <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
                             Buka Sumber Daya
