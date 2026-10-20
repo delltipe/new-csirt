@@ -9,4 +9,4 @@ fi
 PORT="${PORT:-8080}"
 
 echo "Starting Jakarta CSIRT Portal (blitz.cloud Read-Only Public Showcase) on port ${PORT}..."
-exec php artisan serve --host=0.0.0.0 --port="${PORT}"
+exec php artisan serve --host=0.0.0.0 --port="${PORT}" --no-reload
