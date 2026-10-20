@@ -64,119 +64,42 @@ Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])-
 Route::get('/captcha/refresh', [CaptchaController::class, 'refresh'])->name('captcha.refresh');
 
 // ---------------------------------------------------------------
-// Public Authentication Routes (bug hunter registration/login)
+// Public Authentication Routes — Disabled for Read-Only Preview
 // ---------------------------------------------------------------
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/register', fn() => abort(403, 'Pendaftaran akun dinonaktifkan pada versi pratinjau publik.'))->name('register');
+Route::post('/register', fn() => abort(403, 'Pendaftaran akun dinonaktifkan pada versi pratinjau publik.'))->name('register.submit');
+Route::get('/login', fn() => abort(403, 'Autentikasi dinonaktifkan pada versi pratinjau publik.'))->name('login');
+Route::post('/login', fn() => abort(403, 'Autentikasi dinonaktifkan pada versi pratinjau publik.'))->name('login.submit');
+Route::post('/logout', fn() => abort(403, 'Autentikasi dinonaktifkan pada versi pratinjau publik.'))->name('logout');
 
 // ---------------------------------------------------------------
-// Bug Hunter (Reporter) Routes — requires login
+// Bug Hunter (Reporter) Routes — Disabled for Read-Only Preview
 // ---------------------------------------------------------------
-Route::middleware(['auth', 'bug_hunter'])->group(function () {
-    // Reporter ticket dashboard
-    Route::get('/bug-hunter', [BugHunterController::class, 'dashboard'])->name('bug-hunter.dashboard');
+Route::get('/bug-hunter', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.dashboard');
+Route::get('/bug-hunter/laporan', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.tac');
+Route::post('/bug-hunter/laporan/agree', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.agree');
+Route::get('/bug-hunter/laporan/baru', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.create');
+Route::post('/bug-hunter/laporan/simpan', fn() => abort(403, 'Pengunggahan berkas dan pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.store');
+Route::get('/bug-hunter/laporan/selesai', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.thank-you');
+Route::get('/bug-hunter/laporan/{id}', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.show');
 
-    // Terms & Conditions gate
-    Route::get('/bug-hunter/laporan', [BugHunterController::class, 'showTac'])->name('bug-hunter.tac');
-    Route::post('/bug-hunter/laporan/agree', [BugHunterController::class, 'agreeTac'])->name('bug-hunter.agree');
-
-    // Single-page incident form (Komdigi-style)
-    Route::get('/bug-hunter/laporan/baru', [BugHunterController::class, 'create'])->name('bug-hunter.create');
-    Route::post('/bug-hunter/laporan/simpan', [BugHunterController::class, 'store'])->middleware('throttle:60,1')->name('bug-hunter.store');
-
-    // Thank-you with ticket number
-    Route::get('/bug-hunter/laporan/selesai', [BugHunterController::class, 'thankYou'])->name('bug-hunter.thank-you');
-
-    // Reporter detail (dynamic — must be declared last)
-    Route::get('/bug-hunter/laporan/{id}', [BugHunterController::class, 'show'])->name('bug-hunter.show');
-});
-
-// Public Incident Ticket Tracking (accessible without login)
-Route::get('/lacak-laporan', [IncidentTrackingController::class, 'index'])->name('ticket.track');
+// Public Incident Ticket Tracking — Disabled to prevent probing
+Route::get('/lacak-laporan', fn() => abort(403, 'Pelacakan tiket insiden dinonaktifkan pada versi pratinjau publik.'))->name('ticket.track');
 
 // ---------------------------------------------------------------
 // Contact Routes
 // ---------------------------------------------------------------
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
-Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:60,1')->name('contact.store');
-Route::get('/thank-you/contact', [ContactController::class, 'thankYou'])->name('contact.thank-you');
+Route::post('/contact', fn() => back()->withInput()->withErrors(['pesan' => 'Pengiriman pesan kontak dinonaktifkan pada versi pratinjau publik.']))->name('contact.store');
+Route::get('/thank-you/contact', fn() => redirect()->route('contact.create'))->name('contact.thank-you');
 
 // Dashboard Route (placeholder)
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-// Admin login routes
-Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
-Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
-Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
-// Admin dashboard (protected)
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    // More admin routes for CRUD will go here
-
-    // Incident review
-    Route::get('/admin/incidents', [AdminController::class, 'incidentsList'])->name('admin.incidents.list');
-    Route::get('/admin/incidents/{id}', [AdminController::class, 'incidentShow'])->name('admin.incidents.show');
-    Route::post('/admin/incidents/{id}/review', [AdminController::class, 'incidentReview'])->name('admin.incidents.review');
-    Route::post('/admin/incidents/{id}/delete', [AdminController::class, 'incidentDelete'])->name('admin.incidents.delete');
-
-    // News CRUD
-    Route::get('/admin/news', [AdminController::class, 'newsList'])->name('admin.news.list');
-    Route::post('/admin/news', [AdminController::class, 'newsStore'])->name('admin.news.store');
-    Route::get('/admin/news/{id}/edit', [AdminController::class, 'newsEdit'])->name('admin.news.edit');
-    Route::post('/admin/news/{id}/update', [AdminController::class, 'newsUpdate'])->name('admin.news.update');
-    Route::post('/admin/news/{id}/delete', [AdminController::class, 'newsDelete'])->name('admin.news.delete');
-
-    // Events CRUD
-    Route::get('/admin/events', [AdminController::class, 'eventsList'])->name('admin.events.list');
-    Route::post('/admin/events', [AdminController::class, 'eventStore'])->name('admin.event.store');
-    Route::get('/admin/events/{id}/edit', [AdminController::class, 'eventEdit'])->name('admin.event.edit');
-    Route::post('/admin/events/{id}/update', [AdminController::class, 'eventUpdate'])->name('admin.event.update');
-    Route::post('/admin/events/{id}/delete', [AdminController::class, 'eventDelete'])->name('admin.event.delete');
-
-    // Warnings CRUD
-    Route::get('/admin/warnings', [AdminController::class, 'warningsList'])->name('admin.warnings.list');
-    Route::post('/admin/warnings', [AdminController::class, 'warningStore'])->name('admin.warning.store');
-    Route::get('/admin/warnings/{id}/edit', [AdminController::class, 'warningEdit'])->name('admin.warning.edit');
-    Route::post('/admin/warnings/{id}/update', [AdminController::class, 'warningUpdate'])->name('admin.warning.update');
-    Route::post('/admin/warnings/{id}/delete', [AdminController::class, 'warningDelete'])->name('admin.warning.delete');
-
-    // Laws CRUD
-    Route::get('/admin/laws', [AdminController::class, 'lawsList'])->name('admin.laws.list');
-    Route::post('/admin/laws', [AdminController::class, 'lawStore'])->name('admin.law.store');
-    Route::get('/admin/laws/{id}/edit', [AdminController::class, 'lawEdit'])->name('admin.law.edit');
-    Route::post('/admin/laws/{id}/update', [AdminController::class, 'lawUpdate'])->name('admin.law.update');
-    Route::post('/admin/laws/{id}/delete', [AdminController::class, 'lawDelete'])->name('admin.law.delete');
-
-    // Guides CRUD
-    Route::get('/admin/guides', [AdminController::class, 'guidesList'])->name('admin.guides.list');
-    Route::post('/admin/guides', [AdminController::class, 'guideStore'])->name('admin.guide.store');
-    Route::get('/admin/guides/{id}/edit', [AdminController::class, 'guideEdit'])->name('admin.guide.edit');
-    Route::post('/admin/guides/{id}/update', [AdminController::class, 'guideUpdate'])->name('admin.guide.update');
-    Route::post('/admin/guides/{id}/delete', [AdminController::class, 'guideDelete'])->name('admin.guide.delete');
-
-    // Infographics CRUD
-    Route::get('/admin/infographics', [AdminController::class, 'infographicsList'])->name('admin.infographics.list');
-    Route::post('/admin/infographics', [AdminController::class, 'infographicStore'])->name('admin.infographic.store');
-    Route::get('/admin/infographics/{id}/edit', [AdminController::class, 'infographicEdit'])->name('admin.infographic.edit');
-    Route::post('/admin/infographics/{id}/update', [AdminController::class, 'infographicUpdate'])->name('admin.infographic.update');
-    Route::post('/admin/infographics/{id}/delete', [AdminController::class, 'infographicDelete'])->name('admin.infographic.delete');
-
-    // Hero slides CRUD
-    Route::post('/admin/hero', [AdminController::class, 'heroStore'])->name('admin.hero.store');
-    Route::get('/admin/hero/{id}/edit', [AdminController::class, 'heroEdit'])->name('admin.hero.edit');
-    Route::post('/admin/hero/{id}/update', [AdminController::class, 'heroUpdate'])->name('admin.hero.update');
-    Route::post('/admin/hero/{id}/delete', [AdminController::class, 'heroDelete'])->name('admin.hero.delete');
-    Route::post('/admin/hero/reorder', [AdminController::class, 'heroReorder'])->name('admin.hero.reorder');
-
-    // Contact messages review
-    Route::get('/admin/contacts', [AdminController::class, 'contactsList'])->name('admin.contacts.list');
-    Route::get('/admin/contacts/{id}', [AdminController::class, 'contactShow'])->name('admin.contacts.show');
-    Route::post('/admin/contacts/{id}/update', [AdminController::class, 'contactUpdate'])->name('admin.contacts.update');
-    Route::post('/admin/contacts/{id}/delete', [AdminController::class, 'contactDelete'])->name('admin.contacts.delete');
-});
+// Admin login and CRUD routes — Completely disabled (404) for Read-Only Preview
+Route::get('/admin/login', fn() => abort(404))->name('admin.login');
+Route::post('/admin/login', fn() => abort(404))->name('admin.login.submit');
+Route::post('/admin/logout', fn() => abort(404))->name('admin.logout');
+Route::any('/admin/{any?}', fn() => abort(404))->where('any', '.*')->name('admin.dashboard');

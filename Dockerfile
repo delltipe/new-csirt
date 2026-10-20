@@ -12,14 +12,21 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
+# Build-time setup: install production dependencies, initialize and seed public-content SQLite database
 RUN composer install --no-dev --optimize-autoloader \
     && cp .env.example .env \
-    && php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');" \
-    && mkdir -p public/images/optimized \
+    && touch database/database.sqlite \
+    && php artisan migrate --force \
+    && php artisan db:seed --class=Database\\Seeders\\PublicPreviewSeeder --force \
+    && mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs public/images/optimized \
+    && chmod +x docker-entrypoint.sh \
     && chown -R www-data:www-data storage bootstrap/cache database public/images/optimized \
     && chmod -R u+rwX,g+rwX,o=rX storage bootstrap/cache database public/images/optimized
 
-ENV PORT=8000
-EXPOSE 8000
+USER www-data
 
-CMD ["sh", "-c", "php artisan key:generate --force --quiet && php artisan migrate --force --seed && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT"]
+ENV PORT=8080
+EXPOSE 8080
+
+# Runtime: require stable APP_KEY, fail fast if missing, execute single-command HTTP server
+CMD ["./docker-entrypoint.sh"]
