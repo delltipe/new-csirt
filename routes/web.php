@@ -73,15 +73,15 @@ Route::post('/login', fn() => abort(403, 'Autentikasi dinonaktifkan pada versi p
 Route::post('/logout', fn() => abort(403, 'Autentikasi dinonaktifkan pada versi pratinjau publik.'))->name('logout');
 
 // ---------------------------------------------------------------
-// Bug Hunter (Reporter) Routes — Disabled for Read-Only Preview
+// Bug Hunter (Reporter) Routes — Demo Incident Submission (Stage 1)
 // ---------------------------------------------------------------
-Route::get('/bug-hunter', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.dashboard');
-Route::get('/bug-hunter/laporan', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.tac');
-Route::post('/bug-hunter/laporan/agree', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.agree');
-Route::get('/bug-hunter/laporan/baru', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.create');
-Route::post('/bug-hunter/laporan/simpan', fn() => abort(403, 'Pengunggahan berkas dan pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.store');
-Route::get('/bug-hunter/laporan/selesai', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.thank-you');
-Route::get('/bug-hunter/laporan/{id}', fn() => abort(403, 'Pelaporan insiden dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.show');
+Route::get('/bug-hunter', fn() => abort(403, 'Dasbor pelapor dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.dashboard');
+Route::get('/bug-hunter/laporan', fn() => abort(403, 'Persetujuan TaC terpisah dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.tac');
+Route::post('/bug-hunter/laporan/agree', fn() => abort(403, 'Persetujuan TaC terpisah dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.agree');
+Route::get('/bug-hunter/laporan/baru', [BugHunterController::class, 'create'])->name('bug-hunter.create');
+Route::post('/bug-hunter/laporan/simpan', [BugHunterController::class, 'store'])->middleware('throttle:5,10')->name('bug-hunter.store');
+Route::get('/bug-hunter/laporan/selesai', [BugHunterController::class, 'thankYou'])->name('bug-hunter.thank-you');
+Route::get('/bug-hunter/laporan/{id}', fn() => abort(403, 'Detail laporan perorangan dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.show');
 
 // Public Incident Ticket Tracking — Disabled to prevent probing
 Route::get('/lacak-laporan', fn() => abort(403, 'Pelacakan tiket insiden dinonaktifkan pada versi pratinjau publik.'))->name('ticket.track');

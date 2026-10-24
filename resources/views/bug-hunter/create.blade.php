@@ -493,6 +493,23 @@ html.accessibility-contrast-high .lapor-help-box { background: #FFFFFF; border-c
 html.accessibility-contrast-high button.lapor-help-link { background: #FFFFFF; color: #000080; border-color: #000000; }
 
 /* High-Contrast Mode Overrides */
+html.accessibility-contrast-dark .preview-form-alert {
+    background: #241A08 !important;
+    border-color: #F59E0B !important;
+    color: #FDE68A !important;
+}
+html.accessibility-contrast-dark .preview-form-alert strong {
+    color: #FBBF24 !important;
+}
+html.accessibility-contrast-high .preview-form-alert {
+    background: #000000 !important;
+    border: 2px solid #FFFF00 !important;
+    color: #FFFF00 !important;
+}
+html.accessibility-contrast-high .preview-form-alert strong {
+    color: #FFFF00 !important;
+}
+
 html.accessibility-contrast-high .btn-downtime-preset {
     background: #FFFFFF !important;
     color: #000000 !important;
@@ -603,18 +620,29 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
 <div class="lapor-header">
     <div class="container">
         <div class="lapor-header__eyebrow">
-            <i class="bi bi-megaphone-fill" aria-hidden="true"></i>
-            Formulir Laporan
+            <i class="bi bi-shield-shaded" aria-hidden="true"></i>
+            Simulasi Pratinjau Publik
         </div>
-        <h1>Lapor Insiden Siber</h1>
+        <h1>Lapor Insiden Siber (Uji Coba Sandbox)</h1>
         <p class="lapor-header__sub">
-            Isi seluruh informasi kejadian secara lengkap. Bukti pendukung dapat berupa file atau URL (maksimal 3, masing-masing 5MB).
+            Formulir simulasi pelaporan insiden siber untuk pengujian alur interaktif. Gunakan data fiktif untuk simulasi penerbitan tiket dan peninjauan.
         </p>
     </div>
 </div>
 
 <div class="lapor-layout">
     <div class="container">
+
+        <div class="preview-form-alert" role="region" aria-label="Peringatan Data Fiktif Pratinjau Publik" style="background: #FFFBEB; border: 1px solid #F59E0B; border-left: 4px solid #D97706; padding: 18px 22px; margin-bottom: 24px; color: #78350F;">
+            <div style="display: flex; gap: 12px; align-items: flex-start;">
+                <i class="bi bi-exclamation-triangle-fill" style="font-size: 20px; color: #D97706; flex-shrink: 0; margin-top: 2px;" aria-hidden="true"></i>
+                <div style="font-size: 13.5px; line-height: 1.6;">
+                    <strong style="color: #92400E; display: block; margin-bottom: 4px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em;">Peringatan Keamanan &amp; Data Fiktif Lingkungan Pengujian:</strong>
+                    Situs ini merupakan <strong>lingkungan pratinjau publik (sandbox preview)</strong>. Dilarang keras memasukkan data pribadi asli, NIK, alamat riil, kata sandi, token otentikasi, dokumen rahasia, maupun laporan insiden siber nyata.
+                    Seluruh data yang dikirimkan disimpan pada database isolasi simulasi dan <strong>tidak</strong> diteruskan ke tim penanganan insiden darurat JakartaProv-CSIRT.
+                </div>
+            </div>
+        </div>
 
         @if ($errors->any())
         <div class="validation-summary" role="alert" tabindex="-1" id="validation-summary" autofocus>
@@ -647,7 +675,7 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
             <ol class="lapor-progress-track" aria-label="Tahapan Pelaporan Insiden">
                 <li class="lapor-progress-step is-complete">
                     <span class="lapor-progress-step__num" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
-                    <span class="lapor-progress-step__text"><span class="visually-hidden">Langkah 1 selesai: </span>1. Akun &amp; TaC Terverifikasi</span>
+                    <span class="lapor-progress-step__text"><span class="visually-hidden">Langkah 1 selesai: </span>1. Panduan &amp; Data Fiktif</span>
                 </li>
                 <li class="lapor-progress-step is-active" aria-current="step">
                     <span class="lapor-progress-step__num" aria-hidden="true">2</span>
@@ -655,7 +683,7 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
                 </li>
                 <li class="lapor-progress-step">
                     <span class="lapor-progress-step__num" aria-hidden="true">3</span>
-                    <span class="lapor-progress-step__text">3. Tiket &amp; Pelacakan</span>
+                    <span class="lapor-progress-step__text">3. Tiket Simulasi</span>
                 </li>
             </ol>
 
@@ -792,11 +820,11 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
             </div>
 
             <fieldset class="bukti-fieldset">
-            <legend class="form-step__title" style="font-size:20px; margin-top:8px; padding:0;">Bukti Laporan</legend>
+            <legend class="form-step__title" style="font-size:20px; margin-top:8px; padding:0;">Bukti Tautan Simulasi</legend>
             <div class="form-step__divider"></div>
 
             <div class="evidence-head">
-                <span class="evidence-hint" id="hint-bukti">Maksimal 3 bukti. Setiap bukti: <strong>File</strong> (PNG/JPG/GIF/PDF, maks. 5MB) <strong>atau</strong> <strong>URL</strong> (diawali http:// atau https://). File tidak wajib bila sudah ada URL.</span>
+                <span class="evidence-hint" id="hint-bukti"><strong>Unggah file biner dinonaktifkan demi keamanan pratinjau.</strong> Masukkan maksimal 3 tautan URL bukti simulasi atau dokumentasi publik (diawali http:// atau https://). File tidak diperkenankan.</span>
             </div>
 
             @if ($errors->has('bukti') || collect($errors->keys())->contains(fn ($k) => str_starts_with($k, 'bukti')))
@@ -807,19 +835,33 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
 
             <div class="form-field bukti-actions">
                 <button type="button" class="btn-add-evidence" id="btn-add-evidence" aria-describedby="hint-bukti">
-                    <i class="bi bi-plus-circle" aria-hidden="true"></i> Tambah Bukti
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i> Tambah URL Bukti
                 </button>
             </div>
             </fieldset>
 
+            <div class="form-field" style="margin-top: 24px; padding: 18px 20px; background: var(--mist); border: 1px solid var(--border);">
+                <label class="lapor-checkbox-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; margin-bottom: 0;">
+                    <input type="checkbox" name="syarat_ketentuan" value="1" id="field-syarat-ketentuan"
+                           class="@error('syarat_ketentuan') is-invalid @enderror"
+                           {{ old('syarat_ketentuan') ? 'checked' : '' }} required style="margin-top: 3px; width: 18px; height: 18px; flex-shrink: 0; cursor: pointer;">
+                    <span style="font-size: 13px; line-height: 1.6; color: var(--ink);">
+                        <strong>Pernyataan Data Fiktif &amp; Simulasi:</strong> Saya memahami dan menyetujui bahwa seluruh informasi yang dikirimkan pada formulir ini adalah data fiktif untuk simulasi pengujian pratinjau publik. Saya menyatakan tidak menyertakan data pribadi asli, kata sandi, token otentikasi, dokumen rahasia, maupun insiden siber riil. <span class="req" style="color: var(--alert); font-weight: bold;">*</span>
+                    </span>
+                </label>
+                @error('syarat_ketentuan')
+                <div class="field-error" id="err-syarat-ketentuan" role="alert" style="margin-top: 8px;"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
+                @enderror
+            </div>
+
             @include('components.captcha', ['question' => $captchaQuestion])
 
             <div class="submit-nav">
-                <a href="{{ route('bug-hunter.dashboard') }}" class="btn-cancel">
-                    <i class="bi bi-arrow-left" aria-hidden="true"></i> Batal
+                <a href="{{ route('home') }}" class="btn-cancel">
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i> Kembali ke Beranda
                 </a>
                 <button type="submit" class="btn-submit">
-                    <i class="bi bi-send-fill"></i> Kirim Laporan
+                    <i class="bi bi-send-fill" aria-hidden="true"></i> Kirim Laporan Simulasi
                 </button>
             </div>
         </form>
@@ -848,28 +890,10 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
         rows.forEach(function (row, idx) {
             row.dataset.index = idx;
 
-            // Jenis Bukti
-            const jenisLabel = row.querySelector('.bukti-jenis-label');
-            const jenisSel = row.querySelector('.bukti-jenis');
-            if (jenisLabel) {
-                jenisLabel.setAttribute('for', 'bukti-' + idx + '-jenis');
-                jenisLabel.textContent = 'Jenis Bukti ' + (idx + 1);
-            }
-            if (jenisSel) {
-                jenisSel.id = 'bukti-' + idx + '-jenis';
-                jenisSel.name = 'bukti[' + idx + '][jenis]';
-            }
-
-            // File Bukti
-            const fileLabel = row.querySelector('.bukti-file-label');
-            const fileInput = row.querySelector('.bukti-file');
-            if (fileLabel) {
-                fileLabel.setAttribute('for', 'bukti-' + idx + '-file');
-                fileLabel.textContent = 'File Bukti ' + (idx + 1) + ' (maks. 5MB)';
-            }
-            if (fileInput) {
-                fileInput.id = 'bukti-' + idx + '-file';
-                fileInput.name = 'bukti[' + idx + '][file]';
+            // Hidden Jenis input
+            const jenisInput = row.querySelector('.bukti-jenis');
+            if (jenisInput) {
+                jenisInput.name = 'bukti[' + idx + '][jenis]';
             }
 
             // URL Bukti
@@ -877,7 +901,7 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
             const urlInput = row.querySelector('.bukti-url');
             if (urlLabel) {
                 urlLabel.setAttribute('for', 'bukti-' + idx + '-url');
-                urlLabel.textContent = 'URL Bukti ' + (idx + 1);
+                urlLabel.textContent = 'URL Bukti Tautan ' + (idx + 1);
             }
             if (urlInput) {
                 urlInput.id = 'bukti-' + idx + '-url';
@@ -887,7 +911,7 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
             // Remove button
             const removeBtn = row.querySelector('.btn-remove-evidence');
             if (removeBtn) {
-                removeBtn.setAttribute('aria-label', 'Hapus bukti ' + (idx + 1));
+                removeBtn.setAttribute('aria-label', 'Hapus bukti tautan ' + (idx + 1));
             }
         });
 
@@ -895,40 +919,18 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
         updateAddBtn();
     }
 
-    function template(index, jenis, urlValue) {
+    function template(index, urlValue) {
         const div = document.createElement('div');
         div.className = 'bukti-row';
         div.dataset.index = index;
+        div.style.gridTemplateColumns = '1fr auto';
         div.innerHTML =
             '<div>' +
-                '<label class="lapor-label bukti-jenis-label" for="bukti-' + index + '-jenis" style="font-size:11px;">Jenis Bukti ' + (index + 1) + '</label>' +
-                '<select id="bukti-' + index + '-jenis" name="bukti[' + index + '][jenis]" class="lapor-select lapor-input bukti-jenis">' +
-                    '<option value="file"' + (jenis === 'url' ? '' : ' selected') + '>File</option>' +
-                    '<option value="url"' + (jenis === 'url' ? ' selected' : '') + '>URL</option>' +
-                '</select>' +
+                '<input type="hidden" class="bukti-jenis" name="bukti[' + index + '][jenis]" value="url">' +
+                '<label class="lapor-label bukti-url-label" for="bukti-' + index + '-url" style="font-size:11px;">URL Bukti Tautan ' + (index + 1) + ' <span class="req">*</span></label>' +
+                '<input type="url" id="bukti-' + index + '-url" name="bukti[' + index + '][url]" class="lapor-input bukti-url" placeholder="https://..." value="' + (urlValue || '') + '" aria-describedby="hint-bukti" required>' +
             '</div>' +
-            '<div>' +
-                '<label class="lapor-label bukti-file-label" for="bukti-' + index + '-file" style="font-size:11px;' + (jenis === 'url' ? 'display:none;' : '') + '">File Bukti ' + (index + 1) + ' (maks. 5MB)</label>' +
-                '<input type="file" id="bukti-' + index + '-file" name="bukti[' + index + '][file]" class="lapor-input bukti-file" accept=".png,.jpg,.jpeg,.gif,.pdf" aria-describedby="hint-bukti" style="' + (jenis === 'url' ? 'display:none;' : '') + '">' +
-                '<label class="lapor-label bukti-url-label" for="bukti-' + index + '-url" style="font-size:11px;' + (jenis === 'url' ? '' : 'display:none;') + '">URL Bukti ' + (index + 1) + '</label>' +
-                '<input type="url" id="bukti-' + index + '-url" name="bukti[' + index + '][url]" class="lapor-input bukti-url" placeholder="https://..." value="' + (urlValue || '') + '" aria-describedby="hint-bukti" style="' + (jenis === 'url' ? '' : 'display:none;') + '">' +
-            '</div>' +
-            '<button type="button" class="btn-remove-evidence" aria-label="Hapus bukti ' + (index + 1) + '"><i class="bi bi-trash3" aria-hidden="true"></i></button>';
-
-        const jenisSel = div.querySelector('.bukti-jenis');
-        const fileInput = div.querySelector('.bukti-file');
-        const urlInput = div.querySelector('.bukti-url');
-        const fileLabel = div.querySelector('.bukti-file-label');
-        const urlLabel = div.querySelector('.bukti-url-label');
-
-        jenisSel.addEventListener('change', function () {
-            const isUrl = this.value === 'url';
-            fileInput.style.display = isUrl ? 'none' : '';
-            urlInput.style.display = isUrl ? '' : 'none';
-            fileLabel.style.display = isUrl ? 'none' : '';
-            urlLabel.style.display = isUrl ? '' : 'none';
-            if (isUrl) { urlInput.focus(); } else { fileInput.focus(); }
-        });
+            '<button type="button" class="btn-remove-evidence" aria-label="Hapus bukti tautan ' + (index + 1) + '"><i class="bi bi-trash3" aria-hidden="true"></i></button>';
 
         div.querySelector('.btn-remove-evidence').addEventListener('click', function () {
             const nextRow = div.nextElementSibling;
@@ -952,12 +954,12 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
 
     function addRow(prefill, shiftFocus) {
         if (count >= MAX_EVIDENCE) return;
-        const row = template(count, prefill ? (prefill.jenis || 'file') : 'file', prefill ? (prefill.url || '') : '');
+        const row = template(count, prefill ? (prefill.url || '') : '');
         list.appendChild(row);
         renumberRows();
 
         if (shiftFocus) {
-            const focusTarget = row.querySelector('.bukti-jenis');
+            const focusTarget = row.querySelector('.bukti-url');
             if (focusTarget) focusTarget.focus();
         }
     }
@@ -970,7 +972,7 @@ html.accessibility-contrast-high .lapor-progress-step.is-active .lapor-progress-
     if (typeof oldBukti === 'object' && Object.keys(oldBukti).length) {
         Object.keys(oldBukti).forEach(function (key) {
             const val = oldBukti[key];
-            if (val && val.jenis) addRow(val, false);
+            if (val && (val.url || val.jenis)) addRow(val, false);
         });
     }
 

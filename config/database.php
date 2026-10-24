@@ -99,8 +99,8 @@ return [
         ],
 
         'sandbox' => [
-            'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
+            'driver' => env('SANDBOX_DB_DRIVER', 'pgsql'),
+            'url' => env('DATABASE_URL') ?: null,
             'host' => env('SANDBOX_DB_HOST', '127.0.0.1'),
             'port' => env('SANDBOX_DB_PORT', '5432'),
             'database' => env('SANDBOX_DB_DATABASE', 'forge'),

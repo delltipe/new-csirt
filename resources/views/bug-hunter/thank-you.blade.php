@@ -223,6 +223,17 @@
 }
 
 /* High-Contrast Mode Overrides */
+html.accessibility-contrast-dark .preview-alert-thankyou {
+    background: #241A08 !important;
+    border-color: #F59E0B !important;
+    color: #FDE68A !important;
+}
+html.accessibility-contrast-high .preview-alert-thankyou {
+    background: #000000 !important;
+    border: 2px solid #FFFF00 !important;
+    color: #FFFF00 !important;
+}
+
 html.accessibility-contrast-high a.btn-back-home {
     background: #000080 !important;
     color: #FFFFFF !important;
@@ -255,19 +266,29 @@ html.accessibility-contrast-high a.btn-report-another:hover {
             <div class="thankyou-card__header">
                 <div class="thankyou-badge">
                     <i class="bi bi-check-circle-fill"></i>
-                    Laporan Diterima
+                    Simulasi Berhasil
                 </div>
-                <h1>Terima Kasih<br>atas Laporan Anda</h1>
+                <h1>Laporan Simulasi Diterima</h1>
                 <p>
-                    Laporan insiden Anda telah berhasil dikirim kepada tim JakartaProv-CSIRT.
+                    Data laporan simulasi berhasil dicatat pada database sandbox pratinjau publik untuk pengujian alur penanganan insiden.
                 </p>
             </div>
 
             <div class="thankyou-card__body">
+                <div class="preview-alert-thankyou" style="background: #FFFBEB; border: 1px solid #F59E0B; border-left: 4px solid #D97706; padding: 16px 20px; margin-bottom: 24px; color: #78350F; font-size: 13px; line-height: 1.6;">
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
+                        <i class="bi bi-exclamation-triangle-fill" style="font-size: 18px; color: #D97706; flex-shrink: 0; margin-top: 2px;" aria-hidden="true"></i>
+                        <div>
+                            <strong style="color: #92400E; display: block; margin-bottom: 2px; text-transform: uppercase; font-size: 12.5px; letter-spacing: 0.04em;">Pemberitahuan Pratinjau Publik (Sandbox):</strong>
+                            Nomor tiket ini merupakan referensi simulasi pengujian pada database sandbox publik. Laporan ini <strong>tidak</strong> diteruskan ke tim operasional kedaruratan riil JakartaProv-CSIRT. Dilarang menggunakan nomor tiket ini untuk pengaduan resmi kedaruratan siber.
+                        </div>
+                    </div>
+                </div>
+
                 @if ($tiketNo)
                 <div class="ticket-box">
                     <div>
-                        <div class="ticket-box__label">No Tiket Laporan</div>
+                        <div class="ticket-box__label">No Tiket Simulasi Demo</div>
                         <div class="ticket-box__value">{{ $tiketNo }}</div>
                     </div>
                     <button type="button" class="ticket-box__copy" id="btn-copy-ticket" aria-live="polite">
@@ -276,8 +297,7 @@ html.accessibility-contrast-high a.btn-report-another:hover {
                 </div>
                 <p style="font-size:12.5px; color:var(--mid); margin-top:-16px; margin-bottom:24px; line-height:1.6;">
                     <i class="bi bi-info-circle-fill" style="color:var(--navy);" aria-hidden="true"></i>
-                    Simpan nomor tiket ini. Anda juga dapat memeriksa status penanganan secara publik tanpa perlu masuk melalui tautan
-                    <a href="{{ route('ticket.track', ['tiket' => $tiketNo]) }}" style="color:var(--navy); font-weight:700; text-decoration:underline;">Lacak Tiket {{ $tiketNo }}</a>.
+                    Simpan nomor tiket simulasi ini. Nomor tiket ini dicatat secara aman dalam format pratinjau publik (<code>DEMO-YYYY-XXXXXXXX</code>).
                 </p>
                 @endif
 
@@ -302,11 +322,11 @@ html.accessibility-contrast-high a.btn-report-another:hover {
                 </div>
 
                 <div class="thankyou-actions">
-                    <a href="{{ route('bug-hunter.dashboard') }}" class="btn-back-home">
-                        <i class="bi bi-house-fill"></i> Lihat Status Laporan
+                    <a href="{{ route('home') }}" class="btn-back-home">
+                        <i class="bi bi-house-fill"></i> Kembali ke Beranda
                     </a>
                     <a href="{{ route('bug-hunter.create') }}" class="btn-report-another">
-                        <i class="bi bi-plus-circle"></i> Lapor Insiden Lain
+                        <i class="bi bi-plus-circle"></i> Buat Laporan Demo Lain
                     </a>
                 </div>
             </div>

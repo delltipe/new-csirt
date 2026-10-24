@@ -247,7 +247,7 @@
             <p class="footer-copy">
                 &copy; {{ date('Y') }} JakartaProv-CSIRT — Pemerintah Provinsi DKI Jakarta. Seluruh hak dilindungi.
             </p>
-            @if (!empty(config('services.goatcounter.endpoint')))
+            @if (!empty(config('services.goatcounter.endpoint')) && !request()->is('login*', 'register*', 'logout*', 'bug-hunter*', 'lacak-laporan*', 'admin*'))
                 <p class="footer-privacy-note" style="font-size: 11px; color: var(--faint-on-dark); margin: 0; line-height: 1.55; max-width: 680px;">
                     <i class="bi bi-shield-check" aria-hidden="true" style="margin-right: 4px;"></i>
                     <strong>Privasi Pratinjau:</strong> Situs ini menggunakan analitik web tanpa kuki (cookieless) untuk pelaporan statistik agregat. Untuk menghitung kunjungan unik, sistem (GoatCounter) memproses alamat IP dan informasi peramban (user-agent) secara sementara di memori server hingga maksimal 8 jam sebelum dihapus, tanpa penyimpanan persisten atau pelacakan lintas situs. Pengumpulan data dibatasi pada metrik agregat halaman publik dan tunduk pada prinsip perlindungan privasi serta etika penelitian yang berlaku.

@@ -48,6 +48,18 @@
     </script>
 </head>
 <body>
+    {{-- Global Demonstration & Preview Environment Notice --}}
+    <aside class="preview-global-banner" aria-label="Pemberitahuan Lingkungan Pratinjau Publik">
+        <div class="container preview-global-banner__inner">
+            <span class="preview-global-banner__badge">
+                <i class="bi bi-shield-exclamation" aria-hidden="true"></i> MODE SIMULASI &amp; PRATINJAU PUBLIK
+            </span>
+            <p class="preview-global-banner__text">
+                Portal ini adalah lingkungan pengujian demonstrasi sistem. <strong>Wajib gunakan informasi fiktif.</strong> Dilarang memasukkan data pribadi asli, kata sandi, berkas rahasia, atau rincian insiden siber riil.
+            </p>
+        </div>
+    </aside>
+
     @include('components.navbar')
     
     {{-- Accessibility Widget --}}

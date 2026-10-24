@@ -60,10 +60,14 @@ class ReadOnlySecurityPreviewTest extends TestCase
         $this->get('/bug-hunter')->assertForbidden();
         $this->get('/bug-hunter/laporan')->assertForbidden();
         $this->post('/bug-hunter/laporan/agree')->assertForbidden();
-        $this->get('/bug-hunter/laporan/baru')->assertForbidden();
-        $this->get('/bug-hunter/laporan/selesai')->assertForbidden();
         $this->get('/bug-hunter/laporan/1')->assertForbidden();
         $this->get('/lacak-laporan')->assertForbidden();
+    }
+
+    public function test_stage_one_incident_reporting_routes_are_accessible(): void
+    {
+        $this->get('/bug-hunter/laporan/baru')->assertOk();
+        $this->get('/bug-hunter/laporan/selesai')->assertOk();
     }
 
     public function test_fake_evidence_upload_is_forbidden_and_no_file_created(): void
@@ -75,7 +79,7 @@ class ReadOnlySecurityPreviewTest extends TestCase
 
         $fakeFile = UploadedFile::fake()->create('exploit_payload.png', 200, 'image/png');
 
-        $response = $this->post('/bug-hunter/laporan/simpan', [
+        $response = $this->from('/bug-hunter/laporan/baru')->post('/bug-hunter/laporan/simpan', [
             'nama_pelapor' => 'Test Reporter',
             'email_pelapor' => 'reporter@example.com',
             'judul_insiden' => 'Test Vulnerability Report',
@@ -83,7 +87,8 @@ class ReadOnlySecurityPreviewTest extends TestCase
             'bukti_file' => $fakeFile,
         ]);
 
-        $response->assertForbidden();
+        $response->assertRedirect('/bug-hunter/laporan/baru');
+        $response->assertSessionHasErrors();
 
         // Verify storage remains empty and no upload was written
         Storage::disk('public')->assertMissing('bukti_laporan/exploit_payload.png');
@@ -154,6 +159,8 @@ class ReadOnlySecurityPreviewTest extends TestCase
 
                 if (str_starts_with($testUri, '/admin')) {
                     $this->assertEquals(404, $status, "Admin route [$method $testUri] must return 404.");
+                } elseif ($testUri === '/bug-hunter/laporan/simpan') {
+                    $this->assertTrue(in_array($status, [302, 303]), "Demo incident submission route [$method $testUri] must redirect on validation failure.");
                 } elseif (str_starts_with($testUri, '/bug-hunter') || in_array($testUri, ['/register', '/login', '/logout'])) {
                     $this->assertEquals(403, $status, "Protected mutating route [$method $testUri] must return 403.");
                 } elseif ($testUri === '/contact') {

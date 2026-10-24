@@ -62,8 +62,23 @@ class SandboxDatabaseConfigurationTest extends TestCase
         $sandboxConfig = config('database.connections.sandbox');
 
         $this->assertIsArray($sandboxConfig, 'The [sandbox] database connection must be defined in config/database.php.');
-        $this->assertSame('pgsql', $sandboxConfig['driver'], 'The [sandbox] connection must use the pgsql driver.');
         $this->assertArrayHasKey('url', $sandboxConfig, 'The [sandbox] connection must support the url configuration parameter.');
+
+        // In phpunit.xml, SANDBOX_DB_DRIVER is set to sqlite for safe in-memory test isolation.
+        // Verify that the configuration file fallback specifies pgsql as default.
+        $originalEnv = getenv('SANDBOX_DB_DRIVER');
+        try {
+            putenv('SANDBOX_DB_DRIVER');
+            unset($_ENV['SANDBOX_DB_DRIVER'], $_SERVER['SANDBOX_DB_DRIVER']);
+            $evaluatedConfig = (require config_path('database.php'))['connections']['sandbox'];
+            $this->assertSame('pgsql', $evaluatedConfig['driver'], 'The [sandbox] default driver must be pgsql.');
+        } finally {
+            if ($originalEnv !== false) {
+                putenv("SANDBOX_DB_DRIVER={$originalEnv}");
+                $_ENV['SANDBOX_DB_DRIVER'] = $originalEnv;
+                $_SERVER['SANDBOX_DB_DRIVER'] = $originalEnv;
+            }
+        }
     }
 
     /**
