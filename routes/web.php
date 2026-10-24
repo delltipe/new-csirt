@@ -13,6 +13,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BugHunterController;
 use App\Http\Controllers\CaptchaController;
 use App\Http\Controllers\IncidentTrackingController;
+use App\Http\Controllers\SandboxAdminController;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -97,6 +98,21 @@ Route::get('/thank-you/contact', fn() => redirect()->route('contact.create'))->n
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+// ---------------------------------------------------------------
+// Restricted Sandbox Administrator Review Routes (Public Preview)
+// ---------------------------------------------------------------
+Route::prefix('sandbox-admin')->name('sandbox-admin.')->group(function () {
+    Route::get('/login', [SandboxAdminController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [SandboxAdminController::class, 'login'])->middleware('throttle:5,1')->name('login.submit');
+
+    Route::middleware('sandbox_admin')->group(function () {
+        Route::post('/logout', [SandboxAdminController::class, 'logout'])->name('logout');
+        Route::get('/incidents', [SandboxAdminController::class, 'index'])->name('incidents.index');
+        Route::get('/incidents/{id}', [SandboxAdminController::class, 'show'])->name('incidents.show');
+        Route::patch('/incidents/{id}/status', [SandboxAdminController::class, 'updateStatus'])->name('incidents.update-status');
+    });
+});
 
 // Admin login and CRUD routes — Completely disabled (404) for Read-Only Preview
 Route::get('/admin/login', fn() => abort(404))->name('admin.login');

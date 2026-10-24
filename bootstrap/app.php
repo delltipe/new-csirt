@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'bug_hunter' => \App\Http\Middleware\BugHunterMiddleware::class,
+            'sandbox_admin' => \App\Http\Middleware\EnsureSandboxAdminAuthenticated::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

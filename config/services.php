@@ -39,4 +39,9 @@ return [
         'endpoint' => env('GOATCOUNTER_ENDPOINT'),
     ],
 
+    'sandbox_admin' => [
+        'username' => env('SANDBOX_ADMIN_USERNAME'),
+        'password_hash' => env('SANDBOX_ADMIN_PASSWORD_HASH'),
+    ],
+
 ];

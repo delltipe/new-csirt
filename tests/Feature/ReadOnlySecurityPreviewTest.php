@@ -165,6 +165,8 @@ class ReadOnlySecurityPreviewTest extends TestCase
                     $this->assertEquals(403, $status, "Protected mutating route [$method $testUri] must return 403.");
                 } elseif ($testUri === '/contact') {
                     $this->assertTrue(in_array($status, [302, 303]), "Contact route [$method $testUri] must redirect.");
+                } elseif (str_starts_with($testUri, '/sandbox-admin')) {
+                    $this->assertTrue(in_array($status, [302, 303, 403]), "Sandbox admin route [$method $testUri] must redirect or be forbidden when unauthenticated.");
                 } else {
                     $this->assertTrue(in_array($status, [403, 404, 405]), "Route [$method $testUri] returned unexpected status $status.");
                 }

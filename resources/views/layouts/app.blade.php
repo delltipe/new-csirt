@@ -119,7 +119,7 @@
 
     {{-- Privacy-Preserving Analytics (GoatCounter) --}}
     @php
-        $isExcludedRoute = request()->is('login*', 'register*', 'logout*', 'bug-hunter*', 'lacak-laporan*', 'admin*');
+        $isExcludedRoute = request()->is('login*', 'register*', 'logout*', 'bug-hunter*', 'lacak-laporan*', 'admin*', 'sandbox-admin*');
     @endphp
     @if (!empty(config('services.goatcounter.endpoint')) && !$isExcludedRoute)
         <script>
@@ -132,7 +132,7 @@
                     }
                     var raw = (typeof p === 'string' && p.length > 0) ? p : (window.location.pathname || '/');
                     var clean = raw.split('?')[0].split('#')[0] || '/';
-                    var excludedPrefixes = ['/login', '/register', '/logout', '/bug-hunter', '/lacak-laporan', '/admin'];
+                    var excludedPrefixes = ['/login', '/register', '/logout', '/bug-hunter', '/lacak-laporan', '/admin', '/sandbox-admin'];
                     for (var i = 0; i < excludedPrefixes.length; i++) {
                         var prefix = excludedPrefixes[i];
                         if (clean === prefix || clean.indexOf(prefix + '/') === 0) {
