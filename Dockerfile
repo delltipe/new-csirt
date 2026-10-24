@@ -2,9 +2,9 @@ FROM php:8.2-cli
 
 RUN apt-get update && apt-get install -y \
         curl unzip git libonig-dev libzip-dev libxml2-dev sqlite3 libsqlite3-dev \
-        libpng-dev libjpeg62-turbo-dev libwebp-dev libfreetype6-dev \
+        libpng-dev libjpeg62-turbo-dev libwebp-dev libfreetype6-dev libpq-dev \
     && docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
-    && docker-php-ext-install pdo_sqlite mbstring zip bcmath gd \
+    && docker-php-ext-install pdo_sqlite pdo_pgsql mbstring zip bcmath gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
