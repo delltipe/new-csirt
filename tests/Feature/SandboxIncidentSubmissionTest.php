@@ -426,9 +426,9 @@ class SandboxIncidentSubmissionTest extends TestCase
 
     public function test_unrelated_routes_remain_strictly_blocked(): void
     {
-        // Bug hunter auth/dashboard/detail/tracking routes
-        $this->get('/bug-hunter')->assertForbidden();
-        $this->get('/bug-hunter/laporan')->assertForbidden();
+        // Bug hunter safe entry redirects; legacy detail/tracking routes remain forbidden
+        $this->get('/bug-hunter')->assertRedirect('/bug-hunter/laporan/baru');
+        $this->get('/bug-hunter/laporan')->assertRedirect('/bug-hunter/laporan/baru');
         $this->post('/bug-hunter/laporan/agree')->assertForbidden();
         $this->get('/bug-hunter/laporan/1')->assertForbidden();
         $this->get('/lacak-laporan')->assertForbidden();

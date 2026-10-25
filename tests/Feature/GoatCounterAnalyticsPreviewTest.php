@@ -173,8 +173,8 @@ class GoatCounterAnalyticsPreviewTest extends TestCase
         $routesToVerify = [
             '/login' => 403,
             '/register' => 403,
-            '/bug-hunter' => 403,
-            '/bug-hunter/laporan' => 403,
+            '/bug-hunter' => 302,
+            '/bug-hunter/laporan' => 302,
             '/bug-hunter/laporan/baru' => 200,
             '/bug-hunter/laporan/selesai' => 200,
             '/lacak-laporan' => 403,

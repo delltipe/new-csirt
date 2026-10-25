@@ -76,8 +76,8 @@ Route::post('/logout', fn() => abort(403, 'Autentikasi dinonaktifkan pada versi 
 // ---------------------------------------------------------------
 // Bug Hunter (Reporter) Routes — Demo Incident Submission (Stage 1)
 // ---------------------------------------------------------------
-Route::get('/bug-hunter', fn() => abort(403, 'Dasbor pelapor dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.dashboard');
-Route::get('/bug-hunter/laporan', fn() => abort(403, 'Persetujuan TaC terpisah dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.tac');
+Route::get('/bug-hunter', fn() => redirect()->route('bug-hunter.create'))->name('bug-hunter.dashboard');
+Route::get('/bug-hunter/laporan', fn() => redirect()->route('bug-hunter.create'))->name('bug-hunter.tac');
 Route::post('/bug-hunter/laporan/agree', fn() => abort(403, 'Persetujuan TaC terpisah dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.agree');
 Route::get('/bug-hunter/laporan/baru', [BugHunterController::class, 'create'])->name('bug-hunter.create');
 Route::post('/bug-hunter/laporan/simpan', [BugHunterController::class, 'store'])->middleware('throttle:5,10')->name('bug-hunter.store');

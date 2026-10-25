@@ -485,12 +485,6 @@
                         <li><a href="{{ route('publickey') }}" aria-label="Public Key (Unduh ASC)" data-goatcounter-click="download-publickey-link-click" data-goatcounter-title="Unduh Public Key ASC (Navbar)">Public Key <i class="bi bi-download" aria-hidden="true" style="font-size: 11px; margin-left: 4px; opacity: 0.85;"></i></a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="{{ route('ticket.track') }}"
-                       class="{{ request()->routeIs('ticket.track') ? 'active' : '' }}">
-                        Lacak Status Tiket
-                    </a>
-                </li>
             </ul>
 
             {{-- Search + CTA --}}
@@ -519,7 +513,7 @@
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="btn-navy">
+                    <a href="{{ route('bug-hunter.create') }}" class="btn-navy">
                         <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Lapor Insiden Siber
                     </a>
                 @endauth

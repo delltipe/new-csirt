@@ -55,10 +55,8 @@ class ReadOnlySecurityPreviewTest extends TestCase
         $this->post('/logout')->assertForbidden();
     }
 
-    public function test_bug_hunter_and_incident_reporting_routes_are_forbidden(): void
+    public function test_restricted_legacy_incident_routes_remain_blocked(): void
     {
-        $this->get('/bug-hunter')->assertForbidden();
-        $this->get('/bug-hunter/laporan')->assertForbidden();
         $this->post('/bug-hunter/laporan/agree')->assertForbidden();
         $this->get('/bug-hunter/laporan/1')->assertForbidden();
         $this->get('/lacak-laporan')->assertForbidden();
@@ -66,8 +64,30 @@ class ReadOnlySecurityPreviewTest extends TestCase
 
     public function test_stage_one_incident_reporting_routes_are_accessible(): void
     {
+        $this->get('/bug-hunter')->assertRedirect('/bug-hunter/laporan/baru');
+        $this->get('/bug-hunter/laporan')->assertRedirect('/bug-hunter/laporan/baru');
         $this->get('/bug-hunter/laporan/baru')->assertOk();
         $this->get('/bug-hunter/laporan/selesai')->assertOk();
+    }
+
+    public function test_public_navbar_points_cta_to_form_and_omits_blocked_tracking_link(): void
+    {
+        $navbarHtml = view('components.navbar')->render();
+
+        $this->assertStringContainsString(route('bug-hunter.create'), $navbarHtml);
+        $this->assertStringContainsString('Lapor Insiden Siber', $navbarHtml);
+        $this->assertStringNotContainsString(route('ticket.track'), $navbarHtml);
+        $this->assertStringNotContainsString('Lacak Status Tiket', $navbarHtml);
+    }
+
+    public function test_public_footer_exposes_sandbox_admin_and_omits_blocked_tracking_link(): void
+    {
+        $footerHtml = view('components.footer')->render();
+
+        $this->assertStringContainsString(route('sandbox-admin.login'), $footerHtml);
+        $this->assertStringContainsString('Admin Sandbox', $footerHtml);
+        $this->assertStringNotContainsString(route('ticket.track'), $footerHtml);
+        $this->assertStringNotContainsString('Lacak Status Tiket', $footerHtml);
     }
 
     public function test_fake_evidence_upload_is_forbidden_and_no_file_created(): void
