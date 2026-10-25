@@ -225,11 +225,11 @@ html.accessibility-contrast-high a.btn-tac-cancel:hover {
     <div class="container">
         <div class="tac-header__eyebrow">
             <i class="bi bi-file-earmark-text-fill" aria-hidden="true"></i>
-            Sebelum Melanjutkan
+            Langkah 1: Persetujuan Ketentuan (Simulasi Sandbox)
         </div>
-        <h1 class="tac-header__title">Syarat & Ketentuan</h1>
+        <h1 class="tac-header__title">Syarat &amp; Ketentuan Simulasi</h1>
         <p class="tac-header__sub">
-            Baca seluruh ketentuan pelaporan insiden siber sebelum mengisi formulir. Persetujuan Anda tercatat untuk keperluan audit.
+            Pelajari ketentuan evaluasi dan kewajiban penggunaan data fiktif sebelum melanjutkan ke formulir pelaporan insiden siber.
         </p>
     </div>
 </div>
@@ -238,41 +238,50 @@ html.accessibility-contrast-high a.btn-tac-cancel:hover {
     <div class="container">
         <div class="tac-card">
             <div class="tac-card__head">
-                <h2 class="tac-card__title">Ketentuan Program Pelaporan Insiden</h2>
-                <span class="tac-version">Versi {{ $version }}</span>
+                <h2 class="tac-card__title">Ketentuan Program Simulasi Pelaporan</h2>
+                <span class="tac-version">Versi {{ $version }} (Sandbox)</span>
+            </div>
+
+            {{-- Prominent Simulation Notice --}}
+            <div style="background: var(--navy-tint); border: 1px solid var(--navy); border-left: 4px solid var(--navy); padding: 14px 18px; margin: 20px 36px 0; font-size: 13.5px; line-height: 1.6; color: var(--ink);">
+                <div style="font-weight: 700; font-family: var(--font-display); text-transform: uppercase; margin-bottom: 4px; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                    <i class="bi bi-shield-exclamation" aria-hidden="true"></i> Pemberitahuan Mode Pratinjau Publik
+                </div>
+                <div>
+                    Ini adalah lingkungan simulasi publik JakartaProv-CSIRT. <strong>Pengunjung wajib menggunakan data insiden fiktif.</strong>
+                    Dilarang keras memasukkan informasi pribadi nyata, kredensial, kata sandi, atau bukti insiden rahasia.
+                    Seluruh proses disimpan pada basis data sandbox terisolasi dan tidak diteruskan ke tim kedaruratan riil.
+                </div>
             </div>
 
             <div class="tac-terms" id="tac-terms" tabindex="0" role="region" aria-label="Ketentuan program pelaporan insiden. Gulir hingga bawah untuk mengaktifkan persetujuan.">
-                <h3>1. Ruang Lingkup</h3>
+                <h3>1. Ruang Lingkup Simulasi</h3>
                 <p>
-                    Program ini terbuka untuk pelaporan insiden keamanan siber pada aset digital yang dikelola
-                    Pemerintah Provinsi DKI Jakarta, khususnya domain <strong>*.jakarta.go.id</strong>.
+                    Layanan ini disediakan sebagai sarana peninjauan dan evaluasi alur pengguna (user journey) portal pelaporan insiden siber Pemerintah Provinsi DKI Jakarta. Pengujian hanya berlaku pada skenario fiktif domain <strong>*.jakarta.go.id</strong>.
                 </p>
 
-                <h3>2. Larangan</h3>
+                <h3>2. Larangan Penggunaan Data Riil & Aktivitas Berbahaya</h3>
                 <ul>
-                    <li>Dilarang melakukan pengujian yang merusak, mengeksploitasi data, atau mengganggu layanan tanpa izin.</li>
-                    <li>Dilarang mengakses, mengubah, atau menghapus data yang bukan milik Anda.</li>
-                    <li>Dilarang membocorkan temuan kepada publik sebelum diselesaikan oleh tim CSIRT.</li>
+                    <li><strong>Dilarang keras</strong> memasukkan identitas pribadi nyata, data warga, dokumen rahasia, atau bukti sensitif organisasi.</li>
+                    <li><strong>Dilarang keras</strong> memasukkan kata sandi, kunci API, credential dump, atau token akses otentik.</li>
+                    <li>Dilarang melakukan pengujian yang merusak, membebani server, atau mengganggu stabilitas infrastruktur publik.</li>
                 </ul>
 
-                <h3>3. Keabsahan Laporan</h3>
+                <h3>3. Kepatuhan Data Fiktif</h3>
                 <ul>
-                    <li>Laporan harus jujur dan dapat diverifikasi dengan bukti pendukung (file atau URL).</li>
-                    <li>Satu temuan hanya diakui untuk satu pelapor. Laporan duplikat tidak akan diproses.</li>
-                    <li>Informasi kontak yang diberikan harus benar untuk keperluan komunikasi dan sertifikat apresiasi.</li>
+                    <li>Seluruh data insiden yang dikirimkan (kronologi, dampak, tautan bukti) harus berupa data rekaan/fiktif.</li>
+                    <li>Bukti lampiran hanya diizinkan dalam bentuk tautan URL pengujian aman (maksimal 3 tautan). Unggah berkas biner dinonaktifkan demi alasan keamanan.</li>
                 </ul>
 
-                <h3>4. Proses Penanganan</h3>
+                <h3>4. Isolasi Database Sandbox</h3>
                 <ul>
-                    <li>Validasi dilakukan maksimal <strong>7 hari kerja</strong>.</li>
-                    <li>Jika dinyatakan valid dan tidak duplikat, sertifikat apresiasi dikirim maksimal <strong>4 hari kerja</strong> setelahnya.</li>
+                    <li>Laporan yang dikirim akan diberi nomor tiket berformat <code>DEMO-YYYY-XXXXXXXX</code>.</li>
+                    <li>Seluruh data disimpan pada basis data pengujian sandbox terpisah dan tidak terhubung dengan antrean operasional darurat CSIRT DKI.</li>
                 </ul>
 
-                <h3>5. Kerahasiaan</h3>
+                <h3>5. Kerahasiaan & Non-Persistensi Akun</h3>
                 <p>
-                    Data laporan Anda hanya digunakan untuk keperluan penanganan insiden dan tidak dibagikan kepada pihak
-                    ketiga di luar keperluan tersebut.
+                    Akses evaluasi ini bersifat simulasi sesi tanpa pembuatan akun permanen. Data pengujian dibersihkan secara berkala sesuai kebijakan pemeliharaan sistem.
                 </p>
             </div>
 
@@ -289,8 +298,8 @@ html.accessibility-contrast-high a.btn-tac-cancel:hover {
                                aria-describedby="tac-scroll-hint @error('agree') err-agree @enderror"
                                @error('agree') aria-invalid="true" @enderror>
                         <span>
-                            Saya telah membaca dan menyetujui seluruh <strong>Syarat & Ketentuan</strong> di atas
-                            (Versi {{ $version }}).
+                            Saya telah membaca dan menyetujui seluruh <strong>Syarat &amp; Ketentuan Simulasi</strong> di atas
+                            (Versi {{ $version }}), serta menyatakan bahwa seluruh data yang saya masukkan adalah data fiktif.
                         </span>
                     </label>
 
@@ -302,10 +311,10 @@ html.accessibility-contrast-high a.btn-tac-cancel:hover {
 
                     <div class="tac-actions">
                         <button type="submit" class="btn-tac-submit" id="btn-agree" disabled>
-                            <i class="bi bi-check2-circle" aria-hidden="true"></i> Saya Setuju & Lanjutkan
+                            <i class="bi bi-check2-circle" aria-hidden="true"></i> Saya Setuju &amp; Lanjutkan
                         </button>
-                        <a href="{{ route('bug-hunter.dashboard') }}" class="btn-tac-cancel">
-                            Kembali ke Dashboard
+                        <a href="{{ route('login') }}" class="btn-tac-cancel">
+                            <i class="bi bi-arrow-left" aria-hidden="true"></i> Kembali ke Menu Masuk
                         </a>
                     </div>
                 </form>

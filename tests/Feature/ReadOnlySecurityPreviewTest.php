@@ -37,57 +37,125 @@ class ReadOnlySecurityPreviewTest extends TestCase
         $this->get('/up')->assertOk();
     }
 
-    public function test_authentication_and_registration_routes_are_forbidden(): void
+    public function test_authentication_and_registration_routes_render_safe_demo_pages_and_reject_credentials(): void
     {
-        $this->get('/register')->assertForbidden();
+        // Safe preview pages render successfully with simulation notices
+        $loginResponse = $this->get('/login');
+        $loginResponse->assertOk();
+        $loginResponse->assertSee('Lanjut sebagai Pelapor Demo');
+        $loginResponse->assertSee('Lingkungan Simulasi Publik');
+        $loginResponse->assertSee('Admin Sandbox');
+
+        $registerResponse = $this->get('/register');
+        $registerResponse->assertOk();
+        $registerResponse->assertSee('Pendaftaran Akun Dinonaktifkan');
+        $registerResponse->assertSee('Lanjut sebagai Pelapor Demo');
+
+        // Mutating credential operations strictly forbidden
         $this->post('/register', [
             'name' => 'Attacker',
             'email' => 'attacker@example.com',
             'password' => 'Secret123!',
         ])->assertForbidden();
 
-        $this->get('/login')->assertForbidden();
         $this->post('/login', [
             'email' => 'attacker@example.com',
             'password' => 'Secret123!',
         ])->assertForbidden();
 
         $this->post('/logout')->assertForbidden();
+
+        // Confirm no user record was created
+        $this->assertEquals(0, DB::table('users')->count());
     }
 
     public function test_restricted_legacy_incident_routes_remain_blocked(): void
     {
-        $this->post('/bug-hunter/laporan/agree')->assertForbidden();
         $this->get('/bug-hunter/laporan/1')->assertForbidden();
-        $this->get('/lacak-laporan')->assertForbidden();
     }
 
     public function test_stage_one_incident_reporting_routes_are_accessible(): void
     {
-        $this->get('/bug-hunter')->assertRedirect('/bug-hunter/laporan/baru');
-        $this->get('/bug-hunter/laporan')->assertRedirect('/bug-hunter/laporan/baru');
+        $this->get('/bug-hunter')->assertRedirect(route('login'));
+        $this->get('/bug-hunter/laporan')->assertOk();
         $this->get('/bug-hunter/laporan/baru')->assertOk();
         $this->get('/bug-hunter/laporan/selesai')->assertOk();
+        $this->get('/lacak-laporan')->assertOk();
     }
 
-    public function test_public_navbar_points_cta_to_form_and_omits_blocked_tracking_link(): void
+    public function test_homepage_and_article_incident_reporting_links_reach_usable_flow(): void
+    {
+        // Homepage contains links to reporting entry and ticket tracking
+        $homeResponse = $this->get('/');
+        $homeResponse->assertOk();
+        $homeResponse->assertSee(route('bug-hunter.dashboard'));
+        $homeResponse->assertSee(route('ticket.track'));
+
+        // News detail and warning detail CTA lead into reporting flow
+        $newsResponse = $this->get('/news/1');
+        $newsResponse->assertOk();
+        $newsResponse->assertSee(route('bug-hunter.dashboard'));
+
+        $warningResponse = $this->get('/warnings/1');
+        $warningResponse->assertOk();
+        $warningResponse->assertSee(route('bug-hunter.dashboard'));
+
+        // Following the reporting CTA brings visitor to the safe demo entry page
+        $this->get(route('bug-hunter.dashboard'))->assertRedirect(route('login'));
+    }
+
+    public function test_simulated_reporter_tac_acknowledgement_flow(): void
+    {
+        // Visiting terms page shows simulation conditions
+        $tacResponse = $this->get('/bug-hunter/laporan');
+        $tacResponse->assertOk();
+        $tacResponse->assertSee('Syarat &amp; Ketentuan Simulasi', false);
+        $tacResponse->assertSee('Saya Setuju & Lanjutkan');
+
+        // Agreeing requires checkbox validation
+        $emptyResponse = $this->post('/bug-hunter/laporan/agree', []);
+        $emptyResponse->assertRedirect();
+        $emptyResponse->assertSessionHasErrors('agree');
+
+        // Agreeing with checkbox sets session and redirects to form without touching database
+        $agreeResponse = $this->post('/bug-hunter/laporan/agree', ['agree' => '1']);
+        $agreeResponse->assertRedirect(route('bug-hunter.create'));
+        $agreeResponse->assertSessionHas('demo_tac_agreed', true);
+
+        $this->assertEquals(0, DB::table('tac_agreements')->count());
+        $this->assertEquals(0, DB::table('users')->count());
+    }
+
+    public function test_demo_entry_page_and_footer_expose_sandbox_admin_login(): void
+    {
+        $loginResponse = $this->get('/login');
+        $loginResponse->assertOk();
+        $loginResponse->assertSee(route('sandbox-admin.login'));
+        $loginResponse->assertSee('Admin Sandbox');
+
+        $footerHtml = view('components.footer')->render();
+        $this->assertStringContainsString(route('sandbox-admin.login'), $footerHtml);
+        $this->assertStringContainsString('Admin Sandbox', $footerHtml);
+    }
+
+    public function test_public_navbar_points_cta_to_login_and_includes_tracking_link(): void
     {
         $navbarHtml = view('components.navbar')->render();
 
-        $this->assertStringContainsString(route('bug-hunter.create'), $navbarHtml);
+        $this->assertStringContainsString(route('login'), $navbarHtml);
         $this->assertStringContainsString('Lapor Insiden Siber', $navbarHtml);
-        $this->assertStringNotContainsString(route('ticket.track'), $navbarHtml);
-        $this->assertStringNotContainsString('Lacak Status Tiket', $navbarHtml);
+        $this->assertStringContainsString(route('ticket.track'), $navbarHtml);
+        $this->assertStringContainsString('Lacak Tiket', $navbarHtml);
     }
 
-    public function test_public_footer_exposes_sandbox_admin_and_omits_blocked_tracking_link(): void
+    public function test_public_footer_exposes_sandbox_admin_and_ticket_tracking(): void
     {
         $footerHtml = view('components.footer')->render();
 
         $this->assertStringContainsString(route('sandbox-admin.login'), $footerHtml);
         $this->assertStringContainsString('Admin Sandbox', $footerHtml);
-        $this->assertStringNotContainsString(route('ticket.track'), $footerHtml);
-        $this->assertStringNotContainsString('Lacak Status Tiket', $footerHtml);
+        $this->assertStringContainsString(route('ticket.track'), $footerHtml);
+        $this->assertStringContainsString('Lacak Status Tiket', $footerHtml);
     }
 
     public function test_fake_evidence_upload_is_forbidden_and_no_file_created(): void
@@ -179,8 +247,8 @@ class ReadOnlySecurityPreviewTest extends TestCase
 
                 if (str_starts_with($testUri, '/admin')) {
                     $this->assertEquals(404, $status, "Admin route [$method $testUri] must return 404.");
-                } elseif ($testUri === '/bug-hunter/laporan/simpan') {
-                    $this->assertTrue(in_array($status, [302, 303]), "Demo incident submission route [$method $testUri] must redirect on validation failure.");
+                } elseif (in_array($testUri, ['/bug-hunter/laporan/simpan', '/bug-hunter/laporan/agree'])) {
+                    $this->assertTrue(in_array($status, [302, 303]), "Demo incident submission/terms route [$method $testUri] must redirect on validation failure.");
                 } elseif (str_starts_with($testUri, '/bug-hunter') || in_array($testUri, ['/register', '/login', '/logout'])) {
                     $this->assertEquals(403, $status, "Protected mutating route [$method $testUri] must return 403.");
                 } elseif ($testUri === '/contact') {

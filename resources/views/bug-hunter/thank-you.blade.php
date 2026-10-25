@@ -181,7 +181,7 @@
     flex-wrap: wrap;
 }
 
-.btn-back-home {
+.btn-track-ticket {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -197,7 +197,23 @@
     border: none;
     transition: background var(--ease);
 }
-.btn-back-home:hover { background: var(--navy-dim); color: var(--white); }
+.btn-track-ticket:hover { background: var(--navy-dim); color: var(--white); }
+
+.btn-back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--mid);
+    border: 1px solid var(--border);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 24px;
+    text-decoration: none;
+    transition: color var(--ease), border-color var(--ease);
+}
+.btn-back-home:hover { color: var(--ink); border-color: var(--mid); }
 
 .btn-report-another {
     display: inline-flex;
@@ -322,11 +338,16 @@ html.accessibility-contrast-high a.btn-report-another:hover {
                 </div>
 
                 <div class="thankyou-actions">
-                    <a href="{{ route('home') }}" class="btn-back-home">
-                        <i class="bi bi-house-fill"></i> Kembali ke Beranda
+                    @if ($tiketNo)
+                    <a href="{{ route('ticket.track', ['tiket' => $tiketNo]) }}" class="btn-track-ticket">
+                        <i class="bi bi-search" aria-hidden="true"></i> Lacak Status Tiket Ini
                     </a>
+                    @endif
                     <a href="{{ route('bug-hunter.create') }}" class="btn-report-another">
-                        <i class="bi bi-plus-circle"></i> Buat Laporan Demo Lain
+                        <i class="bi bi-plus-circle" aria-hidden="true"></i> Buat Laporan Demo Lain
+                    </a>
+                    <a href="{{ route('home') }}" class="btn-back-home">
+                        <i class="bi bi-house-fill" aria-hidden="true"></i> Beranda
                     </a>
                 </div>
             </div>

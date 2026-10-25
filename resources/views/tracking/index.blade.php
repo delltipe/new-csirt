@@ -359,11 +359,11 @@
 <div class="track-header">
     <div class="container">
         <div class="track-header__eyebrow">
-            <i class="bi bi-search" aria-hidden="true"></i> Layanan Pelacakan Insiden
+            <i class="bi bi-search" aria-hidden="true"></i> Layanan Pelacakan Insiden (Sandbox)
         </div>
         <h1>Lacak Status Penanganan</h1>
         <p class="track-header__sub">
-            Pantau perkembangan penanganan insiden siber secara transparan menggunakan nomor tiket resmi Anda (contoh: <code>INS-2026-0001</code>).
+            Pantau perkembangan penanganan insiden siber secara transparan menggunakan nomor tiket demo Anda (contoh: <code>DEMO-2026-B7TGZTCI</code>).
         </p>
     </div>
 </div>
@@ -371,13 +371,24 @@
 <div class="track-layout">
     <div class="container track-container">
 
+        {{-- Simulation Notice --}}
+        <div style="background: var(--navy-tint); border: 1px solid var(--navy); border-left: 4px solid var(--navy); padding: 14px 18px; margin-bottom: 24px; font-size: 13.5px; line-height: 1.6; color: var(--ink);">
+            <div style="font-weight: 700; font-family: var(--font-display); text-transform: uppercase; margin-bottom: 4px; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                <i class="bi bi-info-circle-fill" aria-hidden="true"></i> Pelacakan Tiket Simulasi Sandbox
+            </div>
+            <div>
+                Fitur ini menampilkan status pengujian tiket insiden fiktif yang tersimpan dalam basis data sandbox publik JakartaProv-CSIRT.
+                Data laporan dilindungi dan tidak menampilkan detail teknis atau bukti kerentanan kepada publik.
+            </div>
+        </div>
+
         {{-- Search Form Card --}}
         <div class="track-search-card">
             <h2>Pencarian Nomor Tiket</h2>
-            <p>Masukkan nomor tiket yang Anda dapatkan saat mengirimkan formulir laporan insiden siber.</p>
+            <p>Masukkan nomor tiket demo yang Anda dapatkan saat mengirimkan formulir laporan insiden siber.</p>
             <form action="{{ route('ticket.track') }}" method="GET" class="track-search-form" role="search">
                 <input type="text" name="tiket" value="{{ $tiket }}" class="track-search-input"
-                       placeholder="INS-YYYY-XXXX" aria-label="Nomor Tiket Insiden" required autofocus>
+                       placeholder="DEMO-YYYY-XXXXXXXX" aria-label="Nomor Tiket Insiden" required autofocus>
                 <button type="submit" class="track-search-btn">
                     <i class="bi bi-search" aria-hidden="true"></i> Lacak Tiket
                 </button>
@@ -408,7 +419,7 @@
         <div class="track-result-card" aria-live="polite">
             <div class="track-result-head">
                 <div>
-                    <span class="track-result-head__label">Nomor Tiket Resmi</span>
+                    <span class="track-result-head__label">Nomor Tiket Demo</span>
                     <h2 class="track-result-head__tiket">{{ $report->tiket_no }}</h2>
                 </div>
                 <div>
@@ -421,7 +432,7 @@
             @if ($isRejected)
             <div class="track-rejected-alert">
                 <strong><i class="bi bi-x-circle-fill" aria-hidden="true"></i> Laporan Ditolak:</strong>
-                Laporan ini dinyatakan tidak valid setelah verifikasi teknis awal oleh tim triage CSIRT. Jika Anda memiliki bukti temuan tambahan, Anda dapat mengajukan laporan baru melalui portal pelapor.
+                Laporan simulasi ini dinyatakan tidak valid setelah verifikasi teknis oleh administrator sandbox. Anda dapat mengajukan laporan simulasi baru melalui portal pelapor.
             </div>
             @else
             {{-- Stepper for Normal 5-stage Lifecycle --}}
@@ -446,7 +457,7 @@
             </ol>
             @endif
 
-            {{-- Metadata Grid --}}
+            {{-- Metadata Grid (Strict Allowlist Only) --}}
             <div class="track-info-grid">
                 <div>
                     <div class="track-info-item__label">Kategori Insiden</div>
@@ -457,23 +468,19 @@
                     <div class="track-info-item__val">{{ $report->created_at->format('d M Y, H:i') }} WIB</div>
                 </div>
                 <div>
-                    <div class="track-info-item__label">Pembaruan Terakhir</div>
-                    <div class="track-info-item__val">{{ $report->updated_at->format('d M Y, H:i') }} WIB</div>
+                    <div class="track-info-item__label">Status Penanganan</div>
+                    <div class="track-info-item__val">{{ $report->statusLabel() }}</div>
                 </div>
                 <div>
-                    <div class="track-info-item__label">Tingkat Keparahan</div>
-                    <div class="track-info-item__val">{{ $report->severity ? strtoupper($report->severity) : 'Menunggu Penilaian' }}</div>
-                </div>
-                <div>
-                    <div class="track-info-item__label">Klasifikasi CWE</div>
-                    <div class="track-info-item__val">{{ $report->cwe ?: 'Menunggu Klasifikasi' }}</div>
+                    <div class="track-info-item__label">Lingkungan Data</div>
+                    <div class="track-info-item__val">Sandbox Pengujian Publik</div>
                 </div>
             </div>
 
             <div class="track-disclosure-box">
                 <i class="bi bi-shield-lock-fill" aria-hidden="true" style="color:var(--navy); margin-right:4px;"></i>
-                <strong>Prinsip Pelindungan Data:</strong> Detail payload eksploitasi, deskripsi kerentanan, dan lampiran bukti dirahasiakan sesuai standar penanganan insiden siber.
-                Pemilik laporan terdaftar dapat masuk ke <a href="{{ route('login') }}">Dashboard Pelapor</a> untuk melihat detail lengkap.
+                <strong>Prinsip Pelindungan Data &amp; Isolasi Sandbox:</strong> Detail kronologi kejadian, tindakan teknis, dan bukti tautan dirahasiakan untuk menjamin integritas data pengujian.
+                Pengunjung dapat kembali ke <a href="{{ route('login') }}">Halaman Masuk Demo</a> untuk memulai simulasi pelaporan baru.
             </div>
         </div>
         @endif

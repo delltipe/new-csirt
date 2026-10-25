@@ -9,9 +9,9 @@ use App\Http\Controllers\LawRulePostController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BugHunterController;
 use App\Http\Controllers\CaptchaController;
+use App\Http\Controllers\DemoAuthController;
 use App\Http\Controllers\IncidentTrackingController;
 use App\Http\Controllers\SandboxAdminController;
 
@@ -65,27 +65,27 @@ Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])-
 Route::get('/captcha/refresh', [CaptchaController::class, 'refresh'])->name('captcha.refresh');
 
 // ---------------------------------------------------------------
-// Public Authentication Routes — Disabled for Read-Only Preview
+// Public Authentication Routes — Safe Preview Demo Entry
 // ---------------------------------------------------------------
-Route::get('/register', fn() => abort(403, 'Pendaftaran akun dinonaktifkan pada versi pratinjau publik.'))->name('register');
-Route::post('/register', fn() => abort(403, 'Pendaftaran akun dinonaktifkan pada versi pratinjau publik.'))->name('register.submit');
-Route::get('/login', fn() => abort(403, 'Autentikasi dinonaktifkan pada versi pratinjau publik.'))->name('login');
-Route::post('/login', fn() => abort(403, 'Autentikasi dinonaktifkan pada versi pratinjau publik.'))->name('login.submit');
-Route::post('/logout', fn() => abort(403, 'Autentikasi dinonaktifkan pada versi pratinjau publik.'))->name('logout');
+Route::get('/register', [DemoAuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [DemoAuthController::class, 'register'])->name('register.submit');
+Route::get('/login', [DemoAuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [DemoAuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [DemoAuthController::class, 'logout'])->name('logout');
 
 // ---------------------------------------------------------------
-// Bug Hunter (Reporter) Routes — Demo Incident Submission (Stage 1)
+// Bug Hunter (Reporter) Routes — Demo Incident Reporting Flow
 // ---------------------------------------------------------------
-Route::get('/bug-hunter', fn() => redirect()->route('bug-hunter.create'))->name('bug-hunter.dashboard');
-Route::get('/bug-hunter/laporan', fn() => redirect()->route('bug-hunter.create'))->name('bug-hunter.tac');
-Route::post('/bug-hunter/laporan/agree', fn() => abort(403, 'Persetujuan TaC terpisah dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.agree');
+Route::get('/bug-hunter', [BugHunterController::class, 'dashboard'])->name('bug-hunter.dashboard');
+Route::get('/bug-hunter/laporan', [BugHunterController::class, 'showTac'])->name('bug-hunter.tac');
+Route::post('/bug-hunter/laporan/agree', [BugHunterController::class, 'agreeTac'])->name('bug-hunter.agree');
 Route::get('/bug-hunter/laporan/baru', [BugHunterController::class, 'create'])->name('bug-hunter.create');
 Route::post('/bug-hunter/laporan/simpan', [BugHunterController::class, 'store'])->middleware('throttle:5,10')->name('bug-hunter.store');
 Route::get('/bug-hunter/laporan/selesai', [BugHunterController::class, 'thankYou'])->name('bug-hunter.thank-you');
 Route::get('/bug-hunter/laporan/{id}', fn() => abort(403, 'Detail laporan perorangan dinonaktifkan pada versi pratinjau publik.'))->name('bug-hunter.show');
 
-// Public Incident Ticket Tracking — Disabled to prevent probing
-Route::get('/lacak-laporan', fn() => abort(403, 'Pelacakan tiket insiden dinonaktifkan pada versi pratinjau publik.'))->name('ticket.track');
+// Public Incident Ticket Tracking (Sandbox PostgreSQL)
+Route::get('/lacak-laporan', [IncidentTrackingController::class, 'index'])->middleware('throttle:60,1')->name('ticket.track');
 
 // ---------------------------------------------------------------
 // Contact Routes

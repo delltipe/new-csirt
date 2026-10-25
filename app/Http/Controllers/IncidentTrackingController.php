@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\IncidentReport;
+use App\Models\SandboxIncident;
 use Illuminate\Http\Request;
 
 class IncidentTrackingController extends Controller
 {
     /**
-     * Display the public incident tracking page and search results.
+     * Display the public incident tracking page and search results for sandbox demo incidents.
      */
     public function index(Request $request)
     {
@@ -18,15 +18,15 @@ class IncidentTrackingController extends Controller
         $error = null;
 
         if ($tiket !== null && $tiket !== '') {
-            // Validate ticket number format (e.g. INS-2026-0001)
-            if (preg_match('/^INS-\d{4}-\d{4}$/', $tiket)) {
-                $report = IncidentReport::where('tiket_no', $tiket)->first();
+            // Validate demo ticket number format: DEMO-YYYY-XXXXXXXX (8 alphanumeric characters)
+            if (preg_match('/^DEMO-\d{4}-[A-Z0-9]{8}$/i', $tiket)) {
+                $report = SandboxIncident::where('tiket_no', $tiket)->first();
 
                 if (!$report) {
-                    $error = 'Nomor tiket ' . $tiket . ' tidak ditemukan dalam sistem JakartaProv-CSIRT. Pastikan nomor tiket sudah benar.';
+                    $error = 'Nomor tiket demo ' . $tiket . ' tidak ditemukan dalam basis data sandbox JakartaProv-CSIRT. Pastikan nomor tiket sudah benar.';
                 }
             } else {
-                $error = 'Format nomor tiket tidak sesuai. Contoh format tiket yang valid: INS-2026-0001.';
+                $error = 'Format nomor tiket simulasi tidak sesuai. Contoh format tiket demo yang valid: DEMO-2026-B7TGZTCI.';
             }
         }
 

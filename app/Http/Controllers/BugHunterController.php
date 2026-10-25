@@ -23,7 +23,7 @@ class BugHunterController extends Controller
 
     public function dashboard()
     {
-        abort(403, 'Dasbor pelapor dinonaktifkan pada versi pratinjau publik.');
+        return redirect()->route('login');
     }
 
     public function show(int $id)
@@ -33,11 +33,19 @@ class BugHunterController extends Controller
 
     public function showTac()
     {
-        return redirect()->route('bug-hunter.create');
+        return view('bug-hunter.tac', ['version' => self::TAC_VERSION]);
     }
 
     public function agreeTac(Request $request)
     {
+        $request->validate([
+            'agree' => 'accepted',
+        ], [
+            'agree.accepted' => 'Anda harus menyetujui Ketentuan Simulasi & Penggunaan Data Fiktif untuk melanjutkan.',
+        ]);
+
+        $request->session()->put('demo_tac_agreed', true);
+
         return redirect()->route('bug-hunter.create');
     }
 

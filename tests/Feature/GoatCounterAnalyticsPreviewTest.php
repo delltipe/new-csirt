@@ -171,13 +171,13 @@ class GoatCounterAnalyticsPreviewTest extends TestCase
         config(['services.goatcounter.endpoint' => 'https://jakarta-csirt-preview.goatcounter.com/count']);
 
         $routesToVerify = [
-            '/login' => 403,
-            '/register' => 403,
+            '/login' => 200,
+            '/register' => 200,
             '/bug-hunter' => 302,
-            '/bug-hunter/laporan' => 302,
+            '/bug-hunter/laporan' => 200,
             '/bug-hunter/laporan/baru' => 200,
             '/bug-hunter/laporan/selesai' => 200,
-            '/lacak-laporan' => 403,
+            '/lacak-laporan' => 200,
             '/admin/login' => 404,
             '/admin/dashboard' => 404,
         ];

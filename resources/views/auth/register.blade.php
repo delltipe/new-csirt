@@ -359,82 +359,34 @@ html.accessibility-contrast-high .login-page .btn-toggle-password {
         {{-- Register Card --}}
         <div class="login-card">
             <div class="login-header">
-                <h1 class="login-title">Daftar Akun</h1>
-                <p class="login-sub">Bergabung sebagai pelapor insiden siber JakartaProv-CSIRT</p>
+                <h1 class="login-title">Pendaftaran Akun</h1>
+                <p class="login-sub">Portal Simulasi Pelaporan Insiden Siber JakartaProv-CSIRT (Pratinjau Publik)</p>
             </div>
             <div class="login-body">
-                @if($errors->any())
-                    <div class="alert-error" role="alert">
-                        <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i> {{ $errors->first() }}
+                {{-- Registration Disabled Warning --}}
+                <div class="simulation-alert" role="alert" style="background: var(--navy-tint); border: 1px solid var(--navy); border-left: 4px solid var(--navy); padding: 16px 18px; margin-bottom: 24px; font-size: 13.5px; line-height: 1.6; color: var(--ink);">
+                    <div style="font-weight: 700; font-family: var(--font-display); text-transform: uppercase; margin-bottom: 6px; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                        <i class="bi bi-shield-lock-fill" aria-hidden="true"></i> Pendaftaran Akun Dinonaktifkan
                     </div>
-                @endif
-
-                <form method="POST" action="{{ route('register.submit') }}">
-                    @csrf
-                    <div class="form-group">
-                        <label for="name" class="form-label">Nama Lengkap <span class="req" aria-hidden="true">*</span></label>
-                        <input type="text" class="form-input @error('name') is-invalid @enderror"
-                               id="name" name="name" value="{{ old('name') }}" required autofocus
-                               aria-describedby="@error('name') err-name @enderror"
-                               @error('name') aria-invalid="true" @enderror>
-                        @error('name')
-                        <div class="field-error" id="err-name" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
-                        @enderror
+                    <div>
+                        Untuk menjaga keamanan dan privasi data pengunjung pada server pengujian publik, <strong>pembuatan akun pelapor dengan identitas atau kata sandi nyata dinonaktifkan</strong>.
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="email" class="form-label">Alamat Email <span class="req" aria-hidden="true">*</span></label>
-                        <input type="email" class="form-input @error('email') is-invalid @enderror"
-                               id="email" name="email" value="{{ old('email') }}" required
-                               aria-describedby="@error('email') err-email @enderror"
-                               @error('email') aria-invalid="true" @enderror>
-                        @error('email')
-                        <div class="field-error" id="err-email" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
-                        @enderror
+                <div class="demo-reporter-box" style="background: var(--mist); border: 2px solid var(--navy); padding: 24px 20px; margin-bottom: 24px; text-align: center;">
+                    <div style="font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--navy); margin-bottom: 8px;">
+                        <i class="bi bi-person-check-fill" aria-hidden="true" style="margin-right: 6px;"></i> Simulasi Tanpa Pendaftaran
                     </div>
-
-                    <div class="form-group">
-                        <label for="password" class="form-label">Kata Sandi <span class="req" aria-hidden="true">*</span></label>
-                        <div class="password-input-group">
-                            <input type="password" class="form-input @error('password') is-invalid @enderror"
-                                   id="password" name="password" required
-                                   aria-describedby="hint-password @error('password') err-password @enderror"
-                                   @error('password') aria-invalid="true" @enderror>
-                            <button type="button" class="btn-toggle-password" id="btn-toggle-password"
-                                    aria-label="Tampilkan kata sandi" aria-pressed="false"
-                                    data-target="password">
-                                <i class="bi bi-eye" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="field-hint" id="hint-password">Minimal 8 karakter.</div>
-                        @error('password')
-                        <div class="field-error" id="err-password" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password_confirmation" class="form-label">Ulangi Kata Sandi <span class="req" aria-hidden="true">*</span></label>
-                        <div class="password-input-group">
-                            <input type="password" class="form-input @error('password_confirmation') is-invalid @enderror"
-                                   id="password_confirmation" name="password_confirmation" required
-                                   aria-describedby="@error('password_confirmation') err-password-confirmation @enderror"
-                                   @error('password_confirmation') aria-invalid="true" @enderror>
-                            <button type="button" class="btn-toggle-password" id="btn-toggle-password-confirmation"
-                                    aria-label="Tampilkan ulangi kata sandi" aria-pressed="false"
-                                    data-target="password_confirmation">
-                                <i class="bi bi-eye" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        @error('password_confirmation')
-                        <div class="field-error" id="err-password-confirmation" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <button type="submit" class="btn-submit">Daftar Akun Pelapor</button>
-                </form>
+                    <p style="font-size: 13.5px; color: var(--mid); margin-bottom: 20px; line-height: 1.6;">
+                        Anda dapat langsung menguji alur pelaporan insiden siber secara aman menggunakan akses pelapor demo tanpa perlu mendaftar atau memberikan informasi pribadi.
+                    </p>
+                    <a href="{{ route('bug-hunter.tac') }}" class="btn-submit" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;">
+                        <i class="bi bi-arrow-right-circle-fill" aria-hidden="true"></i> Lanjut sebagai Pelapor Demo
+                    </a>
+                </div>
 
                 <p class="login-footer">
-                    Sudah punya akun pelapor? <a href="{{ route('login') }}">Masuk di sini</a>
+                    Ingin kembali ke menu masuk? <a href="{{ route('login') }}">Halaman Masuk Demo</a>
                 </p>
             </div>
         </div>
@@ -446,7 +398,7 @@ html.accessibility-contrast-high .login-page .btn-toggle-password {
             <div class="track-callout-card">
                 <h2><i class="bi bi-search" aria-hidden="true"></i> Sudah Punya Nomor Tiket?</h2>
                 <p>
-                    Anda <strong>tidak perlu mendaftar atau masuk</strong> untuk mengecek progres penanganan insiden. Masukkan nomor tiket resmi Anda (contoh: <code>INS-2026-0001</code>) untuk melihat status terkini secara instan.
+                    Anda <strong>tidak perlu mendaftar atau masuk</strong> untuk mengecek progres penanganan insiden. Masukkan nomor tiket demo Anda (contoh: <code>DEMO-2026-B7TGZTCI</code>) untuk melihat status terkini secara instan.
                 </p>
                 <a href="{{ route('ticket.track') }}" class="btn-track-public">
                     Lacak Status Tiket <i class="bi bi-arrow-right" aria-hidden="true"></i>
@@ -458,6 +410,37 @@ html.accessibility-contrast-high .login-page .btn-toggle-password {
                 <h3>Alur Pelaporan &amp; Penanganan Insiden</h3>
                 <ol class="workflow-steps">
                     <li class="workflow-step-item">
+                        <div class="workflow-step-item__num">1</div>
+                        <div class="workflow-step-item__text">
+                            <strong>Akses Pelapor Demo</strong>
+                            <span>Simulasi publik tanpa menggunakan akun atau kredensial nyata demi perlindungan privasi.</span>
+                        </div>
+                    </li>
+                    <li class="workflow-step-item">
+                        <div class="workflow-step-item__num">2</div>
+                        <div class="workflow-step-item__text">
+                            <strong>Persetujuan Syarat &amp; Ketentuan (TaC)</strong>
+                            <span>Komitmen integritas dan kepatuhan pengujian hanya dengan data insiden fiktif.</span>
+                        </div>
+                    </li>
+                    <li class="workflow-step-item">
+                        <div class="workflow-step-item__num">3</div>
+                        <div class="workflow-step-item__text">
+                            <strong>Kirim Laporan &amp; Bukti Kerentanan Fiktif</strong>
+                            <span>Formulir terstruktur standar Komdigi dengan pembatasan bukti URL pengujian (maks 3 tautan).</span>
+                        </div>
+                    </li>
+                    <li class="workflow-step-item">
+                        <div class="workflow-step-item__num">4</div>
+                        <div class="workflow-step-item__text">
+                            <strong>Terbitkan &amp; Lacak Nomor Tiket Demo</strong>
+                            <span>Dapatkan nomor tiket berformat resmi DEMO untuk memantau tahapan validasi hingga pemulihan.</span>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+        </div>
                         <div class="workflow-step-item__num">1</div>
                         <div class="workflow-step-item__text">
                             <strong>Daftar / Masuk Akun Pelapor</strong>

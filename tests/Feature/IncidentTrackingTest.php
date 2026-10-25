@@ -2,34 +2,49 @@
 
 namespace Tests\Feature;
 
-use App\Models\IncidentReport;
-use App\Models\User;
+use App\Models\SandboxIncident;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class IncidentTrackingTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function createSampleReport(array $overrides = []): IncidentReport
+    protected function setUp(): void
     {
-        $user = User::factory()->create([
-            'email' => 'reporter.private@example.com',
-            'is_bug_hunter' => true,
-        ]);
+        parent::setUp();
+        $this->seed(\Database\Seeders\PublicPreviewSeeder::class);
 
-        return IncidentReport::create(array_merge([
-            'user_id' => $user->id,
-            'tiket_no' => 'INS-2026-0001',
+        if (!Schema::connection('sandbox')->hasTable('sandbox_incidents')) {
+            $migration = require database_path('migrations/sandbox/2026_10_24_000001_create_sandbox_incidents_table.php');
+            $migration->up();
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        if (Schema::connection('sandbox')->hasTable('sandbox_incidents')) {
+            $migration = require database_path('migrations/sandbox/2026_10_24_000001_create_sandbox_incidents_table.php');
+            $migration->down();
+        }
+
+        parent::tearDown();
+    }
+
+    protected function createSampleSandboxIncident(array $overrides = []): SandboxIncident
+    {
+        return SandboxIncident::create(array_merge([
+            'tiket_no' => 'DEMO-2026-TEST0001',
             'kategori_insiden' => 'Website Defacement',
             'waktu_kejadian' => now()->subDay(),
-            'lokasi_url' => 'https://subdomain.jakarta.go.id/target',
+            'lokasi_url' => 'https://demo-subdomain.jakarta.go.id/target',
             'down_time' => '01:30',
             'deskripsi' => 'SECRET_PAYLOAD: Tampilan halaman index diubah menjadi deface hacker.',
             'tindakan_teknis' => 'SECRET_MITIGATION: Restore backup database dan perbaiki permission.',
-            'cwe' => 'CWE-79',
-            'severity' => 'medium',
-            'status' => IncidentReport::STATUS_IN_PROGRESS,
+            'bukti_urls' => ['https://secret-evidence.com/proof.png'],
+            'status' => SandboxIncident::STATUS_IN_PROGRESS,
         ], $overrides));
     }
 
@@ -40,40 +55,40 @@ class IncidentTrackingTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Lacak Status Penanganan');
         $response->assertSee('Pencarian Nomor Tiket');
+        $response->assertSee('DEMO-2026-B7TGZTCI');
     }
 
     public function test_public_tracking_with_valid_ticket_number(): void
     {
-        $report = $this->createSampleReport();
+        $this->createSampleSandboxIncident();
 
-        $response = $this->get(route('ticket.track', ['tiket' => 'INS-2026-0001']));
+        $response = $this->get(route('ticket.track', ['tiket' => 'DEMO-2026-TEST0001']));
 
         $response->assertStatus(200);
-        $response->assertSee('INS-2026-0001');
+        $response->assertSee('DEMO-2026-TEST0001');
         $response->assertSee('Ditindaklanjuti');
         $response->assertSee('Website Defacement');
-        $response->assertSee('CWE-79');
-        $response->assertSee('MEDIUM');
+        $response->assertSee('Sandbox Pengujian Publik');
     }
 
     public function test_public_tracking_case_insensitive_lookup(): void
     {
-        $this->createSampleReport();
+        $this->createSampleSandboxIncident();
 
-        $response = $this->get(route('ticket.track', ['tiket' => 'ins-2026-0001']));
+        $response = $this->get(route('ticket.track', ['tiket' => 'demo-2026-test0001']));
 
         $response->assertStatus(200);
-        $response->assertSee('INS-2026-0001');
+        $response->assertSee('DEMO-2026-TEST0001');
         $response->assertSee('Ditindaklanjuti');
     }
 
     public function test_public_tracking_with_nonexistent_ticket_number(): void
     {
-        $response = $this->get(route('ticket.track', ['tiket' => 'INS-2026-9999']));
+        $response = $this->get(route('ticket.track', ['tiket' => 'DEMO-2026-99999999']));
 
         $response->assertStatus(200);
-        $response->assertSee('tidak ditemukan dalam sistem JakartaProv-CSIRT');
-        $response->assertDontSee('Nomor Tiket Resmi');
+        $response->assertSee('tidak ditemukan dalam basis data sandbox');
+        $response->assertDontSee('Nomor Tiket Demo');
     }
 
     public function test_public_tracking_with_invalid_format_ticket(): void
@@ -81,45 +96,93 @@ class IncidentTrackingTest extends TestCase
         $response = $this->get(route('ticket.track', ['tiket' => 'INVALID-FORMAT-123']));
 
         $response->assertStatus(200);
-        $response->assertSee('Format nomor tiket tidak sesuai');
+        $response->assertSee('Format nomor tiket simulasi tidak sesuai');
     }
 
     public function test_public_tracking_does_not_leak_sensitive_details(): void
     {
-        $this->createSampleReport();
+        $this->createSampleSandboxIncident();
 
-        $response = $this->get(route('ticket.track', ['tiket' => 'INS-2026-0001']));
+        $response = $this->get(route('ticket.track', ['tiket' => 'DEMO-2026-TEST0001']));
 
         $response->assertStatus(200);
         $response->assertDontSee('SECRET_PAYLOAD');
         $response->assertDontSee('SECRET_MITIGATION');
-        $response->assertDontSee('reporter.private@example.com');
+        $response->assertDontSee('https://secret-evidence.com/proof.png');
     }
 
     public function test_public_tracking_with_rejected_status(): void
     {
-        $this->createSampleReport([
-            'tiket_no' => 'INS-2026-0002',
-            'status' => IncidentReport::STATUS_REJECTED,
+        $this->createSampleSandboxIncident([
+            'tiket_no' => 'DEMO-2026-TEST0002',
+            'status' => SandboxIncident::STATUS_REJECTED,
         ]);
 
-        $response = $this->get(route('ticket.track', ['tiket' => 'INS-2026-0002']));
+        $response = $this->get(route('ticket.track', ['tiket' => 'DEMO-2026-TEST0002']));
 
         $response->assertStatus(200);
         $response->assertSee('Ditolak');
-        $response->assertSee('Laporan ini dinyatakan tidak valid setelah verifikasi teknis');
+        $response->assertSee('Laporan simulasi ini dinyatakan tidak valid setelah verifikasi teknis');
     }
 
-    public function test_public_tracking_excludes_soft_deleted_ticket(): void
+    public function test_public_tracking_status_labels_and_lifecycle_stepper_mapping(): void
     {
-        $report = $this->createSampleReport([
-            'tiket_no' => 'INS-2026-0003',
+        // 1. Pending (menunggu_validasi)
+        $pending = $this->createSampleSandboxIncident([
+            'tiket_no' => 'DEMO-2026-STAT0001',
+            'status' => SandboxIncident::STATUS_PENDING,
         ]);
-        $report->delete(); // soft delete
+        $resPending = $this->get(route('ticket.track', ['tiket' => $pending->tiket_no]));
+        $resPending->assertOk();
+        $resPending->assertSee('Menunggu Validasi');
+        $resPending->assertSee('aria-current="step"', false);
 
-        $response = $this->get(route('ticket.track', ['tiket' => 'INS-2026-0003']));
+        // 2. Validated (divalidasi)
+        $validated = $this->createSampleSandboxIncident([
+            'tiket_no' => 'DEMO-2026-STAT0002',
+            'status' => SandboxIncident::STATUS_VALIDATED,
+        ]);
+        $resValidated = $this->get(route('ticket.track', ['tiket' => $validated->tiket_no]));
+        $resValidated->assertOk();
+        $resValidated->assertSee('Divalidasi');
 
+        // 3. Recovered (dipulihkan)
+        $recovered = $this->createSampleSandboxIncident([
+            'tiket_no' => 'DEMO-2026-STAT0003',
+            'status' => SandboxIncident::STATUS_RECOVERED,
+        ]);
+        $resRecovered = $this->get(route('ticket.track', ['tiket' => $recovered->tiket_no]));
+        $resRecovered->assertOk();
+        $resRecovered->assertSee('Dipulihkan');
+
+        // 4. Completed (selesai)
+        $done = $this->createSampleSandboxIncident([
+            'tiket_no' => 'DEMO-2026-STAT0004',
+            'status' => SandboxIncident::STATUS_DONE,
+        ]);
+        $resDone = $this->get(route('ticket.track', ['tiket' => $done->tiket_no]));
+        $resDone->assertOk();
+        $resDone->assertSee('Selesai');
+    }
+
+    public function test_public_tracking_rate_limiting(): void
+    {
+        // Route has throttle:60,1
+        $response = $this->get(route('ticket.track'));
+        $response->assertOk();
+        $this->assertTrue($response->headers->has('X-RateLimit-Limit') || $response->headers->has('x-ratelimit-limit'));
+    }
+
+    public function test_public_tracking_strictly_queries_sandbox_and_leaves_showcase_tables_unmutated(): void
+    {
+        $this->createSampleSandboxIncident();
+
+        $response = $this->get(route('ticket.track', ['tiket' => 'DEMO-2026-TEST0001']));
         $response->assertStatus(200);
-        $response->assertSee('tidak ditemukan dalam sistem JakartaProv-CSIRT');
+
+        $this->assertEquals(0, DB::table('users')->count());
+        $this->assertEquals(0, DB::table('lapor_insiden')->count());
+        $this->assertEquals(0, DB::table('lampiran_insiden')->count());
+        $this->assertEquals(0, DB::table('tac_agreements')->count());
     }
 }

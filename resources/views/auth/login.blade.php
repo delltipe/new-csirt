@@ -303,8 +303,8 @@ html.accessibility-contrast-high .login-page .form-input:focus {
         {{-- Login Card --}}
         <div class="login-card">
             <div class="login-header">
-                <h1 class="login-title">Masuk Akun</h1>
-                <p class="login-sub">Portal Resmi Pelaporan Insiden Siber JakartaProv-CSIRT</p>
+                <h1 class="login-title">Masuk Portal Pelaporan</h1>
+                <p class="login-sub">Simulasi Alur Pelaporan Insiden Siber JakartaProv-CSIRT (Pratinjau Publik)</p>
             </div>
             <div class="login-body">
                 @if($errors->any())
@@ -313,33 +313,46 @@ html.accessibility-contrast-high .login-page .form-input:focus {
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('login.submit') }}">
-                    @csrf
-                    <div class="form-group">
-                        <label for="email" class="form-label">Alamat Email <span class="req" aria-hidden="true">*</span></label>
-                        <input type="email" class="form-input @error('email') is-invalid @enderror"
-                               id="email" name="email" value="{{ old('email') }}" required autofocus
-                               aria-describedby="@error('email') err-email @enderror"
-                               @error('email') aria-invalid="true" @enderror>
-                        @error('email')
-                        <div class="field-error" id="err-email" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
-                        @enderror
+                {{-- Simulation & Privacy Warning --}}
+                <div class="simulation-alert" role="alert" style="background: var(--navy-tint); border: 1px solid var(--navy); border-left: 4px solid var(--navy); padding: 16px 18px; margin-bottom: 24px; font-size: 13.5px; line-height: 1.6; color: var(--ink);">
+                    <div style="font-weight: 700; font-family: var(--font-display); text-transform: uppercase; margin-bottom: 6px; color: var(--navy); display: flex; align-items: center; gap: 8px;">
+                        <i class="bi bi-shield-exclamation" aria-hidden="true"></i> Lingkungan Simulasi Publik
                     </div>
-                    <div class="form-group">
-                        <label for="password" class="form-label">Kata Sandi <span class="req" aria-hidden="true">*</span></label>
-                        <input type="password" class="form-input @error('password') is-invalid @enderror"
-                               id="password" name="password" required
-                               aria-describedby="@error('password') err-password @enderror"
-                               @error('password') aria-invalid="true" @enderror>
-                        @error('password')
-                        <div class="field-error" id="err-password" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
-                        @enderror
+                    <div>
+                        Halaman ini merupakan simulasi publik untuk evaluasi antarmuka portal JakartaProv-CSIRT.
+                        <strong>Pengunjung wajib menggunakan data fiktif. Dilarang keras memasukkan informasi pribadi nyata, kata sandi, kredensial akun, atau bukti insiden rahasia.</strong>
+                        Autentikasi akun nyata dinonaktifkan demi perlindungan privasi dan keamanan data.
                     </div>
-                    <button type="submit" class="btn-submit">Masuk ke Portal</button>
-                </form>
+                </div>
+
+                {{-- Demo Reporter Entry Option --}}
+                <div class="demo-reporter-box" style="background: var(--mist); border: 2px solid var(--navy); padding: 24px 20px; margin-bottom: 24px; text-align: center;">
+                    <div style="font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--navy); margin-bottom: 8px;">
+                        <i class="bi bi-person-badge-fill" aria-hidden="true" style="margin-right: 6px;"></i> Akses Pelapor Demo
+                    </div>
+                    <p style="font-size: 13.5px; color: var(--mid); margin-bottom: 20px; line-height: 1.6;">
+                        Jelajahi alur pelaporan insiden siber standar Komdigi (syarat &amp; ketentuan, formulir laporan insiden, dan pelacakan tiket fiktif) tanpa memerlukan akun atau kata sandi nyata.
+                    </p>
+                    <a href="{{ route('bug-hunter.tac') }}" class="btn-submit" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;">
+                        <i class="bi bi-arrow-right-circle-fill" aria-hidden="true"></i> Lanjut sebagai Pelapor Demo
+                    </a>
+                </div>
+
+                {{-- Sandbox Administrator Option --}}
+                <div class="sandbox-admin-box" style="border: 1px solid var(--border); border-top: 3px solid var(--border); padding: 18px 20px; margin-bottom: 20px; background: var(--white);">
+                    <div style="font-family: var(--font-display); font-size: 12.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); margin-bottom: 6px;">
+                        <i class="bi bi-shield-lock-fill" aria-hidden="true" style="color: var(--navy); margin-right: 4px;"></i> Peninjauan Administrator Sandbox
+                    </div>
+                    <p style="font-size: 12.5px; color: var(--mid); margin-bottom: 12px; line-height: 1.5;">
+                        Akses khusus peninjauan dan validasi laporan simulasi bagi evaluator pada basis data sandbox terisolasi.
+                    </p>
+                    <a href="{{ route('sandbox-admin.login') }}" class="btn-track-public" style="width: 100%; justify-content: center;">
+                        Masuk ke Admin Sandbox <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+                    </a>
+                </div>
 
                 <p class="login-footer">
-                    Belum memiliki akun pelapor? <a href="{{ route('register') }}">Daftar di sini</a>
+                    Pendaftaran akun nyata dinonaktifkan pada pratinjau publik. <a href="{{ route('register') }}">Informasi Pendaftaran</a>
                 </p>
             </div>
         </div>
@@ -351,7 +364,7 @@ html.accessibility-contrast-high .login-page .form-input:focus {
             <div class="track-callout-card">
                 <h2><i class="bi bi-search" aria-hidden="true"></i> Sudah Punya Nomor Tiket?</h2>
                 <p>
-                    Anda <strong>tidak perlu masuk</strong> untuk mengecek progres penanganan insiden. Masukkan nomor tiket resmi Anda (contoh: <code>INS-2026-0001</code>) untuk melihat status terkini secara instan.
+                    Anda <strong>tidak perlu masuk</strong> untuk mengecek progres penanganan insiden. Masukkan nomor tiket demo Anda (contoh: <code>DEMO-2026-B7TGZTCI</code>) untuk melihat status terkini secara instan.
                 </p>
                 <a href="{{ route('ticket.track') }}" class="btn-track-public">
                     Lacak Status Tiket <i class="bi bi-arrow-right" aria-hidden="true"></i>
@@ -365,29 +378,29 @@ html.accessibility-contrast-high .login-page .form-input:focus {
                     <li class="workflow-step-item">
                         <div class="workflow-step-item__num">1</div>
                         <div class="workflow-step-item__text">
-                            <strong>Daftar / Masuk Akun Pelapor</strong>
-                            <span>Identitas terverifikasi melindungi pelapor siber (responsible disclosure) dan mencegah spam data palsu.</span>
+                            <strong>Akses Pelapor Demo</strong>
+                            <span>Simulasi publik tanpa menggunakan akun atau kredensial nyata demi perlindungan privasi.</span>
                         </div>
                     </li>
                     <li class="workflow-step-item">
                         <div class="workflow-step-item__num">2</div>
                         <div class="workflow-step-item__text">
                             <strong>Persetujuan Syarat &amp; Ketentuan (TaC)</strong>
-                            <span>Komitmen integritas bahwa temuan dilaporkan untuk tujuan mitigasi, bukan eksploitasi merugikan.</span>
+                            <span>Komitmen integritas dan kepatuhan pengujian hanya dengan data insiden fiktif.</span>
                         </div>
                     </li>
                     <li class="workflow-step-item">
                         <div class="workflow-step-item__num">3</div>
                         <div class="workflow-step-item__text">
-                            <strong>Kirim Laporan &amp; Bukti Kerentanan</strong>
-                            <span>Formulir terstruktur standar Komdigi dengan unggah bukti file atau URL (maks 3 berkas).</span>
+                            <strong>Kirim Laporan &amp; Bukti Kerentanan Fiktif</strong>
+                            <span>Formulir terstruktur standar Komdigi dengan pembatasan bukti URL pengujian (maks 3 tautan).</span>
                         </div>
                     </li>
                     <li class="workflow-step-item">
                         <div class="workflow-step-item__num">4</div>
                         <div class="workflow-step-item__text">
-                            <strong>Terbitkan Nomor Tiket &amp; Penanganan</strong>
-                            <span>Dapatkan nomor tiket resmi untuk memantau tahapan validasi, tindak lanjut, hingga pemulihan.</span>
+                            <strong>Terbitkan &amp; Lacak Nomor Tiket Demo</strong>
+                            <span>Dapatkan nomor tiket berformat resmi DEMO untuk memantau tahapan validasi hingga pemulihan.</span>
                         </div>
                     </li>
                 </ol>

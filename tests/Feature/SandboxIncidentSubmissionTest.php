@@ -426,20 +426,14 @@ class SandboxIncidentSubmissionTest extends TestCase
 
     public function test_unrelated_routes_remain_strictly_blocked(): void
     {
-        // Bug hunter safe entry redirects; legacy detail/tracking routes remain forbidden
-        $this->get('/bug-hunter')->assertRedirect('/bug-hunter/laporan/baru');
-        $this->get('/bug-hunter/laporan')->assertRedirect('/bug-hunter/laporan/baru');
-        $this->post('/bug-hunter/laporan/agree')->assertForbidden();
+        // Protected detail route remains forbidden
         $this->get('/bug-hunter/laporan/1')->assertForbidden();
-        $this->get('/lacak-laporan')->assertForbidden();
 
-        // Public auth
-        $this->get('/login')->assertForbidden();
+        // Mutating public auth strictly forbidden
         $this->post('/login', ['email' => 'user@example.com', 'password' => 'secret'])->assertForbidden();
-        $this->get('/register')->assertForbidden();
         $this->post('/register', ['name' => 'User', 'email' => 'user@example.com', 'password' => 'secret'])->assertForbidden();
 
-        // Admin routes
+        // Admin routes strictly 404
         $this->get('/admin')->assertNotFound();
         $this->get('/admin/login')->assertNotFound();
         $this->post('/admin/login', ['email' => 'admin@gmail.com', 'password' => '12345678'])->assertNotFound();
