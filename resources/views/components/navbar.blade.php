@@ -484,7 +484,7 @@
                 <li>
                     <a href="{{ route('ticket.track') }}"
                        class="{{ request()->routeIs('ticket.track') ? 'active' : '' }}">
-                        Lacak Status Tiket
+                        Lacak Tiket
                     </a>
                 </li>
             </ul>
