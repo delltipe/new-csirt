@@ -346,4 +346,106 @@ class PublicationViewsImageTest extends TestCase
             @unlink($detailFile);
         }
     }
+
+    public function test_news_and_warning_detail_views_render_local_derivatives_with_correct_markup_attributes(): void
+    {
+        $news = new CybersecurityNews([
+            'title'       => 'Berita Atribut Markup Valid',
+            'description' => 'Deskripsi berita atribut',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/berita/sample-news-attr.png',
+            'source'      => 'https://example.com',
+            'date'        => now(),
+        ]);
+        $news->id = 701;
+        $news->save();
+
+        $warning = new WarningPost([
+            'title'       => 'Peringatan Atribut Markup Valid',
+            'description' => 'Deskripsi peringatan atribut',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/berita/sample-warning-attr.png',
+            'source'      => 'https://example.com',
+            'date'        => now(),
+        ]);
+        $warning->id = 701;
+        $warning->save();
+
+        $newsOptDir = public_path('images/optimized/news');
+        $warnOptDir = public_path('images/optimized/warnings');
+        @mkdir($newsOptDir, 0755, true);
+        @mkdir($warnOptDir, 0755, true);
+
+        $newsDetail = "{$newsOptDir}/701_detail.webp";
+        $warnDetail = "{$warnOptDir}/701_detail.webp";
+        file_put_contents($newsDetail, 'fake-news-701-detail');
+        file_put_contents($warnDetail, 'fake-warn-701-detail');
+
+        try {
+            $respNews = $this->get(route('news.show', $news->id));
+            $respNews->assertStatus(200);
+            $respNews->assertSee('images/optimized/news/701_detail.webp');
+            $respNews->assertSee('class="news-detail-content__img"', false);
+            $respNews->assertSee('decoding="async"', false);
+            $respNews->assertSee('fetchpriority="high"', false);
+
+            $respWarn = $this->get(route('warnings.show', $warning->id));
+            $respWarn->assertStatus(200);
+            $respWarn->assertSee('images/optimized/warnings/701_detail.webp');
+            $respWarn->assertSee('class="warning-detail-content__img"', false);
+            $respWarn->assertSee('decoding="async"', false);
+            $respWarn->assertSee('fetchpriority="high"', false);
+        } finally {
+            @unlink($newsDetail);
+            @unlink($warnDetail);
+        }
+    }
+
+    public function test_news_and_warning_detail_category_isolation_for_overlapping_ids(): void
+    {
+        $news = new CybersecurityNews([
+            'title'       => 'Berita Isolasi Kategori',
+            'description' => 'Deskripsi berita isolasi',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/berita/news-isolation-702.png',
+            'source'      => 'https://example.com/news',
+            'date'        => now(),
+        ]);
+        $news->id = 702;
+        $news->save();
+
+        $warning = new WarningPost([
+            'title'       => 'Peringatan Isolasi Kategori',
+            'description' => 'Deskripsi peringatan isolasi',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/berita/warning-isolation-702.png',
+            'source'      => 'https://example.com/warning',
+            'date'        => now(),
+        ]);
+        $warning->id = 702;
+        $warning->save();
+
+        $newsOptDir = public_path('images/optimized/news');
+        $warnOptDir = public_path('images/optimized/warnings');
+        @mkdir($newsOptDir, 0755, true);
+        @mkdir($warnOptDir, 0755, true);
+
+        $newsDetail = "{$newsOptDir}/702_detail.webp";
+        $warnDetail = "{$warnOptDir}/702_detail.webp";
+        file_put_contents($newsDetail, 'fake-news-detail-content');
+        file_put_contents($warnDetail, 'fake-warn-detail-content');
+
+        try {
+            // News detail must resolve to news derivative, never warning derivative
+            $respNews = $this->get(route('news.show', $news->id));
+            $respNews->assertStatus(200);
+            $respNews->assertSee('images/optimized/news/702_detail.webp');
+            $respNews->assertDontSee('images/optimized/warnings/702_detail.webp');
+
+            // Warning detail must resolve to warning derivative, never news derivative
+            $respWarn = $this->get(route('warnings.show', $warning->id));
+            $respWarn->assertStatus(200);
+            $respWarn->assertSee('images/optimized/warnings/702_detail.webp');
+            $respWarn->assertDontSee('images/optimized/news/702_detail.webp');
+        } finally {
+            @unlink($newsDetail);
+            @unlink($warnDetail);
+        }
+    }
 }
