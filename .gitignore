@@ -45,6 +45,36 @@ design-system-audit-report.html
 /public/images/optimized/*
 !/public/images/optimized/.gitkeep
 
+# Allowlist for approved warning thumbnails (10 files)
+!/public/images/optimized/warnings/
+/public/images/optimized/warnings/*
+!/public/images/optimized/warnings/1_thumb.webp
+!/public/images/optimized/warnings/2_thumb.webp
+!/public/images/optimized/warnings/3_thumb.webp
+!/public/images/optimized/warnings/4_thumb.webp
+!/public/images/optimized/warnings/5_thumb.webp
+!/public/images/optimized/warnings/6_thumb.webp
+!/public/images/optimized/warnings/7_thumb.webp
+!/public/images/optimized/warnings/8_thumb.webp
+!/public/images/optimized/warnings/10_thumb.webp
+!/public/images/optimized/warnings/11_thumb.webp
+
+# Allowlist for approved infographic derivatives (12 files)
+!/public/images/optimized/infographics/
+/public/images/optimized/infographics/*
+!/public/images/optimized/infographics/1_thumb.webp
+!/public/images/optimized/infographics/2_thumb.webp
+!/public/images/optimized/infographics/3_thumb.webp
+!/public/images/optimized/infographics/4_thumb.webp
+!/public/images/optimized/infographics/5_thumb.webp
+!/public/images/optimized/infographics/6_thumb.webp
+!/public/images/optimized/infographics/1_detail.webp
+!/public/images/optimized/infographics/2_detail.webp
+!/public/images/optimized/infographics/3_detail.webp
+!/public/images/optimized/infographics/4_detail.webp
+!/public/images/optimized/infographics/5_detail.webp
+!/public/images/optimized/infographics/6_detail.webp
+
 # Impeccable binary cache & assistant metadata
 **/scripts/bin/**
 .impeccable/

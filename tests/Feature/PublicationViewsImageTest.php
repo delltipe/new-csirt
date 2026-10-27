@@ -95,6 +95,177 @@ class PublicationViewsImageTest extends TestCase
         }
     }
 
+    public function test_warning_record_resolves_to_warning_specific_thumbnail_when_derivative_exists(): void
+    {
+        $warning = new WarningPost([
+            'title'       => 'Peringatan Spesifik Thumbnail',
+            'description' => 'Deskripsi peringatan spesifik',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/berita/warning-881.png',
+            'source'      => 'https://example.com',
+            'date'        => now(),
+        ]);
+        $warning->id = 881;
+        $warning->save();
+
+        $optDir = public_path('images/optimized/warnings');
+        @mkdir($optDir, 0755, true);
+        $thumbFile = "{$optDir}/881_thumb.webp";
+        file_put_contents($thumbFile, 'fake-warning-thumb');
+
+        try {
+            $response = $this->get(route('warnings.index'));
+            $response->assertStatus(200);
+            $response->assertSee('images/optimized/warnings/881_thumb.webp');
+        } finally {
+            @unlink($thumbFile);
+        }
+    }
+
+    public function test_missing_warning_derivative_falls_back_to_canonical_url_and_never_selects_unrelated_news_image(): void
+    {
+        $warning = new WarningPost([
+            'title'       => 'Peringatan Fallback Canonical',
+            'description' => 'Deskripsi fallback canonical',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/berita/canonical-warning-882.png',
+            'source'      => 'https://example.com',
+            'date'        => now(),
+        ]);
+        $warning->id = 882;
+        $warning->save();
+
+        // Simulate an unrelated news thumbnail existing with matching numeric ID 882
+        $newsLegacyDir = public_path('images/berita-optimized');
+        @mkdir($newsLegacyDir, 0755, true);
+        $newsFile = "{$newsLegacyDir}/882.webp";
+        file_put_contents($newsFile, 'fake-unrelated-news-thumb');
+
+        try {
+            $response = $this->get(route('warnings.index'));
+            $response->assertStatus(200);
+            // Must see its own canonical remote image
+            $response->assertSee('canonical-warning-882.png');
+            // Must NEVER select the unrelated news image based solely on matching numeric ID
+            $response->assertDontSee('images/berita-optimized/882.webp');
+        } finally {
+            @unlink($newsFile);
+        }
+    }
+
+    public function test_existing_detail_variants_take_precedence_over_fallback_variants(): void
+    {
+        $event = new Event([
+            'title'       => 'Event Precedence Test',
+            'description' => 'Deskripsi event precedence',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/gallery/event-883.jpg',
+            'event_date'  => now()->addDays(3),
+            'location'    => 'Balai Kota',
+            'event_type'  => 'seminar',
+        ]);
+        $event->id = 883;
+        $event->save();
+
+        $optDir = public_path('images/optimized/events');
+        @mkdir($optDir, 0755, true);
+        $detailFile = "{$optDir}/883_detail.webp";
+        file_put_contents($detailFile, 'fake-event-detail');
+
+        $galleryDir = public_path('images/gallery-optimized');
+        @mkdir($galleryDir, 0755, true);
+        $galleryThumb = "{$galleryDir}/883.webp";
+        file_put_contents($galleryThumb, 'fake-gallery-thumb');
+
+        try {
+            $response = $this->get(route('events.show', $event->id));
+            $response->assertStatus(200);
+            // Exact detail variant takes precedence
+            $response->assertSee('images/optimized/events/883_detail.webp');
+            $response->assertDontSee('images/gallery-optimized/883.webp');
+        } finally {
+            @unlink($detailFile);
+            @unlink($galleryThumb);
+        }
+    }
+
+    public function test_missing_event_detail_variant_uses_existing_gallery_thumbnail(): void
+    {
+        $event = new Event([
+            'title'       => 'Event Fallback Thumbnail Test',
+            'description' => 'Deskripsi event fallback',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/gallery/event-884.jpg',
+            'event_date'  => now()->addDays(5),
+            'location'    => 'Online',
+            'event_type'  => 'webinar',
+        ]);
+        $event->id = 884;
+        $event->save();
+
+        $galleryDir = public_path('images/gallery-optimized');
+        @mkdir($galleryDir, 0755, true);
+        $galleryThumb = "{$galleryDir}/884.webp";
+        file_put_contents($galleryThumb, 'fake-gallery-thumb');
+
+        try {
+            $response = $this->get(route('events.show', $event->id));
+            $response->assertStatus(200);
+            // Missing detail variant falls back to gallery thumbnail for events
+            $response->assertSee('images/gallery-optimized/884.webp');
+        } finally {
+            @unlink($galleryThumb);
+        }
+    }
+
+    public function test_missing_news_and_warning_detail_variants_retain_original_image_fallback(): void
+    {
+        // 1. News: 600px thumbnail exists, but detail variant does NOT exist
+        $news = new CybersecurityNews([
+            'title'       => 'News Detail Strict Quality Test',
+            'description' => 'Deskripsi news detail quality',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/berita/original-news-885.png',
+            'source'      => 'https://example.com',
+            'date'        => now(),
+        ]);
+        $news->id = 885;
+        $news->save();
+
+        $newsLegacyDir = public_path('images/berita-optimized');
+        @mkdir($newsLegacyDir, 0755, true);
+        $newsThumb = "{$newsLegacyDir}/885.webp";
+        file_put_contents($newsThumb, 'fake-news-thumb');
+
+        // 2. Warning: thumbnail exists, but detail variant does NOT exist
+        $warning = new WarningPost([
+            'title'       => 'Warning Detail Strict Quality Test',
+            'description' => 'Deskripsi warning detail quality',
+            'thumbnail'   => 'https://csirt.jakarta.go.id/images/berita/original-warning-886.png',
+            'source'      => 'https://example.com',
+            'date'        => now(),
+        ]);
+        $warning->id = 886;
+        $warning->save();
+
+        $warnOptDir = public_path('images/optimized/warnings');
+        @mkdir($warnOptDir, 0755, true);
+        $warnThumb = "{$warnOptDir}/886_thumb.webp";
+        file_put_contents($warnThumb, 'fake-warning-thumb');
+
+        try {
+            // News detail must NOT upscale thumbnail; retains original fallback
+            $respNews = $this->get(route('news.show', $news->id));
+            $respNews->assertStatus(200);
+            $respNews->assertSee('original-news-885.png');
+            $respNews->assertDontSee('images/berita-optimized/885.webp');
+
+            // Warning detail must NOT upscale thumbnail; retains original fallback
+            $respWarn = $this->get(route('warnings.show', $warning->id));
+            $respWarn->assertStatus(200);
+            $respWarn->assertSee('original-warning-886.png');
+            $respWarn->assertDontSee('images/optimized/warnings/886_thumb.webp');
+        } finally {
+            @unlink($newsThumb);
+            @unlink($warnThumb);
+        }
+    }
+
     public function test_infographics_index_and_show_use_optimized_variants_and_preserve_download(): void
     {
         $info = new Infographic([
