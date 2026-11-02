@@ -61,11 +61,11 @@
 
                 <div class="secaw-input-group">
                     <i class="bi bi-search secaw-input-icon" aria-hidden="true"></i>
-                    <input type="text" 
-                           name="search" 
-                           class="secaw-input" 
-                           placeholder="Cari nama perangkat atau fungsi..." 
-                           value="{{ $search }}" 
+                    <input type="text"
+                           name="search"
+                           class="secaw-input"
+                           placeholder="Cari nama perangkat atau fungsi..."
+                           value="{{ $search }}"
                            aria-label="Cari nama alat atau fungsi">
                 </div>
 
@@ -116,10 +116,10 @@
                         </div>
 
                         <div class="secaw-card__footer">
-                            <a href="{{ $tool['url'] }}" 
-                               target="_blank" 
-                               rel="noopener noreferrer" 
-                               class="secaw-btn secaw-btn--primary" 
+                            <a href="{{ $tool['url'] }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="secaw-btn secaw-btn--primary"
                                aria-label="Buka {{ $tool['name'] }} di tab baru (Keluar dari situs CSIRT)">
                                 <span>Akses Perangkat</span>
                                 <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>

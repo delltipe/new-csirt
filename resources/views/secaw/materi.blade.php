@@ -41,11 +41,11 @@
             <form method="GET" action="{{ route('secaw.materi') }}" class="secaw-search-form" autocomplete="off">
                 <div class="secaw-input-group">
                     <i class="bi bi-search secaw-input-icon" aria-hidden="true"></i>
-                    <input type="text" 
-                           name="search" 
-                           class="secaw-input" 
-                           placeholder="Cari judul materi atau penerbit..." 
-                           value="{{ $search }}" 
+                    <input type="text"
+                           name="search"
+                           class="secaw-input"
+                           placeholder="Cari judul materi atau penerbit..."
+                           value="{{ $search }}"
                            aria-label="Cari judul materi atau penerbit">
                 </div>
                 <button type="submit" class="secaw-btn secaw-btn--primary">
@@ -97,16 +97,16 @@
                         </div>
 
                         <div class="secaw-card__footer">
-                            <a href="{{ $guide->link }}" 
-                               target="_blank" 
-                               rel="noopener noreferrer" 
-                               class="secaw-btn secaw-btn--primary" 
+                            <a href="{{ $guide->link }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="secaw-btn secaw-btn--primary"
                                aria-label="Unduh Dokumen PDF: {{ $guide->title }}">
                                 <i class="bi bi-download" aria-hidden="true"></i>
                                 <span>Unduh Dokumen (PDF)</span>
                             </a>
-                            <a href="{{ route('guides.index') }}" 
-                               class="secaw-subnav__ext" 
+                            <a href="{{ route('guides.index') }}"
+                               class="secaw-subnav__ext"
                                title="Lihat di katalog panduan teknis utama">
                                 <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
                                 <span class="d-none d-sm-inline">Katalog</span>

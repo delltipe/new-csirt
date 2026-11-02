@@ -20,40 +20,40 @@
         <nav class="secaw-subnav" aria-label="Navigasi Modul Security Awareness">
             <ul class="secaw-subnav__list">
                 <li>
-                    <a href="{{ route('secaw.index') }}" 
-                       class="secaw-subnav__link {{ request()->routeIs('secaw.index') ? 'active' : '' }}" 
+                    <a href="{{ route('secaw.index') }}"
+                       class="secaw-subnav__link {{ request()->routeIs('secaw.index') ? 'active' : '' }}"
                        @if(request()->routeIs('secaw.index')) aria-current="page" @endif>
                         <i class="bi bi-speedometer2" aria-hidden="true"></i>
                         <span>Dasbor Utama</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('secaw.materi') }}" 
-                       class="secaw-subnav__link {{ request()->routeIs('secaw.materi') ? 'active' : '' }}" 
+                    <a href="{{ route('secaw.materi') }}"
+                       class="secaw-subnav__link {{ request()->routeIs('secaw.materi') ? 'active' : '' }}"
                        @if(request()->routeIs('secaw.materi')) aria-current="page" @endif>
                         <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
                         <span>Materi</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('secaw.infografis') }}" 
-                       class="secaw-subnav__link {{ request()->routeIs('secaw.infografis') ? 'active' : '' }}" 
+                    <a href="{{ route('secaw.infografis') }}"
+                       class="secaw-subnav__link {{ request()->routeIs('secaw.infografis') ? 'active' : '' }}"
                        @if(request()->routeIs('secaw.infografis')) aria-current="page" @endif>
                         <i class="bi bi-images" aria-hidden="true"></i>
                         <span>Infografis</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('secaw.video') }}" 
-                       class="secaw-subnav__link {{ request()->routeIs('secaw.video') ? 'active' : '' }}" 
+                    <a href="{{ route('secaw.video') }}"
+                       class="secaw-subnav__link {{ request()->routeIs('secaw.video') ? 'active' : '' }}"
                        @if(request()->routeIs('secaw.video')) aria-current="page" @endif>
                         <i class="bi bi-play-circle" aria-hidden="true"></i>
                         <span>Video</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('secaw.tools') }}" 
-                       class="secaw-subnav__link {{ request()->routeIs('secaw.tools') ? 'active' : '' }}" 
+                    <a href="{{ route('secaw.tools') }}"
+                       class="secaw-subnav__link {{ request()->routeIs('secaw.tools') ? 'active' : '' }}"
                        @if(request()->routeIs('secaw.tools')) aria-current="page" @endif>
                         <i class="bi bi-tools" aria-hidden="true"></i>
                         <span>Tools Cybersecurity</span>
@@ -62,10 +62,10 @@
             </ul>
 
             <div class="d-none d-md-flex align-items-center gap-2">
-                <a href="https://csirt.jakarta.go.id/secaw/assets/landing-page/docs/Tutorial%20Dashboard%20Sec-Aw.pdf" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="secaw-subnav__ext" 
+                <a href="https://csirt.jakarta.go.id/secaw/assets/landing-page/docs/Tutorial%20Dashboard%20Sec-Aw.pdf"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="secaw-subnav__ext"
                    title="Unduh Tutorial Dashboard SecAw Jakarta Barat (PDF Resmi)">
                     <i class="bi bi-book" aria-hidden="true"></i>
                     <span>Tutorial Dashboard SecAw Jakbar (PDF)</span>

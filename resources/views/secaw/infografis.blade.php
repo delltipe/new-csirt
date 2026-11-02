@@ -41,11 +41,11 @@
             <form method="GET" action="{{ route('secaw.infografis') }}" class="secaw-search-form" autocomplete="off">
                 <div class="secaw-input-group">
                     <i class="bi bi-search secaw-input-icon" aria-hidden="true"></i>
-                    <input type="text" 
-                           name="search" 
-                           class="secaw-input" 
-                           placeholder="Cari judul infografis..." 
-                           value="{{ $search }}" 
+                    <input type="text"
+                           name="search"
+                           class="secaw-input"
+                           placeholder="Cari judul infografis..."
+                           value="{{ $search }}"
                            aria-label="Cari judul infografis">
                 </div>
                 <button type="submit" class="secaw-btn secaw-btn--primary">
@@ -65,16 +65,16 @@
         @if($infographics->isNotEmpty())
             <div class="secaw-grid-3" aria-label="Galeri Infografis Keamanan">
                 @foreach($infographics as $index => $item)
-                    <button type="button" 
-                            class="secaw-infographic-card" 
-                            data-img="{{ $item->thumbnail }}" 
+                    <button type="button"
+                            class="secaw-infographic-card"
+                            data-img="{{ $item->thumbnail }}"
                             data-title="{{ $item->title }}"
                             data-index="{{ $index }}"
-                            aria-haspopup="dialog" 
+                            aria-haspopup="dialog"
                             aria-label="Lihat infografis: {{ $item->title }}">
                         <div class="secaw-infographic-img-wrap">
-                            <img src="{{ $item->thumbnail }}" 
-                                 alt="{{ $item->title }}" 
+                            <img src="{{ $item->thumbnail }}"
+                                 alt="{{ $item->title }}"
                                  class="secaw-infographic-img"
                                  loading="lazy">
                             <div class="secaw-card-overlay" aria-hidden="true">

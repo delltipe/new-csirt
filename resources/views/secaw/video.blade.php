@@ -41,11 +41,11 @@
             <form method="GET" action="{{ route('secaw.video') }}" class="secaw-search-form" autocomplete="off">
                 <div class="secaw-input-group">
                     <i class="bi bi-search secaw-input-icon" aria-hidden="true"></i>
-                    <input type="text" 
-                           name="search" 
-                           class="secaw-input" 
-                           placeholder="Cari judul video, narasumber, atau topik..." 
-                           value="{{ $search }}" 
+                    <input type="text"
+                           name="search"
+                           class="secaw-input"
+                           placeholder="Cari judul video, narasumber, atau topik..."
+                           value="{{ $search }}"
                            aria-label="Cari judul video atau narasumber">
                 </div>
                 <button type="submit" class="secaw-btn secaw-btn--primary">
@@ -77,13 +77,13 @@
                     <article class="secaw-video-card" aria-labelledby="video-title-{{ $video['id'] }}">
                         {{-- Privacy-Conscious Click-To-Load Player Container --}}
                         <div class="secaw-video-facade-container" id="player-container-{{ $video['id'] }}">
-                            <img src="{{ $video['thumbnail'] }}" 
-                                 alt="Thumbnail video: {{ $video['title'] }}" 
+                            <img src="{{ $video['thumbnail'] }}"
+                                 alt="Thumbnail video: {{ $video['title'] }}"
                                  class="secaw-video-facade-img"
                                  loading="lazy">
-                            <button type="button" 
-                                    class="secaw-video-play-btn" 
-                                    data-video-id="{{ $video['id'] }}" 
+                            <button type="button"
+                                    class="secaw-video-play-btn"
+                                    data-video-id="{{ $video['id'] }}"
                                     data-video-title="{{ $video['title'] }}"
                                     data-container-id="player-container-{{ $video['id'] }}"
                                     aria-label="Putar video: {{ $video['title'] }}">
@@ -123,10 +123,10 @@
                         </div>
 
                         <div class="secaw-card__footer">
-                            <a href="{{ $video['url'] }}" 
-                               target="_blank" 
-                               rel="noopener noreferrer" 
-                               class="secaw-btn secaw-btn--secondary" 
+                            <a href="{{ $video['url'] }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="secaw-btn secaw-btn--secondary"
                                aria-label="Tonton di YouTube Resmi: {{ $video['title'] }}">
                                 <i class="bi bi-youtube text-danger" aria-hidden="true"></i>
                                 <span>Buka di YouTube</span>
