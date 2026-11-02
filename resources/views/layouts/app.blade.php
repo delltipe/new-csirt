@@ -10,6 +10,9 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/accessibility-contrast.css') }}" rel="stylesheet">
@@ -43,6 +46,14 @@
                 if (align === 1) root.add('accessibility-align-center');
                 else if (align === 2) root.add('accessibility-align-right');
                 else if (align === 3) root.add('accessibility-align-justify');
+
+                if (typeof state.fontSizeLevel === 'number' && state.fontSizeLevel > 0) {
+                    var F = [100, 115, 130, 145];
+                    var pct = F[state.fontSizeLevel] || 100;
+                    document.documentElement.style.fontSize = pct + '%';
+                    document.documentElement.style.setProperty('--accessibility-font-scale', pct / 100);
+                    root.add('accessibility-font-scale-' + (state.fontSizeLevel + 1));
+                }
             } catch (e) {}
         })();
     </script>
