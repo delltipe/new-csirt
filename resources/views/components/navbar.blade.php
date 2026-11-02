@@ -475,6 +475,7 @@
                         <li><a href="{{ route('infographics.index') }}">Infografis Keamanan</a></li>
                         <li><a href="{{ route('laws.index') }}">Peraturan & Kebijakan</a></li>
                         <li><a href="{{ route('guides.index') }}">Panduan Teknis</a></li>
+                        <li><a href="{{ route('secaw.index') }}">Security Awareness (SecAw)</a></li>
                         <li><div class="nav-dropdown__divider"></div></li>
                         <li><a href="{{ url('statistics') }}">Statistik Honeypot</a></li>
                         <li><a href="{{ url('rfc2350') }}">RFC 2350</a></li>

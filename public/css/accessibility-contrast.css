@@ -595,7 +595,8 @@ html.accessibility-contrast-high .dash-header,
 html.accessibility-contrast-high .detail-header,
 html.accessibility-contrast-high .login-header,
 html.accessibility-contrast-high .placeholder-header,
-html.accessibility-contrast-high .track-header {
+html.accessibility-contrast-high .track-header,
+html.accessibility-contrast-high .secaw-header {
   background: #000040 !important;
   border-bottom: 3px solid #000000;
   color: #FFFFFF !important;
@@ -618,7 +619,8 @@ html.accessibility-contrast-high .rfc-page-header h1,
 html.accessibility-contrast-high .statistics-header h1,
 html.accessibility-contrast-high .lapor-header h1,
 html.accessibility-contrast-high .login-title,
-html.accessibility-contrast-high .track-header h1 {
+html.accessibility-contrast-high .track-header h1,
+html.accessibility-contrast-high .secaw-header h1 {
   color: #FFFFFF !important;
 }
 
@@ -629,7 +631,9 @@ html.accessibility-contrast-high .event-hero__meta-item i,
 html.accessibility-contrast-high .event-hero__meta-item strong,
 html.accessibility-contrast-high .login-sub,
 html.accessibility-contrast-high .track-header__sub,
-html.accessibility-contrast-high .track-header__eyebrow {
+html.accessibility-contrast-high .track-header__eyebrow,
+html.accessibility-contrast-high .secaw-header__sub,
+html.accessibility-contrast-high .secaw-header__eyebrow {
   color: #FFFFFF !important;
 }
 
@@ -1007,6 +1011,50 @@ html.accessibility-contrast-high nav[role="navigation"] li span[aria-current="pa
   color: #FFFFFF;
   border: 2px solid #000000;
   font-weight: 800;
+}
+
+/* ---- Security Awareness (SecAw) Primary Buttons & Controls — High Contrast ---- */
+html.accessibility-contrast-high .secaw-btn--primary,
+html.accessibility-contrast-high a.secaw-btn--primary,
+html.accessibility-contrast-high button.secaw-btn--primary {
+  background: #000080 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-high .secaw-btn--primary:hover,
+html.accessibility-contrast-high a.secaw-btn--primary:hover,
+html.accessibility-contrast-high button.secaw-btn--primary:hover {
+  background: #000040 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+}
+
+html.accessibility-contrast-high .secaw-btn--primary:focus-visible,
+html.accessibility-contrast-high a.secaw-btn--primary:focus-visible,
+html.accessibility-contrast-high button.secaw-btn--primary:focus-visible {
+  outline: 3px solid #000000 !important;
+  outline-offset: 2px !important;
+}
+
+html.accessibility-contrast-high .secaw-subnav__link {
+  color: #000000 !important;
+}
+
+html.accessibility-contrast-high .secaw-subnav__link.active {
+  background: #000080 !important;
+  color: #FFFFFF !important;
+  border-bottom: 3px solid #000000 !important;
+}
+
+html.accessibility-contrast-high dialog.secaw-dialog {
+  border: 3px solid #000000 !important;
+}
+
+html.accessibility-contrast-high .secaw-dialog__header {
+  background: #000040 !important;
+  color: #FFFFFF !important;
 }
 
 /* DARK CONTRAST MODE */
@@ -1486,7 +1534,8 @@ html.accessibility-contrast-dark .dash-header,
 html.accessibility-contrast-dark .detail-header,
 html.accessibility-contrast-dark .login-header,
 html.accessibility-contrast-dark .placeholder-header,
-html.accessibility-contrast-dark .track-header {
+html.accessibility-contrast-dark .track-header,
+html.accessibility-contrast-dark .secaw-header {
   background: #0F1B33;
 }
 html.accessibility-contrast-dark .rfc-page-header::before {
@@ -1502,10 +1551,13 @@ html.accessibility-contrast-dark .event-hero__meta-item strong {
 html.accessibility-contrast-dark .login-title,
 html.accessibility-contrast-dark .login-sub,
 html.accessibility-contrast-dark .track-header h1,
-html.accessibility-contrast-dark .track-header__sub {
+html.accessibility-contrast-dark .track-header__sub,
+html.accessibility-contrast-dark .secaw-header h1,
+html.accessibility-contrast-dark .secaw-header__sub {
   color: #FFFFFF;
 }
-html.accessibility-contrast-dark .track-header__eyebrow {
+html.accessibility-contrast-dark .track-header__eyebrow,
+html.accessibility-contrast-dark .secaw-header__eyebrow {
   color: #D6E4F8;
 }
 
@@ -1967,5 +2019,109 @@ html.accessibility-contrast-dark .btn-track-public {
 html.accessibility-contrast-dark .btn-track-public:hover {
   background: #4DA6FF;
   color: #0A0F1A;
+}
+
+/* ---- Security Awareness (SecAw) Primary Buttons & Controls — Dark Contrast ---- */
+html.accessibility-contrast-dark .secaw-btn--primary,
+html.accessibility-contrast-dark a.secaw-btn--primary,
+html.accessibility-contrast-dark button.secaw-btn--primary {
+  background: #4DA6FF !important;
+  color: #0A0F1A !important;
+  border: 1px solid #66B3FF !important;
+  text-decoration: none !important;
+}
+
+html.accessibility-contrast-dark .secaw-btn--primary:hover,
+html.accessibility-contrast-dark a.secaw-btn--primary:hover,
+html.accessibility-contrast-dark button.secaw-btn--primary:hover {
+  background: #66B3FF !important;
+  color: #0A0F1A !important;
+  border-color: #4DA6FF !important;
+}
+
+html.accessibility-contrast-dark .secaw-btn--primary:focus-visible,
+html.accessibility-contrast-dark a.secaw-btn--primary:focus-visible,
+html.accessibility-contrast-dark button.secaw-btn--primary:focus-visible {
+  outline: 3px solid #66B3FF !important;
+  outline-offset: 2px !important;
+}
+
+html.accessibility-contrast-dark .secaw-nav-container {
+  background: #141E33 !important;
+  border-bottom-color: #233554 !important;
+}
+
+html.accessibility-contrast-dark .secaw-breadcrumb {
+  border-bottom-color: #233554 !important;
+}
+
+html.accessibility-contrast-dark .secaw-subnav__link {
+  color: #D6E4F8 !important;
+}
+
+html.accessibility-contrast-dark .secaw-subnav__link.active {
+  background: #13284C !important;
+  color: #66B3FF !important;
+  border-bottom-color: #66B3FF !important;
+}
+
+html.accessibility-contrast-dark .secaw-subnav__ext {
+  background: #141E33 !important;
+  border-color: #233554 !important;
+  color: #66B3FF !important;
+}
+
+html.accessibility-contrast-dark .secaw-filter-box {
+  background: #141E33 !important;
+  border-color: #233554 !important;
+}
+
+html.accessibility-contrast-dark .secaw-input,
+html.accessibility-contrast-dark .secaw-select {
+  background: #0A0F1A !important;
+  border-color: #233554 !important;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-dark .secaw-card,
+html.accessibility-contrast-dark .secaw-video-card,
+html.accessibility-contrast-dark .secaw-infographic-card {
+  background: #141E33 !important;
+  border-color: #233554 !important;
+}
+
+html.accessibility-contrast-dark .secaw-card__footer {
+  background: #0A0F1A !important;
+  border-top-color: #233554 !important;
+}
+
+html.accessibility-contrast-dark dialog.secaw-dialog {
+  background: #141E33 !important;
+  border-color: #66B3FF !important;
+  color: #FFFFFF !important;
+}
+
+html.accessibility-contrast-dark .secaw-dialog__header {
+  background: #0F1B33 !important;
+}
+
+html.accessibility-contrast-dark .secaw-dialog__footer {
+  background: #0A0F1A !important;
+  border-top-color: #233554 !important;
+}
+
+html.accessibility-contrast-dark .secaw-alert--warning {
+  background: #1A160F !important;
+  border-color: #594214 !important;
+  border-left-color: #FFAA00 !important;
+}
+
+html.accessibility-contrast-dark .secaw-alert--warning strong {
+  color: #FFAA00 !important;
+}
+
+html.accessibility-contrast-dark .secaw-empty-state {
+  background: #141E33 !important;
+  border-color: #233554 !important;
 }
 

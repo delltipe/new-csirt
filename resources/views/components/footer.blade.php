@@ -215,6 +215,7 @@
                     <li><a href="{{ url('infographics') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Infografis</a></li>
                     <li><a href="{{ url('laws') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Peraturan & Kebijakan</a></li>
                     <li><a href="{{ url('guides') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Panduan Teknis</a></li>
+                    <li><a href="{{ route('secaw.index') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Security Awareness (SecAw)</a></li>
                     <li><a href="{{ route('statistics') }}"><i class="bi bi-chevron-right" aria-hidden="true"></i>Statistik Honeypot</a></li>
                 </ul>
             </div>

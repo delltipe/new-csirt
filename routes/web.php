@@ -13,6 +13,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BugHunterController;
 use App\Http\Controllers\CaptchaController;
 use App\Http\Controllers\IncidentTrackingController;
+use App\Http\Controllers\SecawController;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -53,6 +54,15 @@ Route::get('/laws/{post}', [LawRulePostController::class, 'show'])->name('laws.s
 
 Route::get('/guides', [GuideController::class, 'index'])->name('guides.index');
 Route::get('/guides/{guide}', [GuideController::class, 'show'])->name('guides.show');
+
+// Security Awareness (SecAw)
+Route::prefix('secaw')->name('secaw.')->group(function () {
+    Route::get('/', [SecawController::class, 'index'])->name('index');
+    Route::get('/materi', [SecawController::class, 'materi'])->name('materi');
+    Route::get('/infografis', [SecawController::class, 'infografis'])->name('infografis');
+    Route::get('/video', [SecawController::class, 'video'])->name('video');
+    Route::get('/tools', [SecawController::class, 'tools'])->name('tools');
+});
 
 // Demo — hero contrast mitigations (temporary, local only)
 Route::get('/demo/hero-contrast', fn() => view('demo.hero-contrast'))->name('demo.hero-contrast');
