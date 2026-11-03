@@ -929,8 +929,8 @@
         }
 
         .accessibility-panel {
-            width: 100%;
-            max-width: 100vw;
+            width: calc(100vw - 40px);
+            max-width: calc(100vw - 40px);
             bottom: 60px;
             right: 0;
         }

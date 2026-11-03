@@ -134,6 +134,24 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* Keep the footer at the viewport bottom when page content is short. */
+.site-layout {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-layout > .nav-main,
+.site-layout > .site-footer {
+    flex-shrink: 0;
+}
+
+.site-layout > main {
+    flex: 1 0 auto;
+    min-width: 0;
+}
+
 a {
     color: inherit;
     text-decoration: none;

@@ -20,7 +20,7 @@ class IncidentTrackingController extends Controller
         if ($tiket !== null && $tiket !== '') {
             // Validate demo ticket number format: DEMO-YYYY-XXXXXXXX (8 alphanumeric characters)
             if (preg_match('/^DEMO-\d{4}-[A-Z0-9]{8}$/i', $tiket)) {
-                $report = SandboxIncident::where('tiket_no', $tiket)->first();
+                $report = SandboxIncident::select('tiket_no', 'status')->where('tiket_no', $tiket)->first();
 
                 if (!$report) {
                     $error = 'Nomor tiket demo ' . $tiket . ' tidak ditemukan dalam basis data sandbox JakartaProv-CSIRT. Pastikan nomor tiket sudah benar.';

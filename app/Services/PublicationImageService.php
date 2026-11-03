@@ -113,6 +113,15 @@ class PublicationImageService
                         return asset("images/gallery-optimized/{$id}.webp");
                     }
                 }
+            } elseif ($variant === 'detail') {
+                // For events only, fall back to existing gallery thumbnail when detail derivative is absent
+                if ($type === 'events') {
+                    $legacyEventThumb = public_path("images/gallery-optimized/{$id}.webp");
+                    if (file_exists($legacyEventThumb)) {
+                        return asset("images/gallery-optimized/{$id}.webp");
+                    }
+                }
+                // For news and warnings, do not upscale thumbnails; retain original fallback
             }
         }
 
@@ -174,6 +183,10 @@ class PublicationImageService
             if ($type === 'news' && file_exists(public_path("images/berita-optimized/{$id}.webp"))) {
                 return true;
             }
+            if ($type === 'events' && file_exists(public_path("images/gallery-optimized/{$id}.webp"))) {
+                return true;
+            }
+        } elseif ($variant === 'detail') {
             if ($type === 'events' && file_exists(public_path("images/gallery-optimized/{$id}.webp"))) {
                 return true;
             }

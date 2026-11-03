@@ -204,6 +204,12 @@ class ReadOnlySecurityPreviewTest extends TestCase
         $this->assertEquals(0, DB::table('contact_us')->count());
     }
 
+    public function test_production_evidence_download_route_is_unavailable(): void
+    {
+        $this->get('/incident-evidence/1')->assertNotFound();
+        $this->assertNull(\Illuminate\Support\Facades\Route::getRoutes()->getByName('evidence.download'));
+    }
+
     public function test_all_admin_routes_return_not_found(): void
     {
         $this->get('/admin/login')->assertNotFound();

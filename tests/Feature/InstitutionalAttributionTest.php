@@ -30,7 +30,7 @@ class InstitutionalAttributionTest extends TestCase
         $response->assertSee('Beranda');
         $response->assertSee('Profil');
         $response->assertSee('Publikasi');
-        $response->assertSee('Lacak Status Tiket');
+        $response->assertSee('Lacak Tiket');
         $response->assertSee('nav-toggle');
         $response->assertSee('nav-collapse');
     }

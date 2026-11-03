@@ -60,15 +60,16 @@ class IncidentTrackingTest extends TestCase
 
     public function test_public_tracking_with_valid_ticket_number(): void
     {
-        $this->createSampleSandboxIncident();
+        $incident = $this->createSampleSandboxIncident();
 
         $response = $this->get(route('ticket.track', ['tiket' => 'DEMO-2026-TEST0001']));
 
         $response->assertStatus(200);
         $response->assertSee('DEMO-2026-TEST0001');
         $response->assertSee('Ditindaklanjuti');
-        $response->assertSee('Website Defacement');
-        $response->assertSee('Sandbox Pengujian Publik');
+        $response->assertDontSee('Website Defacement');
+        $response->assertDontSee($incident->created_at->format('d M Y, H:i'));
+        $response->assertSee('MODE SIMULASI');
     }
 
     public function test_public_tracking_case_insensitive_lookup(): void
@@ -167,10 +168,10 @@ class IncidentTrackingTest extends TestCase
 
     public function test_public_tracking_rate_limiting(): void
     {
-        // Route has throttle:60,1
+        // Route uses the shared tracking rate limiter.
         $response = $this->get(route('ticket.track'));
         $response->assertOk();
-        $this->assertTrue($response->headers->has('X-RateLimit-Limit') || $response->headers->has('x-ratelimit-limit'));
+        $this->assertSame('30', $response->headers->get('X-RateLimit-Limit'));
     }
 
     public function test_public_tracking_strictly_queries_sandbox_and_leaves_showcase_tables_unmutated(): void

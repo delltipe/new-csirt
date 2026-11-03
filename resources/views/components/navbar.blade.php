@@ -261,6 +261,11 @@
         color: var(--mid);
     }
 
+    .nav-search input:focus-visible {
+        outline: 2px solid var(--navy);
+        outline-offset: -2px;
+    }
+
     .nav-search button {
         background: var(--ink);
         color: var(--white);
@@ -479,6 +484,7 @@
                         <li><a href="{{ route('infographics.index') }}">Infografis Keamanan</a></li>
                         <li><a href="{{ route('laws.index') }}">Peraturan & Kebijakan</a></li>
                         <li><a href="{{ route('guides.index') }}">Panduan Teknis</a></li>
+                        <li><a href="{{ route('secaw.index') }}">Security Awareness (SecAw)</a></li>
                         <li><div class="nav-dropdown__divider"></div></li>
                         <li><a href="{{ url('statistics') }}" data-goatcounter-click="nav-statistics-click" data-goatcounter-title="Menu Navigasi Statistik Honeypot">Statistik Honeypot</a></li>
                         <li><a href="{{ url('rfc2350') }}" data-goatcounter-click="nav-rfc2350-click" data-goatcounter-title="Menu Navigasi RFC 2350">RFC 2350</a></li>

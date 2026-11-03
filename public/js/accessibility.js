@@ -70,7 +70,13 @@ class AccessibilityWidget {
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
         e.preventDefault();
-        this.togglePanel();
+        if (this.panel.hasAttribute('hidden') || this.panel.classList.contains('is-closing')) {
+          this.panelOpener = document.activeElement;
+          this.openPanel();
+          this.closeBtn.focus();
+        } else {
+          this.closePanel();
+        }
       } else if (e.key === 'Escape' && !this.panel.hasAttribute('hidden')) {
         this.closePanel();
       }
@@ -149,6 +155,11 @@ class AccessibilityWidget {
   closePanel() {
     if (this.panel.hasAttribute('hidden') || this.panel.classList.contains('is-closing')) return;
 
+    if (this.panel.contains(document.activeElement)) {
+      const target = this.panelOpener && this.panelOpener.isConnected ? this.panelOpener : this.toggle;
+      target.focus();
+    }
+    this.panelOpener = null;
     this.stopVoice();
     this.toggle.setAttribute('aria-expanded', 'false');
 
@@ -316,11 +327,22 @@ class AccessibilityWidget {
   }
 
   applyLineHeight() {
+    if (this.state.lineHeightLevel === 0) {
+      document.documentElement.style.removeProperty('--accessibility-line-height');
+      document.querySelectorAll('[data-orig-line-height]').forEach((el) => {
+        el.style.lineHeight = el.dataset.origLineHeight;
+        delete el.dataset.origLineHeight;
+      });
+      return;
+    }
     const lh = this.LINE_HEIGHTS[this.state.lineHeightLevel];
     document.documentElement.style.setProperty('--accessibility-line-height', lh);
     document.querySelectorAll('body, body *').forEach((el) => {
       if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
       if (el.closest && el.closest('.accessibility-widget')) return;
+      if (el.dataset.origLineHeight === undefined) {
+        el.dataset.origLineHeight = el.style.lineHeight || '';
+      }
       el.style.lineHeight = lh;
     });
   }
@@ -340,11 +362,22 @@ class AccessibilityWidget {
   }
 
   applyLetterSpacing() {
+    if (this.state.letterSpacingLevel === 0) {
+      document.documentElement.style.removeProperty('--accessibility-letter-spacing');
+      document.querySelectorAll('[data-orig-letter-spacing]').forEach((el) => {
+        el.style.letterSpacing = el.dataset.origLetterSpacing;
+        delete el.dataset.origLetterSpacing;
+      });
+      return;
+    }
     const ls = this.LETTER_SPACINGS[this.state.letterSpacingLevel];
     document.documentElement.style.setProperty('--accessibility-letter-spacing', ls + 'px');
     document.querySelectorAll('body *').forEach((el) => {
       if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
       if (el.closest && el.closest('.accessibility-widget')) return;
+      if (el.dataset.origLetterSpacing === undefined) {
+        el.dataset.origLetterSpacing = el.style.letterSpacing || '';
+      }
       el.style.letterSpacing = ls + 'px';
     });
   }

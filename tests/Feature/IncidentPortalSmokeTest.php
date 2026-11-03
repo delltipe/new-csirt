@@ -13,6 +13,12 @@ class IncidentPortalSmokeTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->markTestSkipped('Production incident, account, and admin workflows are disabled in the public preview; sandbox behavior is covered by preview tests.');
+    }
+
     public function test_public_auth_and_full_report_flow(): void
     {
         $this->get('/')->assertStatus(200);

@@ -1,5 +1,70 @@
 # ✅ Accessibility Widget Verification Checklist
 
+> Historical checklist below, not evidence of current conformance. Its blanket
+> completion and screen-reader claims are not substantiated by the checks in this
+> file. The active script is `public/js/accessibility.js`; the `resources/js`
+> copy is not loaded by the shared layout.
+
+## S1.5 working-tree verification — 2026-11-03
+
+Scope: original application, base commit `dda0f447cb474f96339e3cea8aee021b86400fd0`
+plus existing uncommitted changes and the S1.5 changes. No resulting commit has
+been created; record its ID and repeat affected checks if the tree changes before
+commit. The isolated copy is `D:/Workspace-CSIRT/qa-s1.5-20261103/app`, with a
+disposable SQLite database and test user. Browser checks used the in-app browser;
+they are targeted observations, not a complete manual or assistive technology audit.
+
+| Area | Observed result | Still open |
+|---|---|---|
+| Themes | High-mode login error computed `rgb(185, 28, 28)`; TaC and empty dashboard headings computed white on `rgb(0, 0, 64)`. Widget cycled high → dark → invert and reset to normal; saved high mode persisted between routes. | Full normal/high/dark/invert coverage, all states and contrast measurements. |
+| Keyboard and focus | Keyboard shortcut opened widget with focus on close; Escape returned focus to the original login field. Invalid login input had a computed solid 3px outline. Infographic dialog opened with close focused and Escape returned focus to its opener. | Human keyboard-only walkthrough across routes, focus visibility for search/register and all themes, mobile drawer, video, admin modal, outside-click and reduced-motion cases. |
+| Landmarks and reflow | All four SecAw modules rendered one `main` and no nested `main` at 320px. Login and these pages had no document-level horizontal overflow in the measured viewport; login and infographic top portions were visually inspected. | Full visual clipping/overlap inspection, all themes and pages, browser zoom and 200% text resize. A 320px width check does not establish 200% resize. |
+| Errors | A disposable failed login showed the validation error in high mode, with error color and invalid-input focus inspected. | Registration, TaC and report validation errors and their summaries, all modes; historical incomplete axe items. |
+| Automated regression | Isolated PHPUnit with GD: 96 tests, 806 assertions, exit 0, no reported skips; `node --check public/js/accessibility.js` and `git diff --check` passed. JUnit: `D:/Workspace-CSIRT/qa-s1.5-20261103/junit.xml`. | axe/WAVE rerun against current states; physical keyboard and screen-reader checks. |
+
+### User observations and follow-up
+
+On 2026-11-03 the user reported successful widget shortcut/focus return,
+keyboard focus checks, infographic dialog focus/escape, setting persistence and
+reset, and their own 200% resizing check. They found the incident errors readable
+and reported no clipping in the checked SecAw modules. Mobile navigation was not
+checked; they do not use a screen reader. Browser, exact routes, themes and viewport
+details for these observations were not recorded, so wider coverage remains open.
+
+The user also reported an unreadable eye icon, an off-center infographic dialog,
+and a squashed mobile widget. Follow-up in the isolated copy: registration password
+eyes compute black on white in high mode; a populated reporter dashboard's Detail
+eye computes white on navy in high mode. The dialog centered at desktop width;
+the widget measured 280px wide inside a 320px viewport and displayed two columns.
+These follow-up changes were made after the full-suite run above; user confirmation
+of the new rendering and broader theme, zoom and mobile checks remain open.
+The current login form itself does not have a password-eye control. After the
+follow-up changes, isolated `php -d extension=gd vendor/phpunit/phpunit/phpunit
+--filter SecawPortalTest --display-skipped` passed: 13 tests, 230 assertions,
+exit 0. This is not a rerun of the entire suite.
+
+The user subsequently reported wider 320px reflow problems, especially the home
+hero, news carousel and bottom call-to-action buttons. In the isolated browser,
+the first hero slide exceeded the viewport, a 300px news card exceeded its track,
+and the call-to-action buttons extended beyond their container. A contact form
+cancel button also extended beyond its container. Targeted fixes constrain the
+hero and card widths, allow mobile hero text to reflow, and wrap the affected
+action controls. At browser viewport widths of 320px and 375px the measured home
+hero, news card and call-to-action controls fit; Tab moved to the next news card
+and scrolled it into view at 320px. The contact actions fit at 320px. These are
+targeted checks, not a complete 320px audit across all routes, content, themes,
+or states. The user's further visual review remains open. Isolated focused tests
+`--filter 'SelectiveDesignPolishTest|test_math_captcha_on_contact_form'` passed:
+4 tests, 46 assertions, exit 0. The entire suite was not rerun for these edits.
+
+The October 2026 report at `D:/Workspace-CSIRT/02-Research-Thesis-Preparation/Findings/WCAG-Audit-Raw/Current Routes WCAG 2.1 AA Audit - Oct 2026.md`
+describes 46 axe-core runs at `16e4817`, including seven high-mode failing runs,
+not a current full-conformance result. WAVE, genuine human keyboard and screen
+reader testing, and 200% text resize were not performed in that audit. The 2026-11-03
+observations above do not close those items or certify WCAG conformance.
+
+---
+
 ## Files Successfully Created/Modified
 
 ### ✅ Created (4 files)

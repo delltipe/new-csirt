@@ -43,6 +43,20 @@ When the original project receives new features or improvements:
 6. Summarize the changes and remaining differences before requesting
    authorization to commit, push or deploy.
 
+## Synchronization with main (2026-11-03)
+
+This preview incorporates main through `9e4a2e3`, including Security Awareness,
+public query fixes, image improvements, and accessibility work. Production account,
+incident, evidence, contact submission, and admin routes remain unavailable; the
+sandbox retains its isolated demo flow and rejects file uploads. Public ticket tracking
+shows only the demo ticket number and status, and uses the shared tracking rate limit.
+
+The main-only production authentication/evidence, incident correctness, and incident
+smoke test classes, plus three production admin contract tests, are explicitly skipped
+in this branch because those routes are intentionally disabled. The preview security,
+sandbox, public query, and Security Awareness tests remain active. Run production-only
+tests in the main worktree, not as evidence about this sandbox.
+
 ## Sandbox Incident Retention and Maintenance
 
 ### Database Architecture and Separation

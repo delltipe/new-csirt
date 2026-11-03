@@ -615,6 +615,14 @@ html.accessibility-contrast-dark .demo-success-alert__icon {
     border-radius: 0;
     background: var(--mist, #F4F5F7);
 }
+
+@media (max-width: 991px) {
+    .form-row { grid-template-columns: 1fr; }
+    .form-card { padding: 24px 16px; }
+}
+@media (max-width: 480px) {
+    .step-nav { flex-wrap: wrap; }
+}
 </style>
 
 <div class="lapor-header">

@@ -258,20 +258,20 @@
 
     <!-- Tabs Navigation -->
     <div class="admin-tabs">
-        <button class="admin-tab active" onclick="switchTab('news')">News</button>
-        <button class="admin-tab" onclick="switchTab('events')">Events</button>
-        <button class="admin-tab" onclick="switchTab('infographics')">Infographics</button>
-        <button class="admin-tab" onclick="switchTab('warnings')">Warnings</button>
-        <button class="admin-tab" onclick="switchTab('laws')">Laws</button>
-        <button class="admin-tab" onclick="switchTab('guides')">Guides</button>
-        <button class="admin-tab" onclick="switchTab('insiden')">
+        <button class="admin-tab active" onclick="switchTab('news')" data-tab="news">News</button>
+        <button class="admin-tab" onclick="switchTab('events')" data-tab="events">Events</button>
+        <button class="admin-tab" onclick="switchTab('infographics')" data-tab="infographics">Infographics</button>
+        <button class="admin-tab" onclick="switchTab('warnings')" data-tab="warnings">Warnings</button>
+        <button class="admin-tab" onclick="switchTab('laws')" data-tab="laws">Laws</button>
+        <button class="admin-tab" onclick="switchTab('guides')" data-tab="guides">Guides</button>
+        <button class="admin-tab" onclick="switchTab('insiden')" data-tab="insiden">
             Insiden
             @if($pendingIncidents > 0)
                 <span class="tab-badge">{{ $pendingIncidents }}</span>
             @endif
         </button>
-        <button class="admin-tab" onclick="switchTab('hero')">Hero</button>
-        <button class="admin-tab" onclick="switchTab('kontak')">
+        <button class="admin-tab" onclick="switchTab('hero')" data-tab="hero">Hero</button>
+        <button class="admin-tab" onclick="switchTab('kontak')" data-tab="kontak">
             Kontak
             @if($pendingContacts > 0)
                 <span class="tab-badge">{{ $pendingContacts }}</span>
@@ -337,55 +337,28 @@
 </div>
 
 <script>
-function switchTab(tabName) {
-    // Hide all tab panes
-    const panes = document.querySelectorAll('.tab-pane');
-    panes.forEach(pane => pane.classList.remove('active'));
-    
-    // Remove active from all tabs
-    const tabs = document.querySelectorAll('.admin-tab');
-    tabs.forEach(tab => tab.classList.remove('active'));
-    
-    // Show selected pane
-    document.getElementById(tabName + '-tab').classList.add('active');
-    
-    // Activate clicked tab
-    event.target.classList.add('active');
+const adminTabs = ['news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'insiden', 'hero', 'kontak'];
 
-    // Update URL hash so pagination preserves the active tab
+function activateTab(tabName) {
+    if (!adminTabs.includes(tabName)) tabName = 'news';
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+    });
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.toggle('active', pane.id === tabName + '-tab');
+    });
+}
+
+function switchTab(tabName) {
+    activateTab(tabName);
     history.replaceState(null, '', '#' + tabName);
 }
 
-// On page load, restore tab from URL hash
-document.addEventListener('DOMContentLoaded', function() {
-    var hash = window.location.hash.replace('#', '');
-    var validTabs = ['news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'insiden', 'hero', 'kontak'];
-    if (hash && validTabs.includes(hash)) {
-        // Activate the tab button
-        var tabs = document.querySelectorAll('.admin-tab');
-        tabs.forEach(function(tab) {
-            tab.classList.remove('active');
-            if (tab.getAttribute('onclick').indexOf(hash) !== -1) {
-                tab.classList.add('active');
-            }
-        });
-        // Activate the pane
-        var panes = document.querySelectorAll('.tab-pane');
-        panes.forEach(function(pane) { pane.classList.remove('active'); });
-        var target = document.getElementById(hash + '-tab');
-        if (target) target.classList.add('active');
-    }
-
-    // Append active tab hash to all pagination links so the tab is preserved
-    var currentHash = window.location.hash;
-    if (currentHash) {
-        document.querySelectorAll('.pagination a').forEach(function(link) {
-            var href = link.getAttribute('href');
-            if (href && href.indexOf('#') === -1) {
-                link.setAttribute('href', href + currentHash);
-            }
-        });
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    activateTab(window.location.hash.slice(1));
+});
+window.addEventListener('hashchange', function () {
+    activateTab(window.location.hash.slice(1));
 });
 </script>
 @endsection

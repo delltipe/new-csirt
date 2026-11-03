@@ -16,13 +16,18 @@ class PublicationImageServiceTest extends TestCase
         $this->service = new PublicationImageService();
     }
 
-    public function test_service_is_supported_in_environment(): void
+    public function test_service_is_supported_matches_environment(): void
     {
-        $this->assertTrue($this->service->isSupported(), 'GD extension and imagewebp should be supported.');
+        $expected = extension_loaded('gd') && function_exists('imagewebp');
+        $this->assertSame($expected, $this->service->isSupported(), 'Service support state should accurately reflect environment GD and imagewebp availability.');
     }
 
     public function test_image_processing_resizes_proportionally_to_webp(): void
     {
+        if (!$this->service->isSupported()) {
+            $this->markTestSkipped('PHP GD extension or imagewebp is not available in the current PHP environment.');
+        }
+
         // Create 1000x500 (2:1 aspect ratio) sample image in memory
         $im = imagecreatetruecolor(1000, 500);
         $blue = imagecolorallocate($im, 10, 50, 150);
@@ -47,6 +52,10 @@ class PublicationImageServiceTest extends TestCase
 
     public function test_image_processing_avoids_upscaling(): void
     {
+        if (!$this->service->isSupported()) {
+            $this->markTestSkipped('PHP GD extension or imagewebp is not available in the current PHP environment.');
+        }
+
         // Create 400x200 sample image in memory
         $im = imagecreatetruecolor(400, 200);
         $color = imagecolorallocate($im, 80, 120, 20);
@@ -66,6 +75,10 @@ class PublicationImageServiceTest extends TestCase
 
     public function test_image_processing_preserves_alpha_transparency(): void
     {
+        if (!$this->service->isSupported()) {
+            $this->markTestSkipped('PHP GD extension or imagewebp is not available in the current PHP environment.');
+        }
+
         $im = imagecreatetruecolor(300, 300);
         imagealphablending($im, false);
         imagesavealpha($im, true);

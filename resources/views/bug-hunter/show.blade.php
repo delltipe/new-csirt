@@ -255,7 +255,7 @@
                     <div class="detail-item__value">
                         @forelse ($report->attachments as $attachment)
                             @if ($attachment->jenis === 'file')
-                                <a class="attachment-link" href="{{ asset('storage/' . $attachment->value) }}" target="_blank" rel="noopener noreferrer">
+                                <a class="attachment-link" href="{{ route('evidence.download', $attachment->id) }}">
                                     <i class="bi bi-file-earmark-image" aria-hidden="true"></i> {{ basename($attachment->value) }}
                                 </a>
                             @else

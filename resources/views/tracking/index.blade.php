@@ -457,29 +457,9 @@
             </ol>
             @endif
 
-            {{-- Metadata Grid (Strict Allowlist Only) --}}
-            <div class="track-info-grid">
-                <div>
-                    <div class="track-info-item__label">Kategori Insiden</div>
-                    <div class="track-info-item__val">{{ $report->kategori_insiden }}</div>
-                </div>
-                <div>
-                    <div class="track-info-item__label">Waktu Dilaporkan</div>
-                    <div class="track-info-item__val">{{ $report->created_at->format('d M Y, H:i') }} WIB</div>
-                </div>
-                <div>
-                    <div class="track-info-item__label">Status Penanganan</div>
-                    <div class="track-info-item__val">{{ $report->statusLabel() }}</div>
-                </div>
-                <div>
-                    <div class="track-info-item__label">Lingkungan Data</div>
-                    <div class="track-info-item__val">Sandbox Pengujian Publik</div>
-                </div>
-            </div>
-
             <div class="track-disclosure-box">
                 <i class="bi bi-shield-lock-fill" aria-hidden="true" style="color:var(--navy); margin-right:4px;"></i>
-                <strong>Prinsip Pelindungan Data &amp; Isolasi Sandbox:</strong> Detail kronologi kejadian, tindakan teknis, dan bukti tautan dirahasiakan untuk menjamin integritas data pengujian.
+                <strong>Prinsip Pelindungan Data &amp; Isolasi Sandbox:</strong> Hanya nomor tiket dan status simulasi yang ditampilkan di halaman ini.
                 Pengunjung dapat kembali ke <a href="{{ route('login') }}">Halaman Masuk Demo</a> untuk memulai simulasi pelaporan baru.
             </div>
         </div>
