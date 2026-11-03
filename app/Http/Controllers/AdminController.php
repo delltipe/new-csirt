@@ -30,16 +30,16 @@ class AdminController extends Controller
     // Show admin dashboard
     public function dashboard()
     {
-        $news = \App\Models\CybersecurityNews::orderBy('date', 'desc')->paginate(15);
-        $events = \App\Models\Event::orderBy('event_date', 'desc')->paginate(15);
-        $infographics = \App\Models\Infographic::orderByDesc('id')->paginate(15);
-        $warnings = \App\Models\WarningPost::orderBy('date', 'desc')->paginate(15);
-        $laws = \App\Models\LawRulePost::orderBy('date', 'desc')->paginate(15);
-        $guides = \App\Models\CybersecurityGuide::orderByDesc('id')->paginate(15);
-        $incidents = IncidentReport::orderByDesc('created_at')->paginate(15);
+        $news = \App\Models\CybersecurityNews::orderBy('date', 'desc')->paginate(15, ['*'], 'news_page')->withQueryString()->fragment('news');
+        $events = \App\Models\Event::orderBy('event_date', 'desc')->paginate(15, ['*'], 'events_page')->withQueryString()->fragment('events');
+        $infographics = \App\Models\Infographic::orderByDesc('id')->paginate(15, ['*'], 'infographics_page')->withQueryString()->fragment('infographics');
+        $warnings = \App\Models\WarningPost::orderBy('date', 'desc')->paginate(15, ['*'], 'warnings_page')->withQueryString()->fragment('warnings');
+        $laws = \App\Models\LawRulePost::orderBy('date', 'desc')->paginate(15, ['*'], 'laws_page')->withQueryString()->fragment('laws');
+        $guides = \App\Models\CybersecurityGuide::orderByDesc('id')->paginate(15, ['*'], 'guides_page')->withQueryString()->fragment('guides');
+        $incidents = IncidentReport::orderByDesc('created_at')->paginate(15, ['*'], 'insiden_page')->withQueryString()->fragment('insiden');
         $pendingIncidents = IncidentReport::where('status', IncidentReport::STATUS_PENDING)->count();
-        $heroSlides = \App\Models\HeroSlide::ordered()->paginate(15);
-        $contacts = \App\Models\ContactMessage::orderByDesc('created_at')->paginate(15);
+        $heroSlides = \App\Models\HeroSlide::ordered()->paginate(15, ['*'], 'hero_page')->withQueryString()->fragment('hero');
+        $contacts = \App\Models\ContactMessage::orderByDesc('created_at')->paginate(15, ['*'], 'kontak_page')->withQueryString()->fragment('kontak');
         $pendingContacts = \App\Models\ContactMessage::where('status', \App\Models\ContactMessage::STATUS_PENDING)->count();
         return view('admin.dashboard', compact('news', 'events', 'infographics', 'warnings', 'laws', 'guides', 'incidents', 'pendingIncidents', 'heroSlides', 'contacts', 'pendingContacts'));
     }
@@ -54,11 +54,6 @@ class AdminController extends Controller
     }
 
     // NEWS CRUD for admin
-    public function newsList() {
-        $news = \App\Models\CybersecurityNews::orderBy('date', 'desc')->get();
-        return view('admin.partials.news', compact('news'));
-    }
-
     public function newsStore(Request $request) {
         $data = $request->validate([
             'title' => 'required|string',
@@ -110,11 +105,6 @@ class AdminController extends Controller
     // ============================================
     // EVENTS CRUD
     // ============================================
-    public function eventsList() {
-        $events = \App\Models\Event::orderBy('event_date', 'desc')->get();
-        return view('admin.partials.events', compact('events'));
-    }
-
     public function eventStore(Request $request) {
         $data = $request->validate([
             'title' => 'required|string',
@@ -172,11 +162,6 @@ class AdminController extends Controller
     // ============================================
     // WARNINGS CRUD
     // ============================================
-    public function warningsList() {
-        $warnings = \App\Models\WarningPost::orderBy('date', 'desc')->get();
-        return view('admin.partials.warnings', compact('warnings'));
-    }
-
     public function warningStore(Request $request) {
         $data = $request->validate([
             'title' => 'required|string',
@@ -228,11 +213,6 @@ class AdminController extends Controller
     // ============================================
     // LAWS CRUD
     // ============================================
-    public function lawsList() {
-        $laws = \App\Models\LawRulePost::orderBy('date', 'desc')->get();
-        return view('admin.partials.laws', compact('laws'));
-    }
-
     public function lawStore(Request $request) {
         $data = $request->validate([
             'title' => 'required|string',
@@ -286,11 +266,6 @@ class AdminController extends Controller
     // ============================================
     // GUIDES CRUD
     // ============================================
-    public function guidesList() {
-        $guides = \App\Models\CybersecurityGuide::all();
-        return view('admin.partials.guides', compact('guides'));
-    }
-
     public function guideStore(Request $request) {
         $data = $request->validate([
             'title' => 'required|string',
@@ -338,11 +313,6 @@ class AdminController extends Controller
     // ============================================
     // INFOGRAPHICS CRUD
     // ============================================
-    public function infographicsList() {
-        $infographics = \App\Models\Infographic::all();
-        return view('admin.partials.infographics', compact('infographics'));
-    }
-
     public function infographicStore(Request $request) {
         $data = $request->validate([
             'title' => 'required|string',
@@ -394,7 +364,7 @@ class AdminController extends Controller
             ->when($request->get('status'), function ($query, $status) {
                 return $query->where('status', $status);
             })
-            ->paginate(15);
+            ->paginate(15)->withQueryString();
         return view('admin.incidents.index', compact('incidents'));
     }
 
@@ -496,21 +466,22 @@ class AdminController extends Controller
             'urutan' => 'nullable|integer',
             'is_active' => 'nullable|boolean',
         ]);
+        $oldPath = $slide->gambar;
+        $newUpload = null;
         try {
-            $gambarPath = $slide->gambar;
+            $gambarPath = $oldPath;
             if ($request->hasFile('gambar')) {
-                if ($slide->gambar && !str_starts_with($slide->gambar, 'http') && Storage::disk('public')->exists($slide->gambar)) {
-                    Storage::disk('public')->delete($slide->gambar);
+                $newUpload = $request->file('gambar')->store('hero', 'public');
+                if ($newUpload === false) {
+                    $newUpload = null;
+                    throw new \RuntimeException('Failed to store hero image.');
                 }
-                $gambarPath = $request->file('gambar')->store('hero', 'public');
+                $gambarPath = $newUpload;
             } elseif (!empty($data['gambar_url'])) {
-                if ($slide->gambar && !str_starts_with($slide->gambar, 'http') && Storage::disk('public')->exists($slide->gambar)) {
-                    Storage::disk('public')->delete($slide->gambar);
-                }
                 $gambarPath = $data['gambar_url'];
             }
 
-            $slide->update([
+            $updated = $slide->update([
                 'judul' => $data['judul'],
                 'subjudul' => $data['subjudul'] ?? null,
                 'gambar' => $gambarPath,
@@ -519,23 +490,53 @@ class AdminController extends Controller
                 'urutan' => $data['urutan'] ?? $slide->urutan,
                 'is_active' => $request->has('is_active') ? (bool) $data['is_active'] : $slide->is_active,
             ]);
-        } catch (\Exception $e) {
+            if (! $updated) {
+                throw new \RuntimeException('Hero update was cancelled.');
+            }
+        } catch (\Throwable $e) {
+            if ($newUpload !== null) {
+                $this->removeUnusedHeroFile($newUpload);
+            }
+            report($e);
             return back()->withInput()->withErrors(['judul' => 'Gagal memperbarui slide. Silakan coba lagi.']);
+        }
+        if ($oldPath !== $gambarPath) {
+            $this->removeUnusedHeroFile($oldPath);
         }
         return redirect()->route('admin.dashboard')->with('success', 'Slide hero diperbarui!');
     }
 
     public function heroDelete($id) {
         $slide = \App\Models\HeroSlide::findOrFail($id);
+        $oldPath = $slide->gambar;
         try {
-            if ($slide->gambar && !str_starts_with($slide->gambar, 'http') && Storage::disk('public')->exists($slide->gambar)) {
-                Storage::disk('public')->delete($slide->gambar);
+            if (! $slide->delete()) {
+                throw new \RuntimeException('Hero deletion was cancelled.');
             }
-            $slide->delete();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            report($e);
             return back()->withErrors(['judul' => 'Gagal menghapus slide. Silakan coba lagi.']);
         }
+        $this->removeUnusedHeroFile($oldPath);
         return redirect()->route('admin.dashboard')->with('success', 'Slide hero dihapus!');
+    }
+
+    private function removeUnusedHeroFile(?string $path): void
+    {
+        // Only remove files owned by the hero uploader and not referenced by another slide.
+        if (! $path || ! preg_match('~^hero/[^/\\\\]+$~', $path) || str_contains($path, '..')) {
+            return;
+        }
+        try {
+            if (\App\Models\HeroSlide::where('gambar', $path)->exists()) {
+                return;
+            }
+            if (! Storage::disk('public')->delete($path)) {
+                \Log::error('Failed to clean up hero image.', ['path' => $path]);
+            }
+        } catch (\Throwable $e) {
+            report($e);
+        }
     }
 
     public function heroReorder(Request $request) {
@@ -573,7 +574,7 @@ class AdminController extends Controller
     public function contactsList(Request $request) {
         $contacts = \App\Models\ContactMessage::orderByDesc('created_at')
             ->when($request->get('status'), fn($q,$s) => $q->where('status',$s))
-            ->paginate(15);
+            ->paginate(15)->withQueryString();
         return view('admin.contacts.index', compact('contacts'));
     }
 

@@ -475,6 +475,9 @@ nav[role="navigation"] li span.cursor-default {
             @endif
 
         </form>
+        @if($errors->hasAny(['q', 'day', 'month', 'year']))
+            <p role="alert">Filter berita tidak valid. Periksa kata kunci dan tanggal yang dipilih.</p>
+        @endif
     </div>
 </div>
 

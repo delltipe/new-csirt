@@ -204,12 +204,12 @@ Each content type has full CRUD (Create, Read, Update, Delete):
 
 | Content Type | List | Create | Edit | Delete |
 |---|---|---|---|---|
-| News | `admin.news.list` | `admin.news.store` | `admin.news.edit` | `admin.news.delete` |
-| Events | `admin.events.list` | `admin.event.store` | `admin.event.edit` | `admin.event.delete` |
-| Warnings | `admin.warnings.list` | `admin.warning.store` | `admin.warning.edit` | `admin.warning.delete` |
-| Laws | `admin.laws.list` | `admin.law.store` | `admin.law.edit` | `admin.law.delete` |
-| Guides | `admin.guides.list` | `admin.guide.store` | `admin.guide.edit` | `admin.guide.delete` |
-| Infographics | `admin.infographics.list` | `admin.infographic.store` | `admin.infographic.edit` | `admin.infographic.delete` |
+| News | `admin.dashboard` | `admin.news.store` | `admin.news.edit` | `admin.news.delete` |
+| Events | `admin.dashboard` | `admin.event.store` | `admin.event.edit` | `admin.event.delete` |
+| Warnings | `admin.dashboard` | `admin.warning.store` | `admin.warning.edit` | `admin.warning.delete` |
+| Laws | `admin.dashboard` | `admin.law.store` | `admin.law.edit` | `admin.law.delete` |
+| Guides | `admin.dashboard` | `admin.guide.store` | `admin.guide.edit` | `admin.guide.delete` |
+| Infographics | `admin.dashboard` | `admin.infographic.store` | `admin.infographic.edit` | `admin.infographic.delete` |
 | Hero Slider | `admin.hero.store` | `admin.hero.store` | `admin.hero.edit` | `admin.hero.delete` | (+ `admin.hero.reorder` `POST /admin/hero/reorder`) |
 
 All admin write operations are wrapped in try/catch with Indonesian error messages.

@@ -9,7 +9,7 @@ class WarningPostController extends Controller
 {
     public function index()
     {
-        $warnings = WarningPost::orderBy('issued_at', 'desc')->paginate(12);
+        $warnings = WarningPost::orderByDesc('date')->orderByDesc('id')->paginate(12);
         return view('warnings.index', compact('warnings'));
     }
 
