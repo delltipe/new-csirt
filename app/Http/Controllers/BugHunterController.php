@@ -7,6 +7,10 @@ use App\Models\LampiranInsiden;
 use App\Models\TacAgreement;
 use App\Support\MathCaptcha;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class BugHunterController extends Controller
 {
@@ -43,9 +47,7 @@ class BugHunterController extends Controller
 
     public function showTac()
     {
-        $agreed = TacAgreement::where('user_id', auth()->id())
-            ->where('version', self::TAC_VERSION)
-            ->exists();
+        $agreed = $this->hasCurrentAgreement();
 
         if ($agreed) {
             return redirect()->route('bug-hunter.create');
@@ -76,8 +78,18 @@ class BugHunterController extends Controller
         return redirect()->route('bug-hunter.create');
     }
 
+    private function hasCurrentAgreement(): bool
+    {
+        return TacAgreement::where('user_id', auth()->id())
+            ->where('version', self::TAC_VERSION)->exists();
+    }
+
     public function create()
     {
+        if (! $this->hasCurrentAgreement()) {
+            return redirect()->route('bug-hunter.tac');
+        }
+
         $captchaQuestion = MathCaptcha::question();
 
         return view('bug-hunter.create', [
@@ -88,6 +100,10 @@ class BugHunterController extends Controller
 
     public function store(Request $request)
     {
+        if (! $this->hasCurrentAgreement()) {
+            return redirect()->route('bug-hunter.tac');
+        }
+
         $validated = $request->validate([
             'kategori_insiden' => 'required|string|in:' . implode(',', self::CATEGORIES),
             'waktu_kejadian' => 'required|date',
@@ -132,40 +148,72 @@ class BugHunterController extends Controller
         }
 
         $attachments = [];
-        foreach ($request->input('bukti', []) as $index => $row) {
-            $jenis = $row['jenis'] ?? null;
-
-            if ($jenis === 'file' && $request->hasFile("bukti.$index.file")) {
-                $attachments[] = [
-                    'jenis' => 'file',
-                    'value' => $request->file("bukti.$index.file")->store('bukti_laporan', 'public'),
-                ];
-            } elseif ($jenis === 'url' && !empty($row['url'])) {
-                $attachments[] = ['jenis' => 'url', 'value' => $row['url']];
-            }
-        }
-
+        $createdFiles = [];
         try {
-            $report = IncidentReport::create([
-                'user_id' => auth()->id(),
-                'tiket_no' => $this->generateTiketNo(),
-                'kategori_insiden' => $validated['kategori_insiden'],
-                'waktu_kejadian' => $validated['waktu_kejadian'],
-                'lokasi_url' => $validated['lokasi_url'],
-                'down_time' => $validated['down_time'],
-                'deskripsi' => $validated['deskripsi'],
-                'tindakan_teknis' => $validated['tindakan_teknis'],
-                'status' => IncidentReport::STATUS_PENDING,
-            ]);
-
-            foreach ($attachments as $attachment) {
-                LampiranInsiden::create([
-                    'laporan_id' => $report->id,
-                    'jenis' => $attachment['jenis'],
-                    'value' => $attachment['value'],
-                ]);
+            foreach ($request->input('bukti', []) as $index => $row) {
+                $jenis = $row['jenis'] ?? null;
+                if ($jenis === 'file' && $request->hasFile("bukti.$index.file")) {
+                    $path = $request->file("bukti.$index.file")->store('bukti_laporan', 'evidence');
+                    if ($path === false) {
+                        throw new \RuntimeException('Failed to store incident attachment.');
+                    }
+                    $createdFiles[] = $path;
+                    $attachments[] = ['jenis' => 'file', 'value' => $path];
+                } elseif ($jenis === 'url' && ! empty($row['url'])) {
+                    $attachments[] = ['jenis' => 'url', 'value' => $row['url']];
+                }
             }
-        } catch (\Exception $e) {
+
+            // Calculate outside the transaction so SQLite does not need to upgrade a
+            // read lock to a write lock. The unique index remains the final arbiter.
+            for ($attempt = 0; $attempt < 5; $attempt++) {
+                try {
+                    $ticket = $this->generateTiketNo();
+                    $report = DB::transaction(function () use ($validated, $attachments, $ticket) {
+                        $report = IncidentReport::create([
+                            'user_id' => auth()->id(),
+                            'tiket_no' => $ticket,
+                            'kategori_insiden' => $validated['kategori_insiden'],
+                            'waktu_kejadian' => $validated['waktu_kejadian'],
+                            'lokasi_url' => $validated['lokasi_url'],
+                            'down_time' => $validated['down_time'],
+                            'deskripsi' => $validated['deskripsi'],
+                            'tindakan_teknis' => $validated['tindakan_teknis'],
+                            'status' => IncidentReport::STATUS_PENDING,
+                        ]);
+                        foreach ($attachments as $attachment) {
+                            LampiranInsiden::create([
+                                'laporan_id' => $report->id,
+                                'jenis' => $attachment['jenis'],
+                                'value' => $attachment['value'],
+                            ]);
+                        }
+                        return $report;
+                    });
+                    break;
+                } catch (QueryException $e) {
+                    // Retry only ticket collisions or SQLite's transient busy/locked errors.
+                    $ticketConflict = $e instanceof UniqueConstraintViolationException
+                        && str_contains(strtolower($e->getMessage()), 'tiket_no');
+                    $sqliteBusy = DB::connection()->getDriverName() === 'sqlite'
+                        && in_array((int) ($e->errorInfo[1] ?? 0), [5, 6], true);
+                    if ((! $ticketConflict && ! $sqliteBusy) || $attempt === 4) {
+                        throw $e;
+                    }
+                    usleep(50000 * ($attempt + 1));
+                }
+            }
+        } catch (\Throwable $e) {
+            foreach ($createdFiles as $path) {
+                try {
+                    if (! Storage::disk('evidence')->delete($path)) {
+                        \Log::error('Failed to clean up incident upload.', ['path' => $path]);
+                    }
+                } catch (\Throwable $cleanupError) {
+                    report($cleanupError);
+                }
+            }
+            report($e);
             MathCaptcha::regenerate();
             return back()->withInput()->withErrors([
                 'deskripsi' => 'Gagal menyimpan laporan. Silakan coba lagi atau hubungi CSIRT langsung.',
@@ -187,12 +235,19 @@ class BugHunterController extends Controller
     protected function generateTiketNo(): string
     {
         $year = now()->year;
+        $prefix = "INS-{$year}-";
+        $highest = IncidentReport::withTrashed()
+            ->where('tiket_no', 'like', $prefix . '%')
+            ->pluck('tiket_no')
+            ->reduce(function (int $max, string $ticket) use ($prefix) {
+                $suffix = substr($ticket, strlen($prefix));
+                return preg_match('/^\d{4}$/', $suffix) ? max($max, (int) $suffix) : $max;
+            }, 0);
 
-        do {
-            $seq = IncidentReport::where('tiket_no', 'like', "INS-{$year}-%")->count() + 1;
-            $tiketNo = sprintf('INS-%s-%04d', $year, $seq);
-        } while (IncidentReport::where('tiket_no', $tiketNo)->exists());
+        if ($highest >= 9999) {
+            throw new \RuntimeException('Annual incident ticket limit reached.');
+        }
 
-        return $tiketNo;
+        return sprintf('INS-%s-%04d', $year, $highest + 1);
     }
 }
