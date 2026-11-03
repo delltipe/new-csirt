@@ -20,7 +20,7 @@ class IncidentTrackingController extends Controller
         if ($tiket !== null && $tiket !== '') {
             // Validate ticket number format (e.g. INS-2026-0001)
             if (preg_match('/^INS-\d{4}-\d{4}$/', $tiket)) {
-                $report = IncidentReport::where('tiket_no', $tiket)->first();
+                $report = IncidentReport::select('tiket_no', 'status')->where('tiket_no', $tiket)->first();
 
                 if (!$report) {
                     $error = 'Nomor tiket ' . $tiket . ' tidak ditemukan dalam sistem JakartaProv-CSIRT. Pastikan nomor tiket sudah benar.';

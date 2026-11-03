@@ -19,17 +19,12 @@ class AdminController extends Controller
     // Handle admin login
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            // Only allow users with 'is_admin' flag (add this to your users table if not present)
-            if (Auth::user() && Auth::user()->is_admin) {
-                return redirect()->route('admin.dashboard');
-            } else {
-                Auth::logout();
-                return back()->withErrors(['email' => 'Unauthorized.']);
-            }
+        $credentials = $request->validate(['email' => 'required|email', 'password' => 'required|string']);
+        if (Auth::attempt($credentials + ['is_admin' => true])) {
+            $request->session()->regenerate();
+            return redirect()->route('admin.dashboard');
         }
-        return back()->withErrors(['email' => 'Invalid credentials.']);
+        return back()->withErrors(['email' => 'Email atau kata sandi salah.'])->withInput($request->except('password'));
     }
 
     // Show admin dashboard
@@ -50,9 +45,11 @@ class AdminController extends Controller
     }
 
     // Handle logout
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('admin.login');
     }
 

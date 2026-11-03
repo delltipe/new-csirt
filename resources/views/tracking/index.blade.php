@@ -446,33 +446,9 @@
             </ol>
             @endif
 
-            {{-- Metadata Grid --}}
-            <div class="track-info-grid">
-                <div>
-                    <div class="track-info-item__label">Kategori Insiden</div>
-                    <div class="track-info-item__val">{{ $report->kategori_insiden }}</div>
-                </div>
-                <div>
-                    <div class="track-info-item__label">Waktu Dilaporkan</div>
-                    <div class="track-info-item__val">{{ $report->created_at->format('d M Y, H:i') }} WIB</div>
-                </div>
-                <div>
-                    <div class="track-info-item__label">Pembaruan Terakhir</div>
-                    <div class="track-info-item__val">{{ $report->updated_at->format('d M Y, H:i') }} WIB</div>
-                </div>
-                <div>
-                    <div class="track-info-item__label">Tingkat Keparahan</div>
-                    <div class="track-info-item__val">{{ $report->severity ? strtoupper($report->severity) : 'Menunggu Penilaian' }}</div>
-                </div>
-                <div>
-                    <div class="track-info-item__label">Klasifikasi CWE</div>
-                    <div class="track-info-item__val">{{ $report->cwe ?: 'Menunggu Klasifikasi' }}</div>
-                </div>
-            </div>
-
             <div class="track-disclosure-box">
                 <i class="bi bi-shield-lock-fill" aria-hidden="true" style="color:var(--navy); margin-right:4px;"></i>
-                <strong>Prinsip Pelindungan Data:</strong> Detail payload eksploitasi, deskripsi kerentanan, dan lampiran bukti dirahasiakan sesuai standar penanganan insiden siber.
+                <strong>Detail laporan:</strong> Payload eksploitasi, deskripsi kerentanan, dan lampiran tidak ditampilkan di halaman pelacakan publik ini.
                 Pemilik laporan terdaftar dapat masuk ke <a href="{{ route('login') }}">Dashboard Pelapor</a> untuk melihat detail lengkap.
             </div>
         </div>

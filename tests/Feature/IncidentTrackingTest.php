@@ -51,9 +51,10 @@ class IncidentTrackingTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('INS-2026-0001');
         $response->assertSee('Ditindaklanjuti');
-        $response->assertSee('Website Defacement');
-        $response->assertSee('CWE-79');
-        $response->assertSee('MEDIUM');
+        $response->assertDontSee('Website Defacement');
+        $response->assertDontSee('CWE-79');
+        $response->assertDontSee('MEDIUM');
+        $response->assertDontSee($report->created_at->format('d M Y, H:i'));
     }
 
     public function test_public_tracking_case_insensitive_lookup(): void

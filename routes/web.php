@@ -77,10 +77,11 @@ Route::get('/captcha/refresh', [CaptchaController::class, 'refresh'])->name('cap
 // Public Authentication Routes (bug hunter registration/login)
 // ---------------------------------------------------------------
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:registration')->name('register.submit');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login')->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/incident-evidence/{attachment}', [\App\Http\Controllers\EvidenceController::class, 'download'])->middleware('auth')->name('evidence.download');
 
 // ---------------------------------------------------------------
 // Bug Hunter (Reporter) Routes — requires login
@@ -105,7 +106,7 @@ Route::middleware(['auth', 'bug_hunter'])->group(function () {
 });
 
 // Public Incident Ticket Tracking (accessible without login)
-Route::get('/lacak-laporan', [IncidentTrackingController::class, 'index'])->name('ticket.track');
+Route::get('/lacak-laporan', [IncidentTrackingController::class, 'index'])->middleware('throttle:tracking')->name('ticket.track');
 
 // ---------------------------------------------------------------
 // Contact Routes
@@ -121,7 +122,7 @@ Route::get('/dashboard', function () {
 
 // Admin login routes
 Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
-Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/login', [AdminController::class, 'login'])->middleware('throttle:login')->name('admin.login.submit');
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 // Admin dashboard (protected)
