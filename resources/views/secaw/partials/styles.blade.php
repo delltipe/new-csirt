@@ -498,6 +498,7 @@ dialog.secaw-dialog {
     border: 2px solid var(--navy);
     border-radius: 0;
     padding: 0;
+    margin: auto;
     max-width: 900px;
     width: 90vw;
     background: var(--white);

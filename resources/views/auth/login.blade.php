@@ -104,6 +104,11 @@
     border-color: var(--alert);
 }
 
+.form-input:focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
+}
+
 .field-error {
     font-size: 12px;
     color: var(--alert);

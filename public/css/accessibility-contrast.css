@@ -16,7 +16,7 @@ html.accessibility-contrast-high {
   --white: #FFFFFF;
   --muted-on-dark: #FFFFFF;
   --faint-on-dark: #FFFFFF;
-  --alert: #FF0000;
+  --alert: #B91C1C;
   --alert-bg: #FFFF00;
   --alert-light: #FF4444;
   --alert-dark: #CC0000;
@@ -53,6 +53,11 @@ html.accessibility-contrast-high body {
 html.accessibility-contrast-high a {
   color: #000080;
   text-decoration: underline;
+}
+
+html.accessibility-contrast-high a.btn-detail,
+html.accessibility-contrast-high a.btn-detail:hover {
+  color: #FFFFFF;
 }
 
 html.accessibility-contrast-high button,
@@ -618,6 +623,8 @@ html.accessibility-contrast-high .search-header h1,
 html.accessibility-contrast-high .rfc-page-header h1,
 html.accessibility-contrast-high .statistics-header h1,
 html.accessibility-contrast-high .lapor-header h1,
+html.accessibility-contrast-high .tac-header h1,
+html.accessibility-contrast-high .dash-header h1,
 html.accessibility-contrast-high .login-title,
 html.accessibility-contrast-high .track-header h1,
 html.accessibility-contrast-high .secaw-header h1 {
@@ -1115,6 +1122,11 @@ html.accessibility-contrast-dark a {
 
 html.accessibility-contrast-dark a:hover {
   color: #66B3FF;
+}
+
+html.accessibility-contrast-dark a.btn-detail,
+html.accessibility-contrast-dark a.btn-detail:hover {
+  color: #0A0F1A;
 }
 
 html.accessibility-contrast-dark button,

@@ -42,30 +42,21 @@
         border-bottom: 1px solid var(--border);
     }
 
-    /* Tombol & CTA (Red Removed) */
-    .btn-barlow {
-        font-family: var(--font-display);
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        border-radius: 0;
-        padding: 12px 32px;
-        transition: all 0.2s;
-    }
-    .btn-navy-bold {
-        background-color: var(--navy, #003580);
-        color: white;
-        border: none;
-    }
-    .btn-navy-bold:hover {
-        background-color: var(--navy-mid, #004099);
-        color: white;
+    .profile-description {
+        font-size: calc(var(--text-15) * var(--accessibility-font-scale, 1));
+        line-height: 1.75;
     }
 
     .cta-footer {
         background: var(--navy-dim, #002060);
         padding: 64px 0;
         border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .cta-footer .btn-cta-main {
+        font-size: calc(var(--text-base) * var(--accessibility-font-scale, 1));
+    }
+    .cta-footer .btn-cta-ghost {
+        font-size: calc((var(--text-sm) - 0.5px) * var(--accessibility-font-scale, 1));
     }
 
     .section-title {
@@ -96,15 +87,15 @@
 
                     {{-- Deskripsi 1:1 Original --}}
                     <div class="mb-5">
-                        <p class="fs-5 lh-lg text-dark mb-4">
+                        <p class="profile-description text-dark mb-4">
                             Tim Tanggap Insiden Siber (Computer Security Incident Response Team) Pemerintah Provinsi DKI Jakarta yang selanjutnya disebut dengan <span class="fw-bold">JakartaProv-CSIRT</span> merupakan CSIRT Pemprov DKI Jakarta.
                         </p>
                         
-                        <p class="fs-5 lh-lg text-secondary mb-4">
+                        <p class="profile-description text-secondary mb-4">
                             Tim JakartaProv-CSIRT ditetapkan oleh Sekretaris Daerah Provinsi DKI Jakarta dalam Keputusan Penjabat Sekretaris Daerah Provinsi DKI Jakarta Nomor 41 Tahun 2020 tentang Computer Security Incident Response Team Pemerintah Provinsi DKI Jakarta.
                         </p>
 
-                        <p class="fs-5 lh-lg text-secondary">
+                        <p class="profile-description text-secondary">
                             Ketua JakartaProv-CSIRT adalah Kepala Dinas Komunikasi, Informatika dan Statistik Provinsi DKI Jakarta. Anggota Tim JakartaProv-CSIRT adalah staf fungsional dan/atau pengelola teknologi informasi di lingkungan Dinas Komunikasi, Informatika dan Statistik Provinsi DKI Jakarta, dengan fungsi teknis dan operasional harian penanganan insiden siber dikoordinasikan oleh <span class="fw-bold text-dark">Bidang Siber, Sandi dan Aplikasi (BSSA)</span> Diskominfotik DKI Jakarta.
                         </p>
                     </div>
@@ -135,12 +126,12 @@
 
 <section class="cta-footer text-center">
     <div class="container">
-        <h2 class="text-white mb-4 display-4" style="font-family: var(--font-display); font-weight: 800; text-transform: uppercase;">Butuh Bantuan Teknis?</h2>
+        <h2 class="cta-section__title text-white mb-4">Butuh Bantuan Teknis?</h2>
         <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a href="{{ route('bug-hunter.dashboard') }}" class="btn btn-navy-bold btn-barlow fs-5">
+            <a href="{{ route('bug-hunter.dashboard') }}" class="btn-cta-main">
                 Lapor Insiden
             </a>
-            <a href="{{ route('contact.create') }}" class="btn btn-outline-light btn-barlow fs-5">
+            <a href="{{ route('contact.create') }}" class="btn-cta-ghost">
                 Hubungi Kami
             </a>
         </div>

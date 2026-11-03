@@ -28,7 +28,7 @@
 {{-- ============================================================
      MAIN BODY
      ============================================================ --}}
-<main class="secaw-shell" id="main-content">
+<div class="secaw-shell" id="main-content">
     <div class="container">
 
         {{-- Crucial Security & Confidentiality Disclaimer Banner --}}
@@ -146,6 +146,6 @@
         @endif
 
     </div>
-</main>
+</div>
 
 @endsection

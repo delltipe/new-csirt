@@ -70,7 +70,13 @@ class AccessibilityWidget {
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
         e.preventDefault();
-        this.togglePanel();
+        if (this.panel.hasAttribute('hidden') || this.panel.classList.contains('is-closing')) {
+          this.panelOpener = document.activeElement;
+          this.openPanel();
+          this.closeBtn.focus();
+        } else {
+          this.closePanel();
+        }
       } else if (e.key === 'Escape' && !this.panel.hasAttribute('hidden')) {
         this.closePanel();
       }
@@ -149,6 +155,11 @@ class AccessibilityWidget {
   closePanel() {
     if (this.panel.hasAttribute('hidden') || this.panel.classList.contains('is-closing')) return;
 
+    if (this.panel.contains(document.activeElement)) {
+      const target = this.panelOpener && this.panelOpener.isConnected ? this.panelOpener : this.toggle;
+      target.focus();
+    }
+    this.panelOpener = null;
     this.stopVoice();
     this.toggle.setAttribute('aria-expanded', 'false');
 

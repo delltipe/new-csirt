@@ -105,6 +105,11 @@
     border-color: var(--alert);
 }
 
+.form-input:focus-visible {
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
+}
+
 .password-input-group {
     position: relative;
     display: flex;
@@ -348,8 +353,10 @@ html.accessibility-contrast-high .login-page .form-input:focus {
     box-shadow: 0 0 0 2px #FFFFFF !important;
     border-color: #000000 !important;
 }
-html.accessibility-contrast-high .login-page .btn-toggle-password {
-    color: #000000 !important;
+html.accessibility-contrast-high .login-page .btn-toggle-password,
+html.accessibility-contrast-high .login-page .btn-toggle-password:hover {
+    background: var(--white);
+    color: var(--ink) !important;
 }
 </style>
 

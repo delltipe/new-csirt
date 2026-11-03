@@ -58,7 +58,7 @@
         })();
     </script>
 </head>
-<body>
+<body class="site-layout">
     @include('components.navbar')
     
     {{-- Accessibility Widget --}}

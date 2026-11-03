@@ -28,7 +28,7 @@
 {{-- ============================================================
      MAIN BODY
      ============================================================ --}}
-<main class="secaw-shell" id="main-content">
+<div class="secaw-shell" id="main-content">
     <div class="container">
 
         {{-- Filter & Search Box --}}
@@ -140,7 +140,7 @@
         @endif
 
     </div>
-</main>
+</div>
 
 {{-- ============================================================
      ACCESSIBLE MODAL DIALOG (Modern Web Guidance Standard)

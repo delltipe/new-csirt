@@ -261,6 +261,11 @@
         color: var(--mid);
     }
 
+    .nav-search input:focus-visible {
+        outline: 2px solid var(--navy);
+        outline-offset: -2px;
+    }
+
     .nav-search button {
         background: var(--ink);
         color: var(--white);

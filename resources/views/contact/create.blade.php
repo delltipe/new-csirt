@@ -268,6 +268,9 @@
     .form-row { grid-template-columns: 1fr; }
     .form-card { padding: 24px 16px; }
 }
+@media (max-width: 480px) {
+    .step-nav { flex-wrap: wrap; }
+}
 </style>
 
 <div class="lapor-header">
