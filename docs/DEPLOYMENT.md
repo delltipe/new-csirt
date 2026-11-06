@@ -9,7 +9,7 @@
 
 - PHP 8.2+
 - Composer
-- Node.js (for npm, though Vite is not actively used)
+- No Node.js or asset build is required; the layout loads assets from `public/`.
 - A hosting platform (recommended: **Render.com** for free tier prototype)
 
 ---
@@ -129,9 +129,6 @@ sudo apt install php8.2 php8.2-fpm php8.2-sqlite3 php8.2-mbstring php8.2-xml php
 curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 
-# Install Node.js (optional, for npm build)
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install nodejs
 ```
 
 ### Deploy

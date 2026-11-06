@@ -176,7 +176,7 @@ The widget itself is built with accessibility in mind:
 ### Styling Issues
 1. Ensure `accessibility-contrast.css` is loaded after `style.css`
 2. Check for CSS conflicts with other stylesheets
-3. Clear browser cache and rebuild if using Vite
+3. Refresh the browser or clear its cache after changing the public CSS
 
 ### JavaScript Errors
 - Check browser console: `F12 → Console tab`

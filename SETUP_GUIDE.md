@@ -10,25 +10,28 @@
 
 - PHP 8.2+
 - Composer
-- Node.js (for `composer dev`'s `npx concurrently` and the unused Vite build)
+- PHP extensions required by Composer, including PDO SQLite for the default database
 
 ---
 
 ## Quick Start
 
 ```bash
-composer setup          # Fresh install: composer install, .env, APP_KEY, migrate, npm, build
-composer dev            # Runs 4 processes: php artisan serve, queue:listen, pail, vite
+composer setup          # Fresh install: PHP dependencies, .env, APP_KEY, SQLite file, migrations
+composer dev            # Start the local PHP server
 composer test           # Clears config cache, then runs php artisan test
 ```
 
 Notes:
 
-- `composer setup` runs `migrate --force` **without seeding** — the DB starts empty.
-  For the admin account and sample content, run `php artisan migrate:fresh --seed`.
-- After the incident-portal rework, any schema changes require
-  `php artisan migrate:fresh --seed`.
-- `composer dev` requires `npx concurrently` (Node).
+- Use `composer setup` for a fresh installation only: it generates a new application
+  key and runs migrations. Do not run it against an existing installation whose key
+  or data must be preserved. It does not seed data; on a fresh database, run
+  `php artisan db:seed` for the admin account and sample content.
+- Run `php artisan storage:link` to expose uploaded files locally. To process queued
+  jobs or follow logs, run `php artisan queue:listen --tries=1 --timeout=0` or
+  `php artisan pail --timeout=0` in separate terminals as needed. Public asset edits
+  require a browser refresh; Node.js and an asset build are not required.
 
 7. **IncidentReport** - Cyber incident reports submitted by registered reporters
    - Fields: user_id, tiket_no, kategori_insiden, waktu_kejadian, lokasi_url, down_time, deskripsi, tindakan_teknis, cwe, severity, status
@@ -126,8 +129,7 @@ resources/views/
 
 Styling: Bootstrap 5.3 (CDN) for grid/forms plus a custom design system in
 `public/css/style.css` (CSS custom properties). Admin tables use the custom `.data-table`
-component (see `DESIGN_SYSTEM.md`). Vite is registered but unused — assets
-load from `public/`, not the Vite bundle. See `DESIGN_SYSTEM.md`.
+component (see `DESIGN_SYSTEM.md`). Assets load directly from `public/`.
 
 ---
 

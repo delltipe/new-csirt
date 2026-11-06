@@ -3,15 +3,15 @@
 ## Quick Commands
 
 ```bash
-composer setup          # Full fresh install: composer install, .env, key, migrate, npm, build
-composer dev            # Runs 4 processes: php artisan serve, queue:listen, pail, vite (npx concurrently)
+composer setup          # Fresh install: PHP dependencies, .env, key, SQLite file, migrations
+composer dev            # Start the local PHP server
 composer test           # Clears config cache then runs php artisan test
 php artisan test --filter=TestName   # Run a single test
 php artisan migrate:fresh --seed     # Reset DB and re-seed
 php artisan route:list               # List all routes
 ```
 
-`composer setup` does **not** seed data (runs `migrate --force`, no `--seed`). After a fresh setup the DB is empty — the admin login and sample content only exist after `php artisan migrate:fresh --seed` (or `db:seed`). `composer dev` requires `npx concurrently` (Node).
+`composer setup` is for fresh installs: it generates an application key and runs migrations. It does **not** seed data; on a fresh database use `php artisan db:seed` for the admin login and sample content. Run `php artisan storage:link` for local uploads. For jobs or logs, run `php artisan queue:listen --tries=1 --timeout=0` or `php artisan pail --timeout=0` separately as needed. Node and an asset build are not required.
 
 No linting, formatting, or typecheck commands are configured. Laravel Pint is available via `vendor/bin/pint` but has no project-level config file.
 
@@ -102,7 +102,7 @@ No schema changes — no `migrate:fresh` needed for any of this.
 - **Laravel 12** / PHP 8.2+ / SQLite (default)
 - **Bootstrap 5.3** via CDN (in layout) for grid, forms only — admin tables use the custom `.data-table` component (see Admin Dashboard Polish)
 - **Custom design system** (`public/css/style.css`) with CSS custom properties — see `DESIGN_SYSTEM.md`
-- **Vite 7** registered but unused: layout loads CSS/JS from `public/`, not the Vite bundle. `resources/css/app.css` is just a comment; do not expect Vite output in templates.
+- **Direct assets:** the layout loads CSS/JS from `public/`; refresh the browser after edits.
 - No CI/CD pipeline (no `.github/workflows`)
 - No Pest — uses PHPUnit 11
 
@@ -156,7 +156,7 @@ All form submissions and admin CRUD writes are wrapped in try/catch — on failu
 
 - Main layout: `resources/views/layouts/app.blade.php` — uses `@yield('content')`, includes `components.navbar`, `components.accessibility`, `components.footer`
 - Loads Bootstrap 5.3 + icons from CDN, plus `public/css/style.css` and `public/css/accessibility-contrast.css`; `public/js/accessibility.js` at end of body
-- Vite bundle is **not** loaded anywhere in the layout
+- No asset build is required by the layout
 
 **Accessibility widget** (`components/accessibility.blade.php`): modeled on the **jakarta.go.id
 "Widget Aksesibilitas Version 2.0"** and restyled entirely on design tokens (boxy,

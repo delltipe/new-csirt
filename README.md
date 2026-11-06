@@ -5,22 +5,27 @@ Provincial Government (csirt.jakarta.go.id). Citizens and government employees c
 cyber incidents and read security resources; CSIRT staff manage content and review reports.
 
 **Stack:** Laravel 12 · PHP 8.2+ · SQLite · Bootstrap 5.3 (grid/forms) · custom
-design system (CSS custom properties, incl. admin `.data-table`) · Vite registered
-but unused (assets load from `public/`).
+design system (CSS custom properties, incl. admin `.data-table`). Assets load directly
+from `public/`; Node.js and an asset build are not required.
 
 ---
 
 ## Quick Start
 
 ```bash
-composer setup          # Fresh install: composer install, .env, APP_KEY, migrate, npm, build
-composer dev            # Runs 4 processes: php artisan serve, queue:listen, pail, vite
+composer setup          # Fresh install: PHP dependencies, .env, APP_KEY, SQLite file, migrations
+composer dev            # Start the local PHP server
 composer test           # Clears config cache, then runs php artisan test
 ```
 
-- `composer setup` runs `migrate --force` **without seeding** — the DB starts empty.
-  For the admin account and sample content, run `php artisan migrate:fresh --seed`.
-- `composer dev` needs `npx concurrently` (Node).
+- Use `composer setup` for a fresh installation only: it generates a new application
+  key and runs migrations. Do not run it against an existing installation whose key
+  or data must be preserved. It does not seed data; on a fresh database, run
+  `php artisan db:seed` for the admin account and sample content.
+- Run `php artisan storage:link` to expose uploaded files locally. To process queued
+  jobs or follow logs, run `php artisan queue:listen --tries=1 --timeout=0` or
+  `php artisan pail --timeout=0` in separate terminals as needed. Changes to public
+  assets require a browser refresh.
 
 ### Default Credentials
 
