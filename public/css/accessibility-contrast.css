@@ -691,17 +691,8 @@ html.accessibility-contrast-high .footer-bottom {
   border-top: 2px solid #444444;
 }
 
-html.accessibility-contrast-high .footer-copy,
-html.accessibility-contrast-high .footer-legal a {
+html.accessibility-contrast-high .footer-copy {
   color: #FFFFFF !important;
-}
-
-html.accessibility-contrast-high .footer-legal a {
-  text-decoration: underline !important;
-}
-
-html.accessibility-contrast-high .footer-legal a:hover {
-  color: #FFFF00 !important;
 }
 
 html.accessibility-contrast-high .footer-social a {
@@ -1155,10 +1146,6 @@ html.accessibility-contrast-dark .nav-main {
   border-bottom: 4px solid #4DA6FF;
 }
 
-/* ---- Navbar partner logos: swap to dark variants (5 Abad / HUTRI81) ---- */
-html.accessibility-contrast-dark .nav-partner img.partner-light { display: none; }
-html.accessibility-contrast-dark .nav-partner img.partner-dark  { display: inline-block; }
-
 html.accessibility-contrast-dark .nav-links > li > a {
   color: #FFFFFF;
   border-bottom: 4px solid transparent;
@@ -1432,12 +1419,8 @@ html.accessibility-contrast-dark .footer-links a {
 html.accessibility-contrast-dark .footer-links a:hover {
   color: #FFFFFF;
 }
-html.accessibility-contrast-dark .footer-copy,
-html.accessibility-contrast-dark .footer-legal a {
+html.accessibility-contrast-dark .footer-copy {
   color: #9AA7B6;
-}
-html.accessibility-contrast-dark .footer-legal a:hover {
-  color: #B0BCC9;
 }
 html.accessibility-contrast-dark .footer-social a {
   border-color: #333333;

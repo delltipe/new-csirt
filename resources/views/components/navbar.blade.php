@@ -82,10 +82,6 @@
         line-height: 0;
     }
 
-    .nav-partner img.partner-dark {
-        display: none;
-    }
-
     .nav-partners img {
         height: 34px;
         width: auto;

@@ -244,7 +244,7 @@ All admin write operations are wrapped in try/catch with Indonesian error messag
   `accessibility-contrast.css`; extra states (`-grayscale`, `-invert`, `-hide-images`,
   `-readable-font`, `-pause-animations`, `-large-cursor`, `-underline-links`, `-align-*`) live at
   the end of the same file, each toggled by `accessibility.js` classes on `<html>`
-- **JavaScript:** `public/js/accessibility.js` (mirrored as `resources/js/accessibility.js`)
+- **JavaScript:** `public/js/accessibility.js` (loaded directly by the shared layout)
   manages state in `localStorage` (`accessibilityState`), Ctrl+U shortcut, gauge strips that
   wrap, and TTS play/stop
 

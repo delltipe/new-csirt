@@ -40,8 +40,6 @@ resources/
 ├── views/
 │   └── components/
 │       └── accessibility.blade.php    # Main widget component
-└── js/
-    └── accessibility.js                # Functionality (for Vite build)
 
 public/
 ├── css/
@@ -57,7 +55,6 @@ resources/views/layouts/
 
 ### New Files:
 - `resources/views/components/accessibility.blade.php` - Widget HTML & inline styles
-- `resources/js/accessibility.js` - Widget functionality (for Vite)
 - `public/js/accessibility.js` - Direct public JS file
 - `public/css/accessibility-contrast.css` - Contrast modes CSS
 

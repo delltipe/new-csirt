@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Infographic;
-use Illuminate\Http\Request;
 
 class InfographicController extends Controller
 {

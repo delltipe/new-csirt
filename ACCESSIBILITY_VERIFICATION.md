@@ -2,8 +2,35 @@
 
 > Historical checklist below, not evidence of current conformance. Its blanket
 > completion and screen-reader claims are not substantiated by the checks in this
-> file. The active script is `public/js/accessibility.js`; the `resources/js`
-> copy is not loaded by the shared layout.
+> file. The active script is `public/js/accessibility.js`, loaded directly by
+> the shared layout.
+
+## S2.1 cleanup verification — 2026-11-05
+
+In the original repository at base commit `9e4a2e3362fb0329b0425331e4695be25a71ceff`,
+the inactive accessibility script and obsolete partner/footer selectors were removed
+from the working tree. The served widget, pre-paint guard and JavaScript logo swap
+were retained. In a disposable copy, PHP 8.4.4 with GD ran PHPUnit: 96 tests,
+806 assertions, exit 0, no reported skips. The copy's PHPUnit bootstrap guard was
+changed from `is_readable` to `is_file` because this Windows environment reported
+readable files as unreadable; the original dependencies were not changed. JUnit:
+`D:/Workspace-CSIRT/qa-s2.1-20261105/junit.xml`. Route listing succeeded with 84
+routes; JavaScript syntax and source-reference checks passed.
+
+The same disposable copy was served locally using a separate seeded SQLite
+database. Browser checks on the homepage confirmed text-size and dark-contrast
+changes, visible dark partner logos, paused-animation state, persistence after
+reload, reset, and widget shortcut/Escape focus return. HTTP checks passed for
+the homepage, publication and SecAw routes, widget assets, anonymous redirects,
+admin/reporter access and logout, and a 419 response for a missing CSRF token
+versus successful login with a valid token. A simulated forwarded HTTPS host was
+reflected in a redirect. The first HTTP run incorrectly expected a 403 for a
+reporter visiting the admin dashboard; the existing middleware redirects to
+admin login instead, and the corrected check passed. Script:
+`D:/Workspace-CSIRT/qa-s2.1-20261105/http_check.py`.
+
+These are focused local checks, not a complete accessibility audit. Speech output
+and actual deployment proxy/TLS behavior were not verified.
 
 ## S1.5 working-tree verification — 2026-11-03
 
@@ -70,7 +97,6 @@ observations above do not close those items or certify WCAG conformance.
 ### ✅ Created (4 files)
 ```
 resources/views/components/accessibility.blade.php      ✓ HTML + CSS
-resources/js/accessibility.js                            ✓ Vite source
 public/js/accessibility.js                               ✓ Direct public
 public/css/accessibility-contrast.css                    ✓ Contrast modes
 ACCESSIBILITY_SETUP.md                                   ✓ Quick start

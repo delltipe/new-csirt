@@ -69,8 +69,8 @@ Commit `dbcc22f` (plus earlier dark-mode work in `ee81505`+). No schema changes 
   `https://diskominfotik.jakarta.go.id/`, 5 Abad → `https://jakarta500.id/`;
   **HUT RI ke-81 has no link** (plain `<span class="nav-partner">`). Dark mode swaps
   to `logo_5abad_white.svg` (official white SVG with its `#0F141E` background rect
-  stripped — transparent white artwork) / `hutri81_white.png` (dual-image
-  `.partner-light`/`.partner-dark` stack toggled in `accessibility-contrast.css`).
+  stripped — transparent white artwork) / `hutri81_white.png` (using
+  `data-light`/`data-dark` sources swapped by `public/js/accessibility.js`).
   Jaya Raya uses the **same** `jaya_raya.png` in both modes (no white-out). The
   HUT RI 81 marks are the **tertiary "81 only" (no-text) versions**: light =
   `HUTRI81.png` (merah/hitam on putih), dark = `hutri81_white.png` (putih on merah).

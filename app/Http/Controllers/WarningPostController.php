@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\WarningPost;
-use Illuminate\Http\Request;
 
 class WarningPostController extends Controller
 {

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\LawRulePost;
-use Illuminate\Http\Request;
 
 class LawRulePostController extends Controller
 {

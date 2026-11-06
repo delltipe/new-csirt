@@ -134,25 +134,6 @@
         color: var(--faint-on-dark);
     }
 
-    .footer-legal {
-        display: flex;
-        gap: 20px;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .footer-legal a {
-        font-size: 12px;
-        color: var(--faint-on-dark);
-        text-decoration: none;
-        transition: color var(--ease);
-    }
-
-    .footer-legal a:hover {
-        color: var(--muted-on-dark);
-    }
-
     /* Responsive */
     @media (max-width: 960px) {
         .footer-grid {

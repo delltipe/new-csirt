@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
 
         // Register the 'admin' middleware alias used by routes/web.php ['auth', 'admin'] groups.
-        // Must be declared here (Laravel 12) — the legacy app/Http/Kernel.php routeMiddleware is not loaded.
+        // Laravel 12 registers application middleware aliases here.
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'bug_hunter' => \App\Http\Middleware\BugHunterMiddleware::class,

@@ -13,7 +13,7 @@ website. Here's what was implemented:
    - 13 features + language row + reset bar + version footer
    - Inline CSS styling on design tokens (boxy, `border-radius: 0`)
 
-2. **JavaScript Logic**: `public/js/accessibility.js` (+ mirror `resources/js/accessibility.js`)
+2. **JavaScript Logic**: `public/js/accessibility.js` (loaded directly by the layout)
    - Perbesar/Perkecil Teks (4-level gauge)
    - Tinggi Garis (3-level gauge) · Spasi Teks (3-level gauge)
    - Kontras+ cycle (Normal→High→Dark→Invert, 4-level) · Rata Tulisan (L/C/R/Justify, 4-level)
@@ -215,8 +215,6 @@ k:\GitHub\new-csirt\
 │   │   │   └── accessibility.blade.php     ← Widget HTML
 │   │   └── layouts/
 │   │       └── app.blade.php               ← Updated main layout
-│   └── js/
-│       └── accessibility.js                ← Vite source file
 └── ACCESSIBILITY_WIDGET_README.md          ← Full documentation
 ```
 

@@ -11,7 +11,7 @@ class WarningPost extends Model
 
     protected $table = 'peringatan_keamanan';
     
-    // Disable timestamps since they aren't in your migration
+    // The content table includes created_at and updated_at.
     public $timestamps = true; 
 
     protected $fillable = [

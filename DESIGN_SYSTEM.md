@@ -245,9 +245,9 @@ A compact `.nav-partners` cluster sits in the navbar brand row (next to the CSIR
   Jaya Raya → `https://www.jakarta.go.id/`, Diskominfo →
   `https://diskominfotik.jakarta.go.id/`, 5 Abad → `https://jakarta500.id/`.
   **HUT RI ke-81 is intentionally linkless** (plain `<span class="nav-partner">`, no anchor).
-- **Dark-mode variants**: each of 5 Abad and HUT RI ke-81 renders a dual-image stack
-  (`img.partner-light` default + `img.partner-dark` hidden). In dark mode
-  `accessibility-contrast.css` swaps to `logo_5abad_white.svg` (official white SVG with its
+- **Dark-mode variants**: the 5 Abad and HUT RI ke-81 images use `data-light` and
+  `data-dark` attributes. `public/js/accessibility.js` swaps their sources in dark mode to
+  `logo_5abad_white.svg` (official white SVG with its
   `#0F141E` background rect stripped — transparent white artwork) and `hutri81_white.png`
   ("Putih Latar Merah"). **Jaya Raya uses the same `jaya_raya.png` in both modes** — no
   white-out filter. The HUT RI 81 marks are the tertiary "81 only" (no-text) versions per
