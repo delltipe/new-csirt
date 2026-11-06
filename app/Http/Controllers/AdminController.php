@@ -54,13 +54,7 @@ class AdminController extends Controller
 
     // NEWS CRUD for admin
     public function newsStore(Request $request) {
-        $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'thumbnail' => 'nullable|string',
-            'source' => 'nullable|string',
-            'date' => 'required|date',
-        ]);
+        $data = $request->validate($this->newsRules());
         try {
             \App\Models\CybersecurityNews::create($data);
         } catch (\Exception $e) {
@@ -76,13 +70,7 @@ class AdminController extends Controller
 
     public function newsUpdate(Request $request, $id) {
         $newsItem = \App\Models\CybersecurityNews::findOrFail($id);
-        $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'thumbnail' => 'nullable|string',
-            'source' => 'nullable|string',
-            'date' => 'required|date',
-        ]);
+        $data = $request->validate($this->newsRules());
         try {
             $newsItem->update($data);
         } catch (\Exception $e) {
@@ -105,16 +93,7 @@ class AdminController extends Controller
     // EVENTS CRUD
     // ============================================
     public function eventStore(Request $request) {
-        $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'nullable|string',
-            'thumbnail' => 'nullable|string',
-            'event_date' => 'required|date',
-            'location' => 'nullable|string',
-            'event_type' => 'nullable|string',
-            'registration_url' => 'nullable|string',
-            'capacity' => 'nullable|integer',
-        ]);
+        $data = $request->validate($this->eventRules());
         try {
             \App\Models\Event::create($data);
         } catch (\Exception $e) {
@@ -130,16 +109,7 @@ class AdminController extends Controller
 
     public function eventUpdate(Request $request, $id) {
         $event = \App\Models\Event::findOrFail($id);
-        $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'nullable|string',
-            'thumbnail' => 'nullable|string',
-            'event_date' => 'required|date',
-            'location' => 'nullable|string',
-            'event_type' => 'nullable|string',
-            'registration_url' => 'nullable|string',
-            'capacity' => 'nullable|integer',
-        ]);
+        $data = $request->validate($this->eventRules());
         try {
             $event->update($data);
         } catch (\Exception $e) {
@@ -162,13 +132,7 @@ class AdminController extends Controller
     // WARNINGS CRUD
     // ============================================
     public function warningStore(Request $request) {
-        $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'thumbnail' => 'nullable|string',
-            'source' => 'nullable|string',
-            'date' => 'required|date',
-        ]);
+        $data = $request->validate($this->warningRules());
         try {
             \App\Models\WarningPost::create($data);
         } catch (\Exception $e) {
@@ -184,13 +148,7 @@ class AdminController extends Controller
 
     public function warningUpdate(Request $request, $id) {
         $warning = \App\Models\WarningPost::findOrFail($id);
-        $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'thumbnail' => 'nullable|string',
-            'source' => 'nullable|string',
-            'date' => 'required|date',
-        ]);
+        $data = $request->validate($this->warningRules());
         try {
             $warning->update($data);
         } catch (\Exception $e) {
@@ -213,14 +171,7 @@ class AdminController extends Controller
     // LAWS CRUD
     // ============================================
     public function lawStore(Request $request) {
-        $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'link' => 'nullable|string',
-            'date' => 'required|date',
-            'time' => 'nullable|date_format:H:i',
-            'downloadAmount' => 'nullable|integer',
-        ]);
+        $data = $request->validate($this->lawRules());
         try {
             \App\Models\LawRulePost::create($data);
         } catch (\Exception $e) {
@@ -236,14 +187,7 @@ class AdminController extends Controller
 
     public function lawUpdate(Request $request, $id) {
         $law = \App\Models\LawRulePost::findOrFail($id);
-        $data = $request->validate([
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'link' => 'nullable|string',
-            'date' => 'required|date',
-            'time' => 'nullable|date_format:H:i',
-            'downloadAmount' => 'nullable|integer',
-        ]);
+        $data = $request->validate($this->lawRules());
         try {
             $law->update($data);
         } catch (\Exception $e) {
@@ -266,11 +210,7 @@ class AdminController extends Controller
     // GUIDES CRUD
     // ============================================
     public function guideStore(Request $request) {
-        $data = $request->validate([
-            'title' => 'required|string',
-            'author' => 'required|string',
-            'link' => 'required|string',
-        ]);
+        $data = $request->validate($this->guideRules());
         try {
             \App\Models\CybersecurityGuide::create($data);
         } catch (\Exception $e) {
@@ -286,11 +226,7 @@ class AdminController extends Controller
 
     public function guideUpdate(Request $request, $id) {
         $guide = \App\Models\CybersecurityGuide::findOrFail($id);
-        $data = $request->validate([
-            'title' => 'required|string',
-            'author' => 'required|string',
-            'link' => 'required|string',
-        ]);
+        $data = $request->validate($this->guideRules());
         try {
             $guide->update($data);
         } catch (\Exception $e) {
@@ -313,10 +249,7 @@ class AdminController extends Controller
     // INFOGRAPHICS CRUD
     // ============================================
     public function infographicStore(Request $request) {
-        $data = $request->validate([
-            'title' => 'required|string',
-            'thumbnail' => 'required|string',
-        ]);
+        $data = $request->validate($this->infographicRules());
         try {
             \App\Models\Infographic::create($data);
         } catch (\Exception $e) {
@@ -332,10 +265,7 @@ class AdminController extends Controller
 
     public function infographicUpdate(Request $request, $id) {
         $infographic = \App\Models\Infographic::findOrFail($id);
-        $data = $request->validate([
-            'title' => 'required|string',
-            'thumbnail' => 'required|string',
-        ]);
+        $data = $request->validate($this->infographicRules());
         try {
             $infographic->update($data);
         } catch (\Exception $e) {
@@ -352,6 +282,71 @@ class AdminController extends Controller
             return back()->withErrors(['title' => 'Gagal menghapus infografis. Silakan coba lagi.']);
         }
         return redirect()->route('admin.dashboard')->with('success', 'Infographic deleted!');
+    }
+
+    private function newsRules(): array
+    {
+        return [
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'thumbnail' => 'nullable|string',
+            'source' => 'nullable|string',
+            'date' => 'required|date',
+        ];
+    }
+
+    private function eventRules(): array
+    {
+        return [
+            'title' => 'required|string',
+            'description' => 'nullable|string',
+            'thumbnail' => 'nullable|string',
+            'event_date' => 'required|date',
+            'location' => 'nullable|string',
+            'event_type' => 'nullable|string',
+            'registration_url' => 'nullable|string',
+            'capacity' => 'nullable|integer',
+        ];
+    }
+
+    private function warningRules(): array
+    {
+        return [
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'thumbnail' => 'nullable|string',
+            'source' => 'nullable|string',
+            'date' => 'required|date',
+        ];
+    }
+
+    private function lawRules(): array
+    {
+        return [
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'link' => 'nullable|string',
+            'date' => 'required|date',
+            'time' => 'nullable|date_format:H:i',
+            'downloadAmount' => 'nullable|integer',
+        ];
+    }
+
+    private function guideRules(): array
+    {
+        return [
+            'title' => 'required|string',
+            'author' => 'required|string',
+            'link' => 'required|string',
+        ];
+    }
+
+    private function infographicRules(): array
+    {
+        return [
+            'title' => 'required|string',
+            'thumbnail' => 'required|string',
+        ];
     }
 
     // ============================================
