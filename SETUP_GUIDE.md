@@ -181,5 +181,13 @@ php artisan route:list               # List all routes
 
 ## File Uploads
 
-Incident evidence files are stored in `storage/app/public/bukti_laporan/` (served via
-`public/storage` symlink). Run `php artisan storage:link` in production.
+New incident evidence files are stored on the private `evidence` disk under
+`storage/app/private/incident-evidence/bukti_laporan/`. The authenticated
+`evidence.download` route permits the report owner or an admin to download them.
+`php artisan storage:link` exposes files on the separate public disk, such as hero
+uploads; it is not used for new incident evidence.
+
+The download handler can fall back to legacy evidence on the public disk. Those
+legacy files may still be accessible through old public URLs until the web server
+and any CDN block them. See [the evidence cutover plan](docs/INCIDENT_EVIDENCE_CUTOVER.md)
+before handling historical files; do not move or delete them as part of setup.

@@ -31,7 +31,10 @@ Gotchas for this subsystem:
   tables → touches require `php artisan migrate:fresh --seed`.
 - In the `bug-hunter/laporan/*` route group, static paths (`baru`, `selesai`)
   MUST be declared before the dynamic `/bug-hunter/laporan/{id}` (`int $id`).
-- Files (≤3 bukti rows, File OR URL) → `storage/app/public/bukti_laporan/`.
+- New files (≤3 bukti rows, File OR URL) use the private `evidence` disk under
+  `storage/app/private/incident-evidence/bukti_laporan/`; the authenticated
+  `evidence.download` route allows the report owner or an admin to download them.
+  Legacy files may still be publicly reachable: see `docs/INCIDENT_EVIDENCE_CUTOVER.md`.
 - Seeders do **not** create incidents; the Insiden tab is empty until reports exist.
 - Status transitions + labels live on `App\Models\IncidentReport`
   (constants, `labels()`, `transitions()`, `canTransitionTo()`).

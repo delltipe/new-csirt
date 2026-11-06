@@ -130,8 +130,10 @@ plus `ditolak` (rejectable from `menunggu_validasi`, `divalidasi`,
 | created_at | timestamp | |
 | updated_at | timestamp | |
 
-**Has timestamps.** Up to 3 rows per report. File attachments are stored in
-`storage/app/public/bukti_laporan/`.
+**Has timestamps.** Up to 3 rows per report. New file attachments use the private
+`evidence` disk at `storage/app/private/incident-evidence/bukti_laporan/` and are
+downloaded through the authenticated owner/admin route. The handler can fall back
+to legacy public files; see [the evidence cutover plan](INCIDENT_EVIDENCE_CUTOVER.md).
 
 ### `tac_agreements` (Terms & Conditions Acceptances)
 | Column | Type | Notes |
@@ -210,5 +212,7 @@ These are standard Laravel tables — you typically don't need to modify them:
   `lampiran_insiden`, `tac_agreements`, `contact_us`, and the six content tables.
 - **Soft-delete:** `lapor_insiden.deleted_at` + `SoftDeletes` on
   `IncidentReport` — admin delete soft-deletes only (legal-evidence retention).
-- **File storage:** Proof images and uploaded files use Laravel's `storage/app/public/` directory (`bukti_laporan/` for incident evidence, `hero/` for slider uploads). In production, symlink `public/storage` → `storage/app/public`.
+- **File storage:** New incident evidence uses the private `evidence` disk; hero
+  uploads use the separate public disk at `storage/app/public/hero/`, exposed via
+  `public/storage`. Legacy public evidence needs the separate cutover described above.
 - **Hero slider:** `slide_hero` has no FK; `tautan` for scraped banners points to internal `berita_siber` rows (`/news/{id}`) created in the same seeder, except `SEMUA TENTANG WEB FILTERING` → `/`.

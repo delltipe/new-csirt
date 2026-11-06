@@ -62,7 +62,9 @@
 4. **Form:** routes `GET /bug-hunter/laporan/baru`, `POST /bug-hunter/laporan/simpan`
    (`throttle:60,1`), `GET /bug-hunter/laporan/selesai`; view `bug-hunter/create.blade.php`;
    delete old wizard routes (`routes/web.php:43-49`) + `incidents/create.blade.php` + JKT captcha.
-   Attachment files → `storage/app/public/bukti_laporan/`.
+   Originally, attachment files used `storage/app/public/bukti_laporan/`. This
+   was superseded: new files use the private `evidence` disk. See
+   [the evidence cutover plan](INCIDENT_EVIDENCE_CUTOVER.md) for legacy files.
 5. **Schema:** rewrite `lapor_insiden` migration (`user_id` FK, `tiket_no`, `kategori_insiden`,
    `waktu_kejadian`, `lokasi_url`, `down_time`, `deskripsi`, `tindakan_teknis`, `cwe`,
    `severity`, `status` default `menunggu_validasi`, timestamps); new `lampiran_insiden`

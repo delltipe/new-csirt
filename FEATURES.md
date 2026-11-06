@@ -116,7 +116,10 @@ verification) and reach a Komdigi-style reporter portal under `/bug-hunter`.
   - Fields: `kategori_insiden` (dropdown), `waktu_kejadian`, `lokasi_url`,
     `down_time`, `deskripsi`, `tindakan_teknis`, plus up to **3 bukti** rows
     (each a file **or** URL)
-  - File types: png/jpg/jpeg/gif/pdf, max 5MB → `storage/app/public/bukti_laporan/`
+  - New files: png/jpg/jpeg/gif/pdf, max 5MB → private `evidence` disk at
+    `storage/app/private/incident-evidence/bukti_laporan/`; downloads require the
+    report owner or an admin. Legacy public files require the separate
+    [evidence cutover](docs/INCIDENT_EVIDENCE_CUTOVER.md).
   - One POST, one `validate()` — no per-step routes
   - Rate limited: 60 requests/minute per IP
   - Creates an `IncidentReport` (status `menunggu_validasi`) with ticket number
